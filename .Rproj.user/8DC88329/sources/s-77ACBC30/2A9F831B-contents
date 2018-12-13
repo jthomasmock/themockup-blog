@@ -1,0 +1,14 @@
+name: "the-mockup-blog"
+title: "The Mockup Blog"
+description: |
+  Exploring the wonderful world of #RStats
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - icon: fa fa-rss
+      href: index.xml
+output: radix::radix_article

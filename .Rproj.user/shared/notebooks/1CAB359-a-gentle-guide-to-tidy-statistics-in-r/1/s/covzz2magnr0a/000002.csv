@@ -1,0 +1,6 @@
+"0","ggplot(data = raw_df, # add the data"
+"0","       aes(x = drug_treatment, y = mmse, # set x, y coordinates"
+"0","           color = drug_treatment)) +    # color by treatment"
+"0","  geom_boxplot() +"
+"0","  facet_grid(~health_status) # create panes base on health status"
+"0",""

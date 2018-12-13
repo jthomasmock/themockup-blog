@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544579587934.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2927580456",
+    "id" : "59796490",
+    "lastKnownWriteTime" : 1544651429,
+    "last_content_update" : 1544651429895,
+    "path" : "~/radix_thomasmock/_posts/2018-12-11-functional-progamming-in-r-with-purrr/functional-progamming-in-r-with-purrr.Rmd",
+    "project_path" : "_posts/2018-12-11-functional-progamming-in-r-with-purrr/functional-progamming-in-r-with-purrr.Rmd",
+    "properties" : {
+        "cursorPosition" : "7,11",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

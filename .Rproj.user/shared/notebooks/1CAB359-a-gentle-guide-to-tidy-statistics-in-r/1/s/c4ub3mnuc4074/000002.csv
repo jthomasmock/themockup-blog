@@ -1,0 +1,3 @@
+"0","raw_df %>% "
+"0","  group_by(drug_treatment, health_status) %>% "
+"0","  count()"

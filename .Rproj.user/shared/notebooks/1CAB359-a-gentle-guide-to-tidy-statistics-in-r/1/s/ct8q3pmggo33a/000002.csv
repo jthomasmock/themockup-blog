@@ -1,0 +1,7 @@
+"0","sum_df <- sum_df %>%   "
+"0","  group_by(sex, health_status, drug_treatment) %>%  "
+"0","  summarize(mmse_mean = mean(mmse),   "
+"0","            mmse_se = sd(mmse)/sqrt(n()),"
+"0","            n_samples = n()) %>%"
+"0","  ungroup() # ungrouping variable is a good habit to prevent errors"
+"0",""

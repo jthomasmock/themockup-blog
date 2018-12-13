@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544495292023.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1239232915",
+    "id" : "D123EEDE",
+    "lastKnownWriteTime" : 1544737695,
+    "last_content_update" : 1544737695576,
+    "path" : "~/radix_thomasmock/_posts/welcome/welcome.Rmd",
+    "project_path" : "_posts/welcome/welcome.Rmd",
+    "properties" : {
+        "cursorPosition" : "27,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

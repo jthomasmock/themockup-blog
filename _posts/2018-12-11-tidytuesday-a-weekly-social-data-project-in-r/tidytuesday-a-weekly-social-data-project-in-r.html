@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="radix" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+  <title>TidyTuesday</title>
+  
+  <meta property="description" itemprop="description" content="A weekly social data project in R"/>
+  
+  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2018-04-05"/>
+  <meta property="article:created" itemprop="dateCreated" content="2018-04-05"/>
+  <meta name="article:author" content="Thomas Mock"/>
+  
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="TidyTuesday"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="A weekly social data project in R"/>
+  <meta property="og:locale" content="en_US"/>
+  
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="TidyTuesday"/>
+  <meta property="twitter:description" content="A weekly social data project in R"/>
+  
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["TidyTuesday"]},{"type":"character","attributes":{},"value":["A weekly social data project in R\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Mock"]},{"type":"character","attributes":{},"value":["https://example.com/norajones"]}]}]},{"type":"character","attributes":{},"value":["04-05-2018"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["radix::radix_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["tidytuesday-a-weekly-social-data-project-in-r_files/bowser-1.9.3/bowser.min.js","tidytuesday-a-weekly-social-data-project-in-r_files/distill-2.2.21/template.v2.js","tidytuesday-a-weekly-social-data-project-in-r_files/jquery-1.11.3/jquery.min.js","tidytuesday-a-weekly-social-data-project-in-r_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+  
+  <style type="text/css">
+  
+  body {
+    background-color: white;
+  }
+  
+  .pandoc-table {
+    width: 100%;
+  }
+  
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+  
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+  
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+  
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+  
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+  
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+  
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .shaded-content {
+    background: white;
+  }
+  
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  d-article {
+    padding-bottom: 30px;
+  }
+  
+  d-appendix {
+    padding-top: 30px;
+  }
+  
+  d-article>p>img {
+    width: 100%;
+  }
+  
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+  
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS for table of contents */
+  
+  .d-toc {
+    color: rgba(0,0,0,0.8);
+    font-size: 0.8em;
+    line-height: 1em;
+  }
+  
+  .d-toc-header {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 1.3em;
+  }
+  
+  .d-toc a {
+    border-bottom: none;
+  }
+  
+  .d-toc ul {
+    padding-left: 0;
+  }
+  
+  .d-toc li>ul {
+    padding-top: 0.8em;
+    padding-left: 16px;
+    margin-bottom: 0.6em;
+  }
+  
+  .d-toc ul,
+  .d-toc li {
+    list-style-type: none;
+  }
+  
+  .d-toc li {
+    margin-bottom: 0.9em;
+  }
+  
+  .d-toc-separator {
+    margin-top: 20px;
+    margin-bottom: 2em;
+  }
+  
+  .d-article-with-toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  
+  
+  
+  /* Tweak code blocks (note that this CSS is repeated above in an injection
+     into the d-code shadow dom) */
+  
+  d-code {
+    overflow-x: auto !important;
+  }
+  
+  pre.d-code code.d-code {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+  
+  pre.text-output {
+  
+    font-size: 12px;
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  @media(min-width: 768px) {
+  
+  d-code {
+    overflow-x: visible !important;
+  }
+  
+  pre.d-code code.d-code  {
+      padding-left: 18px;
+      font-size: 14px;
+  }
+  pre.text-output {
+    font-size: 14px;
+  }
+  }
+  
+  /* Figure */
+  
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+  
+  .figure img {
+    width: 100%;
+  }
+  
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+  
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+  
+  
+  
+  /* Tweak 1000px media break to show more text */
+  
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+  
+    .grid {
+      grid-column-gap: 16px;
+    }
+  
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+  
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+  
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+  
+  
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+  
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  
+  /* Social footer */
+  
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+  
+  .disqus-comments {
+    margin-right: 30px;
+  }
+  
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+  
+  #disqus_thread {
+    margin-top: 30px;
+  }
+  
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+  
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+  
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+  
+  
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+  
+  
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+  
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+  
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+  
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+  
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+  
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+  
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+  
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+  
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  </style>
+  
+  <script type="application/javascript">
+  
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+  
+  // show body when load is complete
+  function on_load_complete() {
+  
+    // set body to visible
+    document.body.style.visibility = 'visible';
+  
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+  
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+  
+  function init_distill() {
+  
+    init_common();
+  
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+  
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+  
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+  
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+  
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+  
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+  
+    // create d-bibliography
+    var bibliography = $('<d-bibliography></d-bibliography>');
+    $('#distill-bibliography').wrap(bibliography);
+  
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+  
+    // replace citations with <d-cite>
+    $('.citation').each(function(i, val) {
+      appendix = true;
+      var cites = $(this).attr('data-cites').split(" ");
+      var dt_cite = $('<d-cite></d-cite>');
+      dt_cite.attr('key', cites.join());
+      $(this).replaceWith(dt_cite);
+    });
+    // remove refs
+    $('#refs').remove();
+  
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+  
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-toc a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+  
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+  
+    // replace code blocks with d-code
+    $('pre>code').each(function(i, val) {
+      var code = $(this);
+      var pre = code.parent();
+      var clz = "";
+      var language = pre.attr('class');
+      if (language) {
+        // map unknown languages to "clike" (without this they just dissapear)
+        if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                                 "javascript", "js", "julia", "lua", "markdown",
+                                 "markup", "mathml", "python", "svg", "xml"]) == -1)
+          language = "clike";
+        language = ' language="' + language + '"';
+        var dt_code = $('<d-code block' + language + clz + '></d-code>');
+        dt_code.text(code.text());
+        pre.replaceWith(dt_code);
+      } else {
+        code.addClass('text-output').unwrap().changeElementType('pre');
+      }
+    });
+  
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+  
+      // capture layout
+      var layout = $(this).attr('data-layout');
+  
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('d-code, pre.text-output, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+  
+  
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+  
+    // load distill framework
+    load_distill_framework();
+  
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+  
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+  
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+  
+      // table of contents
+      if (have_authors) // adjust border if we are in authors
+        $('.d-toc').parent().addClass('d-article-with-toc');
+  
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+  
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+  
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+  
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+  
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+  
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+  
+      // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+      $('d-code').each(function(i, val) {
+        var style = document.createElement('style');
+        style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                          '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+        if (this.shadowRoot)
+          this.shadowRoot.appendChild(style);
+      });
+  
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+  
+      // clear polling timer
+      clearInterval(tid);
+  
+      // show body now that everything is ready
+      on_load_complete();
+    }
+  
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+  
+  }
+  
+  function init_downlevel() {
+  
+    init_common();
+  
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+  
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+  
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+  
+    // remove toc
+    $('.d-toc-header').remove();
+    $('.d-toc').remove();
+    $('.d-toc-separator').remove();
+  
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+  
+  
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+  
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+  
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+  
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+  
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+  
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+  
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+  
+    $('body').addClass('downlevel');
+  
+    on_load_complete();
+  }
+  
+  
+  function init_common() {
+  
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+  
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+  
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+  
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+  
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+  
+      }
+    });
+  
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+  
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.radix-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+  
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+  
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+  
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+  
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+  
+  </script>
+  
+  <!--/radix_placeholder_distill-->
+  <script src="tidytuesday-a-weekly-social-data-project-in-r_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="tidytuesday-a-weekly-social-data-project-in-r_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="tidytuesday-a-weekly-social-data-project-in-r_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="tidytuesday-a-weekly-social-data-project-in-r_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"TidyTuesday","description":"A weekly social data project in R","authors":[{"author":"Thomas Mock","authorURL":"https://example.com/norajones","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2018-04-05T00:00:00.000-05:00","citationText":"Mock, 2018"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>TidyTuesday</h1>
+<p>A weekly social data project in R</p>
+</div>
+
+<div class="d-byline">
+  Thomas Mock <a href="https://example.com/norajones" class="uri">https://example.com/norajones</a> 
+  
+<br/>04-05-2018
+</div>
+
+<div class="d-article">
+<p><img src="https://i.imgur.com/AXfD3Fk.png" /></p>
+<p>Over the past month or so, the <a href="https://www.jessemaegan.com/post/r4ds-the-next-iteration/">r4ds online learning community</a> founded by <a href="https://www.jessemaegan.com/">Jesse Maegan</a> has been developing projects intended to help connect mentors and learners. One of the first projects born out of this collaboration is <a href="https://github.com/rfordatascience/tidytuesday">#TidyTuesday</a>, a weekly social data project focused on using <code>tidyverse</code> packages to clean, wrangle, tidy, and plot a new dataset every Tuesday.</p>
+<p>If you are interested in joining the r4ds online learning community check out Jesse Maegan’s post <a href="https://www.jessemaegan.com/post/r4ds-the-next-iteration/">here</a>!</p>
+<p>Every Monday we will release a new dataset on our <a href="https://github.com/rfordatascience/tidytuesday">GitHub</a> that has been tamed, but does not always adhere to “tidy” data principles. This dataset will come from an article with an interesting plot. Our goal is to have you take a look at the raw data, and generate either a copy of the original plot or a novel take on the data! You can obviously use whatever techniques you feel are appropriate, but the data will be organized in a way that <code>tidyverse</code> tools will work well!</p>
+<h2 id="why-such-an-emphasis-on-the-tidyverse">Why such an emphasis on the <code>tidyverse</code>?</h2>
+<figure>
+<img src="https://i.imgur.com/6iVy4po.png" alt="The typical Tidyverse workflow" /><figcaption>The typical Tidyverse workflow</figcaption>
+</figure>
+<p>The <code>tidyverse</code> is an “opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures.” The <code>tidyverse</code> is at the core of the the <a href="http://r4ds.had.co.nz/">R for Data Science text</a> written by Garrett Grolemund and Hadley Wickham. This book is aimed to be beginner-friendly but also deep enough to empower R experts as well. The framework of both the book and the <code>tidyverse</code> package is seen above.</p>
+<p>We focus on the <code>tidyverse</code> package as the r4ds online learning community was founded “with the goal of creating a supportive and responsive online space for learners and mentors to gather and work through the R for Data Science text”. Beyond that, the <code>tidyverse</code> is consistent, powerful, and typically more beginner friendly. It is a good framework to get started with, and is complementary to base R (or the 1000s of other R packages).</p>
+<h2 id="guidelines-for-tidytuesday">Guidelines for TidyTuesday</h2>
+<p>To participate in TidyTuesday, you need to do a few things:</p>
+<ol type="1">
+<li>Create and save an image of a plot from R</li>
+<li>Save the code used to recreate your plot (include data tidy steps!)</li>
+<li>Submit the plot and code on Twitter</li>
+<li>Use the <code>#TidyTuesday</code> hashtag (you can also tag me <span class="citation" data-cites="thomas_mock">@thomas_mock</span>)</li>
+<li>Browse other submissions and like/comment on their work!</li>
+</ol>
+<p>However, that might seem like a <em>lot</em>! So at <em>minimum</em> please submit your plot with the hashtag <code>#TidyTuesday</code>.</p>
+<p>All data will be posted on the <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data">data sets page</a> on Monday. It will include the link to the original article (for context) and to the data set.</p>
+<p>If you want to work on GitHub (a useful data science skill) feel free to post your code on GitHub! This will allow others to see and use your code, whereas an image of the code means they would have to re-type everything! Additionally, hosting on GitHub gives you a Data Science Portfolio to talk about/show in interviews, and allows you to access your code across different computers easily!</p>
+<p><a href="https://github.com/">GitHub link!</a></p>
+<p><a href="https://guides.github.com/activities/hello-world/">GitHub Guide!</a></p>
+<p>You can also upload your code into <a href="https://carbon.now.sh/">Carbon</a>, a website the generates a high-quality image of your code.</p>
+<p>Lastly, if you create your plot with the <code>tidyverse</code> <a href="http://ggplot2.tidyverse.org/reference/ggsave.html">you can save high quality <code>ggplot2</code> images</a>!</p>
+<h2 id="rules-for-tidytuesday">Rules for TidyTuesday</h2>
+<p>We welcome all newcomers, enthusiasts, and experts to participate, but be mindful of a few things:</p>
+<ol type="1">
+<li>This is NOT about criticizing the original authors. They are people like you and me and they have feelings. Focus on the data, the charts and improving your own techniques.</li>
+<li>This is NOT about criticizing or tearing down your fellow #RStats practitioners! Be supportive and kind to each other! Like other’s posts and help promote the #RStats community!</li>
+<li>The data set comes from the source article or the source that the article credits. Be mindful that the data is what it is and Tidy Tuesday is designed to help you practice data visualization and basic data wrangling.</li>
+<li>Use the hashtag #TidyTuesday on Twitter if you create your own version and would like to share it.</li>
+<li>Include a picture of the visualisation when you post to Twitter.</li>
+<li>Include a copy of the code used to create your visualization when you post to Twitter. Comment your code wherever possible to help yourself and others understand your process!</li>
+<li>Focus on improving your craft, even if you end up with someting simple! Make something quick, but purposeful!</li>
+<li>Give credit to the original data source whenever possible.</li>
+</ol>
+<h2 id="this-weeks-submissions">This week’s submissions!</h2>
+<p>Everyone did such a great job! I’m posting all the ones that I can find through the hashtag, you can always tag me in your post to make sure you get noticed in the future.</p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+If you have an apple and I have an apple and we exchange these apples then you and I will still each have one apple. But if you have an idea and I have an idea and we exchange these ideas, then each of us will have two ideas.<br>— George Bernard Shaw<a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> - spreading ideas!
+</p>
+— Thomas Mock (<span class="citation" data-cites="thomas_mock">@thomas_mock</span>) <a href="https://twitter.com/thomas_mock/status/984069691294605317?ref_src=twsrc%5Etfw">April 11, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="umair-submitted-the-first-tidytuesday-plot-ever">Umair submitted the first TidyTuesday plot EVER!!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+I plotted the costs for the last 5 years in the data <a href="https://t.co/jNQwHI1mqu">pic.twitter.com/jNQwHI1mqu</a>
+</p>
+— Umair Durrani (<span class="citation" data-cites="umairdurrani87">@umairdurrani87</span>) <a href="https://twitter.com/umairdurrani87/status/980941912722083841?ref_src=twsrc%5Etfw">April 2, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="meenakshi-learned-about-new-tidyverse-functions-and-made-a-beautiful-rainbow-plot">Meenakshi learned about new tidyverse functions and made a beautiful rainbow plot!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+<a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> done on a monday. Learnt gather and fct_reorder. Loved it!<br>Made my plot 🌈🌈 Thanks Thomas!! 😃 <a href="https://t.co/oqKV6HlBBt">pic.twitter.com/oqKV6HlBBt</a>
+</p>
+— Meenakshi Srinivasan 🐠 (<span class="citation" data-cites="srini_meen">@srini_meen</span>) <a href="https://twitter.com/srini_meen/status/980991340497563649?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="son-had-several-takes-on-the-data-all-of-which-helped-tell-the-story">Son had several takes on the data, all of which helped tell the story!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+<a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> Prices always go up, but if you compare it to the annual average then interesting things happen. Something happened in Arizona, Ohio, Hawai. <br><br>code: <a href="https://t.co/xJ5kD185Os">https://t.co/xJ5kD185Os</a> <a href="https://t.co/i4BMDorq3c">pic.twitter.com/i4BMDorq3c</a>
+</p>
+— Son M (<span class="citation" data-cites="SonGeo">@SonGeo</span>) <a href="https://twitter.com/SonGeo/status/981022819596124160?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="bren-submitted-clean-code-and-two-great-takes-on-the-data">Bren submitted clean code and two great takes on the data!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Just having a little bit of R fun this Tuesday. Found this <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> and thought I could give my contribution. I gather() and summarise() all the Year variables though…makes a different result. <br>Thanks <a href="https://twitter.com/thomas_mock?ref_src=twsrc%5Etfw"><span class="citation" data-cites="thomas_mock">@thomas_mock</span></a> for this good idea. <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/q54fI9LZRl">pic.twitter.com/q54fI9LZRl</a>
+</p>
+— Brenborbs (<span class="citation" data-cites="brenborbon">@brenborbon</span>) <a href="https://twitter.com/brenborbon/status/981013957665107970?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="john-was-one-of-our-first-submissions-and-made-a-nice-geo-heatmap">John was one of our first submissions, and made a nice geo heatmap!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+10 year tuition growth per state. Second map is with Hawaii filtered out as it was bit of an outlier and darkening the entire map.<a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> <a href="https://twitter.com/hashtag/R4DS?src=hash&amp;ref_src=twsrc%5Etfw">#R4DS</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/EPE07myFCi">pic.twitter.com/EPE07myFCi</a>
+</p>
+— John Bray (<span class="citation" data-cites="njbuzz19">@njbuzz19</span>) <a href="https://twitter.com/njbuzz19/status/981169470033948674?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="the-part-time-analyst-selected-a-range-of-states-that-showed-nice-differences">The Part Time Analyst selected a range of states that showed nice differences!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+my attempt at tidy tuesday. Difficult part was getting the cost from character to numeric <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/1fq70OSbhZ">pic.twitter.com/1fq70OSbhZ</a>
+</p>
+— The Part Time Analyst (<span class="citation" data-cites="parttimeanalyst">@parttimeanalyst</span>) <a href="https://twitter.com/parttimeanalyst/status/981250658899808256?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="paula-made-a-clean-difference-from-the-mean-barplot">Paula made a clean difference from the mean barplot!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+on <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> I got this code <a href="https://t.co/nabbUZxLm3">https://t.co/nabbUZxLm3</a> I'm wondering if the values are right in what I did similar to yours <a href="https://twitter.com/brenborbon?ref_src=twsrc%5Etfw"><span class="citation" data-cites="brenborbon">@brenborbon</span></a> but different from the original plot 🤔 <a href="https://t.co/49IYNxR2EJ">pic.twitter.com/49IYNxR2EJ</a>
+</p>
+— Paula Andrea (<span class="citation" data-cites="orchid00">@orchid00</span>) <a href="https://twitter.com/orchid00/status/981231113506050053?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="nivra-submitted-two-takes-on-the-data-that-both-turned-out-great">Nivra submitted two takes on the data that both turned out great!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Here's my first go at <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a>, working with tuition data in the United States. Nothing is quite as smooth as <a href="https://twitter.com/hashtag/tidyverse?src=hash&amp;ref_src=twsrc%5Etfw">#tidyverse</a> and <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> when doing data analysis. Let me know your thoughts! <a href="https://t.co/DLoP31bOXK">pic.twitter.com/DLoP31bOXK</a>
+</p>
+— Dylan McDowell (<span class="citation" data-cites="dylanjm_ds">@dylanjm_ds</span>) <a href="https://twitter.com/dylanjm_ds/status/981791977552265217?ref_src=twsrc%5Etfw">April 5, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="rohit-created-a-shiny-app-and-output-gif">Rohit created a shiny app, and output gif!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Finally built my first shiny app as a part of <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> <a href="https://t.co/G6oJJ5t2HF">https://t.co/G6oJJ5t2HF</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://twitter.com/hashtag/ggplot2?src=hash&amp;ref_src=twsrc%5Etfw">#ggplot2</a> <a href="https://twitter.com/hashtag/R4DS?src=hash&amp;ref_src=twsrc%5Etfw">#R4DS</a> <a href="https://t.co/pExxXPBZWn">pic.twitter.com/pExxXPBZWn</a>
+</p>
+— Kumar Rohit Malhotra (<span class="citation" data-cites="krohitm">@krohitm</span>) <a href="https://twitter.com/krohitm/status/981746783775870977?ref_src=twsrc%5Etfw">April 5, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="submitted-a-nice-facetted-graph-with-a-swapped-axis">submitted a nice, facetted graph with a swapped axis!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Hopefully not too late for a <a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> submission <a href="https://t.co/fqtc2YLXkh">pic.twitter.com/fqtc2YLXkh</a>
+</p>
+— Raul (<span class="citation" data-cites="raviolli77">@raviolli77</span>) <a href="https://twitter.com/raviolli77/status/981660586185379840?ref_src=twsrc%5Etfw">April 4, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="wire-monkey-submitted-a-gif-of-the-us-with-hex-states">Wire Monkey submitted a gif of the US with hex states!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Used <a href="https://t.co/fCLxYKVDTw">https://t.co/fCLxYKVDTw</a><a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> to learn hexmap via <a href="https://t.co/CegVkyaBfs">https://t.co/CegVkyaBfs</a> and gganimate. <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://twitter.com/hashtag/maps?src=hash&amp;ref_src=twsrc%5Etfw">#maps</a> <a href="https://twitter.com/hashtag/adaylate?src=hash&amp;ref_src=twsrc%5Etfw">#adaylate</a> <a href="https://twitter.com/hashtag/r4ds?src=hash&amp;ref_src=twsrc%5Etfw">#r4ds</a> <a href="https://t.co/5LNS1q2bOJ">pic.twitter.com/5LNS1q2bOJ</a>
+</p>
+— Alyssa Goldberg (<span class="citation" data-cites="WireMonkey">@WireMonkey</span>) <a href="https://twitter.com/WireMonkey/status/981639213186678784?ref_src=twsrc%5Etfw">April 4, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="vinicius-submitted-a-good-looking-heatmap">Vinicius submitted a good-looking heatmap!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+Not something I would do in practice, but I used the opportunity to experiment with R. <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://twitter.com/hashtag/ggplot2?src=hash&amp;ref_src=twsrc%5Etfw">#ggplot2</a> <a href="https://t.co/rJ3kX1C2AR">pic.twitter.com/rJ3kX1C2AR</a>
+</p>
+— Vinícius Félix (<span class="citation" data-cites="H0Vinicius">@H0Vinicius</span>) <a href="https://twitter.com/H0Vinicius/status/981467944625549312?ref_src=twsrc%5Etfw">April 4, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="jake-submitted-a-super-clean-slopegraph">Jake submitted a super clean slopegraph!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+A slopegraph for <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a>, code available at: <a href="https://t.co/qS64cQ3oDJ">https://t.co/qS64cQ3oDJ</a> <a href="https://t.co/j34DA2DzN6">pic.twitter.com/j34DA2DzN6</a>
+</p>
+— Jake Kaupp (<span class="citation" data-cites="jakekaupp">@jakekaupp</span>) <a href="https://twitter.com/jakekaupp/status/981265942226309121?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="robert-ubmitted-another-take-on-jakes-slopegraph">Robert ubmitted another take on Jake’s slopegraph!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+I loved that approach. I wanted to see what the growth rates looked like identifiable by state, here went…. th code is <a href="https://t.co/HGqXMVnhnF">https://t.co/HGqXMVnhnF</a><a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> <a href="https://t.co/pnCf8aJqP2">pic.twitter.com/pnCf8aJqP2</a>
+</p>
+— Robert Walker (<span class="citation" data-cites="PieRatio">@PieRatio</span>) <a href="https://twitter.com/PieRatio/status/981409557766393856?ref_src=twsrc%5Etfw">April 4, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="frank-wrote-a-great-blogpost-on-his-4-hour-process">Frank wrote a great blogpost on his “4 hour process”!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+New blog post: My first <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> challenge, completed within a 4-hour time limit from concept to communication. <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://twitter.com/hashtag/r4ds?src=hash&amp;ref_src=twsrc%5Etfw">#r4ds</a> <a href="https://t.co/o82e1eOloo">https://t.co/o82e1eOloo</a>
+</p>
+— Frank Farach (<span class="citation" data-cites="FrankFarach">@FrankFarach</span>) <a href="https://twitter.com/FrankFarach/status/981396430354075648?ref_src=twsrc%5Etfw">April 4, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="sam-made-a-really-well-organized-facetted-map">Sam made a really well organized facetted map!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+My <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> submission, a first pass with geo_facet() and trying to get my head around nested data frames. Not sure the absolute ranking is as important as showing where each state is relative to the others <a href="https://t.co/Hp3wd7R4VL">https://t.co/Hp3wd7R4VL</a> <a href="https://t.co/K4FFY7rg74">pic.twitter.com/K4FFY7rg74</a>
+</p>
+— Sam Clifford (<span class="citation" data-cites="samclifford">@samclifford</span>) <a href="https://twitter.com/samclifford/status/981329343702970369?ref_src=twsrc%5Etfw">April 4, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="isabella-submitted-a-really-nice-beeswarm-plot-over-time">Isabella submitted a really nice beeswarm plot over time!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+I love me some beeswarm plots… <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/76T94PU3el">pic.twitter.com/76T94PU3el</a>
+</p>
+— Isabella Velásquez (<span class="citation" data-cites="ivelasq3">@ivelasq3</span>) <a href="https://twitter.com/ivelasq3/status/981299737524490240?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<h1 id="miquel-used-some-data-he-was-already-working-on-with-nice-walk-though-code">Miquel used some data he was already working on, with nice walk-though code!</h1>
+<blockquote class="twitter-tweet" data-lang="en">
+<p lang="en" dir="ltr">
+My intent of exploratory analysis based on categorical data (factor variables). Group counting by conditions, creating two new datasets with the results and joining them by a common variable to plot the whole information. Thoughts? <a href="https://twitter.com/hashtag/TidyTuesday?src=hash&amp;ref_src=twsrc%5Etfw">#TidyTuesday</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://t.co/NqHyHPH3qd">pic.twitter.com/NqHyHPH3qd</a>
+</p>
+— Miguel Cosenza (<span class="citation" data-cites="MiguelCos">@MiguelCos</span>) <a href="https://twitter.com/MiguelCos/status/981295148251451393?ref_src=twsrc%5Etfw">April 3, 2018</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>If you made a plot and I missed it, feel free to contact me on Twitter with a link to your tweet. As <code>#TidyTuesday</code> grows, there may be issues where Twitter doesn’t show ALL the plots to me – so it may be helpful to tag me directly in your post to guarantee I see it for sharing!</p>
+<p>Here’s to next week! Good luck!</p>
+<p>I’d also like to thank the <code>#r4ds</code> Mentorship Pilot team for their help in conceptualizing TidyTuesday: Terence, Rosa Castillo, Andrew Macfarland, Ariel Levy, Burcukaniskan, Corrado Lanera, Jake Kaupp, Jason Baik, Jesse Maegan, Radovan Kavicky, Raul, and Shan. There are some other cool projects coming out of this group, so stay posted as they roll out over the next few months.</p>
+<h2 id="other-useful-links">Other Useful Links</h2>
+<p><a href="https://www.jessemaegan.com/post/r4ds-the-next-iteration/">The R4DS Online Learning Community</a></p>
+<p><a href="http://r4ds.had.co.nz/">The R for Data Science textbook</a></p>
+<p><a href="https://carbon.now.sh/">Carbon lets you post beautiful code directly to Twitter!</a></p>
+<p><a href="https://cran.r-project.org/web/packages/fivethirtyeight/fivethirtyeight.pdf">We will use the fivethirtyeight package frequently for “tame data</a></p>
+<p><a href="https://github.com/">GitHub lets you host raw code for free!</a></p>
+<p><a href="https://guides.github.com/activities/hello-world/">A guide to getting started with GitHub</a></p>
+<p><a href="http://ggplot2.tidyverse.org/reference/ggsave.html">How to save high quality <code>ggplot2</code> images</a></p>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

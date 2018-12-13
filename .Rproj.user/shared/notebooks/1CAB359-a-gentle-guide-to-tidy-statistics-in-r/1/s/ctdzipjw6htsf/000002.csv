@@ -1,0 +1,19 @@
+"0","dplyr::glimpse(raw_df)"
+"1","Observations: 600
+"
+"1","Variables: 5
+"
+"1","$ age            <int> 80, 85, 82, 80, 83, 79, ...
+"
+"1",""
+"1","$ sex            <int> 0, 0, 0, 0, 0, 0, 0, 0, ...
+"
+"1",""
+"1","$ health_status  <chr> ""Healthy"", ""Healthy"", ""H...
+"
+"1",""
+"1","$ drug_treatment <chr> ""Placebo"", ""Placebo"", ""P...
+"
+"1",""
+"1","$ mmse           <dbl> 24.78988, 24.88192, 25.1...
+"
