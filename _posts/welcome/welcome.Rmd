@@ -4,9 +4,9 @@ description: |
   A collection of various guides, packages, and cool things!
 author:
   - name: Thomas Mock 
-    url: https://example.com/norajones
+    url: 
     affiliation: RStudio
-    affiliation_url: https://example.com/spacelysprokets
+    affiliation_url: 
 date: 12-10-2018
 output:
   radix::radix_article:
