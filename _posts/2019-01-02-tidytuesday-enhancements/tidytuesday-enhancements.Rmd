@@ -22,6 +22,8 @@ library(emo)
 library(carbonate)
 ```
 
+![](new_year.png)
+
 One of my `#rstats` goals for 2019 was to make #TidyTuesday better, both from the experience on GitHub and the weekly posting for myself and for others. The first thing I did for the project was to re-organize the GitHub repo, moving all the 2018 data into an archived folder and making a new 2019 folder to begin populating with new data! Additionally, with some help from Phillip Khor via a pull-request - the GitHub repo is now full of relative (rather than absolute) paths to make life easier for anyone that forks the repo. 
 
 I reorganized the [Useful Links](https://github.com/rfordatascience/tidytuesday/blob/master/README.md) section at the bottom of the repo to make it more succinct, adding a few more links including [Happy Git with R](https://happygitwithr.com/) by Jenny Bryan! If you are just getting started with GitHub and want to learn more about Git, GitHub, and using it from within RStudio - check out her resources!
