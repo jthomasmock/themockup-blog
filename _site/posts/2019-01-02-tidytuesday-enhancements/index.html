@@ -1320,14 +1320,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </div>
 <p><img src="new_year.png" /></p>
-<p>One of my <code>#rstats</code> goals for 2019 was to make #TidyTuesday better, both from the experience on GitHub and the weekly posting for myself and for others. The first thing I did for the project was to re-organize the GitHub repo, moving all the 2018 data into an archived folder and making a new 2019 folder to begin populating with new data! Additionally, with some help from Phillip Khor via a pull-request - the GitHub repo is now full of relative (rather than absolute) paths to make life easier for anyone that forks the repo.</p>
+<p>One of my <code>#rstats</code> goals for 2019 was to make #TidyTuesday better, both from the experience on GitHub and the weekly posting for myself and for others.</p>
+<p>The first thing I did for the project was to re-organize the GitHub repo, moving all the 2018 data into an archived folder and making a new 2019 folder to begin populating with new data! Additionally, with some help from <a href="https://twitter.com/philip_khor">Philip Khor</a> via a pull-request - the GitHub repo is now full of relative (rather than absolute) paths to make life easier for anyone that forks the repo.</p>
 <p>I reorganized the <a href="https://github.com/rfordatascience/tidytuesday/blob/master/README.md">Useful Links</a> section at the bottom of the repo to make it more succinct, adding a few more links including <a href="https://happygitwithr.com/">Happy Git with R</a> by Jenny Bryan! If you are just getting started with GitHub and want to learn more about Git, GitHub, and using it from within RStudio - check out her resources!</p>
 <h2 id="ways-to-contribute">Ways to contribute</h2>
 <p>I’m always on the lookout for interesting datasets, and a way for you to contribute to TidyTuesday beyond a weekly post is submitting a dataset you find in the wild as an <a href="https://github.com/rfordatascience/tidytuesday/issues">Issue</a> on the TidyTuesday repo. Please link to the dataset and add any additional info as to why you thought it was interesting or an article/plot that corresponds to that data.</p>
 <p>I added the <strong>Submitting Code Chunks</strong> section directly to the readme doc. This is for some code, script, etc that you found useful when working with TidyTuesday. It’s also a chance for a low-stress pull-request as that’s how we will be adding code chunks! Please see the guide <a href="https://github.com/rfordatascience/tidytuesday/blob/master/community_resources/code_chunks/readme.md">here</a> about the format to submit.</p>
-<h1 id="improving-my-weekly-tweet-submission-process">Improving my Weekly Tweet Submission Process</h1>
-<p>I generally switched between a lot of tabs, between GitHub, links, pics, etc while getting the weekly post setup. I knew there was a way to at least partially automate this, so I looked into my options.</p>
-<p>The <code>rtweet</code> package has a post to Twitter function via <code>rtweet::post_tweet()</code> which allows you to programmatically post tweets! However - to get where I wanted to be I had to add a few more things and do some interesting troubleshooting!</p>
+<h2 id="improving-my-weekly-tweet-submission-process">Improving my Weekly Tweet Submission Process</h2>
+<p>I generally switched between a lot of tabs, eg GitHub, short links, manually adding pics, etc while getting the weekly post setup. I knew there was a way to at least partially automate this, so I looked into my options.</p>
+<p>The <code>rtweet</code> package has a post to Twitter function via <code>rtweet::post_tweet()</code> which allows you to programmatically post tweets! However - to get where I wanted to be I had to add a few more things and do some interesting refactoring!</p>
 <h1 id="disclaimer">DISCLAIMER</h1>
 <p>To use <code>rtweet</code> for posting you will need to register a Twitter application - please see <a href="https://twitter.com/kearneymw">Mike Kearney’s</a> <a href="https://rtweet.info/articles/auth.html">great vignette</a> on how to do this.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1349,9 +1350,10 @@ rtweet::post_tweet(&quot;The @r4dscommunity welcomes you to Week 2 of #TidyTuesd
 </div>
 <p>However this results in the following Tweet:</p>
 <p><img src="wrong.png" /></p>
-<p>This is not exactly what I want… the text isn’t aligned properly, I want at least more than 1 pic, and I really would prefer to use emoji to save characters over <code>Data:</code> and <code>Article:</code>.</p>
+<p>This is not exactly what I want… the text isn’t aligned properly, I want more than 1 pic, and I really would prefer to use emoji to save characters over <code>Data:</code> and <code>Article:</code>.</p>
 <p>So on to the next step!</p>
-<p>Hadley Wickham has the <a href="https://github.com/hadley/emo"><code>emo</code></a> package which allows you to input various emoji into R/R Markdown. This package perfectly solves our emoji needs! I can use code like <code>emo::ji(&quot;folder&quot;)</code> to get 📂 or <code>emo::ji(&quot;news&quot;)</code> to get 🗞! But I still need to get my text aligned properly. I broke some formatting rules for normal code, but it gets the job done for this <code>rtweet</code> use! Basically, I forced the text to be fully left-aligned, added in some spacing, and used <code>paste0()</code> to get everything squished together in a coherent tweet (with multiple pics!).</p>
+<p>Hadley Wickham has the <a href="https://github.com/hadley/emo"><code>emo</code></a> package which allows you to input various emoji into R/R Markdown. This package perfectly solves our emoji needs! I can use code like <code>emo::ji(&quot;folder&quot;)</code> to get 📁 or <code>emo::ji(&quot;news&quot;)</code> to get 🗞!</p>
+<p>But I still need to get my text aligned properly… So I broke some formatting rules for normal code, but it got the job done for this <code>rtweet</code> use! Basically, I forced the text to be fully left-aligned, added in some spacing where necessary, and used <code>paste0()</code> to get everything squished together in a coherent tweet (with multiple pics!).</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 rtweet::post_tweet(status = paste0(
@@ -1379,16 +1381,16 @@ rtweet::post_tweet(status = paste0(
 <ul>
 <li><code>The @r4dscommunity welcomes you to week {week} of #Tidy Tuesday</code><br />
 </li>
-<li><code>We're exploring {topic of interest}!</code><br />
+<li><code>We're exploring {data to explore}!</code><br />
 </li>
 <li>The link to the readme is static, but we change the link to an article.<br />
 </li>
 <li>The logo and rules are always the same, but up to two additional pics are dynamic.</li>
 </ul>
 <p>So how do you generate dynamic and static text together? With <a href="https://github.com/tidyverse/glue"><code>glue</code></a> of course! The <code>glue</code> package glues strings together in R, and allows for interpreted strings with the use of <code>{}</code> for example <code>glue::glue(&quot;Glue is an {adjective} package!&quot;)</code> where the <code>{adjective}</code> indicates an intepreted add-in. So if I had <code>adjective &lt;- &quot;awesome&quot;</code> the string would print as <code>&quot;Glue is an awesome package!&quot;</code>.</p>
-<p>Since we are going to be linking local pics, I’m using the <a href="https://github.com/r-lib/here"><code>here</code></a> package to make moving between folders in my project easier. My folder is organized like so: <code>TidyTuesday/2019/2019-01-08/</code>.</p>
+<p>Since we are going to be linking local pics, I’m also using the <a href="https://github.com/r-lib/here"><code>here</code></a> package to make moving between folders in my project easier. My folder is organized like so: <code>TidyTuesday/2019/2019-01-08/</code>.</p>
 <p>So I can use <code>here::here(&quot;2019&quot;, &quot;2019-01-08&quot;, &quot;pic1.png&quot;)</code> to get the file directory for <code>pic1.png</code>. Since the date <code>2019-01-08</code> changes each week, I will also add it as a variable to define.</p>
-<p>So, back to refactoring.</p>
+<p>Anyway, back to refactoring.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 # Dynamic Variables
@@ -1418,7 +1420,8 @@ rtweet::post_tweet(status = glue::glue(
         ))</code></pre>
 </div>
 <p>Now this will generate the correctly formatted tweet, include the correct additional pictures and text, but more importantly the use of <code>glue</code> and <code>here</code> means I can define the dynamic portions at the top and leave the static body the same.</p>
-<p>However, we can refactor things further! We can refactor to a function AND I only post these tweets on the Monday before <code>#TidyTuesday</code> so I can build variable dates into the function. Really the only thing I need to manually change is <strong><code>what we are exploring</code></strong> and <strong><code>long article link</code></strong>.</p>
+<p>However, we can refactor things further!</p>
+<p>We can refactor to a function AND since I only post these tweets on the Monday before <code>#TidyTuesday</code>, I can build variable dates into the function. Really the only thing I need to manually change is <strong><code>what data we are exploring</code></strong> and <strong><code>the long article link</code></strong> to be shortened.</p>
 <p>Before we get into the function, I am using a number of packages for my ease.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>

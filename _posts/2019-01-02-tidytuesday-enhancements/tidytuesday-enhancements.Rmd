@@ -24,7 +24,9 @@ library(carbonate)
 
 ![](new_year.png)
 
-One of my `#rstats` goals for 2019 was to make #TidyTuesday better, both from the experience on GitHub and the weekly posting for myself and for others. The first thing I did for the project was to re-organize the GitHub repo, moving all the 2018 data into an archived folder and making a new 2019 folder to begin populating with new data! Additionally, with some help from Phillip Khor via a pull-request - the GitHub repo is now full of relative (rather than absolute) paths to make life easier for anyone that forks the repo. 
+One of my `#rstats` goals for 2019 was to make #TidyTuesday better, both from the experience on GitHub and the weekly posting for myself and for others.
+
+The first thing I did for the project was to re-organize the GitHub repo, moving all the 2018 data into an archived folder and making a new 2019 folder to begin populating with new data! Additionally, with some help from [Philip Khor](https://twitter.com/philip_khor) via a pull-request - the GitHub repo is now full of relative (rather than absolute) paths to make life easier for anyone that forks the repo. 
 
 I reorganized the [Useful Links](https://github.com/rfordatascience/tidytuesday/blob/master/README.md) section at the bottom of the repo to make it more succinct, adding a few more links including [Happy Git with R](https://happygitwithr.com/) by Jenny Bryan! If you are just getting started with GitHub and want to learn more about Git, GitHub, and using it from within RStudio - check out her resources!
 
@@ -34,11 +36,11 @@ I'm always on the lookout for interesting datasets, and a way for you to contrib
 
 I added the **Submitting Code Chunks** section directly to the readme doc. This is for some code, script, etc that you found useful when working with TidyTuesday. It's also a chance for a low-stress pull-request as that's how we will be adding code chunks! Please see the guide [here](https://github.com/rfordatascience/tidytuesday/blob/master/community_resources/code_chunks/readme.md) about the format to submit.
 
-# Improving my Weekly Tweet Submission Process
+## Improving my Weekly Tweet Submission Process
 
-I generally switched between a lot of tabs, between GitHub, links, pics, etc while getting the weekly post setup. I knew there was a way to at least partially automate this, so I looked into my options.
+I generally switched between a lot of tabs, eg GitHub, short links, manually adding pics, etc while getting the weekly post setup. I knew there was a way to at least partially automate this, so I looked into my options.
 
-The `rtweet` package has a post to Twitter function via `rtweet::post_tweet()` which allows you to programmatically post tweets! However - to get where I wanted to be I had to add a few more things and do some interesting troubleshooting!
+The `rtweet` package has a post to Twitter function via `rtweet::post_tweet()` which allows you to programmatically post tweets! However - to get where I wanted to be I had to add a few more things and do some interesting refactoring!
 
 # DISCLAIMER
 
@@ -68,11 +70,13 @@ However this results in the following Tweet:
 
 ![](wrong.png)
 
-This is not exactly what I want... the text isn't aligned properly, I want at least more than 1 pic, and I really would prefer to use emoji to save characters over `Data:` and `Article:`.
+This is not exactly what I want... the text isn't aligned properly, I want more than 1 pic, and I really would prefer to use emoji to save characters over `Data:` and `Article:`.
 
 So on to the next step!
 
-Hadley Wickham has the [`emo`](https://github.com/hadley/emo) package which allows you to input various emoji into R/R Markdown. This package perfectly solves our emoji needs! I can use code like `emo::ji("folder")` to get `r emo::ji("folder")` or `emo::ji("news")` to get `r emo::ji("news")`! But I still need to get my text aligned properly. I broke some formatting rules for normal code, but it gets the job done for this `rtweet` use! Basically, I forced the text to be fully left-aligned, added in some spacing, and used `paste0()` to get everything squished together in a coherent tweet (with multiple pics!).
+Hadley Wickham has the [`emo`](https://github.com/hadley/emo) package which allows you to input various emoji into R/R Markdown. This package perfectly solves our emoji needs! I can use code like `emo::ji("folder")` to get `r emo::ji("folder")` or `emo::ji("news")` to get `r emo::ji("news")`! 
+
+But I still need to get my text aligned properly... So I broke some formatting rules for normal code, but it got the job done for this `rtweet` use! Basically, I forced the text to be fully left-aligned, added in some spacing where necessary, and used `paste0()` to get everything squished together in a coherent tweet (with multiple pics!).
 
 ```{r, echo = T, eval = F}
 rtweet::post_tweet(status = paste0(
@@ -102,18 +106,18 @@ This is a great start! However, I want to make this a bit more robust, as I don'
 
 ### Mix of static and dynamic:  
 - `The @r4dscommunity welcomes you to week {week} of #Tidy Tuesday`  
-- `We're exploring {topic of interest}!`  
+- `We're exploring {data to explore}!`  
 - The link to the readme is static, but we change the link to an article.  
 - The logo and rules are always the same, but up to two additional pics are dynamic.  
 
 So how do you generate dynamic and static text together? With [`glue`](https://github.com/tidyverse/glue) of course! The `glue` package glues strings together in R, and allows for interpreted strings with the use of `{}` for example `glue::glue("Glue is an {adjective} package!")` where the `{adjective}` indicates an intepreted add-in. So if I had `adjective <- "awesome"` the string would print as `"Glue is an awesome package!"`.
 
-Since we are going to be linking local pics, I'm using the [`here`](https://github.com/r-lib/here) package to make moving between folders in my project easier. My folder is organized like so:
+Since we are going to be linking local pics, I'm also using the [`here`](https://github.com/r-lib/here) package to make moving between folders in my project easier. My folder is organized like so:
 `TidyTuesday/2019/2019-01-08/`. 
 
 So I can use `here::here("2019", "2019-01-08", "pic1.png")` to get the file directory for `pic1.png`. Since the date `2019-01-08` changes each week, I will also add it as a variable to define.
 
-So, back to refactoring.
+Anyway, back to refactoring.
 
 ```{r, echo = TRUE, eval = FALSE}
 # Dynamic Variables
@@ -145,7 +149,9 @@ rtweet::post_tweet(status = glue::glue(
 
 Now this will generate the correctly formatted tweet, include the correct additional pictures and text, but more importantly the use of `glue` and `here` means I can define the dynamic portions at the top and leave the static body the same.
 
-However, we can refactor things further! We can refactor to a function AND I only post these tweets on the Monday before `#TidyTuesday` so I can build variable dates into the function. Really the only thing I need to manually change is **`what we are exploring`** and **`long article link`**.
+However, we can refactor things further! 
+
+We can refactor to a function AND since I only post these tweets on the Monday before `#TidyTuesday`, I can build variable dates into the function. Really the only thing I need to manually change is **`what data we are exploring`** and **`the long article link`** to be shortened.
 
 Before we get into the function, I am using a number of packages for my ease.
 
