@@ -1,5 +1,20 @@
 [
   {
+    "path": "posts/2019-01-02-tidytuesday-enhancements/",
+    "title": "TidyTuesday enhancements",
+    "description": "Making #TidyTuesday better.",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2019-01-02",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2019-01-04T17:26:17-06:00"
+  },
+  {
     "path": "posts/welcome/",
     "title": "Welcome to the MockUp!",
     "description": "A collection of various guides, packages, and cool things!",

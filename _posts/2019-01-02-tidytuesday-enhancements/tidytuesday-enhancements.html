@@ -19,369 +19,39 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>The Mockup Blog: About this blog</title>
+  <title>TidyTuesday enhancements</title>
   
-  <meta property="description" itemprop="description" content="Ignore the man behind the curtain"/>
+  <meta property="description" itemprop="description" content="Making #TidyTuesday better."/>
   
   
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2019-01-02"/>
+  <meta property="article:created" itemprop="dateCreated" content="2019-01-02"/>
+  <meta name="article:author" content="Thomas Mock"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="The Mockup Blog: About this blog"/>
+  <meta property="og:title" content="TidyTuesday enhancements"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Ignore the man behind the curtain"/>
+  <meta property="og:description" content="Making #TidyTuesday better."/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="The Mockup Blog"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="The Mockup Blog: About this blog"/>
-  <meta property="twitter:description" content="Ignore the man behind the curtain"/>
+  <meta property="twitter:title" content="TidyTuesday enhancements"/>
+  <meta property="twitter:description" content="Making #TidyTuesday better."/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["About this blog"]},{"type":"character","attributes":{},"value":["Ignore the man behind the curtain"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["TidyTuesday enhancements"]},{"type":"character","attributes":{},"value":["Making #TidyTuesday better.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Mock"]},{"type":"character","attributes":{},"value":["https://example.com/norajones"]}]}]},{"type":"character","attributes":{},"value":["01-02-2019"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["radix::radix_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
-  <!--radix_placeholder_navigation_in_header-->
   
-  <script type="application/javascript">
-  
-    window.headroom_prevent_pin = false;
-  
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-  
-      // initialize headroom for banner
-      var header = $('header').get(0);
-      var headerHeight = header.offsetHeight;
-      var headroom = new Headroom(header, {
-        onPin : function() {
-          if (window.headroom_prevent_pin) {
-            window.headroom_prevent_pin = false;
-            headroom.unpin();
-          }
-        }
-      });
-      headroom.init();
-      if(window.location.hash)
-        headroom.unpin();
-      $(header).addClass('headroom--transition');
-  
-      // offset scroll location for banner on hash change
-      // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
-      window.addEventListener("hashchange", function(event) {
-        window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
-      });
-  
-      // responsive menu
-      $('.radix-site-header').each(function(i, val) {
-        var topnav = $(this);
-        var toggle = topnav.find('.nav-toggle');
-        toggle.on('click', function() {
-          topnav.toggleClass('responsive');
-        });
-      });
-  
-      // nav dropdowns
-      $('.nav-dropbtn').click(function(e) {
-        $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
-        $(this).parent().siblings('.nav-dropdown')
-           .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $("body").click(function(e){
-        $('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $(".nav-dropdown").click(function(e){
-        e.stopPropagation();
-      });
-    });
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["carbon.yml","right.png","tidytuesday-enhancements_files/bowser-1.9.3/bowser.min.js","tidytuesday-enhancements_files/distill-2.2.21/template.v2.js","tidytuesday-enhancements_files/jquery-1.11.3/jquery.min.js","tidytuesday-enhancements_files/webcomponents-2.0.0/webcomponents.js","wrong.png"]}
   </script>
-  
-  <style type="text/css">
-  
-  /* Theme (user-documented overrideables for nav appearance) */
-  
-  .radix-site-nav {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: #455a64;
-    font-size: 15px;
-    font-weight: 300;
-  }
-  
-  .radix-site-nav a {
-    color: inherit;
-    text-decoration: none;
-  }
-  
-  .radix-site-nav a:hover {
-    color: white;
-  }
-  
-  @media print {
-    .radix-site-nav {
-      display: none;
-    }
-  }
-  
-  .radix-site-header {
-  
-  }
-  
-  .radix-site-footer {
-  
-  }
-  
-  
-  /* Site Header */
-  
-  .radix-site-header {
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 3;
-  }
-  
-  .radix-site-header .nav-left {
-    display: inline-block;
-    margin-left: 8px;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .radix-site-header .nav-left {
-      margin-left: 0;
-    }
-  }
-  
-  
-  .radix-site-header .nav-right {
-    float: right;
-    margin-right: 8px;
-  }
-  
-  .radix-site-header a,
-  .radix-site-header .title {
-    display: inline-block;
-    text-align: center;
-    padding: 14px 10px 14px 10px;
-  }
-  
-  .radix-site-header .title {
-    font-size: 18px;
-  }
-  
-  .radix-site-header .logo {
-    padding: 0;
-  }
-  
-  .radix-site-header .logo img {
-    display: none;
-    max-height: 20px;
-    width: auto;
-    margin-bottom: -4px;
-  }
-  
-  .radix-site-header .nav-image img {
-    max-height: 18px;
-    width: auto;
-    display: inline-block;
-    margin-bottom: -3px;
-  }
-  
-  
-  
-  @media screen and (min-width: 1000px) {
-    .radix-site-header .logo img {
-      display: inline-block;
-    }
-    .radix-site-header .nav-left {
-      margin-left: 20px;
-    }
-    .radix-site-header .nav-right {
-      margin-right: 20px;
-    }
-    .radix-site-header .title {
-      padding-left: 12px;
-    }
-  }
-  
-  
-  .radix-site-header .nav-toggle {
-    display: none;
-  }
-  
-  .nav-dropdown {
-    display: inline-block;
-    position: relative;
-  }
-  
-  .nav-dropdown .nav-dropbtn {
-    border: none;
-    outline: none;
-    color: rgba(255, 255, 255, 0.8);
-    padding: 16px 10px;
-    background-color: transparent;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    margin: 0;
-    margin-top: 1px;
-    z-index: 2;
-  }
-  
-  .nav-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 200px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 4px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
-    margin-top: 2px;
-    white-space: nowrap;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-  
-  .nav-dropdown-content hr {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-dropdown-active {
-    display: block;
-  }
-  
-  .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
-    color: black;
-    padding: 6px 24px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-  
-  .nav-dropdown-content .nav-dropdown-header {
-    display: block;
-    padding: 5px 24px;
-    padding-bottom: 0;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #999999;
-    white-space: nowrap;
-  }
-  
-  .nav-dropdown:hover .nav-dropbtn {
-    color: white;
-  }
-  
-  .nav-dropdown-content a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  .nav-right .nav-dropdown-content {
-    margin-left: -45%;
-    right: 0;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .radix-site-header a, .radix-site-header .nav-dropdown  {display: none;}
-    .radix-site-header a.nav-toggle {
-      float: right;
-      display: block;
-    }
-    .radix-site-header .title {
-      margin-left: 0;
-    }
-    .radix-site-header .nav-right {
-      margin-right: 0;
-    }
-    .radix-site-header {
-      overflow: hidden;
-    }
-    .nav-right .nav-dropdown-content {
-      margin-left: 0;
-    }
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-    .radix-site-header.responsive {position: relative;}
-    .radix-site-header.responsive a.nav-toggle {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .radix-site-header.responsive a,
-    .radix-site-header.responsive .nav-dropdown {
-      display: block;
-      text-align: left;
-    }
-    .radix-site-header.responsive .nav-left,
-    .radix-site-header.responsive .nav-right {
-      width: 100%;
-    }
-    .radix-site-header.responsive .nav-dropdown {float: none;}
-    .radix-site-header.responsive .nav-dropdown-content {position: relative;}
-    .radix-site-header.responsive .nav-dropdown .nav-dropbtn {
-      display: block;
-      width: 100%;
-      text-align: left;
-    }
-  }
-  
-  /* Site Footer */
-  
-  .radix-site-footer {
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    z-index: 3;
-    margin-top: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    text-align: center;
-  }
-  
-  /* Headroom */
-  
-  d-title {
-    padding-top: 6rem;
-  }
-  
-  @media print {
-    d-title {
-      padding-top: 4rem;
-    }
-  }
-  
-  .headroom {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  .headroom--transition {
-    transition: all .4s ease-in-out;
-  }
-  
-  .headroom--unpinned {
-    top: -100px;
-  }
-  
-  .headroom--pinned {
-    top: 0;
-  }
-  
-  </style>
-  
-  <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
-  <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
-  <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+  <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
   <!--radix_placeholder_distill-->
   
@@ -1257,10 +927,10 @@
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
-  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
+  <script src="tidytuesday-enhancements_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="tidytuesday-enhancements_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="tidytuesday-enhancements_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="tidytuesday-enhancements_files/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
   <!--/radix_placeholder_site_in_header-->
 
@@ -1272,47 +942,214 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"About this blog","description":"Ignore the man behind the curtain","authors":[]}
+{"title":"TidyTuesday enhancements","description":"Making #TidyTuesday better.","authors":[{"author":"Thomas Mock","authorURL":"https://example.com/norajones","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2019-01-02T00:00:00.000-06:00","citationText":"Mock, 2019"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
 <!--radix_placeholder_navigation_before_body-->
-<header class="header header--fixed" role="banner">
-<nav class="radix-site-nav radix-site-header">
-<div class="nav-left">
-<a href="index.html" class="title">The Mockup Blog</a>
-</div>
-<div class="nav-right">
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="index.xml">
-<i class="fa fa-rss"></i>
-</a>
-<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
-</div>
-</nav>
-</header>
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>About this blog</h1>
-<p>Ignore the man behind the curtain</p>
+<h1>TidyTuesday enhancements</h1>
+<p>Making #TidyTuesday better.</p>
 </div>
 
+<div class="d-byline">
+  Thomas Mock <a href="https://example.com/norajones" class="uri">https://example.com/norajones</a> 
+  
+<br/>01-02-2019
+</div>
 
 <div class="d-article">
-<h1 id="my-history">My History</h1>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<p>One of my <code>#rstats</code> goals for 2019 was to make #TidyTuesday better, both from the experience on GitHub and the weekly posting for myself and for others. The first thing I did for the project was to re-organize the GitHub repo, moving all the 2018 data into an archived folder and making a new 2019 folder to begin populating with new data! Additionally, with some help from Phillip Khor via a pull-request - the GitHub repo is now full of relative (rather than absolute) paths to make life easier for anyone that forks the repo.</p>
+<p>I reorganized the <a href="https://github.com/rfordatascience/tidytuesday/blob/master/README.md">Useful Links</a> section at the bottom of the repo to make it more succinct, adding a few more links including <a href="https://happygitwithr.com/">Happy Git with R</a> by Jenny Bryan! If you are just getting started with GitHub and want to learn more about Git, GitHub, and using it from within RStudio - check out her resources!</p>
+<h2 id="ways-to-contribute">Ways to contribute</h2>
+<p>I’m always on the lookout for interesting datasets, and a way for you to contribute to TidyTuesday beyond a weekly post is submitting a dataset you find in the wild as an <a href="https://github.com/rfordatascience/tidytuesday/issues">Issue</a> on the TidyTuesday repo. Please link to the dataset and add any additional info as to why you thought it was interesting or an article/plot that corresponds to that data.</p>
+<p>I added the <strong>Submitting Code Chunks</strong> section directly to the readme doc. This is for some code, script, etc that you found useful when working with TidyTuesday. It’s also a chance for a low-stress pull-request as that’s how we will be adding code chunks! Please see the guide <a href="https://github.com/rfordatascience/tidytuesday/blob/master/community_resources/code_chunks/readme.md">here</a> about the format to submit.</p>
+<h1 id="improving-my-weekly-tweet-submission-process">Improving my Weekly Tweet Submission Process</h1>
+<p>I generally switched between a lot of tabs, between GitHub, links, pics, etc while getting the weekly post setup. I knew there was a way to at least partially automate this, so I looked into my options.</p>
+<p>The <code>rtweet</code> package has a post to Twitter function via <code>rtweet::post_tweet()</code> which allows you to programmatically post tweets! However - to get where I wanted to be I had to add a few more things and do some interesting troubleshooting!</p>
+<h1 id="disclaimer">DISCLAIMER</h1>
+<p>To use <code>rtweet</code> for posting you will need to register a Twitter application - please see <a href="https://twitter.com/kearneymw">Mike Kearney’s</a> <a href="https://rtweet.info/articles/auth.html">great vignette</a> on how to do this.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Basic method of tweeting from rtweet vignette
+
+post_tweet(status = &quot;my first rtweet #rstats&quot;, media = NULL,
+  token = NULL, in_reply_to_status_id = NULL, destroy_id = NULL,
+  retweet_id = NULL)</code></pre>
+</div>
+<h2 id="my-weekly-tidytuesday-tweet">My Weekly <code>#TidyTuesday</code> Tweet</h2>
+<p>If I simply wanted to post a tweet following the format for <code>#TidyTuesday</code> I could do something like the following.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+rtweet::post_tweet(&quot;The @r4dscommunity welcomes you to Week 2 of #TidyTuesday! We&#39;re exploring data about *esoteric topic*!
+                   Data: link_to_data
+                   Article: link_to_article&quot;,
+                   media = &quot;tt_logo.png&quot;)</code></pre>
+</div>
+<p>However this results in the following Tweet:</p>
+<p><img src="wrong.png" /></p>
+<p>This is not exactly what I want… the text isn’t aligned properly, I want at least more than 1 pic, and I really would prefer to use emoji to save characters over <code>Data:</code> and <code>Article:</code>.</p>
+<p>So on to the next step!</p>
+<p>Hadley Wickham has the <a href="https://github.com/hadley/emo"><code>emo</code></a> package which allows you to input various emoji into R/R Markdown. This package perfectly solves our emoji needs! I can use code like <code>emo::ji(&quot;folder&quot;)</code> to get 📂 or <code>emo::ji(&quot;news&quot;)</code> to get 🗞! But I still need to get my text aligned properly. I broke some formatting rules for normal code, but it gets the job done for this <code>rtweet</code> use! Basically, I forced the text to be fully left-aligned, added in some spacing, and used <code>paste0()</code> to get everything squished together in a coherent tweet (with multiple pics!).</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+rtweet::post_tweet(status = paste0(
+&quot;The @R4DScommunity welcomes you to week 2 of #TidyTuesday!  We&#39;re exploring *esoteric topic*!
+ 
+&quot;,
+        emo::ji(&quot;folder&quot;),
+        &quot; http://bit.ly/tidyreadme
+&quot;,
+        emo::ji(&quot;news&quot;),
+        &quot; http://cool.article.com
+
+#r4ds #tidyverse #rstats #dataviz&quot;),
+
+# The below code is relative to my project
+# You need to specify path to the images for tweeting
+
+        media = c(&quot;tt_logo.png&quot;,
+                  &quot;tt_rules.png&quot;)
+        )</code></pre>
+</div>
+<p><img src="right.png" /></p>
+<p>This is a great start! However, I want to make this a bit more robust, as I don’t want to edit it all by hand, when I can generate it programmatically. Refactoring code is always an adventure, so let’s take a look at our code to see what is static and what changes.</p>
+<h3 id="mix-of-static-and-dynamic">Mix of static and dynamic:</h3>
 <ul>
-<li>Bachelor’s degree from Southwestern University (where I thought I wanted to be a Physical Therapist).</li>
-<li>Master’s degree from Florida Atlantic University (where I realized I actually really liked data and making graphs)</li>
-<li>Doctorate from UNT Health Science Center (where I realized I really didn’t like biomedical science, but still really liked data, graphs, and now R)</li>
+<li><code>The @r4dscommunity welcomes you to week {week} of #Tidy Tuesday</code><br />
+</li>
+<li><code>We're exploring {topic of interest}!</code><br />
+</li>
+<li>The link to the readme is static, but we change the link to an article.<br />
+</li>
+<li>The logo and rules are always the same, but up to two additional pics are dynamic.</li>
 </ul>
-<h2 id="present">Present</h2>
-<p>I fell in love with R and data science through my graduate research, using R and RStudio to wrangle, analyze, model, and visualize my data. I became passionate about growing the R community, and founded <a href="https://github.com/rfordatascience/tidytuesday/blob/master/README.md"><code>#TidyTuesday</code></a> to help newcomers and seasoned vets improve their <code>Tidyverse</code> skills.</p>
-<p>I work at RStudio on their Customer Success team, helping our customers be as successful as possible with RStudio software in their environment.</p>
-<p>In my home town of Dallas, my wife and I run on the local trails, play with our Boston Terrier puppy “Howard”, spend lots of time with our five nephews and families, and are always on the lookout for great new food, especially churros.</p>
+<p>So how do you generate dynamic and static text together? With <a href="https://github.com/tidyverse/glue"><code>glue</code></a> of course! The <code>glue</code> package glues strings together in R, and allows for interpreted strings with the use of <code>{}</code> for example <code>glue::glue(&quot;Glue is an {adjective} package!&quot;)</code> where the <code>{adjective}</code> indicates an intepreted add-in. So if I had <code>adjective &lt;- &quot;awesome&quot;</code> the string would print as <code>&quot;Glue is an awesome package!&quot;</code>.</p>
+<p>Since we are going to be linking local pics, I’m using the <a href="https://github.com/r-lib/here"><code>here</code></a> package to make moving between folders in my project easier. My folder is organized like so: <code>TidyTuesday/2019/2019-01-08/</code>.</p>
+<p>So I can use <code>here::here(&quot;2019&quot;, &quot;2019-01-08&quot;, &quot;pic1.png&quot;)</code> to get the file directory for <code>pic1.png</code>. Since the date <code>2019-01-08</code> changes each week, I will also add it as a variable to define.</p>
+<p>So, back to refactoring.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Dynamic Variables
+week_num &lt;- 2
+exploring &lt;- &quot;Esoteric data!&quot;
+short_link &lt;- &quot;http://tinycc/WHATEVER&quot;
+week_date &lt;- &quot;2019-01-08&quot;
+
+# Static framework
+rtweet::post_tweet(status = glue::glue(
+&quot;The @R4DScommunity welcomes you to week {week_num} of #TidyTuesday!  We&#39;re exploring {exploring}!
+ 
+&quot;,
+        emo::ji(&quot;folder&quot;),
+        &quot; http://bit.ly/tidyreadme
+&quot;,
+        emo::ji(&quot;news&quot;),
+        &quot; {short_link}
+
+#r4ds #tidyverse #rstats #dataviz&quot;),
+# The below code is relative to my project
+# You would need to specify path to the images for tweeting
+        media = c(here::here(&quot;static_img&quot;, &quot;tt_logo.png&quot;),   # I have two static pics
+                  here::here(&quot;static_img&quot;, &quot;tt_rules.png&quot;),  # so they go in /static
+                  here::here(&quot;2019&quot;, week_date, &quot;pic1.png&quot;), # notice I have week_date
+                  here::here(&quot;2019&quot;, week_date, &quot;pic2.png&quot;)  # here instead of 2019-01-01
+        ))</code></pre>
+</div>
+<p>Now this will generate the correctly formatted tweet, include the correct additional pictures and text, but more importantly the use of <code>glue</code> and <code>here</code> means I can define the dynamic portions at the top and leave the static body the same.</p>
+<p>However, we can refactor things further! We can refactor to a function AND I only post these tweets on the Monday before <code>#TidyTuesday</code> so I can build variable dates into the function. Really the only thing I need to manually change is <strong><code>what we are exploring</code></strong> and <strong><code>long article link</code></strong>.</p>
+<p>Before we get into the function, I am using a number of packages for my ease.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Packages used in this script
+library(rtweet) # For Tweeting
+library(glue) # For interpretation inside strings
+library(emo) # For emojis!
+library(lubridate) # Working with date-times
+library(here) # Easier file navigation inside projects
+library(tinycc) # Programmatically generate tinycc short urls via their API
+library(purrr) # for pluck - I&#39;m lazy. :shrug:</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Only two inputs!
+# exploring = what we are exploring in text
+# long_link = the long article link
+
+post_tidytuesday &lt;- function(exploring, long_link){
+        
+        # Authenticate each session with tinycc API
+        tinycc::auth(secret_login, secret_api_key)
+        
+        ### set date for files structure and names
+  
+        # Get tomorrow&#39;s date (Tuesday)
+        week_date &lt;- as.character(lubridate::today() + 1)
+        
+        # Get week number where 2019-01-01 is week 1
+        week_num &lt;- as.numeric((lubridate::today() + 1) - lubridate::ymd(20190101))/7
+        
+
+        # Generate the short_link
+        short_link &lt;- tinycc::shorten(longURL = long_link,
+                                      # Use glue to paste the week num  
+                                      # to get useful defined shortlinks
+                                      shortURL = glue::glue(&quot;tt_2019_{week_num}&quot;)) %&gt;%
+                # get the short URL (nested list is original storage)
+                purrr::pluck(&quot;results&quot;, &quot;short_url&quot;) 
+        
+        # post the tweet with filled input
+        # Notice that {week_num} is automatically generated, while {exploring} is manually defined
+        rtweet::post_tweet(status = glue::glue(
+                &quot;The @R4DScommunity welcomes you to week {week_num} of #TidyTuesday!  We&#39;re exploring {exploring}!
+ 
+&quot;,
+                emo::ji(&quot;folder&quot;),
+                &quot; http://bit.ly/tidyreadme
+&quot;,
+                emo::ji(&quot;news&quot;),
+                &quot; {short_link}
+
+#r4ds #tidyverse #rstats #dataviz&quot;),
+                
+                # The below code is relative to my project
+                # You need to specify path to the images for tweeting
+                media = c(here::here(&quot;static_img&quot;, &quot;tt_logo.png&quot;),
+                          here::here(&quot;static_img&quot;, &quot;tt_rules.png&quot;),
+                          
+                          # Week_date is automatically defined 
+                          # by the week_date input above
+                          here::here(&quot;2019&quot;, week_date, &quot;pic1.png&quot;),
+                          here::here(&quot;2019&quot;, week_date, &quot;pic2.png&quot;)
+                ))    
+}</code></pre>
+</div>
+<p>Now we have a nice function and when I want to post on Monday morning, I can just do the following!</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+post_tidytuesday(
+  exploring = &quot;Esoteric data!&quot;,
+  long_link = &quot;http://cool.article.com/long-title-with-lots-of-words&quot;
+)</code></pre>
+</div>
+<p>The <a href="https://github.com/rfordatascience/tidytuesday/blob/master/community_resources/code_chunks/tweet_tidytuesday.R">link</a> to GitHub for this code.</p>
+<h3 id="package-links">Package Links</h3>
+<p><a href="https://rtweet.info/"><code>rtweet</code></a><br />
+<a href="https://github.com/tidyverse/glue"><code>glue</code></a><br />
+<a href="https://github.com/hadley/emo"><code>emo</code></a><br />
+<a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a><br />
+<a href="https://github.com/r-lib/here"><code>here</code></a><br />
+<a href="https://t.co/FsQbfOUX9t"><code>tinycc</code></a><br />
+<a href="https://purrr.tidyverse.org/reference/pluck.html"><code>purrr::pluck()</code></a></p>
+<h2 id="step-2-for-next-time">Step 2 (for next time)</h2>
+<p>How to improve YOUR <code>#TidyTuesday</code> process and get your code directly from RStudio into Carbon.now.sh for pretty “screenshots”!</p>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

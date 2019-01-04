@@ -1,0 +1,18 @@
+---
+title: "NFL scoring in retrospect"
+description: |
+  An exploration of Fantasy Football scoring over the past 10 years.
+author:
+  - name: Thomas Mock
+    url: https://example.com/norajones
+date: 01-02-2019
+output:
+  radix::radix_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+The traditional Fantasy Football season is over, and 
