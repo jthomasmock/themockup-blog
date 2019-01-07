@@ -123,7 +123,7 @@ Anyway, back to refactoring.
 # Dynamic Variables
 week_num <- 2
 exploring <- "Esoteric data!"
-short_link <- "http://tinycc/WHATEVER"
+short_link <- "http://bit.ly/WHATEVER"
 week_date <- "2019-01-08"
 
 # Static framework
@@ -151,7 +151,7 @@ Now this will generate the correctly formatted tweet, include the correct additi
 
 However, we can refactor things further! 
 
-We can refactor to a function AND since I only post these tweets on the Monday before `#TidyTuesday`, I can build variable dates into the function. Really the only thing I need to manually change is **`what data we are exploring`** and **`the long article link`** to be shortened.
+We can refactor to a function AND since I only post these tweets on the Monday before `#TidyTuesday`, I can build variable dates into the function. Really the only thing I need to manually change is **`what data we are exploring`** and **`the short article link`**.
 
 Before we get into the function, I am using a number of packages for my ease.
 
@@ -162,39 +162,24 @@ library(glue) # For interpretation inside strings
 library(emo) # For emojis!
 library(lubridate) # Working with date-times
 library(here) # Easier file navigation inside projects
-library(tinycc) # Programmatically generate tinycc short urls via their API
 library(purrr) # for pluck - I'm lazy. :shrug:
 ```
 
 ```{r, eval = FALSE, echo = TRUE}
 # Only two inputs!
 # exploring = what we are exploring in text
-# long_link = the long article link
+# short_link = the article link
 
-post_tidytuesday <- function(exploring, long_link){
+post_tidytuesday <- function(exploring, short_link){
         
-        # Authenticate each session with tinycc API
-        tinycc::auth(secret_login, secret_api_key)
-        
-        ### set date for files structure and names
-  
-        # Get tomorrow's date (Tuesday)
+        # set date for files structure and names
         week_date <- as.character(lubridate::today() + 1)
         
-        # Get week number where 2019-01-01 is week 1
-        week_num <- as.numeric((lubridate::today() + 1) - lubridate::ymd(20190101))/7
+        # Today's date + 1 = tomorrow
+        # Then time diff between tomorrow and 1st tidytuesday in number of weeks
+        week_num <- as.numeric((lubridate::today() + 1) - lubridate::ymd(20190101))/7 + 1
         
-
-        # Generate the short_link
-        short_link <- tinycc::shorten(longURL = long_link,
-                                      # Use glue to paste the week num  
-                                      # to get useful defined shortlinks
-                                      shortURL = glue::glue("tt_2019_{week_num}")) %>%
-                # get the short URL (nested list is original storage)
-                purrr::pluck("results", "short_url") 
-        
-        # post the tweet with filled input
-        # Notice that {week_num} is automatically generated, while {exploring} is manually defined
+        # post the tweet with fill
         rtweet::post_tweet(status = glue::glue(
                 "The @R4DScommunity welcomes you to week {week_num} of #TidyTuesday!  We're exploring {exploring}!
  
@@ -211,11 +196,8 @@ post_tidytuesday <- function(exploring, long_link){
                 # You need to specify path to the images for tweeting
                 media = c(here::here("static_img", "tt_logo.png"),
                           here::here("static_img", "tt_rules.png"),
-                          
-                          # Week_date is automatically defined 
-                          # by the week_date input above
                           here::here("2019", week_date, "pic1.png"),
-                          here::here("2019", week_date, "pic2.png")
+                          here::here("2019", week_date, "pic1.png")
                 ))    
 }
 ```
@@ -225,7 +207,7 @@ Now we have a nice function and when I want to post on Monday morning, I can jus
 ```{r, echo = T, eval = F}
 post_tidytuesday(
   exploring = "Esoteric data!",
-  long_link = "http://cool.article.com/long-title-with-lots-of-words"
+  short_link = "http://bit.ly/tidy_post"
 )
 ```
 
@@ -237,7 +219,6 @@ The [link](https://github.com/rfordatascience/tidytuesday/blob/master/community_
 [`emo`](https://github.com/hadley/emo)  
 [`lubridate`](https://lubridate.tidyverse.org/)  
 [`here`](https://github.com/r-lib/here)  
-[`tinycc`](https://t.co/FsQbfOUX9t)  
 [`purrr::pluck()`](https://purrr.tidyverse.org/reference/pluck.html)  
 
 ## Step 2 (for next time)

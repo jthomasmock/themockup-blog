@@ -999,7 +999,7 @@ rtweet::post_tweet(&quot;The @r4dscommunity welcomes you to Week 2 of #TidyTuesd
 <p><img src="wrong.png" /></p>
 <p>This is not exactly what I want… the text isn’t aligned properly, I want more than 1 pic, and I really would prefer to use emoji to save characters over <code>Data:</code> and <code>Article:</code>.</p>
 <p>So on to the next step!</p>
-<p>Hadley Wickham has the <a href="https://github.com/hadley/emo"><code>emo</code></a> package which allows you to input various emoji into R/R Markdown. This package perfectly solves our emoji needs! I can use code like <code>emo::ji(&quot;folder&quot;)</code> to get 📁 or <code>emo::ji(&quot;news&quot;)</code> to get 🗞!</p>
+<p>Hadley Wickham has the <a href="https://github.com/hadley/emo"><code>emo</code></a> package which allows you to input various emoji into R/R Markdown. This package perfectly solves our emoji needs! I can use code like <code>emo::ji(&quot;folder&quot;)</code> to get 📁 or <code>emo::ji(&quot;news&quot;)</code> to get 📰!</p>
 <p>But I still need to get my text aligned properly… So I broke some formatting rules for normal code, but it got the job done for this <code>rtweet</code> use! Basically, I forced the text to be fully left-aligned, added in some spacing where necessary, and used <code>paste0()</code> to get everything squished together in a coherent tweet (with multiple pics!).</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1043,7 +1043,7 @@ rtweet::post_tweet(status = paste0(
 # Dynamic Variables
 week_num &lt;- 2
 exploring &lt;- &quot;Esoteric data!&quot;
-short_link &lt;- &quot;http://tinycc/WHATEVER&quot;
+short_link &lt;- &quot;http://bit.ly/WHATEVER&quot;
 week_date &lt;- &quot;2019-01-08&quot;
 
 # Static framework
@@ -1068,7 +1068,7 @@ rtweet::post_tweet(status = glue::glue(
 </div>
 <p>Now this will generate the correctly formatted tweet, include the correct additional pictures and text, but more importantly the use of <code>glue</code> and <code>here</code> means I can define the dynamic portions at the top and leave the static body the same.</p>
 <p>However, we can refactor things further!</p>
-<p>We can refactor to a function AND since I only post these tweets on the Monday before <code>#TidyTuesday</code>, I can build variable dates into the function. Really the only thing I need to manually change is <strong><code>what data we are exploring</code></strong> and <strong><code>the long article link</code></strong> to be shortened.</p>
+<p>We can refactor to a function AND since I only post these tweets on the Monday before <code>#TidyTuesday</code>, I can build variable dates into the function. Really the only thing I need to manually change is <strong><code>what data we are exploring</code></strong> and <strong><code>the short article link</code></strong>.</p>
 <p>Before we get into the function, I am using a number of packages for my ease.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1078,39 +1078,24 @@ library(glue) # For interpretation inside strings
 library(emo) # For emojis!
 library(lubridate) # Working with date-times
 library(here) # Easier file navigation inside projects
-library(tinycc) # Programmatically generate tinycc short urls via their API
 library(purrr) # for pluck - I&#39;m lazy. :shrug:</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 # Only two inputs!
 # exploring = what we are exploring in text
-# long_link = the long article link
+# short_link = the article link
 
-post_tidytuesday &lt;- function(exploring, long_link){
+post_tidytuesday &lt;- function(exploring, short_link){
         
-        # Authenticate each session with tinycc API
-        tinycc::auth(secret_login, secret_api_key)
-        
-        ### set date for files structure and names
-  
-        # Get tomorrow&#39;s date (Tuesday)
+        # set date for files structure and names
         week_date &lt;- as.character(lubridate::today() + 1)
         
-        # Get week number where 2019-01-01 is week 1
-        week_num &lt;- as.numeric((lubridate::today() + 1) - lubridate::ymd(20190101))/7
+        # Today&#39;s date + 1 = tomorrow
+        # Then time diff between tomorrow and 1st tidytuesday in number of weeks
+        week_num &lt;- as.numeric((lubridate::today() + 1) - lubridate::ymd(20190101))/7 + 1
         
-
-        # Generate the short_link
-        short_link &lt;- tinycc::shorten(longURL = long_link,
-                                      # Use glue to paste the week num  
-                                      # to get useful defined shortlinks
-                                      shortURL = glue::glue(&quot;tt_2019_{week_num}&quot;)) %&gt;%
-                # get the short URL (nested list is original storage)
-                purrr::pluck(&quot;results&quot;, &quot;short_url&quot;) 
-        
-        # post the tweet with filled input
-        # Notice that {week_num} is automatically generated, while {exploring} is manually defined
+        # post the tweet with fill
         rtweet::post_tweet(status = glue::glue(
                 &quot;The @R4DScommunity welcomes you to week {week_num} of #TidyTuesday!  We&#39;re exploring {exploring}!
  
@@ -1127,11 +1112,8 @@ post_tidytuesday &lt;- function(exploring, long_link){
                 # You need to specify path to the images for tweeting
                 media = c(here::here(&quot;static_img&quot;, &quot;tt_logo.png&quot;),
                           here::here(&quot;static_img&quot;, &quot;tt_rules.png&quot;),
-                          
-                          # Week_date is automatically defined 
-                          # by the week_date input above
                           here::here(&quot;2019&quot;, week_date, &quot;pic1.png&quot;),
-                          here::here(&quot;2019&quot;, week_date, &quot;pic2.png&quot;)
+                          here::here(&quot;2019&quot;, week_date, &quot;pic1.png&quot;)
                 ))    
 }</code></pre>
 </div>
@@ -1140,7 +1122,7 @@ post_tidytuesday &lt;- function(exploring, long_link){
 <pre class="r"><code>
 post_tidytuesday(
   exploring = &quot;Esoteric data!&quot;,
-  long_link = &quot;http://cool.article.com/long-title-with-lots-of-words&quot;
+  short_link = &quot;http://bit.ly/tidy_post&quot;
 )</code></pre>
 </div>
 <p>The <a href="https://github.com/rfordatascience/tidytuesday/blob/master/community_resources/code_chunks/tweet_tidytuesday.R">link</a> to GitHub for this code.</p>
@@ -1150,7 +1132,6 @@ post_tidytuesday(
 <a href="https://github.com/hadley/emo"><code>emo</code></a><br />
 <a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a><br />
 <a href="https://github.com/r-lib/here"><code>here</code></a><br />
-<a href="https://t.co/FsQbfOUX9t"><code>tinycc</code></a><br />
 <a href="https://purrr.tidyverse.org/reference/pluck.html"><code>purrr::pluck()</code></a></p>
 <h2 id="step-2-for-next-time">Step 2 (for next time)</h2>
 <p>How to improve YOUR <code>#TidyTuesday</code> process and get your code directly from RStudio into Carbon.now.sh for pretty “screenshots”!</p>
