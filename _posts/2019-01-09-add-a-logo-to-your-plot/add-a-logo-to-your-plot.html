@@ -1021,22 +1021,22 @@ image_composite(dog, bird)</code></pre>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 dog %&gt;% 
-  image_resize(&quot;400x400&quot;) %&gt;% 
-  image_composite(bird, offset = &quot;+50+100&quot;)</code></pre>
-<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-5-1.png" width="200" /></p>
+  image_composite(bird, offset = &quot;+500+1000&quot;)</code></pre>
+<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-5-1.png" width="940" /></p>
 </div>
-<p>Notice that offset reads as x-axis pixels, y-axis pixels, so from the top left corner place the image 50 pixels to the right and 100 pixels down.</p>
+<p>Notice that offset reads as x-axis pixels, y-axis pixels, so <code>&quot;+500+1000</code> indicates from the top left corner place the image 500 pixels to the right and 1000 pixels down.</p>
 <p>Now that we’ve been oriented to how the <code>magick</code> package works, and had some fun by putting a bird on our lovely Boston Terrier model, let’s dive into the real purpose of this post - adding a logo to your <code>ggplot</code>!</p>
 <h1 id="building-a-ggplot-with-a-logo">Building a ggplot with a logo</h1>
-<p>In the exampe I will show below you will have already saved the plot as an image, so we can skip with the normal <code>ggplot2</code> code. However, an interesting note is that if you do want to build in some white to your plot to save “space” for your logo you can do so by changing the margins of your overall plot. Margins can take multiple units arguments including: “cm”, “in”, “lines”, “pt”, for more info check out the <a href="https://ggplot2.tidyverse.org/reference/element.html"><code>ggplot2</code> docs</a>.</p>
+<p>In the exampe I will show below you will have already saved the plot as an image, so we can skip with the normal <code>ggplot2</code> code. However, please note that if you do want to build in some extra whitespace to your plot to save “space” for your logo you can do so by changing the margins of your overall plot. You can also add a figure caption with <code>labs(caption = &quot;text to change here&quot;)</code>, which inherently adds some whitespace to incorporate the caption.</p>
+<p>Margins can take multiple units arguments including: “cm”, “in”, “lines”, “pt”, for more info check out the <a href="https://ggplot2.tidyverse.org/reference/element.html"><code>ggplot2</code> docs</a>.</p>
 <p><strong>Notice</strong>: The margins read as t, r, b, l or <code>c(top, right, bottom, left)</code>. I typically see logos on the bottom left or top right so you can:</p>
 <ul>
 <li><p>add space at the top for example with:<br />
-<code>c(1.5, 0.5, 0.5, 0.5)</code></p></li>
+<code>c(2.5, 0.5, 0.5, 0.5)</code></p></li>
 <li><p>add space to the bottom with:<br />
-<code>c(0.5, 0.5, 1.5, 0.5)</code></p></li>
+<code>c(0.5, 0.5, 2.5, 0.5)</code></p></li>
 </ul>
-<p>Notice the below plot has extra space on the bottom.</p>
+<p>Notice the below plot has extra space on the bottom, and I have added a grey background purely to highlight this extra space.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 library(tidyverse)
@@ -1051,7 +1051,7 @@ mtcars %&gt;%
 # plot background = lightgrey for highlight, not necessary for sizing</code></pre>
 </div>
 <h2 id="read-in-a-plot">Read in a plot</h2>
-<p>So let’s read in our publication plot to work with! Notice that this can be a local file with traditional path structure or a hosted image as a url.</p>
+<p>So let’s read in our publication plot to work with! Please notice that this can be a local file with traditional path structure or a hosted image as a url.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 pub_plot &lt;- image_read(&quot;https://pbs.twimg.com/media/DwaRAv6U0AAaLIx.jpg&quot;)
@@ -1084,8 +1084,7 @@ pub_plot %&gt;%
 </div>
 <p>Boom! We have our logo overlay on the plot in the right location! But we had to manually set the logo position, which is less than ideal for programmatic use down the road.</p>
 <h2 id="put-it-in-a-function-bird-not-included">Put it in a function! (Bird not included)</h2>
-<p>We can build a function to take the various heights and widths of the logos and automatically resize the logo to match.</p>
-<p>This function takes in two images, gets the dimension information, then pastes the logo at 1/10th scale in the specified corner with 1% padding.</p>
+<p>We can build a function to take the various heights and widths of the logo/plot and automatically resize the logo to match.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 add_logo(
@@ -1095,7 +1094,7 @@ add_logo(
   # &#39;top left&#39;, &#39;top right&#39;, &#39;bottom left&#39; or &#39;bottom right&#39;
 )</code></pre>
 </div>
-<p>The function with a warning if you input a logo_position that is not included.</p>
+<p>This function takes in two images, gets the dimension information, then pastes the logo at 1/10th scale in the specified corner with 1% padding. The function also has a warning if you input a <code>logo_position</code> that is not included.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 add_logo &lt;- function(plot_path, logo_path, logo_position){
@@ -1148,6 +1147,10 @@ add_logo &lt;- function(plot_path, logo_path, logo_position){
 
 }</code></pre>
 </div>
+<p>So there you go! Happy logo adding and bird putting!</p>
+<p>For more information on adding logos to plots, check out this <a href="https://www.danielphadley.com/ggplot-logo/">blog post</a> by Daniel Hadley on using <code>magick::image_append</code> to add a logo or his <a href="https://resources.rstudio.com/rstudio-conf-2018/branding-and-automating-your-work-with-r-markdown-daniel-hadley">RStudioConf</a> talk on the same idea.</p>
+<p>Cheers!</p>
+<p><img src="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" /></p>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

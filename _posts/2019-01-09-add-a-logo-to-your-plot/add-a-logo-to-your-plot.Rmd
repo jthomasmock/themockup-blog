@@ -71,27 +71,28 @@ Now please note where the bird showed up, in the top left corner. We can control
 
 ```{r, echo = TRUE}
 dog %>% 
-  image_resize("400x400") %>% 
-  image_composite(bird, offset = "+50+100")
+  image_composite(bird, offset = "+500+1000")
 ```
 
-Notice that offset reads as x-axis pixels, y-axis pixels, so from the top left corner place the image 50 pixels to the right and 100 pixels down. 
+Notice that offset reads as x-axis pixels, y-axis pixels, so `"+500+1000` indicates from the top left corner place the image 500 pixels to the right and 1000 pixels down. 
 
 Now that we've been oriented to how the `magick` package works, and had some fun by putting a bird on our lovely Boston Terrier model, let's dive into the real purpose of this post - adding a logo to your `ggplot`!
 
 # Building a ggplot with a logo
 
-In the exampe I will show below you will have already saved the plot as an image, so we can skip with the normal `ggplot2` code. However, an interesting note is that if you do want to build in some white to your plot to save "space" for your logo you can do so by changing the margins of your overall plot. Margins can take multiple units arguments including: "cm", "in", "lines", "pt", for more info check out the [`ggplot2` docs](https://ggplot2.tidyverse.org/reference/element.html).
+In the exampe I will show below you will have already saved the plot as an image, so we can skip with the normal `ggplot2` code. However, please note  that if you do want to build in some extra whitespace to your plot to save "space" for your logo you can do so by changing the margins of your overall plot. You can also add a figure caption with `labs(caption = "text to change here")`, which inherently adds some whitespace to incorporate the caption.
+
+Margins can take multiple units arguments including: "cm", "in", "lines", "pt", for more info check out the [`ggplot2` docs](https://ggplot2.tidyverse.org/reference/element.html).
 
 **Notice**: The margins read as t, r, b, l or `c(top, right, bottom, left)`. I typically see logos on the bottom left or top right so you can:
 
 * add space at the top for example with:  
-`c(1.5, 0.5, 0.5, 0.5)`
+`c(2.5, 0.5, 0.5, 0.5)`
 
 * add space to the bottom with:  
-`c(0.5, 0.5, 1.5, 0.5)`
+`c(0.5, 0.5, 2.5, 0.5)`
 
-Notice the below plot has extra space on the bottom.
+Notice the below plot has extra space on the bottom, and I have added a grey background purely to highlight this extra space.
 
 ```{r, echo = TRUE}
 library(tidyverse)
@@ -106,7 +107,7 @@ mtcars %>%
 
 ## Read in a plot
 
-So let's read in our publication plot to work with! Notice that this can be a local file with traditional path structure or a hosted image as a url.
+So let's read in our publication plot to work with! Please notice that this can be a local file with traditional path structure or a hosted image as a url.
 
 ```{r, echo = TRUE}
 pub_plot <- image_read("https://pbs.twimg.com/media/DwaRAv6U0AAaLIx.jpg")
@@ -117,7 +118,9 @@ logo <- image_read("https://raw.githubusercontent.com/rfordatascience/tidytuesda
 print(pub_plot)
 print(logo)
 ```
+
 We can then overlay the logo over the plot, let's try bottom left, by using `offset = "+12+840"` indicating placing the logo 12 pixels to the right and 840 pixels down.
+
 
 ```{r, echo = TRUE}
 pub_plot %>% 
@@ -128,9 +131,7 @@ Boom! We have our logo overlay on the plot in the right location! But we had to 
 
 ## Put it in a function! (Bird not included)
 
-We can build a function to take the various heights and widths of the logos and automatically resize the logo to match.
-
-This function takes in two images, gets the dimension information, then pastes the logo at 1/10th scale in the specified corner with 1% padding.
+We can build a function to take the various heights and widths of the logo/plot and automatically resize the logo to match.
 
 ```{r, eval = FALSE, echo = TRUE}
 add_logo(
@@ -141,7 +142,7 @@ add_logo(
 )
 ```
 
-The function with a warning if you input a logo_position that is not included.
+This function takes in two images, gets the dimension information, then pastes the logo at 1/10th scale in the specified corner with 1% padding. The function also has a warning if you input a `logo_position` that is not included.
 
 ```{r, echo = TRUE, eval = FALSE}
 add_logo <- function(plot_path, logo_path, logo_position){
@@ -196,4 +197,12 @@ add_logo <- function(plot_path, logo_path, logo_position){
 }
 
 ```
+
+So there you go! Happy logo adding and bird putting! 
+
+For more information on adding logos to plots, check out this [blog post](https://www.danielphadley.com/ggplot-logo/) by Daniel Hadley on using `magick::image_append` to add a logo or his [RStudioConf](https://resources.rstudio.com/rstudio-conf-2018/branding-and-automating-your-work-with-r-markdown-daniel-hadley) talk on the same idea.
+
+Cheers!
+
+![](https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)
 
