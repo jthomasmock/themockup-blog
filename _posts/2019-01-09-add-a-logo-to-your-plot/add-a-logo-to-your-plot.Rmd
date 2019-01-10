@@ -159,7 +159,7 @@ To make the logo add process more reproducible, we can build a function to take 
 ```{r, eval = FALSE, echo = TRUE}
 plot_with_logo <- add_logo(
   plot_path = "", # url or local file for the plot
-  plot_path = "", # url or local file for the plot
+  logo_path = "", # url or local file for the logo
   logo_position = "" # choose a corner
   # 'top left', 'top right', 'bottom left' or 'bottom right'
   #logo_scale = 10 as default, but can change to manually make logo bigger
