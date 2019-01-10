@@ -49,7 +49,7 @@
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["add-a-logo-to-your-plot_files/bowser-1.9.3/bowser.min.js","add-a-logo-to-your-plot_files/distill-2.2.21/template.v2.js","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-2-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-3-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-4-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-5-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-6-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-7-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-7-2.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-8-1.png","add-a-logo-to-your-plot_files/jquery-1.11.3/jquery.min.js","add-a-logo-to-your-plot_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["add-a-logo-to-your-plot_files/bowser-1.9.3/bowser.min.js","add-a-logo-to-your-plot_files/distill-2.2.21/template.v2.js","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-12-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-2-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-3-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-4-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-5-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-6-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-7-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-7-2.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-8-1.png","add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-9-1.png","add-a-logo-to-your-plot_files/jquery-1.11.3/jquery.min.js","add-a-logo-to-your-plot_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1051,55 +1051,84 @@ mtcars %&gt;%
 # plot background = lightgrey for highlight, not necessary for sizing</code></pre>
 </div>
 <h2 id="read-in-a-plot">Read in a plot</h2>
-<p>So let’s read in our publication plot to work with! Please notice that this can be a local file with traditional path structure or a hosted image as a url.</p>
+<p>So let’s read in our publication plot to work with! Please notice that this can be a local file with traditional path structure or a hosted image as a url. I’m using URLs so you can try these out yourself!</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
-pub_plot &lt;- image_read(&quot;https://pbs.twimg.com/media/DwaRAv6U0AAaLIx.jpg&quot;)
+pub_plot &lt;- image_read(&quot;https://raw.githubusercontent.com/jthomasmock/tomtom/master/vignettes/basic_plot.png&quot;)
 
-logo &lt;- image_read(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/plot_logo.png&quot;) %&gt;% 
-  image_resize(120)
+logo &lt;- image_read(&quot;https://www.rstudio.com/wp-content/uploads/2018/10/RStudio-Logo-Flat.png&quot;) %&gt;% 
+  image_resize(300)
 
 print(pub_plot)</code></pre>
 <pre><code>
 # A tibble: 1 x 7
   format width height colorspace matte filesize density
   &lt;chr&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;      &lt;lgl&gt;    &lt;int&gt; &lt;chr&gt;  
-1 JPEG    1200    900 sRGB       FALSE   123617 72x72  </code></pre>
-<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-7-1.png" width="600" /></p>
+1 PNG     2222   1951 sRGB       TRUE    168897 72x72  </code></pre>
+<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-7-1.png" width="1111" /></p>
 <pre class="r"><code>
 print(logo)</code></pre>
 <pre><code>
 # A tibble: 1 x 7
   format width height colorspace matte filesize density
   &lt;chr&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;      &lt;lgl&gt;    &lt;int&gt; &lt;chr&gt;  
-1 PNG      120     60 sRGB       TRUE         0 38x38  </code></pre>
-<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-7-2.png" width="60" /></p>
+1 PNG      300    105 sRGB       TRUE         0 57x57  </code></pre>
+<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-7-2.png" width="150" /></p>
 </div>
-<p>We can then overlay the logo over the plot, let’s try bottom left, by using <code>offset = &quot;+12+840&quot;</code> indicating placing the logo 12 pixels to the right and 840 pixels down.</p>
+<h2 id="where-to-put-the-logo">Where to put the logo?</h2>
+<p>We can then overlay the logo over the plot, let’s try bottom left, and we want ~ 1% padding for aesthetics - so we can use the following code to get dimensions and pixel numbers.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# get dims of the plot
+plot_height &lt;- magick::image_info(pub_plot)$height
+plot_width &lt;- magick::image_info(pub_plot)$width
+
+# get dims of the logo
+logo_width &lt;- magick::image_info(logo)$width
+logo_height &lt;- magick::image_info(logo)$height
+
+# get number of pixels to be 1% from the bottom of the plot
+# while accounting for the logo height
+plot_height - logo_height - plot_height * 0.01</code></pre>
+<pre><code>
+[1] 1826.49</code></pre>
+<pre class="r"><code>
+# get number of pixels to be 1% from the left of the plot
+plot_width * 0.01</code></pre>
+<pre><code>
+[1] 22.22</code></pre>
+</div>
+<h2 id="add-the-logo">Add the logo</h2>
+<p>By using <code>offset = &quot;+22+1826&quot;</code> we indicate that we are placing the logo 22 pixels to the right and 1826 pixels down.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 pub_plot %&gt;% 
-  image_composite(logo, offset = &quot;+12+840&quot;)</code></pre>
-<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-8-1.png" width="600" /></p>
+  image_composite(logo, offset = &quot;+22+1826&quot;)</code></pre>
+<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-9-1.png" width="1111" /></p>
 </div>
-<p>Boom! We have our logo overlay on the plot in the right location! But we had to manually set the logo position, which is less than ideal for programmatic use down the road.</p>
+<p>Boom! We have our logo overlay on the plot in the right location! But we had to manually figure out and set the logo position, which is less than ideal for programmatic use down the road. I also manually resized the logo to 300 pixels in an earlier step - we should make that automagick as well!</p>
 <h2 id="put-it-in-a-function-bird-not-included">Put it in a function! (Bird not included)</h2>
-<p>We can build a function to take the various heights and widths of the logo/plot and automatically resize the logo to match.</p>
+<p>To make the logo add process more reproducible, we can build a function to take the various heights and widths of the logo/plot and automatically resize the logo to match as well as calculating the number of pixels to put it in each respective corner. The logo_scale argument defaults to 10 - so the logo will be 1/10th the width of the plot.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
-add_logo(
+plot_with_logo &lt;- add_logo(
   plot_path = &quot;&quot;, # url or local file for the plot
   plot_path = &quot;&quot;, # url or local file for the plot
   logo_position = &quot;&quot; # choose a corner
   # &#39;top left&#39;, &#39;top right&#39;, &#39;bottom left&#39; or &#39;bottom right&#39;
-)</code></pre>
+  #logo_scale = 10 as default, but can change to manually make logo bigger
+)
+
+# save the image and write to working directory
+magick::image_write(plot_with_logo, &quot;plot_with_logo.png&quot;)</code></pre>
 </div>
+<h2 id="the-function-details">The function details</h2>
 <p>This function takes in two images, gets the dimension information, then pastes the logo at 1/10th scale in the specified corner with 1% padding. The function also has a warning if you input a <code>logo_position</code> that is not included.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
-add_logo &lt;- function(plot_path, logo_path, logo_position){
+add_logo &lt;- function(plot_path, logo_path, logo_position, logo_scale = 10){
 
-    # Requires magick R Package
+    # Requires magick R Package https://github.com/ropensci/magick
 
     # Useful error message for logo position
     if (!logo_position %in% c(&quot;top right&quot;, &quot;top left&quot;, &quot;bottom right&quot;, &quot;bottom left&quot;)) {
@@ -1114,8 +1143,9 @@ add_logo &lt;- function(plot_path, logo_path, logo_position){
     plot_height &lt;- magick::image_info(plot)$height
     plot_width &lt;- magick::image_info(plot)$width
 
-    # scale to 1/10th width of plot
-    logo &lt;- magick::image_scale(logo_raw, as.character(plot_width/10))
+    # default scale to 1/10th width of plot
+    # Can change with logo_scale
+    logo &lt;- magick::image_scale(logo_raw, as.character(plot_width/logo_scale))
 
     # Get width of logo
     logo_width &lt;- magick::image_info(logo)$width
@@ -1128,15 +1158,12 @@ add_logo &lt;- function(plot_path, logo_path, logo_position){
     if (logo_position == &quot;top right&quot;) {
         x_pos = plot_width - logo_width - 0.01 * plot_width
         y_pos = 0.01 * plot_height
-        
     } else if (logo_position == &quot;top left&quot;) {
         x_pos = 0.01 * plot_width
         y_pos = 0.01 * plot_height
-        
     } else if (logo_position == &quot;bottom right&quot;) {
         x_pos = plot_width - logo_width - 0.01 * plot_width
         y_pos = plot_height - logo_height - 0.01 * plot_height
-        
     } else if (logo_position == &quot;bottom left&quot;) {
         x_pos = 0.01 * plot_width
         y_pos = plot_height - logo_height - 0.01 * plot_height
@@ -1147,8 +1174,11 @@ add_logo &lt;- function(plot_path, logo_path, logo_position){
 
 }</code></pre>
 </div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-12-1.png" width="1111" /></p>
+</div>
 <p>So there you go! Happy logo adding and bird putting!</p>
-<p>For more information on adding logos to plots, check out this <a href="https://www.danielphadley.com/ggplot-logo/">blog post</a> by Daniel Hadley on using <code>magick::image_append</code> to add a logo or his <a href="https://resources.rstudio.com/rstudio-conf-2018/branding-and-automating-your-work-with-r-markdown-daniel-hadley">RStudioConf</a> talk on the same idea.</p>
+<p>For more information on adding logos to plots with <code>magick::image_append()</code> instead, check out this <a href="https://www.danielphadley.com/ggplot-logo/">blog post</a> by Daniel Hadley on using <code>magick::image_append</code> to add a logo or his <a href="https://resources.rstudio.com/rstudio-conf-2018/branding-and-automating-your-work-with-r-markdown-daniel-hadley">RStudioConf</a> talk on the same idea.</p>
 <p>Cheers!</p>
 <p><img src="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" /></p>
 <!--radix_placeholder_article_footer-->
