@@ -1,5 +1,35 @@
 [
   {
+    "path": "posts/2020-04-03-beer-and-pdftools-a-vignette/",
+    "title": "Beer and pdftools - a vignette",
+    "description": "A guide to extracting tables from many PDFs using the pdftools package",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": "https://themockup.netlify.com/"
+      }
+    ],
+    "date": "2020-04-03",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-04-03T06:14:31-05:00"
+  },
+  {
+    "path": "posts/2020-04-03-crossing-10000-tidy-simulation/",
+    "title": "Crossing 10,000 - Tidy simulation",
+    "description": "Tidy simulation with dice rolls",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": "https://themockup.netlify.com/"
+      }
+    ],
+    "date": "2020-01-07",
+    "categories": [],
+    "preview": "posts/2020-04-03-crossing-10000-tidy-simulation/crossing-10000-tidy-simulation_files/figure-html5/plotting-1.png",
+    "last_modified": "2020-04-03T08:04:52-05:00"
+  },
+  {
     "path": "posts/2019-01-09-add-a-logo-to-your-plot/",
     "title": "Add a logo to your plot",
     "description": "Put a bird on it - Portlandia.",
@@ -42,7 +72,7 @@
     "date": "2018-12-10",
     "categories": [],
     "preview": {},
-    "last_modified": "2018-12-13T15:48:16-06:00"
+    "last_modified": "2018-12-13T15:48:17-06:00"
   },
   {
     "path": "posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/",

@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="radix" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Crossing 10,000 - Tidy simulation</title>
+  
+  <meta property="description" itemprop="description" content="Tidy simulation with dice rolls"/>
+  
+  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2020-01-07"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-01-07"/>
+  <meta name="article:author" content="Thomas Mock"/>
+  
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Crossing 10,000 - Tidy simulation"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Tidy simulation with dice rolls"/>
+  <meta property="og:locale" content="en_US"/>
+  
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Crossing 10,000 - Tidy simulation"/>
+  <meta property="twitter:description" content="Tidy simulation with dice rolls"/>
+  
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Crossing 10,000 - Tidy simulation"]},{"type":"character","attributes":{},"value":["Tidy simulation with dice rolls\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Mock"]},{"type":"character","attributes":{},"value":["https://themockup.netlify.com/"]}]}]},{"type":"character","attributes":{},"value":["01-07-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["radix::radix_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["crossing-10000-tidy-simulation_files/bowser-1.9.3/bowser.min.js","crossing-10000-tidy-simulation_files/distill-2.2.21/template.v2.js","crossing-10000-tidy-simulation_files/figure-html5/plotting-1.png","crossing-10000-tidy-simulation_files/jquery-1.11.3/jquery.min.js","crossing-10000-tidy-simulation_files/webcomponents-2.0.0/webcomponents.js","dice_plot_10000.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+  
+  <style type="text/css">
+  
+  body {
+    background-color: white;
+  }
+  
+  .pandoc-table {
+    width: 100%;
+  }
+  
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+  
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+  
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+  
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+  
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+  
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+  
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .shaded-content {
+    background: white;
+  }
+  
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  d-article {
+    padding-bottom: 30px;
+  }
+  
+  d-appendix {
+    padding-top: 30px;
+  }
+  
+  d-article>p>img {
+    width: 100%;
+  }
+  
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+  
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS for table of contents */
+  
+  .d-toc {
+    color: rgba(0,0,0,0.8);
+    font-size: 0.8em;
+    line-height: 1em;
+  }
+  
+  .d-toc-header {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 1.3em;
+  }
+  
+  .d-toc a {
+    border-bottom: none;
+  }
+  
+  .d-toc ul {
+    padding-left: 0;
+  }
+  
+  .d-toc li>ul {
+    padding-top: 0.8em;
+    padding-left: 16px;
+    margin-bottom: 0.6em;
+  }
+  
+  .d-toc ul,
+  .d-toc li {
+    list-style-type: none;
+  }
+  
+  .d-toc li {
+    margin-bottom: 0.9em;
+  }
+  
+  .d-toc-separator {
+    margin-top: 20px;
+    margin-bottom: 2em;
+  }
+  
+  .d-article-with-toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  
+  
+  
+  /* Tweak code blocks (note that this CSS is repeated above in an injection
+     into the d-code shadow dom) */
+  
+  d-code {
+    overflow-x: auto !important;
+  }
+  
+  pre.d-code code.d-code {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+  
+  pre.text-output {
+  
+    font-size: 12px;
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  @media(min-width: 768px) {
+  
+  d-code {
+    overflow-x: visible !important;
+  }
+  
+  pre.d-code code.d-code  {
+      padding-left: 18px;
+      font-size: 14px;
+  }
+  pre.text-output {
+    font-size: 14px;
+  }
+  }
+  
+  /* Figure */
+  
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+  
+  .figure img {
+    width: 100%;
+  }
+  
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+  
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+  
+  
+  
+  /* Tweak 1000px media break to show more text */
+  
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+  
+    .grid {
+      grid-column-gap: 16px;
+    }
+  
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+  
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+  
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+  
+  
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+  
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  
+  /* Social footer */
+  
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+  
+  .disqus-comments {
+    margin-right: 30px;
+  }
+  
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+  
+  #disqus_thread {
+    margin-top: 30px;
+  }
+  
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+  
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+  
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+  
+  
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+  
+  
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+  
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+  
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+  
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+  
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+  
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+  
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+  
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+  
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  </style>
+  
+  <script type="application/javascript">
+  
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+  
+  // show body when load is complete
+  function on_load_complete() {
+  
+    // set body to visible
+    document.body.style.visibility = 'visible';
+  
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+  
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+  
+  function init_distill() {
+  
+    init_common();
+  
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+  
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+  
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+  
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+  
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+  
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+  
+    // create d-bibliography
+    var bibliography = $('<d-bibliography></d-bibliography>');
+    $('#distill-bibliography').wrap(bibliography);
+  
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+  
+    // replace citations with <d-cite>
+    $('.citation').each(function(i, val) {
+      appendix = true;
+      var cites = $(this).attr('data-cites').split(" ");
+      var dt_cite = $('<d-cite></d-cite>');
+      dt_cite.attr('key', cites.join());
+      $(this).replaceWith(dt_cite);
+    });
+    // remove refs
+    $('#refs').remove();
+  
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+  
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-toc a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+  
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+  
+    // replace code blocks with d-code
+    $('pre>code').each(function(i, val) {
+      var code = $(this);
+      var pre = code.parent();
+      var clz = "";
+      var language = pre.attr('class');
+      if (language) {
+        // map unknown languages to "clike" (without this they just dissapear)
+        if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                                 "javascript", "js", "julia", "lua", "markdown",
+                                 "markup", "mathml", "python", "svg", "xml"]) == -1)
+          language = "clike";
+        language = ' language="' + language + '"';
+        var dt_code = $('<d-code block' + language + clz + '></d-code>');
+        dt_code.text(code.text());
+        pre.replaceWith(dt_code);
+      } else {
+        code.addClass('text-output').unwrap().changeElementType('pre');
+      }
+    });
+  
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+  
+      // capture layout
+      var layout = $(this).attr('data-layout');
+  
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('d-code, pre.text-output, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+  
+  
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+  
+    // load distill framework
+    load_distill_framework();
+  
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+  
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+  
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+  
+      // table of contents
+      if (have_authors) // adjust border if we are in authors
+        $('.d-toc').parent().addClass('d-article-with-toc');
+  
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+  
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+  
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+  
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+  
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+  
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+  
+      // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+      $('d-code').each(function(i, val) {
+        var style = document.createElement('style');
+        style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                          '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+        if (this.shadowRoot)
+          this.shadowRoot.appendChild(style);
+      });
+  
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+  
+      // clear polling timer
+      clearInterval(tid);
+  
+      // show body now that everything is ready
+      on_load_complete();
+    }
+  
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+  
+  }
+  
+  function init_downlevel() {
+  
+    init_common();
+  
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+  
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+  
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+  
+    // remove toc
+    $('.d-toc-header').remove();
+    $('.d-toc').remove();
+    $('.d-toc-separator').remove();
+  
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+  
+  
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+  
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+  
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+  
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+  
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+  
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+  
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+  
+    $('body').addClass('downlevel');
+  
+    on_load_complete();
+  }
+  
+  
+  function init_common() {
+  
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+  
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+  
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+  
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+  
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+  
+      }
+    });
+  
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+  
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.radix-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+  
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+  
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+  
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+  
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+  
+  </script>
+  
+  <!--/radix_placeholder_distill-->
+  <script src="crossing-10000-tidy-simulation_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="crossing-10000-tidy-simulation_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="crossing-10000-tidy-simulation_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="crossing-10000-tidy-simulation_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Crossing 10,000 - Tidy simulation","description":"Tidy simulation with dice rolls","authors":[{"author":"Thomas Mock","authorURL":"https://themockup.netlify.com/","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-01-07T00:00:00.000-06:00","citationText":"Mock, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Crossing 10,000 - Tidy simulation</h1>
+<p><p>Tidy simulation with dice rolls</p></p>
+</div>
+
+<div class="d-byline">
+  Thomas Mock <a href="https://themockup.netlify.com/" class="uri">https://themockup.netlify.com/</a> 
+  
+<br/>01-07-2020
+</div>
+
+<div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#a-game-of-chance">10,000 - a game of chance</a><ul>
+<li><a href="#simulating-10000-rolls">Simulating 10,000 rolls</a><ul>
+<li><a href="#crossing">Crossing</a></li>
+</ul></li>
+<li><a href="#counting-scoring-functions">Counting &amp; Scoring functions</a><ul>
+<li><a href="#step-1-convert-raw-rolls-to-counts">Step 1: Convert raw rolls to counts</a></li>
+<li><a href="#step-2-scoring-function">Step 2: Scoring Function</a></li>
+</ul></li>
+<li><a href="#get-scoring-from-the-sample">Get scoring from the sample</a><ul>
+<li><a href="#plotting">Plotting</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<h1 id="a-game-of-chance">10,000 - a game of chance</h1>
+<p>Been following <a href="https://twitter.com/drob">Dave Robinson’s</a> Tidy Simulation Series in <code>#rstats</code>and decided to try and give it a go.</p>
+<p>We play a dice game called “10,000” in my wife’s family. The family of games also includes <code>Ten Grand</code>, <code>Farkle</code>, <code>Zilch</code>, and others according to <a href="https://en.wikipedia.org/wiki/Dice_10000">Wikipedia</a> - with the common thread being that you have 5-6 dice, roll them, and add up scoring dice until you stop with a set score or “zippy”, which is a roll with zero scoring die.</p>
+<p>Basic gist: - Roll 5 dice - If you “score” with at least one die, you can stay or keep rolling - If you roll zero scoring die, you lose your turn</p>
+<p>A basic scoring table can be seen below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#jsdfaqfxtm .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#jsdfaqfxtm .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#jsdfaqfxtm .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#jsdfaqfxtm .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#jsdfaqfxtm .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#jsdfaqfxtm .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#jsdfaqfxtm .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#jsdfaqfxtm .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: normal;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#jsdfaqfxtm .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#jsdfaqfxtm .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#jsdfaqfxtm .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#jsdfaqfxtm .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#jsdfaqfxtm .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#jsdfaqfxtm .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#jsdfaqfxtm .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#jsdfaqfxtm .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#jsdfaqfxtm .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jsdfaqfxtm .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#jsdfaqfxtm .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jsdfaqfxtm .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#jsdfaqfxtm .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#jsdfaqfxtm .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#jsdfaqfxtm .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#jsdfaqfxtm .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#jsdfaqfxtm .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#jsdfaqfxtm .gt_left {
+  text-align: left;
+}
+
+#jsdfaqfxtm .gt_center {
+  text-align: center;
+}
+
+#jsdfaqfxtm .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#jsdfaqfxtm .gt_font_normal {
+  font-weight: normal;
+}
+
+#jsdfaqfxtm .gt_font_bold {
+  font-weight: bold;
+}
+
+#jsdfaqfxtm .gt_font_italic {
+  font-style: italic;
+}
+
+#jsdfaqfxtm .gt_super {
+  font-size: 65%;
+}
+
+#jsdfaqfxtm .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="jsdfaqfxtm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="2" class="gt_heading gt_title gt_font_normal gt_center" style>Scoring Table for '10,000'</th>
+    </tr>
+    <tr>
+      <th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_center gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Roll</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Score</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>Each 1</p>
+</div></td>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>100</p>
+</div></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped"><div class='gt_from_md'><p>Each 5</p>
+</div></td>
+      <td class="gt_row gt_left gt_striped"><div class='gt_from_md'><p>50</p>
+</div></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>3 x 1</p>
+</div></td>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>1,000</p>
+</div></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped"><div class='gt_from_md'><p>4 x 1</p>
+</div></td>
+      <td class="gt_row gt_left gt_striped"><div class='gt_from_md'><p>5,000</p>
+</div></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>5 x 1</p>
+</div></td>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>10,000</p>
+</div></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped"><div class='gt_from_md'><p>3 x n</p>
+</div></td>
+      <td class="gt_row gt_left gt_striped"><div class='gt_from_md'><p>n * 100</p>
+</div></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>4 x n</p>
+</div></td>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>n * 200</p>
+</div></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped"><div class='gt_from_md'><p>5 x n</p>
+</div></td>
+      <td class="gt_row gt_left gt_striped"><div class='gt_from_md'><p>n * 300</p>
+</div></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>Short Straight
+(1:5, 2:6)</p>
+</div></td>
+      <td class="gt_row gt_left"><div class='gt_from_md'><p>1000</p>
+</div></td>
+    </tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="2">You add all the scores up so rolling 5 die for example:</td>
+    </tr>
+    <tr>
+      <td class="gt_sourcenote" colspan="2">You could get 3 x 1 (1000), a 4 (0), and a 5 (50</td>
+    </tr>
+    <tr>
+      <td class="gt_sourcenote" colspan="2">This gets you 1050, with 1 die in hand (1x 4 doesn't score)</td>
+    </tr>
+  </tfoot>
+  
+</table></div>
+</div>
+<p>We played 10,000 on New Year’s Day, and we had a disagreement about if you have 2/5 scoring die whether to roll 3 or 4.</p>
+<p>I’ve literally never done probability math EVER… but I felt that it was more effective to roll 4 than 3.</p>
+<p>So I attempted to simulate rolls in <code>#rstats</code>!</p>
+<h2 id="simulating-10000-rolls">Simulating 10,000 rolls</h2>
+<p>So we need to create a dataset of possible rolls, and how common these are when randomly created. We’ll set a seed so that we can reproduce the code, and for puns sake we’ll roll the dice 10,000 times to match our game’s title.</p>
+<p>Importantly, we also will be breaking this down into 5x 10,000 samples which is: - Rolling 1 dice all the way to rolling 5 dice (max possible).</p>
+<p>Generating this is fairly straightforward using <code>tidyr::crossing()</code> and <code>purrr::map()</code> + <code>sample()</code>.</p>
+<h3 id="crossing">Crossing</h3>
+<p><code>tidyr::crossing()</code> takes multiple vectors and creates a <code>tibble</code> of all the possible combinations. Thus we can use it to generate the number of dice in hand along with our 10,000 simulations per number of dice in hand. Our toy example below shows the expected behavior, and then we’ll assign the rolls to a stored dataframe.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Toy example
+# 1 to 5 dice in hand x 5 trials/per dice group = 25 observations
+crossing(dice_in_hand = seq(1, 5, 1),
+                       trial = 1:5)</code></pre>
+<pre><code>
+# A tibble: 25 x 2
+   dice_in_hand trial
+          &lt;dbl&gt; &lt;int&gt;
+ 1            1     1
+ 2            1     2
+ 3            1     3
+ 4            1     4
+ 5            1     5
+ 6            2     1
+ 7            2     2
+ 8            2     3
+ 9            2     4
+10            2     5
+# … with 15 more rows</code></pre>
+</div>
+<p>For, the actual dataframe we’ll do an additional step, which is creating a vector of rolls with random sampling based on how many dice are in hand. For our 1:5 dice in hand + 10,000 samples per dice in hand we get 50,000 simulations.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(37)
+n_rolls &lt;- 10000
+
+# Generate a sample of rolls (10000 sims)
+dice_rolls &lt;- crossing(dice_in_hand = seq(1, 5, 1),
+                       trial = 1:n_rolls) %&gt;%
+  mutate(roll = map(dice_in_hand, ~ sample(1:6, ., replace = TRUE)))
+
+dice_rolls</code></pre>
+<pre><code>
+# A tibble: 50,000 x 3
+   dice_in_hand trial roll     
+          &lt;dbl&gt; &lt;int&gt; &lt;list&gt;   
+ 1            1     1 &lt;int [1]&gt;
+ 2            1     2 &lt;int [1]&gt;
+ 3            1     3 &lt;int [1]&gt;
+ 4            1     4 &lt;int [1]&gt;
+ 5            1     5 &lt;int [1]&gt;
+ 6            1     6 &lt;int [1]&gt;
+ 7            1     7 &lt;int [1]&gt;
+ 8            1     8 &lt;int [1]&gt;
+ 9            1     9 &lt;int [1]&gt;
+10            1    10 &lt;int [1]&gt;
+# … with 49,990 more rows</code></pre>
+</div>
+<hr />
+We can take a look at a few of these simulations. In this case, I’ll grab a random trial and see what we got for each of the dice in hand (1, 2, 3, 4 or 5) .
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dice_rolls %&gt;% 
+  filter(trial == 3737) %&gt;% 
+  pull(roll)</code></pre>
+<pre><code>
+[[1]]
+[1] 3
+
+[[2]]
+[1] 2 3
+
+[[3]]
+[1] 3 4 1
+
+[[4]]
+[1] 5 3 1 5
+
+[[5]]
+[1] 5 6 6 6 4</code></pre>
+</div>
+<p>Now that we have a sense of our 10,000 simulations and our possible outcomes we need to generate some logic for scoring! We could simply count observations, but that won’t tell us the whole story.</p>
+<h2 id="counting-scoring-functions">Counting &amp; Scoring functions</h2>
+<p>I tried this several ways but ended up sticking with vectors. The goal was to have programmatic logic to convert raw dice rolls like 1, 1, 3, 4, 1 to 1,000 (3x 1 = 1,000, 3 and 4 do not score).</p>
+<h3 id="step-1-convert-raw-rolls-to-counts">Step 1: Convert raw rolls to counts</h3>
+<p>We need to take the raw rolls (1, 1, 3, 4, 1) to counts of each number. I created a counting function which now tells us how many of each possible dice side (1, 2, 3, 4, 5, 6) there are.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+counting_function &lt;- function(dice_in){
+  x1 &lt;- sum(dice_in == 1)
+  x2 &lt;- sum(dice_in == 2)
+  x3 &lt;- sum(dice_in == 3)
+  x4 &lt;- sum(dice_in == 4)
+  x5 &lt;- sum(dice_in == 5)
+  x6 &lt;- sum(dice_in == 6)
+  
+  roll_vec &lt;- c(x1, x2, x3, x4, x5, x6)
+  roll_vec
+}</code></pre>
+</div>
+<p>A test example can be seen below. The output can be read as One <code>1</code>, One <code>2</code>, Three <code>3</code>, Zero <code>4</code>, Zero <code>5</code>, and Zero <code>6</code>. We can then feed this into our downstream functions to get scoring.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+counting_function(c(1, 2, 3, 3, 3))</code></pre>
+<pre><code>
+[1] 1 1 3 0 0 0</code></pre>
+</div>
+<h3 id="step-2-scoring-function">Step 2: Scoring Function</h3>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<p>There are actually many steps to this, but the bulk of it is just logical matching potential outcomes to observations. Each type of scoring (number of ones, number of fives, short straights, triples, quadruplpes, and quintuples) has it’s own check, and then I add the scoring at the end based on the various combos/inputs. Using the same input as our previous example, we should get a total score of 400, which is One <code>1</code> at 100 points, and Three <code>3</code>s at <code>100 * face value</code> (100 x 3).</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+counting_function(c(1, 2, 3, 3, 3)) %&gt;% 
+  rigid_scoring_function()</code></pre>
+<pre><code>
+[1] 400</code></pre>
+</div>
+<p>Let’s do a few more checks for sanity. A short straight (1:5) should get you 1000, and then let’s try for a zero score with no scoring die.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# should be 1000
+counting_function(c(5, 1, 3, 4, 2)) %&gt;% 
+  rigid_scoring_function()</code></pre>
+<pre><code>
+[1] 1000</code></pre>
+<pre class="r"><code>
+# zero
+counting_function(c(2, 2, 4, 4, 6)) %&gt;% 
+  rigid_scoring_function()</code></pre>
+<pre><code>
+[1] 0</code></pre>
+</div>
+<p>The actual logic can be seen below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# TOO much logic to get actual scores
+rigid_scoring_function &lt;- function(dice_in){
+  
+  dice_side &lt;- c(1:6)
+  
+  n_of_ones &lt;- sum(dice_in[1])
+  
+  n_of_fives &lt;- sum(dice_in[5])
+  
+  straight_one &lt;- c(1,1,1,1,1,0)
+  straight_two &lt;- c(0,1,1,1,1,1)
+  
+  straight &lt;- any(all(dice_in == straight_two), all(dice_in == straight_one))
+  
+  score_fives &lt;- if_else(n_of_fives &lt;= 2 &amp; straight == FALSE,
+                         (n_of_fives * 50),
+                         0
+  )
+  
+  score_ones &lt;- case_when(
+    n_of_ones &lt;= 2 &amp; straight == FALSE ~ (n_of_ones * 100),
+    n_of_ones == 3 ~ 1000,
+    n_of_ones == 4 ~ 5000,
+    n_of_ones == 5 ~ 10000,
+    TRUE ~ 0
+  )
+  
+  three_or_more &lt;- sum(dice_in &gt;= 3)
+  
+  three_or_more_subset &lt;- dice_in &gt;= 3
+  
+  multiply_dups &lt;- case_when(
+    sum(dice_in == 3) == 1 &amp; n_of_ones &lt; 3 ~ 1L,
+    sum(dice_in == 4) == 1 &amp; n_of_ones &lt; 3 ~ 2L,
+    sum(dice_in == 5) == 1 &amp; n_of_ones &lt; 3 ~ 3L,
+    TRUE ~ 0L
+  )
+  
+  multi_score &lt;- ifelse(three_or_more == TRUE, 
+                        dice_side[three_or_more_subset], 
+                        0) * 100 * multiply_dups
+  
+  
+  straight_score &lt;- if_else(straight == TRUE, 1000, 0)
+  
+  three_or_more &lt;- any(dice_in &gt;= 3)
+  
+  total_score &lt;- sum(score_ones + multi_score + straight_score + score_fives, na.rm = TRUE)
+  total_score
+  
+}</code></pre>
+</div>
+<h2 id="get-scoring-from-the-sample">Get scoring from the sample</h2>
+<p>Generating the scores is actually extremely simple now, the hard part was defining the logic above!</p>
+<p>We use <code>purrr::map()</code> to generate a vector of the rolls using our <code>counting_function()</code>, and then get a score using <code>purrr::map_dbl()</code> to call our <code>rigid_scoring_function()</code> on each vector input of the die rolls! This will take about 15 seconds for calculating scores across the 50,000 total observations.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Generate the actual scoring from existing sample
+dice_df &lt;- dice_rolls %&gt;% 
+  mutate(dice_vector = map(roll, counting_function),
+         rigid_scoring = map_dbl(dice_vector, rigid_scoring_function))
+
+# sanity check the scoring to get a few different scores
+dice_df %&gt;% 
+  select(dice_in_hand, rigid_scoring) %&gt;% 
+  sample_n(10)</code></pre>
+<pre><code>
+# A tibble: 10 x 2
+   dice_in_hand rigid_scoring
+          &lt;dbl&gt;         &lt;dbl&gt;
+ 1            2             0
+ 2            3           300
+ 3            5            50
+ 4            1             0
+ 5            2            50
+ 6            2             0
+ 7            1             0
+ 8            2           100
+ 9            5           150
+10            2           100</code></pre>
+</div>
+<h3 id="plotting">Plotting</h3>
+<p>Now that we have the outcome scoring, we can see how the probabilities stack up! Our thesis was that rolling 4x die was more likely to get you both a better score AND less likely to <code>zippy</code> out or get zero. We can see that rolling 4x die vs 3x die is about half as likely to get zero (15% vs 30%) and 2-3x more likely to get <code>good</code> scores (300 to 1,000).</p>
+<p>Success! If you roll 5 die, get 2 scoring die, it makes sense to only keep 1 of those scoring dice and and roll the other 4!</p>
+<p>Please note that I chose a specific set of scores (0, 50, 100, 150, 200, 300, 400, 500, 600, 1000) - as they are possible to get with either 3 or 4 die. There are scores in between 600 - 1000 that can only be achieved with 4 - 5 die in hand so it didn’t make sense to plot them against 3 die.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Quick plot
+prob_plot &lt;- dice_df %&gt;% 
+  filter(dice_in_hand %in% c(3, 4)) %&gt;%
+  filter(rigid_scoring %in% c(0, 50, 100, 150, 200, 300, 400, 500, 600, 1000)) %&gt;% 
+  count(rigid_scoring, dice_in_hand) %&gt;% 
+  mutate(freq = n/n_rolls,
+         dice_in_hand = factor(dice_in_hand)) %&gt;% 
+  ggplot(aes(x = rigid_scoring, y = freq, color = dice_in_hand)) +
+  geom_path(aes(group = dice_in_hand)) +
+  geom_point(size = 4) +
+  scale_y_log10(labels = scales::percent, breaks = c(0.005, 0.01, 0.015, 0.03, 0.05, 0.075, 0.1, 0.15, 0.3)) +
+  scale_color_manual(name = &quot;Dice in Hand&quot;,
+                     values = c(&quot;#003399&quot;, &quot;#ff2b4f&quot;, &quot;#fcab27&quot;)) +
+  scale_x_continuous(breaks = c(0, 50, 100, 150, 200, 300, 400, 500, 600, 1000)) +
+  theme_light() +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = c(0.8, 0.8),
+        plot.title = element_text(face = &quot;bold&quot;),
+        axis.title = element_text(face = &quot;bold&quot;)) +
+  labs(x = &quot;\nScore&quot;,
+       y = &quot;Log10 Percentage Observed\n&quot;,
+       title = &quot;The dice game &#39;10,000&#39; consists of rolling up to 5 dice&quot;,
+       subtitle = &quot;Rolling 4 dice is 2-3x more likely to generate &#39;good&#39; scores than 3 dice&quot;,
+       caption = &quot;Plot: @thomas_mock&quot;)
+
+prob_plot</code></pre>
+<p><img src="crossing-10000-tidy-simulation_files/figure-html5/plotting-1.png" width="2700" /></p>
+</div>
+<hr />
+<p>We can finally also show the total observations for all possible combinations for rolling 3 or 4 die.</p>
+<div class="layout-chunk" data-layout="l-body">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#qicsxuvhwi .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#qicsxuvhwi .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#qicsxuvhwi .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#qicsxuvhwi .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#qicsxuvhwi .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#qicsxuvhwi .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qicsxuvhwi .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#qicsxuvhwi .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: normal;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#qicsxuvhwi .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#qicsxuvhwi .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#qicsxuvhwi .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#qicsxuvhwi .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#qicsxuvhwi .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qicsxuvhwi .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qicsxuvhwi .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qicsxuvhwi .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#qicsxuvhwi .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qicsxuvhwi .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#qicsxuvhwi .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qicsxuvhwi .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#qicsxuvhwi .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#qicsxuvhwi .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#qicsxuvhwi .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#qicsxuvhwi .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#qicsxuvhwi .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#qicsxuvhwi .gt_left {
+  text-align: left;
+}
+
+#qicsxuvhwi .gt_center {
+  text-align: center;
+}
+
+#qicsxuvhwi .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qicsxuvhwi .gt_font_normal {
+  font-weight: normal;
+}
+
+#qicsxuvhwi .gt_font_bold {
+  font-weight: bold;
+}
+
+#qicsxuvhwi .gt_font_italic {
+  font-style: italic;
+}
+
+#qicsxuvhwi .gt_super {
+  font-size: 65%;
+}
+
+#qicsxuvhwi .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="qicsxuvhwi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_center" style>All possible scores and frequencies for 3-4 die in hand</th>
+    </tr>
+    <tr>
+      <th colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_center gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Score</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Dice in Hand</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Observations</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"><strong>Percent Observed</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_right">0</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">2811</td>
+      <td class="gt_row gt_right">28.11&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">0</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">1599</td>
+      <td class="gt_row gt_right gt_striped">15.99&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">50</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">2152</td>
+      <td class="gt_row gt_right">21.52&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">50</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">1838</td>
+      <td class="gt_row gt_right gt_striped">18.38&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">100</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">2829</td>
+      <td class="gt_row gt_right">28.29&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">100</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">2550</td>
+      <td class="gt_row gt_right gt_striped">25.50&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">150</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">1118</td>
+      <td class="gt_row gt_right">11.18&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">150</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">1510</td>
+      <td class="gt_row gt_right gt_striped">15.10&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">200</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">715</td>
+      <td class="gt_row gt_right">7.15&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">200</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">1236</td>
+      <td class="gt_row gt_right gt_striped">12.36&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">250</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">143</td>
+      <td class="gt_row gt_right">1.43&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">250</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">403</td>
+      <td class="gt_row gt_right gt_striped">4.03&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">300</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">43</td>
+      <td class="gt_row gt_right">0.43&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">300</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">157</td>
+      <td class="gt_row gt_right gt_striped">1.57&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">350</td>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">20</td>
+      <td class="gt_row gt_right">0.20&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">400</td>
+      <td class="gt_row gt_center gt_striped">3</td>
+      <td class="gt_row gt_center gt_striped">43</td>
+      <td class="gt_row gt_right gt_striped">0.43&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">400</td>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">118</td>
+      <td class="gt_row gt_right">1.18&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">450</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">22</td>
+      <td class="gt_row gt_right gt_striped">0.22&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">500</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">55</td>
+      <td class="gt_row gt_right">0.55&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">500</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">149</td>
+      <td class="gt_row gt_right gt_striped">1.49&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">600</td>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">42</td>
+      <td class="gt_row gt_right">0.42&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">600</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">123</td>
+      <td class="gt_row gt_right gt_striped">1.23&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">650</td>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">34</td>
+      <td class="gt_row gt_right">0.34&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">700</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">29</td>
+      <td class="gt_row gt_right gt_striped">0.29&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">800</td>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">7</td>
+      <td class="gt_row gt_right">0.07&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">1000</td>
+      <td class="gt_row gt_center gt_striped">3</td>
+      <td class="gt_row gt_center gt_striped">49</td>
+      <td class="gt_row gt_right gt_striped">0.49&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">1000</td>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">144</td>
+      <td class="gt_row gt_right">1.44&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">1050</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">35</td>
+      <td class="gt_row gt_right gt_striped">0.35&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">1200</td>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">12</td>
+      <td class="gt_row gt_right">0.12&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right gt_striped">5000</td>
+      <td class="gt_row gt_center gt_striped">4</td>
+      <td class="gt_row gt_center gt_striped">14</td>
+      <td class="gt_row gt_right gt_striped">0.14&percnt;</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
