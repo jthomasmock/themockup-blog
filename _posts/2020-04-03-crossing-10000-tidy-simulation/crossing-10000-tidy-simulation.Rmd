@@ -11,6 +11,8 @@ output:
     toc: true
     toc_depth: 4
     self_contained: false
+twitter:
+  creater: "@thomas_mock"
 ---
 
 ```{r setup, include=FALSE}
@@ -294,7 +296,7 @@ Success! If you roll 5 die, get 2 scoring die, it makes sense to only keep 1 of 
 
 Please note that I chose a specific set of scores (0, 50, 100, 150, 200, 300, 400, 500, 600, 1000) - as they are possible to get with either 3 or 4 die. There are scores in between 600 - 1000 that can only be achieved with 4 - 5 die in hand so it didn't make sense to plot them against 3 die.
 
-```{r plotting, dpi=450, fig.height=4, fig.width=6}
+```{r plotting, dpi=450, fig.height=4, fig.width=6, preview=TRUE}
 # Quick plot
 prob_plot <- dice_df %>% 
   filter(dice_in_hand %in% c(3, 4)) %>%
