@@ -95,10 +95,10 @@ dice_rolls <- crossing(dice_in_hand = seq(1, 5, 1),
 dice_rolls
 ```
 
----
+#### Check rolls
 
-We can take a look at a few of these simulations. In this case, I'll grab a random trial and see what we got for each of the dice in hand (1, 2, 3, 4 or 5)
-.
+We can take a look at a few of these simulations. In this case, I'll grab a random trial and see what we got for each of the dice in hand (1, 2, 3, 4 or 5).
+
 ```{r peek}
 dice_rolls %>% 
   filter(trial == 3737) %>% 
