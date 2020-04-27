@@ -6,9 +6,8 @@ author:
   - name: Thomas Mock
     url: https://themockup.netlify.com/
 date: 04-03-2020
-output:
-  distill::distill_article:
-    self_contained: false
+output: 
+  distill::distill_article
 draft: true
 ---
 

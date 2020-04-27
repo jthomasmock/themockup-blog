@@ -1,14 +1,13 @@
 ---
-title: "Building a blog with Radix"
+title: "Building a blog with Distill"
 description: |
   An alternative to blogdown.
 author:
   - name: Thomas Mock
     url: https://example.com/norajones
 date: 12-13-2018
-output:
-  radix::radix_article:
-    self_contained: false
+output: 
+  distill::distill_article
 ---
 
 ```{r setup, include=FALSE}

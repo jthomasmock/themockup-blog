@@ -6,9 +6,14 @@ author:
   - name: Thomas Mock
     url: https://example.com/norajones
 date: 03-16-2018
-output:
-  radix::radix_article:
-    self_contained: false
+output: 
+  distill::distill_article:
+    css: styles.css
+    toc: true
+    toc_depth: 4
+    self_contained: true
+twitter:
+  creater: "@thomas_mock"
 ---
 
 ```{r setup, include=FALSE}

@@ -4,11 +4,14 @@ description: |
   Put a bird on it - Portlandia.
 author:
   - name: Thomas Mock
-    url: https://example.com/norajones
 date: 01-09-2019
-output:
-  radix::radix_article:
-    self_contained: false
+output: 
+  distill::distill_article:
+    css: styles.css
+    toc: true
+    toc_depth: 4
+twitter:
+  creater: "@thomas_mock"
 ---
 
 ```{r setup, include=FALSE}

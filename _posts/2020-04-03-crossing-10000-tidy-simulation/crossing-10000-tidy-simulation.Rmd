@@ -6,11 +6,12 @@ author:
   - name: Thomas Mock
     url: https://themockup.netlify.com/
 date: 01-07-2020
-output:
-  radix::radix_article:
+output: 
+  distill::distill_article:
+    css: styles.css
     toc: true
     toc_depth: 4
-    self_contained: false
+    self_contained: true
 twitter:
   creater: "@thomas_mock"
 ---

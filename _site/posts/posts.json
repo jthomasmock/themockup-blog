@@ -26,8 +26,8 @@
     ],
     "date": "2020-01-07",
     "categories": [],
-    "preview": "posts/2020-04-03-crossing-10000-tidy-simulation/crossing-10000-tidy-simulation_files/figure-html5/plotting-1.png",
-    "last_modified": "2020-04-03T08:15:09-05:00"
+    "preview": "posts/2020-04-03-crossing-10000-tidy-simulation/radix-preview.png",
+    "last_modified": "2020-04-27T14:50:41-05:00"
   },
   {
     "path": "posts/2019-01-09-add-a-logo-to-your-plot/",
@@ -36,13 +36,13 @@
     "author": [
       {
         "name": "Thomas Mock",
-        "url": "https://example.com/norajones"
+        "url": {}
       }
     ],
     "date": "2019-01-09",
     "categories": [],
-    "preview": "posts/2019-01-09-add-a-logo-to-your-plot/add-a-logo-to-your-plot_files/figure-html5/unnamed-chunk-2-1.png",
-    "last_modified": "2019-01-10T08:43:12-06:00"
+    "preview": "posts/2019-01-09-add-a-logo-to-your-plot/radix-preview.png",
+    "last_modified": "2020-04-27T14:53:33-05:00"
   },
   {
     "path": "posts/2019-01-02-tidytuesday-enhancements/",
@@ -57,22 +57,7 @@
     "date": "2019-01-02",
     "categories": [],
     "preview": {},
-    "last_modified": "2019-01-07T08:33:54-06:00"
-  },
-  {
-    "path": "posts/welcome/",
-    "title": "Welcome to the MockUp!",
-    "description": "A collection of various guides, packages, and cool things!",
-    "author": [
-      {
-        "name": "Thomas Mock",
-        "url": "https://example.com/norajones"
-      }
-    ],
-    "date": "2018-12-10",
-    "categories": [],
-    "preview": {},
-    "last_modified": "2018-12-13T15:48:17-06:00"
+    "last_modified": "2020-04-27T14:52:39-05:00"
   },
   {
     "path": "posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/",
@@ -87,7 +72,7 @@
     "date": "2018-04-05",
     "categories": [],
     "preview": {},
-    "last_modified": "2018-12-12T16:00:10-06:00"
+    "last_modified": "2020-04-27T14:53:02-05:00"
   },
   {
     "path": "posts/2018-12-11-functional-progamming-in-r-with-purrr/",
@@ -102,7 +87,7 @@
     "date": "2018-03-18",
     "categories": [],
     "preview": {},
-    "last_modified": "2018-12-12T16:00:06-06:00"
+    "last_modified": "2020-04-27T14:51:48-05:00"
   },
   {
     "path": "posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/",
@@ -116,7 +101,7 @@
     ],
     "date": "2018-03-16",
     "categories": [],
-    "preview": "posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/a-gentle-guide-to-tidy-statistics-in-r_files/figure-html5/unnamed-chunk-5-1.png",
-    "last_modified": "2018-12-12T16:00:02-06:00"
+    "preview": "posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/radix-preview.png",
+    "last_modified": "2020-04-27T14:51:32-05:00"
   }
 ]

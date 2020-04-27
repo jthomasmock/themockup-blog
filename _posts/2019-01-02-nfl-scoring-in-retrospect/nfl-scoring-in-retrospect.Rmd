@@ -6,9 +6,8 @@ author:
   - name: Thomas Mock
     url: https://example.com/norajones
 date: 01-02-2019
-output:
-  radix::radix_article:
-    self_contained: false
+output: 
+  distill::distill_article
 ---
 
 ```{r setup, include=FALSE}
