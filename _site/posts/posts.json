@@ -1,5 +1,20 @@
 [
   {
+    "path": "posts/2019-04-28/",
+    "title": "Bigger, nflfastR, dbplyr",
+    "description": "Doing more with dplyr and SQL",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": {}
+      }
+    ],
+    "date": "2020-04-28",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-04-27T20:11:12-05:00"
+  },
+  {
     "path": "posts/2020-04-03-beer-and-pdftools-a-vignette/",
     "title": "Beer and pdftools - a vignette",
     "description": "A guide to extracting tables from many PDFs using the pdftools package",
