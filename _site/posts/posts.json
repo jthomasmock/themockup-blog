@@ -1,6 +1,6 @@
 [
   {
-    "path": "posts/2019-04-28/",
+    "path": "posts/2019-04-28-nflfastr-dbplyr-rsqlite/",
     "title": "Bigger, nflfastR, dbplyr",
     "description": "Doing more with dplyr and SQL",
     "author": [
@@ -12,7 +12,7 @@
     "date": "2020-04-28",
     "categories": [],
     "preview": {},
-    "last_modified": "2020-04-27T20:18:18-05:00"
+    "last_modified": "2020-04-28T07:33:47-05:00"
   },
   {
     "path": "posts/2020-04-03-beer-and-pdftools-a-vignette/",

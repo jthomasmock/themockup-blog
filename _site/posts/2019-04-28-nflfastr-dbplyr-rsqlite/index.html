@@ -2408,14 +2408,14 @@ all_pbp &lt;- 2000:2019 %&gt;%
 all_pbp %&gt;% 
   write_rds(&quot;data/2000-2019_pbp_raw.rds&quot;)</code></pre>
 </div>
-<p>However, as mentioned before this is ~ 2 GB of data in memory, which can take a while to download and/or read in especially if you do this multiple times as opposed to in just one session. Also - there are VERY few times where you actually need to pull in all of the specific columns and/or rows for your analysis, why waste time mucking around with columns that you don’t need?</p>
+<p>However, as mentioned before this is ~ 2 GB of data in memory, which can take a while to download and/or read in especially if you do this multiple times as opposed to in just one session. Also - there are VERY few times where you actually need to pull in all of the specific columns and/or rows for your analysis, why waste time reading in data that you don’t need?</p>
 <h1 id="enter-sql">Enter SQL</h1>
 <p>No no, I’m not going to make you learn SQL to work with this dataset, but we are going to use SQL inside R. Specifically, we’re going to play around with <code>SQLite</code> - in their own words:</p>
 <blockquote>
 <p>SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine. SQLite is the most used database engine in the world.</p>
 </blockquote>
 <p>What this provides for us is a super lightweight storage and query format that works nicely with R and <code>dplyr</code>. We don’t have to mess around with creating an entire database but rather have a small self-contained file that allows for many of the same SQL-features.</p>
-<p>For a deeper dive on the <code>RSQLite</code> package, with basic and advanced usage check out the <a href="https://rsqlite.r-dbi.org/">packagedown site</a>.</p>
+<p>For a deeper dive on the <code>RSQLite</code> package, with basic and advanced usage check out the <a href="https://rsqlite.r-dbi.org/">packagedown site</a>. Additionally, the <a href="https://datacarpentry.org/R-ecology-lesson/05-r-and-databases.html">Data Carpentry guide</a> is pretty similar to this guide but aimed at scientists.</p>
 <h2 id="create-the-sqlite-database">Create the <code>SQLite</code> database</h2>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -2446,9 +2446,9 @@ DBI::dbListTables(mydb)</code></pre>
 </div>
 <p>Ok - so to recap in about 2 lines of code we have created and populated a <code>SQLite</code> database solely through R. Now, the <code>SQLite</code> file is only around 1 GB compared to our 2 GB .RDS - so it’s more efficiently stored and allows us to do some other cool things as seen below.</p>
 <h1 id="dbplyr"><code>dbplyr</code></h1>
-<p>Now the magic really happens - <code>dplyr</code> has a built-in package called <code>dbplyr</code>, this is a translation engine that lets you write <code>dplyr</code> code that is evaluated as SQL.</p>
-<p>Full details at the <a href="https://dbplyr.tidyverse.org/articles/dbplyr.html"><code>dbplyr</code> site</a>.<br />
-The basic concept is:</p>
+<p>Now the magic really happens: <code>dplyr</code> has a built-in package called <code>dbplyr</code>, this is a translation engine that lets you write <code>dplyr</code> code that is evaluated as SQL.</p>
+<p>Full details at the <a href="https://dbplyr.tidyverse.org/articles/dbplyr.html"><code>dbplyr</code> site</a>.</p>
+<p>The basic concept is:</p>
 <ul>
 <li><p>Connect to a datasource/database</p></li>
 <li><p>Query the database INSIDE the database or on disk</p></li>
@@ -2615,7 +2615,8 @@ pbp_db %&gt;%
 </ul></li>
 <li><code>vroom::vroom()</code> is even faster for reading in data in some situations</li>
 </ul>
-<p>In this case for our toy examples, pure <code>dplyr</code>, <code>data.table</code> and <code>dtplyr</code> are all essentially the same speed, about 0.1 - 0.2 seconds to run the same summary in-memory compared to ~ 1 sec via <code>SQLite</code>. However, the time-savings here are very much on read-in. <code>data.table::fread()</code> takes about 28 seconds to read in the full csv.</p>
+<p>In this case for our toy examples, pure <code>dplyr</code>, <code>data.table</code> and <code>dtplyr</code> are all essentially the same speed, about 0.1 - 0.2 seconds to run the same summary in-memory compared to ~ 1 sec via <code>SQLite</code>. However, the time-savings here are very much on read-in. <br></p>
+<p><code>data.table::fread()</code> takes about 28 seconds to read in the full csv, <code>vroom::vroom()</code> takes about 20 seconds to read in the full csv, and then either <code>data.table</code> or <code>dplyr</code> take between 0.1 - 0.2 seconds to perform the aggregation. This is compared to the ~ 1 second to aggregate with the same analysis via <code>dbplyr</code> + <code>RSQLite</code>. <br></p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 tic()
@@ -2633,6 +2634,7 @@ toc()</code></pre>
 
 # 27.875 sec elapsed</code></pre>
 </div>
+<p>The last thing I’ll add is that if you want to do additional modeling or work with the entire dataset over a long period of time, I think it makes sense to read it into memory to get the speed improvements of in-memory computation and access to the full range of R’s capability. Just wanted to bring up that it’s possible to rapidly work on relatively large datasets and only pull into memory when you are ready. <br></p>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
