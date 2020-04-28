@@ -1,5 +1,20 @@
 [
   {
+    "path": "posts/2020-05-01-tidy-long-models/",
+    "title": "Flipping tibbles for many models",
+    "description": "Pivoting data from wide to long to run many models at once",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": {}
+      }
+    ],
+    "date": "2020-05-01",
+    "categories": [],
+    "preview": "posts/2020-05-01-tidy-long-models/radix-preview.png",
+    "last_modified": "2020-04-28T16:42:13-05:00"
+  },
+  {
     "path": "posts/2019-04-28-nflfastr-dbplyr-rsqlite/",
     "title": "Bigger, nflfastR, dbplyr",
     "description": "Doing more with dplyr and SQL",
