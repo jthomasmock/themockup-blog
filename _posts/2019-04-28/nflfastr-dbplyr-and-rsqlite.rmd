@@ -102,12 +102,17 @@ Ok - so to recap in about 2 lines of code we have created and populated a `SQLit
 
 Now the magic really happens - `dplyr` has a built-in package called `dbplyr`, this is a translation engine that lets you write `dplyr` code that is evaluated as SQL.
 
-Full details at the [`dbplyr` site](https://dbplyr.tidyverse.org/articles/dbplyr.html). The basic concept is:
-- Connect to a datasource/database
-- Query the database INSIDE the database or on disk
-- Pull the data into memory only when you're ready
+Full details at the [`dbplyr` site](https://dbplyr.tidyverse.org/articles/dbplyr.html).  
+The basic concept is:  
 
-### Open a connection
+- Connect to a datasource/database  
+
+- Query the database INSIDE the database or on disk  
+
+- Pull the data into memory only when you're ready  
+
+
+## Open a connection  
 
 We can open the connection by calling `tbl()` on the database we have open (`mydb`) and indicating which table we want to query.
 
@@ -213,10 +218,10 @@ toc()
 
 ```
 
-So we used our traditional `dplyr` code, it ran as SQL on the backend and took about 1 sec. Now, 1 sec is not THAT fast - and the same operation IN memory would be about 0.2 sec, but we save a lot of time on the read and can do lots of ad-hoc queries without pulling the data in. Also imagine a world where the data is much larger than memory, this same workflow would work on 100 GB of data or even petabytes of data with translation to `spark` via `sparklyr` for example.
+So we used our traditional `dplyr` code, it ran as SQL on the backend and took about 1 sec. Now, 1 sec is not THAT fast - and the same operation IN memory would be about 0.2 sec, but we save a lot of time on the read and can do lots of ad-hoc queries without pulling the data in. Also imagine a world where the data is much larger than memory, this same workflow would work on 100 GB of data or even petabytes of data with translation to `spark` via `sparklyr` for example.  
 
-### Collect the data
-
+##  Collect the data  
+  
 Lastly - we can also pull the data into memory, via `collect()`. This allows us to take the data and either continue to work with the summary or pass it to something like `ggplot2`.
 
 ```{r plot the db, eval = FALSE}

@@ -2015,9 +2015,8 @@ display: none;
 </ul></li>
 <li><a href="#dbplyr"><code>dbplyr</code></a><ul>
 <li><a href="#open-a-connection">Open a connection</a></li>
-<li><a href="#query-the-database">Query the database</a><ul>
+<li><a href="#query-the-database">Query the database</a></li>
 <li><a href="#collect-the-data">Collect the data</a></li>
-</ul></li>
 </ul></li>
 <li><a href="#tldr">TLDR</a></li>
 <li><a href="#additional-notes">Additional Notes</a></li>
@@ -2098,8 +2097,14 @@ DBI::dbListTables(mydb)</code></pre>
 <p>Ok - so to recap in about 2 lines of code we have created and populated a <code>SQLite</code> database solely through R. Now, the <code>SQLite</code> file is only around 1 GB compared to our 2 GB .RDS - so it’s more efficiently stored and allows us to do some other cool things as seen below.</p>
 <h1 id="dbplyr"><code>dbplyr</code></h1>
 <p>Now the magic really happens - <code>dplyr</code> has a built-in package called <code>dbplyr</code>, this is a translation engine that lets you write <code>dplyr</code> code that is evaluated as SQL.</p>
-<p>Full details at the <a href="https://dbplyr.tidyverse.org/articles/dbplyr.html"><code>dbplyr</code> site</a>. The basic concept is: - Connect to a datasource/database - Query the database INSIDE the database or on disk - Pull the data into memory only when you’re ready</p>
-<h3 id="open-a-connection">Open a connection</h3>
+<p>Full details at the <a href="https://dbplyr.tidyverse.org/articles/dbplyr.html"><code>dbplyr</code> site</a>.<br />
+The basic concept is:</p>
+<ul>
+<li><p>Connect to a datasource/database</p></li>
+<li><p>Query the database INSIDE the database or on disk</p></li>
+<li><p>Pull the data into memory only when you’re ready</p></li>
+</ul>
+<h2 id="open-a-connection">Open a connection</h2>
 <p>We can open the connection by calling <code>tbl()</code> on the database we have open (<code>mydb</code>) and indicating which table we want to query.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -2194,7 +2199,7 @@ toc()</code></pre>
 # 1.048 sec elapsed  </code></pre>
 </div>
 <p>So we used our traditional <code>dplyr</code> code, it ran as SQL on the backend and took about 1 sec. Now, 1 sec is not THAT fast - and the same operation IN memory would be about 0.2 sec, but we save a lot of time on the read and can do lots of ad-hoc queries without pulling the data in. Also imagine a world where the data is much larger than memory, this same workflow would work on 100 GB of data or even petabytes of data with translation to <code>spark</code> via <code>sparklyr</code> for example.</p>
-<h3 id="collect-the-data">Collect the data</h3>
+<h2 id="collect-the-data">Collect the data</h2>
 <p>Lastly - we can also pull the data into memory, via <code>collect()</code>. This allows us to take the data and either continue to work with the summary or pass it to something like <code>ggplot2</code>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
