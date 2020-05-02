@@ -2,6 +2,7 @@ name: "the-mockup-blog"
 title: "The Mockup Blog"
 description: |
   Exploring the wonderful world of #RStats
+base_url: https://themockup.netlify.app
 output_dir: "_site"
 navbar:
   right:
@@ -9,8 +10,8 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
-#    - icon: fa fa-rss
-#      href: index.xml
+    - icon: fa fa-rss
+      href: index.xml
 output: 
   distill::distill_article:
     css: styles.css

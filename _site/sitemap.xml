@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
+  <url>
+    <loc>https://themockup.netlify.app/about.html</loc>
+    <lastmod>2019-01-04T15:38:34-06:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/</loc>
+    <lastmod>2020-05-02T10:21:20-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2020-05-01-tidy-long-models/</loc>
+    <lastmod>2020-05-02T10:42:58-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2019-04-28-nflfastr-dbplyr-rsqlite/</loc>
+    <lastmod>2020-05-02T10:40:50-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2020-04-03-beer-and-pdftools-a-vignette/</loc>
+    <lastmod>2020-04-04T10:14:02-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2020-04-03-crossing-10000-tidy-simulation/</loc>
+    <lastmod>2020-05-02T10:27:51-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2019-01-09-add-a-logo-to-your-plot/</loc>
+    <lastmod>2020-05-02T10:36:34-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2019-01-02-tidytuesday-enhancements/</loc>
+    <lastmod>2020-05-02T10:34:35-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/</loc>
+    <lastmod>2020-05-02T10:29:32-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2018-12-11-functional-progamming-in-r-with-purrr/</loc>
+    <lastmod>2020-05-02T10:28:09-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.netlify.app/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/</loc>
+    <lastmod>2020-05-02T10:23:39-05:00</lastmod>
+  </url>
+</urlset>

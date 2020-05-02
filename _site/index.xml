@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>The Mockup Blog</title>
+    <link>https://themockup.netlify.app</link>
+    <atom:link href="https://themockup.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Exploring the wonderful world of #RStats
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Fri, 01 May 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Flipping tibbles for many models</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2020-05-01-tidy-long-models</link>
+      <description>Pivoting data from wide to long to run many models at once</description>
+      <guid>https://themockup.netlify.app/posts/2020-05-01-tidy-long-models</guid>
+      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.netlify.app/posts/2020-05-01-tidy-long-models/distill-preview.png" medium="image" type="image/png" width="6400" height="6400"/>
+    </item>
+    <item>
+      <title>Bigger, nflfastR, dbplyr</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2019-04-28-nflfastr-dbplyr-rsqlite</link>
+      <description>Doing more with dplyr and SQL</description>
+      <guid>https://themockup.netlify.app/posts/2019-04-28-nflfastr-dbplyr-rsqlite</guid>
+      <pubDate>Tue, 28 Apr 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1526&amp;q=80" medium="image" type="text/plain"/>
+    </item>
+    <item>
+      <title>Beer and pdftools - a vignette</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2020-04-03-beer-and-pdftools-a-vignette</link>
+      <description>A guide to extracting tables from many PDFs using the pdftools package</description>
+      <guid>https://themockup.netlify.app/posts/2020-04-03-beer-and-pdftools-a-vignette</guid>
+      <pubDate>Sat, 04 Apr 2020 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Crossing 10,000 - Tidy simulation</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2020-04-03-crossing-10000-tidy-simulation</link>
+      <description>Tidy simulation with dice rolls</description>
+      <guid>https://themockup.netlify.app/posts/2020-04-03-crossing-10000-tidy-simulation</guid>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.netlify.app/posts/2020-04-03-crossing-10000-tidy-simulation/distill-preview.png" medium="image" type="image/png" width="5400" height="3600"/>
+    </item>
+    <item>
+      <title>Add a logo to your plot</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2019-01-09-add-a-logo-to-your-plot</link>
+      <description>Put a bird on it - Portlandia.</description>
+      <guid>https://themockup.netlify.app/posts/2019-01-09-add-a-logo-to-your-plot</guid>
+      <pubDate>Wed, 09 Jan 2019 00:00:00 +0000</pubDate>
+      <media:content url="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" medium="image" type="text/plain"/>
+    </item>
+    <item>
+      <title>TidyTuesday enhancements</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2019-01-02-tidytuesday-enhancements</link>
+      <description>Making #TidyTuesday better.</description>
+      <guid>https://themockup.netlify.app/posts/2019-01-02-tidytuesday-enhancements</guid>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>TidyTuesday</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r</link>
+      <description>A weekly social data project in R</description>
+      <guid>https://themockup.netlify.app/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r</guid>
+      <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://i.imgur.com/AXfD3Fk.png" medium="image" type="image/png"/>
+    </item>
+    <item>
+      <title>Functional Progamming in R with purrr</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2018-12-11-functional-progamming-in-r-with-purrr</link>
+      <description>Minimizing repetition with further replication</description>
+      <guid>https://themockup.netlify.app/posts/2018-12-11-functional-progamming-in-r-with-purrr</guid>
+      <pubDate>Sun, 18 Mar 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://i.imgur.com/LIvMxbN.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>A Gentle Guide to Tidy Statistics in R</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.netlify.app/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r</link>
+      <description>Working your way through a basic analysis</description>
+      <guid>https://themockup.netlify.app/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r</guid>
+      <pubDate>Fri, 16 Mar 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://i.imgur.com/o6k6Rne.jpg" medium="image" type="image/jpeg"/>
+    </item>
+  </channel>
+</rss>

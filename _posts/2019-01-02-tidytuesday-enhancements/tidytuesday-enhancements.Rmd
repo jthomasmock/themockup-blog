@@ -4,17 +4,24 @@ description: |
   Making #TidyTuesday better.
 author:
   - name: Thomas Mock
-    url: https://example.com/norajones
 date: 01-02-2019
 output: 
   distill::distill_article:
     css: styles.css
+base_url: https://themockup.netlify.app/
+categories:
+  - TidyTuesday
+  - tidyverse
+  - Automation
 twitter:
-  creater: "@thomas_mock"
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+
+getwd()
 ```
 
 ```{r, echo = FALSE, eval = FALSE}

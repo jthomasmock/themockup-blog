@@ -4,16 +4,22 @@ description: |
   Minimizing repetition with further replication
 author:
   - name: Thomas Mock
-    url: https://example.com/norajones
 date: 03-18-2018
+base_url: https://themockup.netlify.app/
 output: 
   distill::distill_article:
     css: styles.css
     toc: true
     toc_depth: 4
     self_contained: true
+preview: https://i.imgur.com/LIvMxbN.jpg
 twitter:
-  creater: "@thomas_mock"
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
+categories:
+  - purrr
+  - tidyverse
+  - statistics
 ---
 
 ```{r setup, include=FALSE}

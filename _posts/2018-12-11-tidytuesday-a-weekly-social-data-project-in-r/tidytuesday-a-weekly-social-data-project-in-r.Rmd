@@ -4,13 +4,19 @@ description: |
   A weekly social data project in R
 author:
   - name: Thomas Mock
-    url: https://example.com/norajones
+base_url: https://themockup.netlify.app/
 date: 04-05-2018
 output: 
   distill::distill_article:
     css: styles.css
 twitter:
-  creater: "@thomas_mock"
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
+preview: https://i.imgur.com/AXfD3Fk.png
+categories:
+  - TidyTuesday
+  - tidyverse
+  - Community
 ---
 
 ```{r setup, include=FALSE}

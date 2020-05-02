@@ -10,9 +10,16 @@
       }
     ],
     "date": "2020-05-01",
-    "categories": [],
-    "preview": "posts/2020-05-01-tidy-long-models/radix-preview.png",
-    "last_modified": "2020-04-28T16:42:13-05:00"
+    "categories": [
+      "espnscrapeR",
+      "NFL",
+      "tidyverse",
+      "tidymodels"
+    ],
+    "preview": "posts/2020-05-01-tidy-long-models/distill-preview.png",
+    "last_modified": "2020-05-02T10:42:58-05:00",
+    "preview_width": 6400,
+    "preview_height": 6400
   },
   {
     "path": "posts/2019-04-28-nflfastr-dbplyr-rsqlite/",
@@ -25,9 +32,15 @@
       }
     ],
     "date": "2020-04-28",
-    "categories": [],
-    "preview": {},
-    "last_modified": "2020-04-28T07:33:47-05:00"
+    "categories": [
+      "NFL",
+      "nflscrapR",
+      "nflfastR",
+      "SQL",
+      "tidyverse"
+    ],
+    "preview": "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1526&q=80",
+    "last_modified": "2020-05-02T10:40:50-05:00"
   },
   {
     "path": "posts/2020-04-03-beer-and-pdftools-a-vignette/",
@@ -51,13 +64,20 @@
     "author": [
       {
         "name": "Thomas Mock",
-        "url": "https://themockup.netlify.com/"
+        "url": {}
       }
     ],
     "date": "2020-01-07",
-    "categories": [],
-    "preview": "posts/2020-04-03-crossing-10000-tidy-simulation/radix-preview.png",
-    "last_modified": "2020-04-27T14:50:41-05:00"
+    "categories": [
+      "tidyverse",
+      "purrr",
+      "simulation",
+      "probability"
+    ],
+    "preview": "posts/2020-04-03-crossing-10000-tidy-simulation/distill-preview.png",
+    "last_modified": "2020-05-02T10:27:51-05:00",
+    "preview_width": 5400,
+    "preview_height": 3600
   },
   {
     "path": "posts/2019-01-09-add-a-logo-to-your-plot/",
@@ -70,9 +90,13 @@
       }
     ],
     "date": "2019-01-09",
-    "categories": [],
-    "preview": "posts/2019-01-09-add-a-logo-to-your-plot/radix-preview.png",
-    "last_modified": "2020-04-27T14:53:33-05:00"
+    "categories": [
+      "magick",
+      "data visualization",
+      "ggplot2"
+    ],
+    "preview": "https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "last_modified": "2020-05-02T10:36:34-05:00"
   },
   {
     "path": "posts/2019-01-02-tidytuesday-enhancements/",
@@ -81,13 +105,17 @@
     "author": [
       {
         "name": "Thomas Mock",
-        "url": "https://example.com/norajones"
+        "url": {}
       }
     ],
     "date": "2019-01-02",
-    "categories": [],
+    "categories": [
+      "TidyTuesday",
+      "tidyverse",
+      "Automation"
+    ],
     "preview": {},
-    "last_modified": "2020-04-27T14:52:39-05:00"
+    "last_modified": "2020-05-02T10:34:35-05:00"
   },
   {
     "path": "posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/",
@@ -96,13 +124,17 @@
     "author": [
       {
         "name": "Thomas Mock",
-        "url": "https://example.com/norajones"
+        "url": {}
       }
     ],
     "date": "2018-04-05",
-    "categories": [],
-    "preview": {},
-    "last_modified": "2020-04-27T14:53:02-05:00"
+    "categories": [
+      "TidyTuesday",
+      "tidyverse",
+      "Community"
+    ],
+    "preview": "https://i.imgur.com/AXfD3Fk.png",
+    "last_modified": "2020-05-02T10:29:32-05:00"
   },
   {
     "path": "posts/2018-12-11-functional-progamming-in-r-with-purrr/",
@@ -111,13 +143,17 @@
     "author": [
       {
         "name": "Thomas Mock",
-        "url": "https://example.com/norajones"
+        "url": {}
       }
     ],
     "date": "2018-03-18",
-    "categories": [],
-    "preview": {},
-    "last_modified": "2020-04-27T14:51:48-05:00"
+    "categories": [
+      "purrr",
+      "tidyverse",
+      "statistics"
+    ],
+    "preview": "https://i.imgur.com/LIvMxbN.jpg",
+    "last_modified": "2020-05-02T10:28:09-05:00"
   },
   {
     "path": "posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/",
@@ -126,12 +162,12 @@
     "author": [
       {
         "name": "Thomas Mock",
-        "url": "https://example.com/norajones"
+        "url": {}
       }
     ],
     "date": "2018-03-16",
     "categories": [],
-    "preview": "posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/radix-preview.png",
-    "last_modified": "2020-04-27T14:51:32-05:00"
+    "preview": "https://i.imgur.com/o6k6Rne.jpg",
+    "last_modified": "2020-05-02T10:23:39-05:00"
   }
 ]

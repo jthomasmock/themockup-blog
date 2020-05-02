@@ -4,7 +4,7 @@ description: |
   Tidy simulation with dice rolls
 author:
   - name: Thomas Mock
-    url: https://themockup.netlify.com/
+base_url: https://themockup.netlify.com/
 date: 01-07-2020
 output: 
   distill::distill_article:
@@ -13,7 +13,13 @@ output:
     toc_depth: 4
     self_contained: true
 twitter:
-  creater: "@thomas_mock"
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
+categories:
+  - tidyverse
+  - purrr
+  - simulation
+  - probability
 ---
 
 ```{r setup, include=FALSE}

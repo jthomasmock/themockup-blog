@@ -5,13 +5,20 @@ description: |
 author:
   - name: Thomas Mock
 date: 01-09-2019
+base_url: https://themockup.netlify.app/
 output: 
   distill::distill_article:
     css: styles.css
     toc: true
     toc_depth: 4
+preview: https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
+categories:
+  - magick
+  - data visualization
+  - ggplot2
 twitter:
-  creater: "@thomas_mock"
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
 ---
 
 ```{r setup, include=FALSE}
