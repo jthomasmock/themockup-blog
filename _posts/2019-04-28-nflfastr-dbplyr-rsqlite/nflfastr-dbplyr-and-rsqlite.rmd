@@ -8,7 +8,6 @@ date: 04-28-2020
 base_url: https://themockup.netlify.app/
 output: 
   distill::distill_article:
-    css: styles.css
     toc: true
     toc_depth: 4
 preview: https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1526&q=80

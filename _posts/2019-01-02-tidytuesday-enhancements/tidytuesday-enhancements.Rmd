@@ -7,8 +7,9 @@ author:
 date: 01-02-2019
 output: 
   distill::distill_article:
-    css: styles.css
+    toc: false
 base_url: https://themockup.netlify.app/
+preview: https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png
 categories:
   - TidyTuesday
   - tidyverse

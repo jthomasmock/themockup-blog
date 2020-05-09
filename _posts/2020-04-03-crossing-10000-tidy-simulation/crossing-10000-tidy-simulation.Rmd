@@ -8,7 +8,6 @@ base_url: https://themockup.netlify.com/
 date: 01-07-2020
 output: 
   distill::distill_article:
-    css: styles.css
     toc: true
     toc_depth: 4
     self_contained: true

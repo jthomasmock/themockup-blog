@@ -8,7 +8,6 @@ base_url: https://themockup.netlify.app/
 date: 05-01-2020
 output: 
   distill::distill_article:
-    css: styles.css
     toc: true
     toc_depth: 4
 categories:
@@ -67,8 +66,9 @@ Now each of the model metrics for automatic vs manual transmissions (0 vs 1) is 
 # NFL Example
 
 We'll be performing a similar analysis to what Josh Hermsmeyer's did in his [538 article](https://fivethirtyeight.com/features/why-the-nfl-cant-rely-on-defense/). The raw code for his analysis is available on his [GitHub](https://github.com/friscojosh/defensive-metric-stability). Essentially he evaluated how stable metrics were year-over-year, by comparing:  
-* `Metric in Year N`  
-* `Metric in Year N + 1`  
+
+- `Metric in Year N`  
+- `Metric in Year N + 1`  
 
 We're skipping most of the `nflscrapR` aggregation (see the [link](https://github.com/friscojosh/defensive-metric-stability) for full script), the portion we can change a bit to make our lives easier is the repeated modeling.
 
@@ -218,7 +218,7 @@ We can combine our labels that we generated with `glue` and the long-form data t
 
 I'd definitely recommend trying out the rest of the `tidymodels` ecosystem for your more advanced machine learning and statistical analyses. You can learn all about it at the [tidymodels.org site](https://www.tidymodels.org/learn/).
 
-```{r, fig.width = 8, fig.height = 8, dpi=400, preview=TRUE}
+```{r, fig.width = 8, fig.height = 8, dpi=150, preview=TRUE}
 (off_plot <- long_off_stats %>% 
     inner_join(long_off_stats, by = c("season2" = "season", "team", "metric")) %>% 
     mutate(metric = factor(metric,

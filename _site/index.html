@@ -20,26 +20,26 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>The Mockup Blog: Thomas Mock</title>
+  <title>The Mockup Blog: Blog Posts</title>
   
   
   
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="The Mockup Blog: Thomas Mock"/>
+  <meta property="og:title" content="The Mockup Blog: Blog Posts"/>
   <meta property="og:type" content="article"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="The Mockup Blog"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="The Mockup Blog: Thomas Mock"/>
+  <meta property="twitter:title" content="The Mockup Blog: Blog Posts"/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Mock"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Blog Posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1262,13 +1262,14 @@
   <!--radix_placeholder_site_in_header-->
   <style type="text/css">
   .distill-site-nav {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: #000;
-      font-size: 20px;
-    font-weight: 300;
+    font-family: 'Fira Mono', sans-serif;
+    color: #000;
+    background-color: #fff;
+    font-size: 26px;
+    font-weight: 400;
   }
   @import url('https://fonts.googleapis.com/css2?family=Lato');
-  @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@500');
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Mono');
   
   
   html, body, p {
@@ -1282,6 +1283,14 @@
     
   }
   
+  code {
+    font-family: 'Fira Mono', sans-serif;
+    color: #383838;
+    background: #F5F5F5;
+    font-weight: 400;
+    font-size: 1.0em;
+  }
+  
   
   h1, h2, h3, h4, h5 {
     font-family: 'Fira Mono', sans-serif;
@@ -1289,20 +1298,28 @@
   
   
   .distill-site-nav a {
-    color: #fff;
+    
+    font-family: 'Fira Mono', sans-serif;
+    font-weight: 500;
+    font-size: 26px;
+    color: #000;
     text-decoration: none;
   }
   
   .distill-site-nav a:hover {
-    color: #FF3300;
+    color: #383838;
   }
   
   .nav-dropdown-content a {
-    color: #000;
+    font-family: 'Fira Mono', sans-serif;
+    font-weight: 500;
+    color: #ffffff;
   }
   
   .distill-site-header {
-    background-color: #000;
+    font-family: 'Fira Mono', sans-serif;
+    font-weight: 500;
+    background-color: #ffffff;
   }
   
   .distill-site-footer {
@@ -1328,7 +1345,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Thomas Mock","authors":[]}
+{"title":"Blog Posts","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1340,7 +1357,14 @@
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
+<a href="resources.html">Resources</a>
 <a href="about.html">About</a>
+<a href="https://twitter.com/thomas_mock">
+<i class="fa fa-twitter"></i>
+</a>
+<a href="https://github.com/jthomasmock">
+<i class="fa fa-github"></i>
+</a>
 <a href="index.xml">
 <i class="fa fa-rss"></i>
 </a>
@@ -1670,7 +1694,7 @@ function init_posts_list() {
 
 <div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
-<h1 class="posts-list-caption">Thomas Mock</h1>
+<h1 class="posts-list-caption">Blog Posts</h1>
 <a href="posts/2020-05-01-tidy-long-models/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["espnscrapeR","NFL","tidyverse","tidymodels"]}</script>
 <div class="metadata">
@@ -1742,7 +1766,7 @@ function init_posts_list() {
 <div class="publishedDate">Jan. 2, 2019</div>
 </div>
 <div class="thumbnail">
-<img/>
+<img data-src="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png"/>
 </div>
 <div class="description">
 <h2>TidyTuesday enhancements</h2>
@@ -1871,13 +1895,13 @@ function init_posts_list() {
 <!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>Thomas Mock</h1>
+<h1>Blog Posts</h1>
 
 </div>
 
 
 <div class="d-article">
-
+<hr />
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

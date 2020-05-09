@@ -15,7 +15,7 @@
       <description>Pivoting data from wide to long to run many models at once</description>
       <guid>https://themockup.netlify.app/posts/2020-05-01-tidy-long-models</guid>
       <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
-      <media:content url="https://themockup.netlify.app/posts/2020-05-01-tidy-long-models/distill-preview.png" medium="image" type="image/png" width="6400" height="6400"/>
+      <media:content url="https://themockup.netlify.app/posts/2020-05-01-tidy-long-models/distill-preview.png" medium="image" type="image/png" width="2400" height="2400"/>
     </item>
     <item>
       <title>Bigger, nflfastR, dbplyr</title>
@@ -59,6 +59,7 @@
       <description>Making #TidyTuesday better.</description>
       <guid>https://themockup.netlify.app/posts/2019-01-02-tidytuesday-enhancements</guid>
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      <media:content url="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png" medium="image" type="image/png"/>
     </item>
     <item>
       <title>TidyTuesday</title>

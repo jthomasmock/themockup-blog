@@ -9,10 +9,8 @@ base_url: https://themockup.netlify.app/
 preview: https://i.imgur.com/o6k6Rne.jpg
 output: 
   distill::distill_article:
-    css: styles.css
     toc: true
     toc_depth: 4
-    self_contained: true
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"

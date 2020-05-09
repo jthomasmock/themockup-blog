@@ -8,7 +8,7 @@ base_url: https://themockup.netlify.app/
 date: 04-05-2018
 output: 
   distill::distill_article:
-    css: styles.css
+    toc: false
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"

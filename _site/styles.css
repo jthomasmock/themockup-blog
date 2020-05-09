@@ -1,11 +1,12 @@
 .distill-site-nav {
-  color: rgba(255, 255, 255, 0.8);
-  background-color: #000;
-    font-size: 20px;
-  font-weight: 300;
+  font-family: 'Fira Mono', sans-serif;
+  color: #000;
+  background-color: #fff;
+  font-size: 26px;
+  font-weight: 400;
 }
 @import url('https://fonts.googleapis.com/css2?family=Lato');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@500');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono');
 
 
 html, body, p {
@@ -19,6 +20,14 @@ html, body, p {
   
 }
 
+code {
+  font-family: 'Fira Mono', sans-serif;
+  color: #383838;
+  background: #F5F5F5;
+  font-weight: 400;
+  font-size: 1.0em;
+}
+
 
 h1, h2, h3, h4, h5 {
   font-family: 'Fira Mono', sans-serif;
@@ -26,20 +35,28 @@ h1, h2, h3, h4, h5 {
 
 
 .distill-site-nav a {
-  color: #fff;
+  
+  font-family: 'Fira Mono', sans-serif;
+  font-weight: 500;
+  font-size: 26px;
+  color: #000;
   text-decoration: none;
 }
 
 .distill-site-nav a:hover {
-  color: #FF3300;
+  color: #383838;
 }
 
 .nav-dropdown-content a {
-  color: #000;
+  font-family: 'Fira Mono', sans-serif;
+  font-weight: 500;
+  color: #ffffff;
 }
 
 .distill-site-header {
-  background-color: #000;
+  font-family: 'Fira Mono', sans-serif;
+  font-weight: 500;
+  background-color: #ffffff;
 }
 
 .distill-site-footer {

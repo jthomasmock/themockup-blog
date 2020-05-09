@@ -8,10 +8,8 @@ date: 03-18-2018
 base_url: https://themockup.netlify.app/
 output: 
   distill::distill_article:
-    css: styles.css
     toc: true
     toc_depth: 4
-    self_contained: true
 preview: https://i.imgur.com/LIvMxbN.jpg
 twitter:
   site: "@thomas_mock"
