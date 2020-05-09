@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
   <url>
-    <loc>https://themockup.netlify.app/about.html</loc>
+    <loc>https://themockup.blog/about.html</loc>
     <lastmod>2020-05-09T10:16:48-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/</loc>
-    <lastmod>2020-05-09T10:26:10-05:00</lastmod>
+    <loc>https://themockup.blog/</loc>
+    <lastmod>2020-05-09T10:55:52-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/resources.html</loc>
+    <loc>https://themockup.blog/resources.html</loc>
     <lastmod>2020-05-09T10:31:13-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2020-05-01-tidy-long-models/</loc>
-    <lastmod>2020-05-09T10:41:13-05:00</lastmod>
+    <loc>https://themockup.blog/posts/2020-05-01-tidy-long-models/</loc>
+    <lastmod>2020-05-09T11:02:23-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2019-04-28-nflfastr-dbplyr-rsqlite/</loc>
-    <lastmod>2020-05-09T10:37:59-05:00</lastmod>
+    <loc>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite/</loc>
+    <lastmod>2020-05-09T11:01:37-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2020-04-03-beer-and-pdftools-a-vignette/</loc>
+    <loc>https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette/</loc>
     <lastmod>2020-04-04T10:14:02-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2020-04-03-crossing-10000-tidy-simulation/</loc>
-    <lastmod>2020-05-09T10:38:53-05:00</lastmod>
+    <loc>https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation/</loc>
+    <lastmod>2020-05-09T11:02:08-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2019-01-09-add-a-logo-to-your-plot/</loc>
-    <lastmod>2020-05-09T10:37:44-05:00</lastmod>
+    <loc>https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot/</loc>
+    <lastmod>2020-05-09T11:00:56-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2019-01-02-tidytuesday-enhancements/</loc>
-    <lastmod>2020-05-09T10:37:09-05:00</lastmod>
+    <loc>https://themockup.blog/posts/2019-01-02-tidytuesday-enhancements/</loc>
+    <lastmod>2020-05-09T11:00:31-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/</loc>
-    <lastmod>2020-05-09T10:35:43-05:00</lastmod>
+    <loc>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/</loc>
+    <lastmod>2020-05-09T11:00:24-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2018-12-11-functional-progamming-in-r-with-purrr/</loc>
-    <lastmod>2020-05-09T10:34:56-05:00</lastmod>
+    <loc>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/</loc>
+    <lastmod>2020-05-09T11:00:12-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.netlify.app/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/</loc>
-    <lastmod>2020-05-09T10:33:33-05:00</lastmod>
+    <loc>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/</loc>
+    <lastmod>2020-05-09T10:57:10-05:00</lastmod>
   </url>
 </urlset>

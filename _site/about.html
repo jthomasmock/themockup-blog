@@ -36,6 +36,8 @@
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="The Mockup Blog: About this blog"/>
   <meta property="twitter:description" content="Ignore the man behind the curtain"/>
+  <meta property="twitter:site" content="@thomas_mock"/>
+  <meta property="twitter:creator" content="@thomas_mock"/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
@@ -1262,14 +1264,31 @@
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166026965-1"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-166026965-1');
+  </script>
   <style type="text/css">
   .distill-site-nav {
     font-family: 'Fira Mono', sans-serif;
     color: #000;
     background-color: #fff;
-    font-size: 26px;
+    font-size: 15px;
     font-weight: 400;
   }
+  
+  .distill-site-header {
+    font-family: 'Fira Mono', sans-serif;
+    color: #000;
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+  }
+  
+  
   @import url('https://fonts.googleapis.com/css2?family=Lato');
   @import url('https://fonts.googleapis.com/css2?family=Fira+Mono');
   
@@ -1303,7 +1322,7 @@
     
     font-family: 'Fira Mono', sans-serif;
     font-weight: 500;
-    font-size: 26px;
+    font-size: 15px;
     color: #000;
     text-decoration: none;
   }

@@ -4,7 +4,7 @@ description: |
   A weekly social data project in R
 author:
   - name: Thomas Mock
-base_url: https://themockup.netlify.app/
+base_url: https://themockup.blog
 date: 04-05-2018
 output: 
   distill::distill_article:

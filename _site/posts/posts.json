@@ -17,7 +17,7 @@
       "tidymodels"
     ],
     "preview": "posts/2020-05-01-tidy-long-models/distill-preview.png",
-    "last_modified": "2020-05-09T10:41:13-05:00",
+    "last_modified": "2020-05-09T11:02:23-05:00",
     "preview_width": 2400,
     "preview_height": 2400
   },
@@ -40,7 +40,7 @@
       "tidyverse"
     ],
     "preview": "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1526&q=80",
-    "last_modified": "2020-05-09T10:37:59-05:00"
+    "last_modified": "2020-05-09T11:01:37-05:00"
   },
   {
     "path": "posts/2020-04-03-beer-and-pdftools-a-vignette/",
@@ -75,7 +75,7 @@
       "probability"
     ],
     "preview": "posts/2020-04-03-crossing-10000-tidy-simulation/distill-preview.png",
-    "last_modified": "2020-05-09T10:38:53-05:00",
+    "last_modified": "2020-05-09T11:02:08-05:00",
     "preview_width": 5400,
     "preview_height": 3600
   },
@@ -96,7 +96,7 @@
       "ggplot2"
     ],
     "preview": "https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "last_modified": "2020-05-09T10:37:44-05:00"
+    "last_modified": "2020-05-09T11:00:56-05:00"
   },
   {
     "path": "posts/2019-01-02-tidytuesday-enhancements/",
@@ -115,7 +115,7 @@
       "Automation"
     ],
     "preview": "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png",
-    "last_modified": "2020-05-09T10:37:09-05:00"
+    "last_modified": "2020-05-09T11:00:31-05:00"
   },
   {
     "path": "posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/",
@@ -134,7 +134,7 @@
       "Community"
     ],
     "preview": "https://i.imgur.com/AXfD3Fk.png",
-    "last_modified": "2020-05-09T10:35:43-05:00"
+    "last_modified": "2020-05-09T11:00:24-05:00"
   },
   {
     "path": "posts/2018-12-11-functional-progamming-in-r-with-purrr/",
@@ -153,7 +153,7 @@
       "statistics"
     ],
     "preview": "https://i.imgur.com/LIvMxbN.jpg",
-    "last_modified": "2020-05-09T10:34:56-05:00"
+    "last_modified": "2020-05-09T11:00:12-05:00"
   },
   {
     "path": "posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/",
@@ -168,6 +168,6 @@
     "date": "2018-03-16",
     "categories": [],
     "preview": "https://i.imgur.com/o6k6Rne.jpg",
-    "last_modified": "2020-05-09T10:33:33-05:00"
+    "last_modified": "2020-05-09T10:57:10-05:00"
   }
 ]

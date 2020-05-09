@@ -4,7 +4,7 @@ description: |
   Tidy simulation with dice rolls
 author:
   - name: Thomas Mock
-base_url: https://themockup.netlify.com/
+base_url: https://themockup.blog
 date: 01-07-2020
 output: 
   distill::distill_article:

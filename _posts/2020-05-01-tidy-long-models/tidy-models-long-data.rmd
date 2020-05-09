@@ -4,7 +4,7 @@ description: |
   Pivoting data from wide to long to run many models at once
 author:
   - name: Thomas Mock
-base_url: https://themockup.netlify.app/
+base_url: https://themockup.blog
 date: 05-01-2020
 output: 
   distill::distill_article:

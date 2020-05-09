@@ -18,6 +18,13 @@ navbar:
       href: https://github.com/jthomasmock
     - icon: fa fa-rss
       href: index.xml
+collections:
+  posts:
+    share: [twitter, linkedin]
+google_analytics: "UA-166026965-1"
+twitter:
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
 output: 
   distill::distill_article:
     css: styles.css

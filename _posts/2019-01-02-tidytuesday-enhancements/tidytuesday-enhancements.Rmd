@@ -8,7 +8,7 @@ date: 01-02-2019
 output: 
   distill::distill_article:
     toc: false
-base_url: https://themockup.netlify.app/
+base_url: https://themockup.blog/
 preview: https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png
 categories:
   - TidyTuesday
