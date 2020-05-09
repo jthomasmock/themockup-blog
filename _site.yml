@@ -2,7 +2,7 @@ name: "the-mockup-blog"
 title: "The Mockup Blog"
 description: |
   Exploring the wonderful world of #RStats
-base_url: https://themockup.netlify.app
+base_url: https://themockup.blog
 output_dir: "_site"
 navbar:
   right:
