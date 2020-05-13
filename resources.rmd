@@ -1,0 +1,17 @@
+---
+title: "Resources"
+description: |
+  Things I've made
+---
+
+### [`#TidyTuesday`](https://github.com/rfordatascience/tidytuesday/blob/master/README.md)
+
+A weekly data project aimed at the R ecosystem.
+
+### [`espnscrapeR`](https://jthomasmock.github.io/espnscrapeR/)
+
+A small package to scrape or collect NFL data from ESPN or NFL.com
+
+### [Improving your `nflscrapR` graphics](https://jthomasmock.github.io/nfl_plotting_cookbook/#how_to_improve_your_nflscrapr_graphics)
+
+An in-depth guide to data visualization and techniques for play-by-play data.
