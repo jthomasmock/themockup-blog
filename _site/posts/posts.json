@@ -1,5 +1,26 @@
 [
   {
+    "path": "posts/2020-05-13-reactable-tables-the-rest-of-the-owl/",
+    "title": "reactable - An Interactive Tables Guide",
+    "description": "Part 2: How to draw the rest of the owl.",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": {}
+      }
+    ],
+    "date": "2020-05-15",
+    "categories": [
+      "NFL",
+      "tidyverse",
+      "tables"
+    ],
+    "preview": "posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png",
+    "last_modified": "2020-05-13T16:14:41-05:00",
+    "preview_width": 1093,
+    "preview_height": 652
+  },
+  {
     "path": "posts/2020-05-13-qb-salaries-vs-playoff-appearances/",
     "title": "QB Salaries vs Playoff Appearances",
     "description": "Interactive tables make bad takes more fun.",
