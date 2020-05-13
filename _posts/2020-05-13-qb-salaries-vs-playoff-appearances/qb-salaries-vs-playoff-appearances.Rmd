@@ -43,7 +43,7 @@ Moo had a good counter-argument (just include the *10th* QB) - Tom Brady ruins p
 
 So let's make a table of salary data vs playoff appearances! We could make this static (screenshot for Twitter) - but just for funs lets stretch a bit and make an interactive table with nice formatting. 
 
-# `reactable` - interactive data tables
+### `reactable` - interactive data tables
 
 `reactable` is an R wrapper for the `react table` javascript library. Greg Lin at RStudio recently made this package and you can install it from CRAN with `install.packages("reactable")`. I adapted this table from some examples at the [`reactable` package site](https://glin.github.io/reactable/articles/womens-world-cup/womens-world-cup.html).
 
@@ -56,11 +56,11 @@ playoff_salary %>%
   reactable()
 ```
 
-# More Complex
+### More Complex
 
 At the risk of drawing the rest of the `*&?$ing` owl here is a more complex interactive table using the same data.  
 
-Enjoy and consume at your own risk!
+Part 2 of this blogpost will go step-by-step into creating more complex tables, but for now...enjoy and consume at your own risk!
 
 (Full code at bottom of this post)
 
