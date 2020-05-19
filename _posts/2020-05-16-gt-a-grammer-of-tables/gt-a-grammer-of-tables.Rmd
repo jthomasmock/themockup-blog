@@ -35,7 +35,7 @@ A preview of the table to come!
 
 `gt` is an R package for generating formatted tables from dataframes in R with a Grammar of Tables.
 
-If you want to go deeper than this basic guide, check out the [`gt` site](https://glin.github.io/reactable/articles/examples.html), which has lots of examples!
+If you want to go deeper than this basic guide, check out the [`gt` site](https://gt.rstudio.com/), which has lots of examples!
 
 Raw data comes from: [Pro Football Reference](https://www.pro-football-reference.com/play-index/pgl_finder.cgi?request=1&match=game&year_min=2014&year_max=2019&season_start=1&season_end=-1&pos%5B%5D=QB&is_starter=E&game_type=P&career_game_num_min=1&career_game_num_max=400&qb_start_num_min=1&qb_start_num_max=400&game_num_min=0&game_num_max=99&week_num_min=0&week_num_max=99&qb_started=Y&c5val=1.0&order_by=pass_td) & [Over the Cap](https://overthecap.com/position/quarterback/)
 
@@ -88,9 +88,9 @@ The core parts we want to change are:
 
 # Conditional Colors
 
-We covered conditional colors in the previous [post](https:themockup.blog/) - check it out if you have further questions about building or using palettes.
+We covered conditional colors in the previous [post](https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/) - check it out if you have further questions about building or using palettes.
 
-The MAJOR value add that `gt` provides is rather than having to write our own palette parser it has a built in one via `gt::data_color()`! Just to refresh us on our palette, we're using an adaptation of the `viridis` palette.
+A MAJOR value add that `gt` provides is rather than having to write our own palette parser it has a built in one via `gt::data_color()`! Just to refresh us on our palette, we're using an adaptation of the `viridis` palette.
 
 ```{r scales show_col}
 scales::show_col(c("#ffffff", "#f2fbd2", "#c9ecb4", "#93d3ab", "#35b0ab"))
