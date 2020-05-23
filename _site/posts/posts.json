@@ -2,7 +2,7 @@
   {
     "path": "posts/2020-05-22-parsing-json-in-r-with-jsonlite/",
     "title": "Easily parsing JSON in R with jsonlite and purrr",
-    "description": "Oh my god that's JSON Bourne!",
+    "description": "It's turtles all the way down...",
     "author": [
       {
         "name": "Thomas Mock",
@@ -19,7 +19,7 @@
       "purrr"
     ],
     "preview": "https://upload.wikimedia.org/wikipedia/commons/c/c0/PSM_V10_D562_The_hindoo_earth.jpg",
-    "last_modified": "2020-05-23T12:23:44-05:00"
+    "last_modified": "2020-05-23T13:02:32-05:00"
   },
   {
     "path": "posts/2020-05-16-gt-a-grammer-of-tables/",

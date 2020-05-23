@@ -1,7 +1,7 @@
 ---
 title: "Easily parsing JSON in R with jsonlite and purrr"
 description: |
-  Oh my god that's JSON Bourne!
+  It's turtles all the way down...
 author:
   - name: Thomas Mock
 base_url: https://themockup.blog
@@ -67,16 +67,19 @@ In the interactive `jsonedit()` viewer below:
 listviewer::jsonedit(raw_json, height = "800px", mode = "view")
 ```
 
-Now as you're searching notice that it provies the depth/level you're in. The only awkward part is like JavaScript it indexes from 0... so as usual note that `index == 0` is `index == 1` in R. 
+Now as you're searching notice that it provides the depth/level you're in. The only awkward part is like JavaScript it indexes from 0... so as usual note that `index == 0` is `index == 1` in R. 
 
 For example:
 
 If you search for `81.8` and click on the `81.8` cell, you'll get the following location:
 
-`object > athletes > categories > 0 > totals > 0 > 0` which is equivalent to:  
-`raw_json$athletes$categories[[1]]$totals[[1]][[1]]` in R. 
+`object > athletes > categories > 0 > totals > 0 > 0`  
 
-This strategy can allow you to explore interactively, while the code below is more of moving through the `JSON` object in R.
+which is equivalent to the following in R:  
+
+`raw_json$athletes$categories[[1]]$totals[[1]][[1]]` 
+
+The `listviewer` strategy can allow you to explore interactively, while the code below is more of moving through the `JSON` object in R.
 
 ### The code
 
@@ -168,13 +171,14 @@ str(raw_json, max.level = 2)
 
 ## Get at the list
 
-Because the `JSON` file is parsed into R as nested lists, we can access various parts of it through base R with either the `$` or with `[[` + name. Let's try this by trying to access:
-- raw_json to athletes and looking at it's structure, again using the `max.level` argument to prevent extra printing.
+Because the `JSON` file is parsed into R as nested lists, we can access various parts of it through base R with either the `$` or with `[[` + name. Let's try this by trying to access:  
+- `raw_json` to `athletes` and looking at it's structure, again using the `max.level` argument to prevent extra printing.
 
 
 ```{r}
 raw_json$athletes %>% str(max.level = 1)
 
+# this does the same thing!
 raw_json[["athletes"]] %>% str(max.level = 1)
 ```
 
@@ -213,10 +217,11 @@ Stick with me for one more example and then we'll get into `purrr`!
 raw_json$athletes$categories[[1]][3][[1]]
 ```
 
-So we know:
-- the QB names and teams (`raw_json$athletes$athlete`) and apparently their stats are in a different part of the `JSON` file (`aw_json$athletes$categories`).
+So we know:  
+- The QB names and teams (`raw_json$athletes$athlete`)  
+- Their stats are in a different part of the `JSON` file (`aw_json$athletes$categories`)  
 
-If you wanted to you could combine the `athlete` dataframe with their stats with a `for loop`. There are additional way of optimizing this (potentially convert to matrix and then to data.frame or use `lapply`), but I just want to show that it's possible and fairly readable! An example with `lapply` is below as well.
+If you wanted to you could combine the `athlete` dataframe with their stats with a `for loop`. There are additional way of optimizing this (potentially convert to matrix and then to data.frame), but I just want to show that it's possible and fairly readable! An example with `lapply` is below as well. Note that since we're not pre-allocating our data.frame, this is likely the slowest method. It's ok for our 30 iteration example, but is likely not the best strategy for large `JSON` files.
 
 ```{r}
 df_interest <- raw_json$athletes$athlete[c("displayName", "teamName", "teamShortName")]
@@ -248,6 +253,7 @@ final_loop_df <- cbind(df_interest, pbp_out)
 glimpse(final_loop_df)
 ```
 
+Let's try this again, but with a function and iterating that function with `lapply`.
 
 ```{r}
 # extract the core name dataframe
@@ -281,7 +287,7 @@ list_pbp_df <- do.call("rbind.data.frame", list_qbr_stats)
 cbind(df_interest, list_pbp_df) %>% glimpse()
 ```
 
-Now, I typically don't suggest using a `for loop` as per [Advanced R](https://adv-r.hadley.nz/control-flow.html#loops) this approach can be prone to some common pitfalls. Similarily, the `apply` family of functions are very powerful but for [some folks](https://jennybc.github.io/purrr-tutorial/bk01_base-functions.html) they find that it doesn't quite fit with their mental model or is inconsistent. 
+Now, I typically don't suggest using a `for loop` as per [Advanced R](https://adv-r.hadley.nz/control-flow.html#loops) this approach can be prone to some common pitfalls which can lead to performance deficits or side effects. Similarily, the `apply` family of functions are very powerful but for [some folks](https://jennybc.github.io/purrr-tutorial/bk01_base-functions.html) they find that it doesn't quite fit with their mental model or is inconsistent in the expected output. 
 
 As an alternative to loops and/or `apply`, we can use `purrr`, AND `purrr` can also help us a lot with actually parsing through the `JSON` itself! I also think that other `tidyverse` tools like `tidyr` for `unnest_wider` and `unpack`/`hoist` are useful here as alternative strategies!
 
