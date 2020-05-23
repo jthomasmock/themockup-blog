@@ -15,3 +15,7 @@ A small package to scrape or collect NFL data from ESPN or NFL.com
 ### [Improving your `nflscrapR` graphics](https://jthomasmock.github.io/nfl_plotting_cookbook/#how_to_improve_your_nflscrapr_graphics)
 
 An in-depth guide to data visualization and techniques for play-by-play data.
+
+### [Intro to `tidymodels` with `nflscrapR` data - HANIC edition Slides](https://jthomasmock.github.io/nfl_hanic/)
+
+A short presentation on using `tidymodels` to predict whether the opposing team will run or pass. Reminder: all models are bad - some are useful.

@@ -17,7 +17,7 @@ navbar:
     - icon: fa fa-github
       href: https://github.com/jthomasmock
     - icon: fa fa-rss
-      href: index.xml
+      href: sitemap.xml
 collections:
   posts:
     share: [twitter, linkedin]
