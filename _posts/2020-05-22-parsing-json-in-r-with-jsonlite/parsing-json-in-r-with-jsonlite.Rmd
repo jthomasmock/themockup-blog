@@ -17,7 +17,7 @@ categories:
   - web scraping
   - API
   - purrr
-preview: https://upload.wikimedia.org/wikipedia/commons/c/c0/PSM_V10_D562_The_hindoo_earth.jpg
+preview: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/PSM_V10_D562_The_hindoo_earth.jpg/800px-PSM_V10_D562_The_hindoo_earth.jpg
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
