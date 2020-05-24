@@ -17,7 +17,7 @@ categories:
   - web scraping
   - API
   - purrr
-preview: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/PSM_V10_D562_The_hindoo_earth.jpg/800px-PSM_V10_D562_The_hindoo_earth.jpg
+preview: distill-preview.jpg
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
@@ -34,6 +34,8 @@ url_json <- "https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/qbr?
 # get the raw json into R
 raw_json <- jsonlite::fromJSON(url_json)
 ```
+
+![It's turtles all the way down, source: https://en.wikipedia.org/wiki/Turtles_all_the_way_down](distill-preview.jpg)
 
 # Don't bury the lede
 
@@ -77,7 +79,7 @@ If you search for `81.8` and click on the `81.8` cell, you'll get the following 
 
 which is equivalent to the following in R:  
 
-`raw_json$athletes$categories[[1]]$totals[[1]][[1]]` 
+`raw_json[["athletes"]][["categories"]][[1]][["totals"]][[1]][[1]]` 
 
 The `listviewer` strategy can allow you to explore interactively, while the code below is more of moving through the `JSON` object in R.
 
@@ -118,9 +120,7 @@ Now that you have explored the raw data via `jsonedit` and you see where we are 
 
 # [It's Turtles all the way down](https://en.wikipedia.org/wiki/Turtles_all_the_way_down)
 
-![](https://upload.wikimedia.org/wikipedia/commons/c/c0/PSM_V10_D562_The_hindoo_earth.jpg)
-
-At it's heart `JSON` is essentially nested lists of lists of strings, vectors, or other objects.
+At it's heart `JSON` is essentially nested lists of lists of strings, vectors, or other objects - it's really just lists full of other objects all the way down.
 
 While there are many reasons WHY `JSON` is actually a great format for things like... surprise JavaScript! It isn't the easiest to work with in R for interactive coding as the trusty old dataframe/tibble.
 
@@ -171,8 +171,17 @@ str(raw_json, max.level = 2)
 
 ## Get at the list
 
-Because the `JSON` file is parsed into R as nested lists, we can access various parts of it through base R with either the `$` or with `[[` + name. Let's try this by trying to access:  
-- `raw_json` to `athletes` and looking at it's structure, again using the `max.level` argument to prevent extra printing.
+Because the `JSON` file is parsed into R as nested lists, we can access various parts of it through base R with either the `$` or with `[[` + name. Full details around subsetting lists and vectors are available in [Advanced R](https://adv-r.hadley.nz/subsetting.html).
+
+Let's try these out by trying to access:  
+- `raw_json` to `athletes`  (`raw_json[["athletes"]]`)
+- Looking at it's structure, again using the `max.level` argument to prevent extra printing.
+
+I'd like to note that I'll be switching back and forth a bit between `$` and `[[` subsetting, as both accomplish the same thing, where `$` is faster to type, but `[[` is a bit more strict. Also to access by numerical position, you HAVE to use `[[`.
+
+<aside> 
+Again, full details around subsetting lists and vectors are available in [Advanced R](https://adv-r.hadley.nz/subsetting.html). This is definitely worth reading for edge cases, pitfalls, and lots of nice examples that go beyond the scope of this blog post.
+</aside>
 
 
 ```{r}
