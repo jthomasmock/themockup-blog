@@ -45,10 +45,37 @@ Because this is going to be a bit of a journey, I don't want to bury the lede. I
 
 We're using another NFL example this week, namely we are collecting data from ESPN's Quarterback Rating (QBR) API endpoint. The output website that this API feeds is available [here](https://www.espn.com/nfl/qbr/_/season/2019/seasontype/2) and the API endpoint itself is available [here](https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/qbr?region=us&lang=en&qbrType=seasons&seasontype=2&isqualified=true&sort=schedAdjQBR%3Adesc&season=2019).
 
+## RStudio Viewer
 
-## The lede
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The RStudio viewer is also super useful for navigating, once you have the data in R</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/1264907162884726785?ref_src=twsrc%5Etfw">May 25, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-First off, the `listviewer` package is fantastic! It lets you explore `JSON` in its natural state before it gets converted over to a format that R likes to work with (list on list on list). We can use this to interactively explore the data before we start coding away.
+Additionally, the RStudio IDE itself has a lovely way of parsing through `JSON` files, including the ability to output the code to access specific parts of `JSON` objects!
+
+First - open the `raw_json` with the RStudio viewer.
+
+```{r, eval = FALSE}
+View(raw_json)
+```
+
+![You get a list-viewer type experience with RStudio itself, and it still has search!](rstudio-json.png)
+
+Once it is open you can search for specific object names or navigate similarly to `listviewer`.
+
+![We can see our same `athlete` object as a dataframe!](rstudio-json-opened.png)
+
+Once you search and find something of interest (for example `athletes` object), you can click on the scroll to open it as a temp object in the viewer, or just click the table-arrow button to copy the code to access this level of the object to the console.
+
+![The scroll = temp open and named as the code to access this level of the object eg `raw_json[["athletes"]]`](open-json.png)
+
+Lastly, once you click the scroll you can see the actual underling `athletes` object, which is our dataframe of interest! The highlighted name is the code used to access that object.
+
+![The opened `athletes` object opened through the RStudio Viewer](opened-json.png)
+
+So a couple different ways of parsing through the data interactively! Let's get into the code itself to extract and work with the `JSON` data.
+
+## `listviewer`
+
+Secondly, the `listviewer` package is also fantastic! It lets you explore `JSON` interactively in a similar way to the RStudio Viewer. We can use this to interactively explore the data before we start coding away.
 
 Because we're looking at the 2019 season, I know that Lamar Jackson is the top QB in the dataset, and we can guess at some of the other columns by going to the actual [webpage this API is building](https://www.espn.com/nfl/qbr/_/season/2019/seasontype/2). From that we can assume there are columns for player name, team name, QBR, PAA, PLAYS, etc.
 
@@ -81,35 +108,7 @@ which is equivalent to the following in R:
 
 The `listviewer` strategy can allow you to explore interactively, while the code below is more of moving through the `JSON` object in R. 
 
-# RStudio Viewer
-
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The RStudio viewer is also super useful for navigating, once you have the data in R</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/1264907162884726785?ref_src=twsrc%5Etfw">May 25, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-Additionally, the RStudio IDE itself has a lovely way of parsing through `JSON` files, including the ability to output the code to access specific parts of `JSON` objects!
-
-First - open the `raw_json` with the RStudio viewer.
-
-```{r, eval = FALSE}
-View(raw_json)
-```
-
-![You get a list-viewer type experience with RStudio itself, and it still has search!](rstudio-json.png)
-
-Once it is open you can search for specific object names or navigate similarly to `listviewer`.
-
-![We can see our same `athlete` object as a dataframe!](rstudio-json-opened.png)
-
-Once you search and find something of interest (for example `athletes` object), you can click on the scroll to open it as a temp object in the viewer, or just click the table-arrow button to copy the code to access this level of the object to the console.
-
-![The scroll = temp open and named as the code to access this level of the object eg `raw_json[["athletes"]]`](open-json.png)
-
-Lastly, once you click the scroll you can see the actual underling `athletes` object, which is our dataframe of interest! The highlighted name is the code used to access that object.
-
-![The opened `athletes` object opened through the RStudio Viewer](opened-json.png)
-
-So a couple different ways of parsing through the data interactively! Let's get into the code itself to extract and work with the `JSON` data.
-
-### The code
+## The code
 
 This utilizes `purrr` to get at the various components, but I'll also show how to do this with mostly base R.
 
@@ -134,11 +133,14 @@ get_qbr_data <- function(row_n) {
 }
 
 # create the dataframe and tidy it up
-pluck(raw_json, "athletes", "athlete") %>%
+ex_output <- pluck(raw_json, "athletes", "athlete") %>%
   as_tibble() %>%
-  select(displayName, teamName:teamShortName) %>%
+  select(displayName, teamName:teamShortName, headshot) %>%
   mutate(data = map(row_number(), get_qbr_data)) %>% 
-  unnest_wider(data)
+  unnest_wider(data) %>% 
+  mutate(headshot = pluck(headshot, "href"))
+
+glimpse(ex_output)
 ```
 
 
@@ -154,7 +156,11 @@ My goal today is to show you a few techniques from `tidyr` that can make quick w
 
 # Raw Data and Libraries
 
-Today we need the `tidyverse` and [`jsonlite`](https://github.com/jeroen/jsonlite/) packages. We can read in the `JSON` via `jsonlite::fromJSON()` on the raw url string.
+Today we need the `tidyverse` and [`jsonlite`](https://github.com/jeroen/jsonlite/) packages. We can read in the `JSON` via `jsonlite::fromJSON()` on the raw url string. Huge shoutout to ROpenSci, Jeroen Oooms, Duncan Temple Lang, and Lloyd Hilaiel for this package! A basic vignette can be found [here](https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html).
+
+First off note that I'm using `fromJSON()` which has `simplifyVector = TRUE` - this means some lists will automatically get converted to data.frames, matrices, etc. I'll be using `fromJSON()` for my example today.
+
+After reviewing this post, Hadley Wickham mentioned that he often prefers `jsonlite::read_json()` as it doesn't do this conversion and leaves everything as a list.  His approach is at the end of this blogpost. 
 
 ```{r}
 library(tidyverse)
@@ -169,7 +175,7 @@ raw_json <- jsonlite::fromJSON(url_json)
 
 I highly recommend that you DON'T blindy call `str()` on `JSON` objects - you'll get several pages of `stuff` output to your console.
 
-<aside> Feel free to try it, as an example exercise, but you've been warned. </aside>
+<aside> Feel free to try it, as an example exercise, but you've been warned. `r emo::ji("eyes")` </aside>
 
 I will almost always default to starting with a tool like `listviewer::jsonedit()` that you get a feel for what the structure looks like. Alternatively, you can use of the examples below to work your way through `JSON` files more programatically in just R.
 
@@ -450,6 +456,46 @@ glimpse(final_pluck)
 
 So that's it! A few different approaches to get to the same result, some of the ways to interact with nested JSON, and doing it all with either mostly base or `tidyverse`. So the next time you interact with JSON, I hope you feel better equipped to work with it!
 
+# One more example
+
+If you are using the latest version of `tidyr` (1.1) - check out Hadley's approach to this!
+
+Note that he is using `jsonlite::read_json()` rather than `fromJSON`, this doesn't simplify and keeps everything as it's natural list-state. With `tidyr::unnest()` and `tidyr::hoist()` this is easy to work with!
+
+Don't forget to check out the [rectangling guide](https://tidyr.tidyverse.org/articles/rectangle.html) from the `tidyverse` team.
+
+```{r}
+library(tidyverse)
+library(jsonlite)
+
+# link to the API output as a JSON file
+url_json <- "https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/qbr?region=us&lang=en&qbrType=seasons&seasontype=2&isqualified=true&sort=schedAdjQBR%3Adesc&season=2019"
+
+# get the raw json into R
+raw_json_list <- jsonlite::read_json(url_json)
+
+# get names of the QBR categories
+category_names <- pluck(raw_json_list, "categories", 1, "labels")
+
+# create tibble out of athlete objects
+athletes <- tibble(athlete = pluck(raw_json_list, "athletes"))
+
+qbr_hadley <- athletes %>% 
+  unnest_wider(athlete) %>% 
+  hoist(athlete, "displayName", "teamName", "teamShortName") %>% 
+  unnest_longer(categories) %>% 
+  hoist(categories, "totals") %>% 
+  mutate(totals = map(totals, as.double),
+         totals = map(totals, set_names, category_names)) %>% 
+  unnest_wider(totals) %>% 
+  hoist(athlete, headshot = list("headshot", "href")) %>% 
+  select(-athlete, -categories)
+
+# Is it the same as my version?
+all.equal(final_pluck, qbr_hadley)
+```
+
+
 # TLDR
 
 ```{r}
@@ -473,11 +519,12 @@ get_qbr_data <- function(row_n) {
 }
 
 # create the dataframe and tidy it up
-pluck(raw_json, "athletes", "athlete") %>%
+ex_output <- pluck(raw_json, "athletes", "athlete") %>%
   as_tibble() %>%
   select(displayName, teamName:teamShortName, headshot) %>%
   mutate(data = map(row_number(), get_qbr_data)) %>% 
   unnest_wider(data) %>% 
-  mutate(headshot = pluck(headshot, "href")) %>% 
-  glimpse()
+  mutate(headshot = pluck(headshot, "href"))
+
+glimpse(ex_output)
 ```
