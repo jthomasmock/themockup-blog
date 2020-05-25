@@ -71,7 +71,6 @@ Lastly, once you click the scroll you can see the actual underling `athletes` ob
 
 ![The opened `athletes` object opened through the RStudio Viewer](opened-json.png)
 
-So a couple different ways of parsing through the data interactively! Let's get into the code itself to extract and work with the `JSON` data.
 
 ## `listviewer`
 
@@ -107,6 +106,8 @@ which is equivalent to the following in R:
 `raw_json[["athletes"]][["categories"]][[1]][["totals"]][[1]][[1]]` 
 
 The `listviewer` strategy can allow you to explore interactively, while the code below is more of moving through the `JSON` object in R. 
+
+Let's get into the code itself to extract and work with the `JSON` data.
 
 ## The code
 
