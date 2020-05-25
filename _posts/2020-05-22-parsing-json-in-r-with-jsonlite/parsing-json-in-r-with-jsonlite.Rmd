@@ -56,8 +56,6 @@ Because we're looking at the 2019 season, I know that Lamar Jackson is the top Q
 
 I'll let you do this interactively because that's how'd you use in RStudio, and try searching for:  
 - Lamar Jackson -- important for finding the QB names  
-- Ravens  
-- QBR  
 - 81.8 -- this one is important as a data point  
 
 In the interactive `jsonedit()` viewer below:  
@@ -69,7 +67,7 @@ In the interactive `jsonedit()` viewer below:
 listviewer::jsonedit(raw_json, height = "800px", mode = "view")
 ```
 
-Now as you're searching notice that it provides the depth/level you're in. The only awkward part is like JavaScript it indexes from 0... so as usual note that `index == 0` is `index == 1` in R. 
+Now as you're searching notice that it provides the depth/level you're in. The only awkward part is like JavaScript it indexes from 0... so as usual note that `index == 0` is `index == 1` in R. The `listviewer` author does have a little helper function in this [regard](http://timelyportfolio.github.io/listviewer/reference/number_unnamed.html).
 
 For example:
 
@@ -81,7 +79,35 @@ which is equivalent to the following in R:
 
 `raw_json[["athletes"]][["categories"]][[1]][["totals"]][[1]][[1]]` 
 
-The `listviewer` strategy can allow you to explore interactively, while the code below is more of moving through the `JSON` object in R.
+The `listviewer` strategy can allow you to explore interactively, while the code below is more of moving through the `JSON` object in R. 
+
+# RStudio Viewer
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The RStudio viewer is also super useful for navigating, once you have the data in R</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/1264907162884726785?ref_src=twsrc%5Etfw">May 25, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+Additionally, the RStudio IDE itself has a lovely way of parsing through `JSON` files, including the ability to output the code to access specific parts of `JSON` objects!
+
+First - open the `raw_json` with the RStudio viewer.
+
+```{r, eval = FALSE}
+View(raw_json)
+```
+
+![You get a list-viewer type experience with RStudio itself, and it still has search!](rstudio-json.png)
+
+Once it is open you can search for specific object names or navigate similarly to `listviewer`.
+
+![We can see our same `athlete` object as a dataframe!](rstudio-json-opened.png)
+
+Once you search and find something of interest (for example `athletes` object), you can click on the scroll to open it as a temp object in the viewer, or just click the table-arrow button to copy the code to access this level of the object to the console.
+
+![The scroll = temp open and named as the code to access this level of the object eg `raw_json[["athletes"]]`](open-json.png)
+
+Lastly, once you click the scroll you can see the actual underling `athletes` object, which is our dataframe of interest! The highlighted name is the code used to access that object.
+
+![The opened `athletes` object opened through the RStudio Viewer](opened-json.png)
+
+So a couple different ways of parsing through the data interactively! Let's get into the code itself to extract and work with the `JSON` data.
 
 ### The code
 
