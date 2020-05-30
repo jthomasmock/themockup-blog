@@ -368,16 +368,18 @@ That's it! No setting up `shiny`, no server, you get all this filtering for free
 
 Now while the table-level filtering is nice, you can also communicate between various `crosstalk` enabled widgets, including `plotly` graphs, `reactable`, `DT`, and `leaflet`.
 
-This is a rather minimal example as far as `plotly`, but you can see some of the interaction across the 3 levels (filters, `plotly`, `reactable`).
+This is a rather minimal example as far as `plotly`, but you can see some of the interaction across the 3 levels (filters, `plotly`, `reactable`). The main additions I have for `plotly` are adding specific hover text.
 
-Try filtering `Pos Rank` to 1-5 - Aaron has 7 receivers in this category.
+As a fun exploration - try filtering `Pos Rank` to 1-5 - Rodgers has 7 receivers in this category.
 
 ```{r add plotly, layout="l-body-outset"}
 library(plotly)
 
+# add a div so that the various components get bound together
 div(
   h3("Compare and filter WR touchdowns by QB, Round, or Draft Position"),
   h4("Filter by: round drafted, total TDs, positional rank drafted, or QB"),
+  # use bootstrap columns for the crosstalk stuff
   bscols(
   # bootstrap is built off a 12 wide grid system,
   # so we have 1/6 and 5/6 width below
