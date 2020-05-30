@@ -86,14 +86,14 @@ joined_tds <- clean_top_tds %>%
     rnd == 12 ~ "Undrafted",
     TRUE ~ as.character(rnd)),
     rnd = factor(rnd, levels = c(1:7, "Undrafted"),
-                 labels = c(sprintf("Rnd %s", 1:7), "Undrafted"))) %>%
+                 labels = c(sprintf("Rnd %s", 1:7), "UDFA"))) %>%
   group_by(passer) %>% 
   arrange(desc(n)) %>% 
   select(passer, tm = tm.x, scorer_receiver, n, pos_rank, rnd) %>% 
   mutate(pos_rank = if_else(rnd == "Undrafted", 44, as.double(pos_rank)))
 
 joined_tds %>% 
-  write_rds("nfl_draft/joined_tds.rds")
+  write_rds("joined_tds.rds")
 
 summary_qbs <- joined_tds %>%
   group_by(passer, rnd) %>% 

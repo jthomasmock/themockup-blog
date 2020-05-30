@@ -24,7 +24,7 @@ twitter:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
@@ -252,6 +252,7 @@ Let's try it out!
 library(crosstalk)
 
 joined_tds <- read_rds("joined_tds.rds") %>% 
+  # drop some QBs to keep it at 8 for example purposes
   filter(!passer %in% c("Matthew Stafford", "Carson Palmer", "Eli Manning", 
                         "Matt Ryan"))
 
