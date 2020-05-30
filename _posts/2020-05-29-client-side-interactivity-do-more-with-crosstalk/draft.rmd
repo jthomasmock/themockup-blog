@@ -1,0 +1,131 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(htmltools)
+library(dplyr)
+library(readr)
+library(reactable)
+
+wide_qbs <- readr::read_rds("wide_qb.rds")
+
+GnYlRd <- function(x) rgb(colorRamp(c(viridis::viridis_pal(begin = 0.5, end = 1)(10) %>% rev()))(x), maxColorValue = 255)
+
+
+table_out <- wide_qbs %>% 
+  reactable(
+    pagination = FALSE,
+    searchable = TRUE,
+    striped = TRUE,
+    highlight = TRUE,
+    compact = TRUE,
+    defaultSortOrder = "desc",
+    defaultSorted = c("Rnd 1"),
+    defaultColDef = colDef(
+      style = function(value) {
+        if (!is.numeric(value)) return()
+        normalized <- value/0.756
+        color <- GnYlRd(normalized)
+        list(background = color, fontWeight = "bold")
+      },
+      format = colFormat(percent = TRUE, digits = 1),
+      minWidth = 80
+    ),
+    fullWidth = FALSE,
+    columns = list(
+      passer = colDef(
+        name = "QB",
+      minWidth = 150,
+        style = list(fontFamily = "Lato"),
+    ),
+    Undrafted = colDef(
+      minWidth = 110
+    ),
+    `Rnds 1-3` = colDef(
+      minWidth = 110
+    )
+  ),
+  theme = reactableTheme(
+    style = list(fontFamily = "Fira Mono")
+  ),
+  rowStyle = function(value){
+    if (value == "Aaron Rodgers") {
+      list(background = "rgba(0, 0, 0, 0.05)")
+    }
+  }
+  )
+
+```
+
+```{r, echo = FALSE}
+div(
+  h2("Percent of Touchdowns thrown to players by draft round"),
+  h3("Normalized to each passer's total passing touchdowns"),
+  table_out,
+  "Table: @thomas_mock | Data: pro-football-reference.com"
+)
+```
+<br>
+<br>
+<br>
+
+### Explore the data yourself
+
+Client-side interactivity courtesy of `crosstalk`
+
+```{r, echo = FALSE}
+library(crosstalk)
+library(reactable)
+
+joined_tds <- read_rds("joined_tds.rds")
+
+data <- SharedData$new(joined_tds)
+
+
+with_tooltip <- function(value, tooltip){
+  span(style = "text-decoration: underline;",
+       title = tooltip, value)
+}
+
+bscols(
+  widths = c(2, 10),
+  list(
+    filter_checkbox("type", "Round", data, ~rnd),
+    filter_slider("tds", "Total TDs", data, ~n, width = "100%"),
+    filter_select("qb", "Quarterback", data, ~passer)
+  ),
+  reactable(data, 
+            minRows = 10,
+            columns = list(
+              passer = colDef(
+                name = "QB",
+                minWidth = 150, align = "left"
+                ),
+              tm = colDef(
+                name = "Team",
+                align = "center"
+              ),
+              scorer_receiver = colDef(
+                name = "Receiver",
+                align = "left",
+                minWidth = 150
+              ),
+              n = colDef(
+                name = "TDs Caught",
+                align = "right"
+              ),
+              rnd = colDef(
+                name = "Draft Round",
+                align = "left"
+              ),
+              pos_rank = colDef(
+                header = with_tooltip("Position Draft", "Within their position, what number they were drafted"),
+                align = "right"
+              )
+              )
+            )
+)
+```
+
