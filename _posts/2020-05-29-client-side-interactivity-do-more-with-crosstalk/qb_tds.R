@@ -93,7 +93,7 @@ joined_tds <- clean_top_tds %>%
   mutate(pos_rank = if_else(rnd == "UDFA", 44, as.double(pos_rank)))
 
 joined_tds %>% 
-  write_rds("joined_tds.rds")
+  write_rds("_posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/joined_tds.rds")
 
 summary_qbs <- joined_tds %>%
   group_by(passer, rnd) %>% 
