@@ -81,16 +81,16 @@ joined_tds <- clean_top_tds %>%
   count() %>% ungroup() %>% 
   left_join(skill_draft, by = c("scorer_receiver" = "player")) %>% 
   mutate(rnd = case_when(
-    is.na(rnd) ~ "Undrafted",
+    is.na(rnd) ~ "UDFA",
     rnd == 8 ~ "7",
-    rnd == 12 ~ "Undrafted",
+    rnd == 12 ~ "UDFA",
     TRUE ~ as.character(rnd)),
-    rnd = factor(rnd, levels = c(1:7, "Undrafted"),
+    rnd = factor(rnd, levels = c(1:7, "UDFA"),
                  labels = c(sprintf("Rnd %s", 1:7), "UDFA"))) %>%
   group_by(passer) %>% 
   arrange(desc(n)) %>% 
   select(passer, tm = tm.x, scorer_receiver, n, pos_rank, rnd) %>% 
-  mutate(pos_rank = if_else(rnd == "Undrafted", 44, as.double(pos_rank)))
+  mutate(pos_rank = if_else(rnd == "UDFA", 44, as.double(pos_rank)))
 
 joined_tds %>% 
   write_rds("joined_tds.rds")
@@ -127,7 +127,7 @@ joined_tds %>%
   group_by(scorer_receiver, tm.x) %>% count(sort = TRUE) 
 
 summary_qbs %>% 
-  write_rds("nfl_draft/summary_qbs.rds")
+  write_rds("summary_qbs.rds")
 
 GnYlRd <- function(x) rgb(colorRamp(c(viridis_pal(begin = 0.5, end = 1)(10) %>% rev()))(x), maxColorValue = 255)
 
@@ -144,7 +144,7 @@ wide_qbs <- summary_qbs %>%
   mutate(ratio = round(ratio, digits = 3)) %>% 
   pivot_wider(id_cols = passer, names_from = rnd, values_from = ratio) %>% 
   group_by(passer) %>% 
-  mutate(`Rnds 1-3` = `Rnd 1`+ `Rnd 2` + `Rnd 3`, .before = Undrafted) %>% 
+  mutate(`Rnds 1-3` = `Rnd 1`+ `Rnd 2` + `Rnd 3`, .before = UDFA) %>% 
   ungroup()
 
 wide_qbs %>% write_rds("nfl_draft/wide_qb.rds")
