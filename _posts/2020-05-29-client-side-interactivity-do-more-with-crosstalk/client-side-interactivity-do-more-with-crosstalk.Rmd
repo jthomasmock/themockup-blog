@@ -10,6 +10,7 @@ output:
   distill::distill_article:
     toc: true
     toc_depth: 3
+    self_contained: true
 categories:
   - NFL
   - tidyverse
@@ -17,7 +18,7 @@ categories:
   - plotly
   - tables
   - reactable
-preview: distill-preview.png
+preview: distill-preview.jpg
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
