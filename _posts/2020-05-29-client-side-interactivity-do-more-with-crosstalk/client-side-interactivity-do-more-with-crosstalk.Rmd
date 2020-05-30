@@ -17,7 +17,7 @@ categories:
   - plotly
   - tables
   - reactable
-preview: distill-preview.jpg
+preview: distill-preview.png
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
