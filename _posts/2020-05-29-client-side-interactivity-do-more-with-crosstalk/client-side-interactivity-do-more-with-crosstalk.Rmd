@@ -53,7 +53,7 @@ Like most examples, we'll need additional data for this example. ESPN was kind e
 <br>
 Pretty striking huh? Of these tops QBs, Rodgers has almost no 1st round receivers on his team (or TE/RB). But what about the rest of the story? WHO does he throw TDs to?
 
-Let's take a look at the data, courtesy of pro-football-reference.com. The following 3 data sources got me these results (and the raw csv output can be found [here](TND #### FILL ME IN ###))
+Let's take a look at the data, courtesy of pro-football-reference.com. The following 3 data sources got me these results (and the raw RDS file output can be found [here](https://github.com/jthomasmock/radix_themockup/blob/master/_posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/joined_tds.rds) & [here](https://github.com/jthomasmock/radix_themockup/blob/master/_posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/summary_qbs.rds)).
 
 - [PFR Draft Query](https://www.pro-football-reference.com/play-index/draft-finder.cgi?request=1&year_min=2006&year_max=2020&type=&round_min=1&round_max=30&slot_min=1&slot_max=500&league_id=&team_id=&pos[]=WR&college_id=all&conference=any&show=all)  
   - This allows you to specify positions, years, etc  
@@ -280,7 +280,7 @@ wr_table <- reactable(wr_data,
   columns = list(
     passer = colDef(
       name = "QB",
-      minWidth = 150, align = "left"
+      minWidth = 120, align = "left"
     ),
     tm = colDef(
       name = "Team",
@@ -291,7 +291,6 @@ wr_table <- reactable(wr_data,
     scorer_receiver = colDef(
       name = "Receiver",
       align = "left",
-      minWidth = 150,
       # add count of total receivers
       aggregate = "count"
     ),
@@ -327,6 +326,11 @@ wr_table
 So that table is interactive, but it's all sorting. What about all the special `crosstalk` features?
 
 We can align some filters and the table together with bootstrap columns (similar to setting up shiny structure). These come along with loading `crosstalk`. Note that this is because I'm working in a traditional RMarkdown, and if I were using something like `flexdashboard`, it has alternate and more robust methods of aligning various plots, tables, control boxes, etc.
+
+<br>
+<br>
+
+### Interactive QB Table with Filtering
 
 ```{r add bscols, layout="l-body-outset"}
 # bootstrap columns
