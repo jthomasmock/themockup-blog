@@ -204,7 +204,7 @@ table_out <- wide_qbs %>%
     columns = list(
       passer = colDef(
         name = "QB", # change display name
-        minWidth = 120, # widen the column
+        minWidth = 150, # widen the column
         # highlight Aaron Rodgers
         style = function(value) {
           weight_name <- if (value == "Aaron Rodgers") {
@@ -214,6 +214,9 @@ table_out <- wide_qbs %>%
           }
           list(fontWeight = weight_name, fontFamily = "Lato")
         }
+      ),
+      Undrafted = colDef(
+        name = "UDFA"
       )
     ),
     theme = reactableTheme(
@@ -280,19 +283,22 @@ wr_table <- reactable(wr_data,
   columns = list(
     passer = colDef(
       name = "QB",
-      minWidth = 120, align = "left"
+      minWidth = 120, align = "left",
+      style = list(fontFamily = "Lato")
     ),
     tm = colDef(
       name = "Team",
       align = "center",
       # add unique teams
-      aggregate = "unique"
+      aggregate = "unique",
+      style = list(fontFamily = "Lato")
     ),
     scorer_receiver = colDef(
       name = "Receiver",
       align = "left",
       # add count of total receivers
-      aggregate = "count"
+      aggregate = "count",
+      style = list(fontFamily = "Lato")
     ),
     n = colDef(
       name = "TDs Caught",
@@ -315,8 +321,13 @@ wr_table <- reactable(wr_data,
       # sorted by total tds
       aggregate = "unique"
     )
+  ),
+    theme = reactableTheme(
+      # set a default theme for font across table
+      style = list(fontFamily = "Fira Mono")
+    )
   )
-)
+
 
 wr_table
 
