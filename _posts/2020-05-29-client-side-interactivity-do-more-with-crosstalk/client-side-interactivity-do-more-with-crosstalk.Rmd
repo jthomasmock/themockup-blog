@@ -260,14 +260,14 @@ joined_tds <- read_rds("joined_tds.rds") %>%
 wr_data <- SharedData$new(joined_tds)
 ```
 
-For this first table, we'll just stay simple, with the major addition being that we're adding a longer description to the `pos_rank` column which is a tricky definition. You can now hover over the column label to get a tooltip. I've also done something relatively easy to do, but that adds some complexity. I've grouped each QB so that their WRs display as sub-tables within the parent row.
+For this first table, we'll just stay simple, with the major addition being that we're adding a longer description to the `pos_rank` column which is a tricky definition. You can now hover over the column label to get a tooltip. I've also done something relatively easy to do, but that adds some complexity. I've grouped each QB so that their WRs display as sub-tables within the parent row. You can "open" the quarterback rows by clicking on the arrow next to their name.
 
-This is done with `groupBy` inside `reactable`, and you then define what type of aggregation you want inside the `colDef`. I have unique teams for team, count of total receivers for receiver, sum of total TDs for TDs caught, unique position draft rank for position draft, and frequency for draft round. Note that you can still interact with this table normally, and that we haven't used any special `crosstalk` features yet. Also: side note - I've replaced undrafted players with a `pos_rank` of 44. This is the max of `pos_rank` for drafted players + 1. Deal with it! (`#sorry`).
+The other `reactable` portion I've done is providing specific summary statistics at the level of the QB group. We accomplish this with `groupBy` inside `reactable`, and you then define what type of aggregation you want inside the `colDef`. I have unique teams for team, count of total receivers for receiver, sum of total TDs for TDs caught, unique position draft rank for position draft, and frequency for draft round. Note that you can still interact with this table normally, and that we haven't used any special `crosstalk` features yet. Also: side note - I've replaced undrafted players with a `pos_rank` of 44. This is the max of `pos_rank` for drafted players + 1. Deal with it! (`#sorry`).
 
 <aside> I'm much more interested in spending more time on how-to-guides than adding in 150 undrafted free agent ranks. `r emo::ji("shrug")` </aside>
 
 ```{r add tooltip, layout="l-body-outset"}
-
+h3("Touchdown recipients grouped by quarterback")
 # Create a better tooltip for the specific column of interest
 with_tooltip <- function(value, tooltip) {
   span(
@@ -338,21 +338,27 @@ wr_table
 
 So that table is interactive, but it's all sorting. What about all the special `crosstalk` features?
 
-We can align some filters and the table together with bootstrap columns (similar to setting up shiny structure). These come along with loading `crosstalk`. Note that this is because I'm working in a traditional RMarkdown, and if I were using something like `flexdashboard`, it has alternate and more robust methods of aligning various plots, tables, control boxes, etc.
+We can align some filters and the table together with bootstrap columns (similar to setting up shiny structure). These come along with loading `crosstalk`. Note that this is because I'm working in a traditional RMarkdown to build this `distill` website, and if I were using something like `flexdashboard`, it has alternate and more robust methods of aligning various plots, tables, control boxes, etc.
+
+Also! Note that because I'm using the shared data across multiple areas, if I filter at any stage it will effect ALL the shared data tables. So if you play with the example below, make sure to reset all the settings before continuing on.
 
 <br>
-<br>
-
-### Interactive QB Table with Filtering
 
 ```{r add bscols, layout="l-body-outset"}
 # bootstrap columns
+h3("Interactive QB Table with Filtering")
+
 bscols(
   # bootstrap is built off a 12 wide grid system,
   # so we have 1/6 and 5/6 width below
   widths = c(2, 10),
   list(
     # Create shiny-esque filters
+    # Note that we are defining:
+    # a name for the filter
+    # a display name for the filter
+    # a shared data object
+    # and a column of interest (w/ a ~)
     filter_checkbox("type", "Round", wr_data, ~rnd),
     filter_slider("tds", "Total TDs", wr_data, ~n, width = "100%"),
     filter_slider("pos_rank", "Pos Rank", wr_data, ~pos_rank, width = "100%"),
@@ -407,7 +413,8 @@ wr_table,
 ```
 
 <br>  
-<br>  
+
+So overall - we're able to do some exploration of the data at specific filters very easily and without having to setup or do a lot of extra work.
 
 ### Followup 
 
