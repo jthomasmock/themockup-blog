@@ -1567,8 +1567,12 @@ h1, h2, h3, h4, h5 {
 </blockquote>
 <h3 id="automation-w-parameters">Automation w/ parameters</h3>
 <ul>
-<li>Parameters are data passes to the R Markdown document to generate new outputs from the same code, an example here is generating a custom report for all 50 US states.
+<li>Parameters are data passed to the R Markdown document to generate new outputs from the same code.<br />
+</li>
+<li>An example here is generating a report for all 50 US states.
 <ul>
+<li>Rather than writing 50 reports manually, you can pass a parameter of <code>state</code> to the R Markdown report and render 50x reports at once!<br />
+</li>
 <li>The input R Markdown is always the same, but you pass each state as a parameter programatically to generate a new report for EACH state with it’s data.<br />
 </li>
 </ul></li>
@@ -1582,6 +1586,8 @@ h1, h2, h3, h4, h5 {
 <ul>
 <li>Child documents allow you to bring in OTHER RMarkdown code/documents into a parent, meaning you can use the parent document as a meta-document referencing code/outputs in other documents.
 <ul>
+<li>This can greatly help with the flow/size of a single document and you can essentially modularize portions of the document.</li>
+<li>It’s worth noting that you should read Emily’s post above on building up a robust R Markdown workflow.</li>
 <li><a href="https://bookdown.org/yihui/rmarkdown-cookbook/child-document.html">Child Documents</a><br />
 </li>
 <li><a href="https://yihui.org/knitr/demo/child/">Child Documents - Yihui’s Blog</a></li>
@@ -1599,8 +1605,8 @@ h1, h2, h3, h4, h5 {
 <li><p>R Markdown is a first-class citizen on RStudio Connect, and you can interactively generate new reports based on parameters, or schedule R Markdown documents to re-execute documents on a schedule.</p></li>
 <li><p>Code for <a href="https://solutions.rstudio.com/examples/apps/output-file-etl/">ETL</a> - an example of an ETL process through an automated R Markdown report, this could query against a SQL database or a <code>spark</code> cluster to process ETL jobs, all on a schedule down to the minute or up to a year.<br />
 </p></li>
-<li><p><a href="https://solutions.rstudio.com/examples/scheduling/scheduling/">Scheduled reporting</a> - maybe your boss needs a report built every monday? You can do that too - pulling in new data and re-generating a report on a specific time-schedule all with no need for human intervention.</p></li>
-<li><p><a href="https://solutions.rstudio.com/examples/blastula/conditional-example/">Emailing w/ <code>blastula</code></a> - maybe your boss is too busy to consume a full report every day - send a conditional email directly to them if a specific number is hit or missed all with code in R! This email could is built with R Markdown, and could contain plots, tables, raw data, or ANY R Markdown-based document (so… basically anything).</p></li>
+<li><p><a href="https://solutions.rstudio.com/examples/scheduling/scheduling/">Scheduled reporting</a> - maybe your boss needs a report built every Monday? You can do that too - pulling in new data and re-generating a report on a specific time-schedule all with no need for human intervention.</p></li>
+<li><p><a href="https://solutions.rstudio.com/examples/blastula/conditional-example/">Emailing w/ <code>blastula</code></a> - maybe your boss is too busy to consume a full report every day - send a conditional email directly to them if a specific number is hit or missed all with code in R! This email could is built with R Markdown, and could contain plots, tables, raw data, or attach ANY R Markdown-based document (so… basically anything).</p></li>
 </ul>
 <hr />
 <figure>
@@ -1621,7 +1627,8 @@ h1, h2, h3, h4, h5 {
 <li>Note that for the chunk that outputs the repeated portions, you have to set <code>results="asis"</code> in the chunk option.</li>
 </ul></li>
 </ul>
-<p>Minimal example below with the <a href="https://github.com/allisonhorst/palmerpenguins"><code>palmerpenguins</code> dataset</a>. Placed below as an image due to nesting R Markdown chunks inside R Markdown chunks in a R Markdown-based website. Full code at: <a href="https://git.io/JJBcC">https://git.io/JJBcC</a>.</p>
+<p>Minimal example below with the <a href="https://github.com/allisonhorst/palmerpenguins"><code>palmerpenguins</code> dataset</a>. I’ve included the code as an image placed below, as I’m essentially nesting R Markdown chunks inside R Markdown chunks in a R Markdown-based website. Full copy-pastable code at: <a href="https://git.io/JJBcC">https://git.io/JJBcC</a>.</p>
+<p>Note that I’m writing one function and calling it <code>n</code> times, it would loop across all the data based on the different inputs.</p>
 <figure>
 <img src="loop-code.png" alt="" /><figcaption>Loop Code in RMD</figcaption>
 </figure>
@@ -1633,7 +1640,7 @@ h1, h2, h3, h4, h5 {
 <ul>
 <li><code>whisker</code> is a templating engine for R conforming to the Mustache specification.<br />
 </li>
-<li>It uses <code>glue</code> style syntax to add data to templates either in memory or to an output file.<br />
+<li>It uses <code>glue</code> style syntax to add data to templates either in memory or to an output file, where my mental model is it is <code>glue</code> for documents rather than strings.<br />
 </li>
 <li>You can include templates from all sorts of inputs, like R files, R Markdown, markdown or plain text.<br />
 </li>
@@ -1676,13 +1683,13 @@ Well, $6000, after taxes.</code></pre>
 <li><code>use_template()</code> Used as the engine for a templating function in other packages.</li>
 </ul></li>
 </ul>
-<p>Sharla Gelfand, the Queen of reproducible reporting, put together lots of material using the <code>usethis::use_template()</code> workflow in her work.</p>
+<p>Sharla Gelfand, the “Queen of Reproducible Reporting”, put together lots of material using the <code>usethis::use_template()</code> workflow in their work.</p>
 <ul>
 <li><a href="https://sharla.party/post/usethis-for-reporting/">Sharla Gelfand’s <code>use_template()</code> blogpost</a>
 <ul>
-<li>In short, she turned an annual report from a mess of copy-pasting and manual work into a fast, streamlined, reproducible, and easily repeatable workflow using R, R Markdown, and <code>usethis::use_template()</code>.<br />
+<li>In short, they turned an annual report from a mess of copy-pasting and manual work into a fast, streamlined, reproducible, and easily repeatable workflow using R, R Markdown, and <code>usethis::use_template()</code>.<br />
 </li>
-<li><a href="https://rstudio.com/resources/rstudioconf-2020/don-t-repeat-yourself-talk-to-yourself-repeated-reporting-in-the-r-universe/">Recording</a> of her presentation on the same topic<br />
+<li><a href="https://rstudio.com/resources/rstudioconf-2020/don-t-repeat-yourself-talk-to-yourself-repeated-reporting-in-the-r-universe/">Recording</a> of their presentation on the same topic<br />
 </li>
 <li><a href="https://sharstudioconf.netlify.app/">Slides</a> for that presentation.</li>
 </ul></li>
