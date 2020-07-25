@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>The Mockup Blog</title>
+    <link>https://themockup.blog</link>
+    <atom:link href="https://themockup.blog/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Exploring the wonderful world of R
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Sat, 25 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>How I share knowledge around R Markdown</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</link>
+      <description>
+
+
+&lt;div class="container-fluid main-container"&gt;
+
+
+
+
+&lt;div class="fluid-row" id="header"&gt;
+
+
+
+
+&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+&lt;img src="https://media.giphy.com/media/L7TQTflWNF1YI/giphy.gif" alt="" /&gt;
+&lt;p class="caption"&gt;Gif of a machine creating jelly rolls&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="rmarkdown-for-templating" class="section level2"&gt;
+&lt;h2&gt;RMarkdown for Templating&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Goal&lt;/strong&gt;: Don’t repeat yourself, generate &lt;strong&gt;input&lt;/strong&gt; templates or &lt;strong&gt;output&lt;/strong&gt; documents from code.&lt;/p&gt;
+&lt;p&gt;Using R Markdown for templating is normally thought of for &lt;code&gt;knitr::render()&lt;/code&gt; + parameters, but there’s additional techniques to solve specific problems that don’t fit neatly into paramaterized reports as well.&lt;/p&gt;
+&lt;div id="knitting-w-knitrender" class="section level3"&gt;
+&lt;h3&gt;&lt;a href="https://rmarkdown.rstudio.com/docs/reference/render.html"&gt;Knitting w/ &lt;code&gt;knit::render()&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;This is the first step towards using a template, and lets you generate R Markdown outputs programatically with code. It can be coupled with parameters or with other arguments for outputs locations, etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="looping-outputs" class="section level3"&gt;
+&lt;h3&gt;Looping outputs&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;This is really still focused at data products, but programmatically building up portions WITHIN a document.
+&lt;ul&gt;
+&lt;li&gt;In this example, I’m taking a single function and using &lt;code&gt;purrr::walk()&lt;/code&gt; to generate new outputs from a template within the R Markdown report.&lt;/li&gt;
+&lt;li&gt;Note that for the chunk that outputs the repeated portions, you have to set &lt;code&gt;results="asis"&lt;/code&gt; in the chunk option.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Minimal example below with the &lt;a href="https://github.com/allisonhorst/palmerpenguins"&gt;&lt;code&gt;palmerpenguins&lt;/code&gt; dataset&lt;/a&gt;. Placed below as an image due to nesting R Markdown chunks inside R Markdown chunks in a R Markdown-based website. Full code at: &lt;a href="https://git.io/JJBcC"&gt;https://git.io/JJBcC&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/loop-code.png" alt="" /&gt;
+&lt;p class="caption"&gt;Loop Code in RMD&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Which generates the following document:&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/palmer-penguins.png" alt="" /&gt;
+&lt;p class="caption"&gt;Loop Output in RMD&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="whisker" class="section level3"&gt;
+&lt;h3&gt;&lt;a href="https://github.com/edwindj/whisker"&gt;whisker&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;whisker&lt;/code&gt; is a templating engine for R conforming to the Mustache specification.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;It uses &lt;code&gt;glue&lt;/code&gt; style syntax to add data to templates either in memory or to an output file.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;You can include templates from all sorts of inputs, like R files, R Markdown, markdown or plain text.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;These templates can be local directories, or stored in the &lt;a href="https://r-pkgs.org/inst.html"&gt;&lt;code&gt;inst&lt;/code&gt;&lt;/a&gt; directory of an R package.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Lastly, these can also generate outputs in the same format, eg you can create templates/outputs for R, R Markdown or other plain-text formats!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Minimal &lt;code&gt;whisker&lt;/code&gt; example below:&lt;/p&gt;
+&lt;p&gt;First, some input data:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;data &amp;lt;- list(
+  name = &amp;quot;Chris&amp;quot;, 
+  value = 10000, 
+  taxed_value = 10000 - (10000 * 0.4), 
+  in_ca = TRUE
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then a template:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;template &amp;lt;-
+&amp;#39;Hello {{name}}
+You have just won ${{value}}!
+{{#in_ca}}
+Well, ${{taxed_value}}, after taxes.
+{{/in_ca}}&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, fill the template!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;text &amp;lt;- whisker.render(template, data)
+cat(text)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Output
+Hello Chris
+You have just won $10000!
+Well, $6000, after taxes.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I use &lt;code&gt;whisker&lt;/code&gt; natively to generate the readme files for each week’s &lt;code&gt;#TidyTuesday&lt;/code&gt; submission. Separate blog-post to come for that!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="usethisuse_template" class="section level3"&gt;
+&lt;h3&gt;&lt;code&gt;usethis::use_template()&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Alternatively to natively using &lt;code&gt;whisker&lt;/code&gt; &lt;a href="https://usethis.r-lib.org/reference/use_template.html"&gt;usethis::use_template()&lt;/a&gt; provides a more ready to use function, and uses &lt;code&gt;whisker&lt;/code&gt; internally.
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;use_template()&lt;/code&gt; Used as the engine for a templating function in other packages.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Sharla Gelfand, the Queen of reproducible reporting, put together lots of material using the &lt;code&gt;usethis::use_template()&lt;/code&gt; workflow in her work.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://sharla.party/post/usethis-for-reporting/"&gt;Sharla Gelfand’s &lt;code&gt;use_template()&lt;/code&gt; blogpost&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;In short, she turned an annual report from a mess of copy-pasting and manual work into a fast, streamlined, reproducible, and easily repeatable workflow using R, R Markdown, and &lt;code&gt;usethis::use_template()&lt;/code&gt;.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://rstudio.com/resources/rstudioconf-2020/don-t-repeat-yourself-talk-to-yourself-repeated-reporting-in-the-r-universe/"&gt;Recording&lt;/a&gt; of her presentation on the same topic&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://sharstudioconf.netlify.app/"&gt;Slides&lt;/a&gt; for that presentation.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="fin" class="section level3"&gt;
+&lt;h3&gt;Fin&lt;/h3&gt;
+&lt;p&gt;So that’s an overview of my approach to &lt;strong&gt;sharing knowledge&lt;/strong&gt; around R Markdown, and like Alison said:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;But remember: there is no one way to learn R Markdown, and no one way to teach it either. I love seeing the creativity of the community when introducing the R Markdown family - so keep them coming!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+
+&lt;/div&gt;
+
+&lt;script&gt;
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+&lt;/script&gt;
+
+&lt;!-- tabsets --&gt;
+
+&lt;script&gt;
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown &gt; .nav-tabs &gt; li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+&lt;/script&gt;
+
+&lt;!-- code folding --&gt;
+
+
+&lt;!-- dynamically load mathjax for compatibility with self-contained --&gt;
+&lt;script&gt;
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+&lt;/script&gt;
+
+</description>
+      <distill:md5>6e9b990cdbd67ed6c093ba123a2728fe</distill:md5>
+      <category>rmarkdown</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</guid>
+      <pubDate>Sat, 25 Jul 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://images.unsplash.com/reserve/oIpwxeeSPy1cnwYpqJ1w_Dufer%20Collateral%20test.jpg?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1516&amp;q=80" medium="image" type="text/plain"/>
+    </item>
+    <item>
+      <title>Client-side interactivity - do more with Crosstalk</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk</link>
+      <description>Because sharing data is caring</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>crosstalk</category>
+      <category>plotly</category>
+      <category>tables</category>
+      <category>reactable</category>
+      <guid>https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk</guid>
+      <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/distill-preview.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>Easily parsing JSON in R with jsonlite and purrr</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite</link>
+      <description>It's turtles all the way down...</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>JSON</category>
+      <category>web scraping</category>
+      <category>API</category>
+      <category>purrr</category>
+      <guid>https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite</guid>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite/distill-preview.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>gt - a (G)rammar of (T)ables</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables</link>
+      <description>Not to be confused with a Game of Thrones</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>tables</category>
+      <guid>https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables</guid>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables/distill-preview.png" medium="image" type="image/png" width="1096" height="805"/>
+    </item>
+    <item>
+      <title>reactable - An Interactive Tables Guide</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl</link>
+      <description>Part 2: How to draw the rest of the owl.</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>tables</category>
+      <guid>https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl</guid>
+      <pubDate>Fri, 15 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png" medium="image" type="image/png" width="1093" height="652"/>
+    </item>
+    <item>
+      <title>QB Salaries vs Playoff Appearances</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances</link>
+      <description>Interactive tables make bad takes more fun.</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>tables</category>
+      <guid>https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances</guid>
+      <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances/distill-preview.png" medium="image" type="image/png" width="1093" height="652"/>
+    </item>
+    <item>
+      <title>Flipping tibbles for many models</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-01-tidy-long-models</link>
+      <description>Pivoting data from wide to long to run many models at once</description>
+      <category>espnscrapeR</category>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>tidymodels</category>
+      <guid>https://themockup.blog/posts/2020-05-01-tidy-long-models</guid>
+      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-01-tidy-long-models/distill-preview.png" medium="image" type="image/png" width="2400" height="2400"/>
+    </item>
+    <item>
+      <title>Bigger, nflfastR, dbplyr</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite</link>
+      <description>Doing more with dplyr and SQL</description>
+      <category>NFL</category>
+      <category>nflscrapR</category>
+      <category>nflfastR</category>
+      <category>SQL</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite</guid>
+      <pubDate>Tue, 28 Apr 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1526&amp;q=80" medium="image" type="text/plain"/>
+    </item>
+    <item>
+      <title>Beer and pdftools - a vignette</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette</link>
+      <description>A guide to extracting tables from many PDFs using the pdftools package</description>
+      <guid>https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette</guid>
+      <pubDate>Sat, 04 Apr 2020 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Crossing 10,000 - Tidy simulation</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation</link>
+      <description>Tidy simulation with dice rolls</description>
+      <category>tidyverse</category>
+      <category>purrr</category>
+      <category>simulation</category>
+      <category>probability</category>
+      <guid>https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation</guid>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation/distill-preview.png" medium="image" type="image/png" width="5400" height="3600"/>
+    </item>
+    <item>
+      <title>Add a logo to your plot</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot</link>
+      <description>Put a bird on it - Portlandia.</description>
+      <category>magick</category>
+      <category>data visualization</category>
+      <category>ggplot2</category>
+      <guid>https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot</guid>
+      <pubDate>Wed, 09 Jan 2019 00:00:00 +0000</pubDate>
+      <media:content url="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" medium="image" type="text/plain"/>
+    </item>
+    <item>
+      <title>TidyTuesday enhancements</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2019-01-02-tidytuesday-enhancements</link>
+      <description>Making #TidyTuesday better.</description>
+      <category>TidyTuesday</category>
+      <category>tidyverse</category>
+      <category>Automation</category>
+      <guid>https://themockup.blog/posts/2019-01-02-tidytuesday-enhancements</guid>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      <media:content url="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png" medium="image" type="image/png"/>
+    </item>
+    <item>
+      <title>TidyTuesday</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r</link>
+      <description>A weekly social data project in R</description>
+      <category>TidyTuesday</category>
+      <category>tidyverse</category>
+      <category>Community</category>
+      <guid>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r</guid>
+      <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://i.imgur.com/AXfD3Fk.png" medium="image" type="image/png"/>
+    </item>
+    <item>
+      <title>Functional Progamming in R with purrr</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr</link>
+      <description>Minimizing repetition with further replication</description>
+      <category>purrr</category>
+      <category>tidyverse</category>
+      <category>statistics</category>
+      <guid>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr</guid>
+      <pubDate>Sun, 18 Mar 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://i.imgur.com/LIvMxbN.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>A Gentle Guide to Tidy Statistics in R</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r</link>
+      <description>Working your way through a basic analysis</description>
+      <guid>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r</guid>
+      <pubDate>Fri, 16 Mar 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://i.imgur.com/o6k6Rne.jpg" medium="image" type="image/jpeg"/>
+    </item>
+  </channel>
+</rss>

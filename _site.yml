@@ -1,7 +1,7 @@
 name: "the-mockup-blog"
 title: "The Mockup Blog"
-# description: '|
-#  Exploring the wonderful world of #RStats'
+description: |
+ Exploring the wonderful world of R
 base_url: https://themockup.blog
 output_dir: "_site"
 navbar:
@@ -28,3 +28,5 @@ twitter:
 output: 
   distill::distill_article:
     css: styles.css
+rss:
+  full_content: TRUE

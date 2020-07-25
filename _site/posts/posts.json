@@ -1,5 +1,24 @@
 [
   {
+    "path": "posts/2020-07-25-meta-rmarkdown/",
+    "title": "How I share knowledge around R Markdown",
+    "description": "A meta collection of some R Markdown strategies.",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": {}
+      }
+    ],
+    "date": "2020-07-25",
+    "categories": [
+      "rmarkdown",
+      "tidyverse"
+    ],
+    "preview": "https://images.unsplash.com/reserve/oIpwxeeSPy1cnwYpqJ1w_Dufer%20Collateral%20test.jpg?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1516&q=80",
+    "last_modified": "2020-07-25T13:35:19-05:00",
+    "input_file": "meta-rmarkdown.utf8.md"
+  },
+  {
     "path": "posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/",
     "title": "Client-side interactivity - do more with Crosstalk",
     "description": "Because sharing data is caring",
