@@ -181,7 +181,7 @@ $(document).ready(function () {
       <category>tidyverse</category>
       <guid>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</guid>
       <pubDate>Sat, 25 Jul 2020 00:00:00 +0000</pubDate>
-      <media:content url="https://images.unsplash.com/reserve/oIpwxeeSPy1cnwYpqJ1w_Dufer%20Collateral%20test.jpg?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1516&amp;q=80" medium="image" type="text/plain"/>
+      <media:content url="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/tools-flat.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>Client-side interactivity - do more with Crosstalk</title>
