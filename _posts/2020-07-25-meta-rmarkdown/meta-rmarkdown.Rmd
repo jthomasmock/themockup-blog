@@ -70,6 +70,14 @@ This is the most common use of R Markdown, and is often how it is taught in Univ
 
 > A programming paradigm introduced by Donald Knuth in which a computer program is given an explanation of its logic in a natural language, such as English, interspersed with snippets of macros and traditional source code, from which compilable source code can be generated.
 
+### Not *just* for R
+
+R Markdown obviously has rich support for R-based code and data products, but did you know it also supports:  
+- Native [`Python`](https://bookdown.org/yihui/rmarkdown/language-engines.html) or calling `Python` from R via [`reticulate`](https://rstudio.github.io/reticulate/articles/r_markdown.html)  
+- `SQL` - [Blog post by Irene Steves](https://irene.rbind.io/post/using-sql-in-rstudio/)  
+- [CSS](https://bookdown.org/yihui/rmarkdown-cookbook/html-css.html) or [`JavaScript`](https://livefreeordichotomize.com/2017/01/24/custom-javascript-visualizations-in-rmarkdown/) for all sorts of customization  
+- As well as Bash, Rcpp, Stan, and other formats  
+- All together there are 52(!) possible language engines coming from `knitr`  
 
 ### MVP of [Reproducibility](https://datacarpentry.org/rr-intro/02-toolkit/)
 

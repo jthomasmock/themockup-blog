@@ -63,7 +63,7 @@
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["loop-code.png","palmer-penguins.png","tools-flat.jpg"]}
+  {"type":"character","attributes":{},"value":["loop-code.png","meta-rmarkdown_files/bowser-1.9.3/bowser.min.js","meta-rmarkdown_files/distill-2.2.21/template.v2.js","meta-rmarkdown_files/jquery-1.11.3/jquery.min.js","meta-rmarkdown_files/webcomponents-2.0.0/webcomponents.js","palmer-penguins.png","tools-flat.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 
@@ -1443,6 +1443,7 @@ h1, h2, h3, h4, h5 {
 <li><a href="#how-alison-hill-teaches-r-markdown">How Alison Hill teaches R Markdown</a></li>
 <li><a href="#how-i-share-knowledge-around-r-markdown">How I <strong>share knowledge</strong> around R Markdown</a></li>
 <li><a href="#r-markdown-for-literate-programming">R Markdown for Literate Programming</a><ul>
+<li><a href="#not-just-for-r">Not <em>just</em> for R</a></li>
 <li><a href="#mvp-of-reproducibility">MVP of <span>Reproducibility</span></a></li>
 <li><a href="#exploratory-data-analysis">Exploratory Data Analysis</a></li>
 </ul></li>
@@ -1511,6 +1512,13 @@ h1, h2, h3, h4, h5 {
 <blockquote>
 <p>A programming paradigm introduced by Donald Knuth in which a computer program is given an explanation of its logic in a natural language, such as English, interspersed with snippets of macros and traditional source code, from which compilable source code can be generated.</p>
 </blockquote>
+<h3 id="not-just-for-r">Not <em>just</em> for R</h3>
+<p>R Markdown obviously has rich support for R-based code and data products, but did you know it also supports:<br />
+- Native <a href="https://bookdown.org/yihui/rmarkdown/language-engines.html"><code>Python</code></a> or calling <code>Python</code> from R via <a href="https://rstudio.github.io/reticulate/articles/r_markdown.html"><code>reticulate</code></a><br />
+- <code>SQL</code> - <a href="https://irene.rbind.io/post/using-sql-in-rstudio/">Blog post by Irene Steves</a><br />
+- <a href="https://bookdown.org/yihui/rmarkdown-cookbook/html-css.html">CSS</a> or <a href="https://livefreeordichotomize.com/2017/01/24/custom-javascript-visualizations-in-rmarkdown/"><code>JavaScript</code></a> for all sorts of customization<br />
+- As well as Bash, Rcpp, Stan, and other formats<br />
+- All together there are 52(!) possible language engines coming from <code>knitr</code></p>
 <h3 id="mvp-of-reproducibility">MVP of <a href="https://datacarpentry.org/rr-intro/02-toolkit/">Reproducibility</a></h3>
 <p>Whether you talk about <strong>M</strong>inimum <strong>V</strong>iable <strong>P</strong>roduct or <strong>M</strong>ost <strong>V</strong>aluable <strong>P</strong>layer, it works! Since R Markdown is a form of Literate Programming, you can write all of your comments, notes, and execute your code within it.</p>
 <ul>
