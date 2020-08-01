@@ -240,6 +240,7 @@ $(document).ready(function () {
       <category>tidyverse</category>
       <guid>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</guid>
       <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/modern.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>How I share knowledge around R Markdown</title>
