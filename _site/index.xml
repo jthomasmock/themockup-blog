@@ -12,7 +12,306 @@
       <title>Building a blog with distill</title>
       <dc:creator>Thomas Mock</dc:creator>
       <link>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</link>
-      <description>I love simplicity.</description>
+      <description>
+
+
+&lt;div class="container-fluid main-container"&gt;
+
+
+
+
+&lt;div class="fluid-row" id="header"&gt;
+
+
+
+
+&lt;/div&gt;
+
+
+&lt;pre&gt;&lt;code&gt;
+## Step 6: New post
+
+To create a new post, you can run the following command:  
+`distill::create_post(&amp;quot;title of post&amp;quot;)`
+
+Full arguments seen below! I&amp;#39;ll call out two specific things.  
+
+1. `draft` argument: this prevents the post from being included in the site build until you turn it to `FALSE`. This is useful if you&amp;#39;re working on a blogpost over time, or want to come back to finish it later.  
+2. `date_prefix`: this adds a date like `2020-08-01-blog-post` to the front of whatever your `blog-post` name is. This is useful as it also creates a folder structure that sorts properly, and prevents name clashes.
+
+Whenever you run the `create_post()` command it will generate a new folder and the basic RMarkdown doc to get started with the arguments you passed.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;create_post( title, # mandatory author = “auto”, slug = “auto”, # generates a website slug (URL) date_prefix = TRUE, # adds date for sorting draft = FALSE, edit = interactive() )&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+Note that a nice overview of the Blog Post Workflow is covered at the [`distill` site](https://rstudio.github.io/distill/blog_workflow.html). This includes collaborating via Git Branches (or using them as previews). I push to my main branch all the time since I&amp;#39;m working solo.
+
+## Step 7: Add to Git
+
+We’re following instructions at: [Chapter 17 Existing project, GitHub last | Happy Git and GitHub for the useR](https://happygitwithr.com/existing-github-last.html). If you&amp;#39;re a Git expert, feel free to use whatever method you like. From my experience setting up a few blogs this is the least painful if you&amp;#39;re NOT a Git expert.
+
+&amp;lt;aside&amp;gt; You could also do the create GitHub and then connect it to RStudio route [Chapter 17 Existing project, GitHub last | Happy Git and GitHub for the useR](https://happygitwithr.com/existing-github-last.html#make-and-connect-a-github-repo-option-2). &amp;lt;/aside&amp;gt;
+
+NOTE: if you don’t have a GitHub PAT, get one now by following these instructions [B GitHub Personal Access Tokens | Happy Git and GitHub for the useR](https://happygitwithr.com/github-pat.html).
+
+This will first use Git locally, and then create a new GitHub repo based off your existing local files.  
+
+Run the `usethis::use_git()` command, which will kick off some questions:  
+
+* Don’t commit just yet (Select `3: Not Now`)  
+* Restart RStudio (Select `2: Yes`)  
+
+You will know it all worked when you have the git logo at the top of RStudio  
+
+![Git logo](git.png)
+
+* Click on the Git logo and commit everything, notice we can’t push since 
+we haven’t configured GitHub yet  
+
+![Initial commit](inital-commit.png)
+
+* `usethis::use_github()` — this works if you have already configured a GitHub Personal Access Token  
+  * Next select https if you don’t have SSH keys  
+  * Say `1: yup` to the title and description  
+  
+Example of what your console commands are and their output seen below!
+  
+
+```r
+&amp;gt; usethis::use_github()
+✓ Setting active project to &amp;#39;/Users/thomasmock/demo-distill-blog&amp;#39;
+✓ Checking that current branch is &amp;#39;master&amp;#39;
+Which git protocol to use? (enter 0 to exit) 
+
+1: ssh   &amp;lt;-- presumes that you have set up ssh keys
+2: https &amp;lt;-- choose this if you don&amp;#39;t have ssh keys (or don&amp;#39;t know if you do)
+
+Selection: 2
+● Tip: To suppress this menu in future, put
+  `options(usethis.protocol = &amp;quot;https&amp;quot;)`
+  in your script or in a user- or project-level startup file, &amp;#39;.Rprofile&amp;#39;.
+  Call `usethis::edit_r_profile()` to open it for editing.
+● Check title and description
+  Name:        demo-distill-blog
+  Description: 
+Are title and description ok?
+
+1: Yup
+2: No way
+3: Negative
+
+Selection: 1
+✓ Creating GitHub repository
+✓ Setting remote &amp;#39;origin&amp;#39; to &amp;#39;https://github.com/jthomasmock/demo-distill-blog.git&amp;#39;
+✓ Pushing &amp;#39;master&amp;#39; branch to GitHub and setting remote tracking branch
+✓ Opening URL &amp;#39;https://github.com/jthomasmock/demo-distill-blog&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once this is all run, it should open up a new webpage with your fancy new GitHub repo! Mine opened at: &lt;a href="https://github.com/jthomasmock/demo-distill-blog"&gt;GitHub - jthomasmock/demo-distill-blog&lt;/a&gt;.&lt;/p&gt;
+&lt;div id="step-8-netlify" class="section level2"&gt;
+&lt;h2&gt;Step 8: Netlify&lt;/h2&gt;
+&lt;p&gt;Now that we have our files on Github, we’re ready to deploy via Netlify!&lt;/p&gt;
+&lt;p&gt;You’ll need to Create an account at netlify if you don’t have one already.&lt;/p&gt;
+&lt;div id="once-youre-logged-in" class="section level3"&gt;
+&lt;h3&gt;Once you’re logged in:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;First click on import from Git&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/netlify-new-site.png" alt="" /&gt;
+&lt;p class="caption"&gt;New site from Git&lt;/p&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Click on &lt;code&gt;Configure netlify on GitHub&lt;/code&gt;, and follow their instructions to allow access, and then add the selected repository you want to send over (demo-distill-blog for me)
+&lt;ul&gt;
+&lt;li&gt;Click Save!&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/add-demo-repo.png" alt="" /&gt;
+&lt;p class="caption"&gt;Add specific repo&lt;/p&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Click on &lt;code&gt;demo-distill-blog&lt;/code&gt; or whatever your blog’s name is!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;IMPORTANT&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Make sure to set the &lt;code&gt;Publish Directory&lt;/code&gt; to &lt;code&gt;_site&lt;/code&gt; (so Netlify can find the knitted HTML content)&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;And then click deploy!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/publish-directory.png" alt="" /&gt;
+&lt;p class="caption"&gt;Make sure to set publish directory to _site&lt;/p&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;You’ll get a fun temporary name (mine was &lt;a href="https://confident-meitner-e6e7dc.netlify.app/"&gt;https://confident-meitner-e6e7dc.netlify.app/&lt;/a&gt;). You can change this with the &lt;code&gt;Domain Settings&lt;/code&gt; to &lt;code&gt;some-name.netlify.app&lt;/code&gt; or even purchase a custom domain like I did for example &lt;code&gt;themockup.blog&lt;/code&gt; or what Sharla Gelfand did with &lt;code&gt;sharla.party&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now your website should be up and running! If you don’t see a site (it 404s), then I would check to make sure you set the &lt;code&gt;Publish Director&lt;/code&gt; to &lt;code&gt;_site&lt;/code&gt;, otherwise it won’t know where to find the actual HTML content.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="step-9-blog-post-workflows" class="section level2"&gt;
+&lt;h2&gt;Step 9: Blog post workflows&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Workflow difference: Furthermore, website pages and root pages of blogs are re-rendered when the site is rebuilt but blog articles are not. Each blog article has to be rendered on its own, with intent. Why? Given that R package upgrades have a tendency to break older code, continuously re-rendering old posts is nearly impossible to do without errors, especially over longer periods of time.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This means you can “Build Site” frequently locally to check out how things work. This is personally the workflow I prefer vs having to commit the output to GitHub or a GitHub branch just to see the preview. You can also knit individual blog posts and they will adapt to your theme, so you can again test local changes whenever you’d like!&lt;/p&gt;
+&lt;p&gt;To get things into “production” once you have set up Netlify, you’ll just need to knit the new blog post, then commit and push to GitHub.&lt;/p&gt;
+&lt;p&gt;You can use command line git or the git integration in RStudio.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/git.png" alt="" /&gt;
+&lt;p class="caption"&gt;Example of git in RStudio&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Basic idea is click commit and then push.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/inital-commit.png" alt="" /&gt;
+&lt;p class="caption"&gt;Example of a commit&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="next-steps" class="section level1"&gt;
+&lt;h1&gt;Next Steps&lt;/h1&gt;
+&lt;p&gt;If this guide didn’t provide enough detail, make sure to check out the &lt;a href="https://rstudio.github.io/distill/blog_workflow.html"&gt;Blog Post Workflow&lt;/a&gt; that goes into specific examples, like importing posts from elsewhere, changing URLs, updating old posts, etc.&lt;/p&gt;
+&lt;p&gt;Now that you have a website running you can either leave it exactly as it is formatted, and just add new posts or you can do a little bit of customization to the “About Me”, Home page, etc.&lt;/p&gt;
+&lt;p&gt;A lot of options are already covered at &lt;a href="https://rstudio.github.io/distill/blog.html#next-steps"&gt;Distill for R Markdown: Creating a Blog&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;A few notes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If you want Twitter cards to show up with your images, you need to add a &lt;code&gt;preview: some_img_name.png&lt;/code&gt; argument to the YAML header for each post.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;If you define a custom domain you’ll need to change the &lt;a href="https://rstudio.github.io/distill/blog.html#Configuration"&gt;&lt;code&gt;base_url&lt;/code&gt; at the &lt;code&gt;_site.yml&lt;/code&gt; file&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id="customize-appearance" class="section level2"&gt;
+&lt;h2&gt;Customize Appearance&lt;/h2&gt;
+&lt;p&gt;Probably of most interest to folks is customizing the appearance of the blog.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In general the strategy you should use is to inspect parts of the website for the class names and then you can apply CSS to change it&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;A nice overview of the “Inspect” tool is covered &lt;a href="https://developers.google.com/web/tools/chrome-devtools/open"&gt;here&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;HTML/CSS classes and selectors are covered in the Mozilla docs &lt;a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors"&gt;here&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;To use a custom CSS file, you’ll need to change the output in &lt;code&gt;_site.yml&lt;/code&gt; to include the below:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;output: 
+  distill::distill_article:
+    css: styles.css&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I keep my &lt;code&gt;styles.css&lt;/code&gt; file at the same level as my &lt;code&gt;_site.yml&lt;/code&gt; file.&lt;/p&gt;
+&lt;div id="example-changes" class="section level3"&gt;
+&lt;h3&gt;Example changes&lt;/h3&gt;
+&lt;p&gt;You’ll need to store all of these in your &lt;code&gt;styles.css&lt;/code&gt; file, and note that some of them depend on other changes - specifically to use custom fonts you ALSO have to import the custom fonts!&lt;/p&gt;
+&lt;div id="bold-silver-title-pink-background" class="section level4"&gt;
+&lt;h4&gt;Bold silver title, pink background&lt;/h4&gt;
+&lt;pre class="r"&gt;&lt;code&gt;.distill-site-nav {
+  color: #C0C0C0; 
+  background-color: #FF1493;
+  font-size: 20px;
+  font-weight: 900;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id="want-entire-webpage-to-be-pink" class="section level4"&gt;
+&lt;h4&gt;Want entire webpage to be “pink”?&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;body {
+  background-color: #FF1493;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id="change-hover-color-in-nav-bar" class="section level4"&gt;
+&lt;h4&gt;Change hover color in nav bar&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;.distill-site-nav a:hover {
+  color: #383838;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id="change-header-font-or-color" class="section level4"&gt;
+&lt;h4&gt;Change header font or color&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;/* Change appearance of headers */
+h1, h2, h3, h4, h5 {
+  font-family: &amp;#39;Fira Mono&amp;#39;, sans-serif;
+  color: color: #383838;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id="import-custom-fonts-from-google" class="section level4"&gt;
+&lt;h4&gt;Import custom fonts from Google&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;/* Import fonts from Google&amp;#39;s API */
+@import url(&amp;#39;https://fonts.googleapis.com/css2?family=Lato&amp;#39;);
+@import url(&amp;#39;https://fonts.googleapis.com/css2?family=Fira+Mono&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id="use-those-fonts-throughout" class="section level4"&gt;
+&lt;h4&gt;Use those fonts throughout&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;/* Use specific font in the body of the text */
+html, body, p {
+  
+  font-family: &amp;#39;Lato&amp;#39;, sans-serif;
+  font-weight: 200;
+  line-height: 1.3; 
+  font-size: 1.0em;
+  color: #333333;
+  font-style: normal;
+  
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id="change-in-line-code" class="section level4"&gt;
+&lt;h4&gt;Change in-line code&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;/* Change the appearance of in-line code chunks */
+code {
+  font-family: &amp;#39;Fira Mono&amp;#39;, sans-serif;
+  color: #383838;
+  background: #F5F5F5;
+  font-weight: 400;
+  font-size: 0.9em;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id="change-code-chunk-colors" class="section level4"&gt;
+&lt;h4&gt;Change code chunk colors&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;d-code {
+  background: grey;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+
+&lt;/div&gt;
+
+&lt;script&gt;
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+&lt;/script&gt;
+
+&lt;!-- tabsets --&gt;
+
+&lt;script&gt;
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown &gt; .nav-tabs &gt; li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+&lt;/script&gt;
+
+&lt;!-- code folding --&gt;
+
+
+&lt;!-- dynamically load mathjax for compatibility with self-contained --&gt;
+&lt;script&gt;
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+&lt;/script&gt;
+
+</description>
+      <distill:md5>b00f40f4a8cfa2a615d492eaa38f62d8</distill:md5>
       <category>rmarkdown</category>
       <category>tidyverse</category>
       <guid>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</guid>

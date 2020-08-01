@@ -1489,7 +1489,13 @@ h1, h2, h3, h4, h5 {
 <h2 id="step-2-new-project-from-distill-blog">Step 2: New project from <code>distill blog</code></h2>
 <p>What this is really doing is running the following command, and generates the output below.</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<pre class="r"><code>
+&gt; distill::create_blog(dir = &quot;demo-distill&quot;, title = &quot;Demo Distill&quot;)
+Creating website directory demo-distill
+Creating demo-distill/_site.yml
+Creating demo-distill/index.Rmd
+Creating demo-distill/about.Rmd
+Creating demo-distill/_posts/welcome/welcome.Rmd</code></pre>
 </div>
 <p>This will create a home-directory titled whatever you passed for the <code>dir</code> argument above, so in our case “demo-distill”. This will contain the <code>_site.yml</code>, the <code>about.rmd</code> file, the <code>index.rmd</code> file, and two folders: <code>_posts</code> and <code>_site</code>. You should definitely change the <code>dir</code> and <code>title</code> arguments to whatever you want your site to be named, although you can edit this later with a bit of work.</p>
 <p>While you’re welcome to explore <code>_site</code> I consider it something you SHOULD NOT edit by hand and it will commonly get overridden by rebuilding posts or the whole site. <code>_site</code> is essentially where the built site lives as final HTML and other supporting files. The <code>_posts</code> folder on the other hand contains all the raw RMDs you will use to create posts.</p>
@@ -1504,14 +1510,41 @@ h1, h2, h3, h4, h5 {
 <h2 id="step-4-_site.yml">Step 4: <code>_site.yml</code></h2>
 <p>The <code>_site.yml</code> is where you control the overall details about your blog such as the name, title, description, and the navbar. You can add new “tabs” by changing the <code>_site.yml</code> file, where the default has a navbar with the site name on the left and a “Home” and “About” Tab on the right.</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<pre class="r"><code>
+name: &quot;demo-distill&quot;
+title: &quot;Demo Distill&quot;
+description: |
+  Demo Distill
+output_dir: &quot;_site&quot;
+navbar:
+  right:
+    - text: &quot;Home&quot;
+      href: index.html
+    - text: &quot;About&quot;
+      href: about.html
+output: distill::distill_article</code></pre>
 </div>
 <h2 id="step-5-example-blog-post">Step 5: Example blog post</h2>
 <p>Navigate to <code>_posts</code> -&gt; <code>welcome</code> -&gt; <code>welcome.rmd</code>. This is the default “hello world” example that comes with you <code>distill</code>. Note you can delete that folder completely to drop it from the site, but let’s use it as a practice ground first.</p>
 <p>This is still just a RMarkdown file, but it has a specific YAML header, that contains a title, a description, author, date, and outputs to <code>distill::distill_article()</code>.</p>
 <p>Try adding some more text, code, or other content to this blog post and then knit it! It will generate and show the final output in the RStudio viewer.</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<pre class="r"><code>
+---
+title: &quot;Welcome to Demo Distill&quot;
+description: |
+  Welcome to our new blog, Demo Distill. We hope you enjoy 
+  reading what we have to say!
+author:
+  - name: Nora Jones 
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: 07-27-2020
+output:
+  distill::distill_article:
+    self_contained: false
+---</code></pre>
 </div>
 <h2 id="step-6-new-post">Step 6: New post</h2>
 <p>To create a new post, you can run the following command:<br />
@@ -1567,7 +1600,34 @@ You could also do the create GitHub and then connect it to RStudio route <a href
 </ul>
 <p>Example of what your console commands are and their output seen below!</p>
 <div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+&gt; usethis::use_github()
+✓ Setting active project to &#39;/Users/thomasmock/demo-distill-blog&#39;
+✓ Checking that current branch is &#39;master&#39;
+Which git protocol to use? (enter 0 to exit) 
 
+1: ssh   &lt;-- presumes that you have set up ssh keys
+2: https &lt;-- choose this if you don&#39;t have ssh keys (or don&#39;t know if you do)
+
+Selection: 2
+● Tip: To suppress this menu in future, put
+  `options(usethis.protocol = &quot;https&quot;)`
+  in your script or in a user- or project-level startup file, &#39;.Rprofile&#39;.
+  Call `usethis::edit_r_profile()` to open it for editing.
+● Check title and description
+  Name:        demo-distill-blog
+  Description: 
+Are title and description ok?
+
+1: Yup
+2: No way
+3: Negative
+
+Selection: 1
+✓ Creating GitHub repository
+✓ Setting remote &#39;origin&#39; to &#39;https://github.com/jthomasmock/demo-distill-blog.git&#39;
+✓ Pushing &#39;master&#39; branch to GitHub and setting remote tracking branch
+✓ Opening URL &#39;https://github.com/jthomasmock/demo-distill-blog&#39;</code></pre>
 </div>
 <p>Once this is all run, it should open up a new webpage with your fancy new GitHub repo! Mine opened at: <a href="https://github.com/jthomasmock/demo-distill-blog">GitHub - jthomasmock/demo-distill-blog</a>.</p>
 <h2 id="step-8-netlify">Step 8: Netlify</h2>
@@ -1641,14 +1701,23 @@ You could also do the create GitHub and then connect it to RStudio route <a href
 <li>To use a custom CSS file, you’ll need to change the output in <code>_site.yml</code> to include the below:</li>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
-
+<pre class="r"><code>
+output: 
+  distill::distill_article:
+    css: styles.css</code></pre>
 </div>
 <p>I keep my <code>styles.css</code> file at the same level as my <code>_site.yml</code> file.</p>
 <h3 id="example-changes">Example changes</h3>
 <p>You’ll need to store all of these in your <code>styles.css</code> file, and note that some of them depend on other changes - specifically to use custom fonts you ALSO have to import the custom fonts!</p>
 <h4 id="bold-silver-title-pink-background">Bold silver title, pink background</h4>
 <div class="layout-chunk" data-layout="l-body">
-
+<pre class="r"><code>
+.distill-site-nav {
+  color: #C0C0C0; 
+  background-color: #FF1493;
+  font-size: 20px;
+  font-weight: 900;
+}</code></pre>
 </div>
 <h4 id="want-entire-webpage-to-be-pink">Want entire webpage to be “pink”?</h4>
 <pre><code>
