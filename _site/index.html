@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
+  <link rel="alternate" type="application/rss+xml" href="https://themockup.blog/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -731,6 +732,16 @@
   }
   
   
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+  
+  
   /* Improve display for browsers without grid (IE/Edge <= 15) */
   
   .downlevel {
@@ -1309,6 +1320,10 @@
     font-size: 0.9em;
   }
   
+  d-code {
+    background: #F0F0F0;
+  }
+  
   
   h1, h2, h3, h4, h5 {
     font-family: 'Fira Mono', sans-serif;
@@ -1378,13 +1393,13 @@
 <a href="resources.html">Resources</a>
 <a href="about.html">About</a>
 <a href="https://twitter.com/thomas_mock">
-<i class="fa fa-twitter"></i>
+<i class="fa fa-twitter" aria-hidden="true"></i>
 </a>
 <a href="https://github.com/jthomasmock">
-<i class="fa fa-github"></i>
+<i class="fa fa-github" aria-hidden="true"></i>
 </a>
 <a href="sitemap.xml">
-<i class="fa fa-rss"></i>
+<i class="fa fa-rss" aria-hidden="true"></i>
 </a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
@@ -1713,6 +1728,17 @@ function init_posts_list() {
 <div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
 <h1 class="posts-list-caption">Blog Posts</h1>
+<a href="posts/2020-08-01-building-a-blog-with-distill/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["rmarkdown","tidyverse"]}</script>
+<div class="metadata">
+<div class="publishedDate">Aug. 1, 2020</div>
+</div>
+<div class="thumbnail"></div>
+<div class="description">
+<h2>Building a blog with distill</h2>
+<p>A short description of the post.</p>
+</div>
+</a>
 <a href="posts/2020-07-25-meta-rmarkdown/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["rmarkdown","tidyverse"]}</script>
 <div class="metadata">
@@ -1979,7 +2005,7 @@ function init_posts_list() {
 </li>
 <li>
 <a href="#rmarkdown">rmarkdown</a>
-<span class="category-count">(1)</span>
+<span class="category-count">(2)</span>
 </li>
 <li>
 <a href="#simulation">simulation</a>
@@ -2007,7 +2033,7 @@ function init_posts_list() {
 </li>
 <li>
 <a href="#tidyverse">tidyverse</a>
-<span class="category-count">(12)</span>
+<span class="category-count">(13)</span>
 </li>
 <li>
 <a href="#web_scraping">web scraping</a>

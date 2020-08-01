@@ -7,11 +7,11 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 25 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 01 Aug 2020 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>How I share knowledge around R Markdown</title>
+      <title>Building a blog with distill</title>
       <dc:creator>Thomas Mock</dc:creator>
-      <link>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</link>
+      <link>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</link>
       <description>
 
 
@@ -28,107 +28,166 @@
 &lt;/div&gt;
 
 
-&lt;div class="figure"&gt;
-&lt;img src="https://media.giphy.com/media/L7TQTflWNF1YI/giphy.gif" alt="" /&gt;
-&lt;p class="caption"&gt;Gif of a machine creating jelly rolls&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id="rmarkdown-for-templating" class="section level2"&gt;
-&lt;h2&gt;RMarkdown for Templating&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Goal&lt;/strong&gt;: Don’t repeat yourself, generate &lt;strong&gt;input&lt;/strong&gt; templates or &lt;strong&gt;output&lt;/strong&gt; documents from code.&lt;/p&gt;
-&lt;p&gt;Using R Markdown for templating is normally thought of for &lt;code&gt;knitr::render()&lt;/code&gt; + parameters, but there’s additional techniques to solve specific problems that don’t fit neatly into paramaterized reports as well.&lt;/p&gt;
-&lt;div id="knitting-w-knitrender" class="section level3"&gt;
-&lt;h3&gt;&lt;a href="https://rmarkdown.rstudio.com/docs/reference/render.html"&gt;Knitting w/ &lt;code&gt;knit::render()&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;This is the first step towards using a template, and lets you generate R Markdown outputs programatically with code. It can be coupled with parameters or with other arguments for outputs locations, etc.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id="looping-outputs" class="section level3"&gt;
-&lt;h3&gt;Looping outputs&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;This is really still focused at data products, but programmatically building up portions WITHIN a document.
-&lt;ul&gt;
-&lt;li&gt;In this example, I’m taking a single function and using &lt;code&gt;purrr::walk()&lt;/code&gt; to generate new outputs from a template within the R Markdown report.&lt;/li&gt;
-&lt;li&gt;Note that for the chunk that outputs the repeated portions, you have to set &lt;code&gt;results="asis"&lt;/code&gt; in the chunk option.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Minimal example below with the &lt;a href="https://github.com/allisonhorst/palmerpenguins"&gt;&lt;code&gt;palmerpenguins&lt;/code&gt; dataset&lt;/a&gt;. I’ve included the code as an image placed below, as I’m essentially nesting R Markdown chunks inside R Markdown chunks in a R Markdown-based website. Full copy-pastable code at: &lt;a href="https://git.io/JJBcC"&gt;https://git.io/JJBcC&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Note that I’m writing one function and calling it &lt;code&gt;n&lt;/code&gt; times, it would loop across all the data based on the different inputs.&lt;/p&gt;
-&lt;div class="figure"&gt;
-&lt;img src="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/loop-code.png" alt="" /&gt;
-&lt;p class="caption"&gt;Loop Code in RMD&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Which generates the following document:&lt;/p&gt;
-&lt;div class="figure"&gt;
-&lt;img src="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/palmer-penguins.png" alt="" /&gt;
-&lt;p class="caption"&gt;Loop Output in RMD&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="whisker" class="section level3"&gt;
-&lt;h3&gt;&lt;a href="https://github.com/edwindj/whisker"&gt;whisker&lt;/a&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;whisker&lt;/code&gt; is a templating engine for R conforming to the Mustache specification.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;It uses &lt;code&gt;glue&lt;/code&gt; style syntax to add data to templates either in memory or to an output file, where my mental model is it is &lt;code&gt;glue&lt;/code&gt; for documents rather than strings.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;You can include templates from all sorts of inputs, like R files, R Markdown, markdown or plain text.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;These templates can be local directories, or stored in the &lt;a href="https://r-pkgs.org/inst.html"&gt;&lt;code&gt;inst&lt;/code&gt;&lt;/a&gt; directory of an R package.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;Lastly, these can also generate outputs in the same format, eg you can create templates/outputs for R, R Markdown or other plain-text formats!&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Minimal &lt;code&gt;whisker&lt;/code&gt; example below:&lt;/p&gt;
-&lt;p&gt;First, some input data:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;data &amp;lt;- list(
-  name = &amp;quot;Chris&amp;quot;, 
-  value = 10000, 
-  taxed_value = 10000 - (10000 * 0.4), 
-  in_ca = TRUE
-)
+&lt;pre&gt;&lt;code&gt;
+## Step 6: New post
+
+To create a new post, you can run the following command:  
+`distill::create_post(&amp;quot;title of post&amp;quot;)`
+
+Full arguments seen below! I&amp;#39;ll call out two specific things.  
+
+1. `draft` argument: this prevents the post from being included in the site build until you turn it to `FALSE`. This is useful if you&amp;#39;re working on a blogpost over time, or want to come back to finish it later.  
+2. `date_prefix`: this adds a date like `2020-08-01-blog-post` to the front of whatever your `blog-post` name is. This is useful as it also creates a folder structure that sorts properly, and prevents name clashes.
+
+Whenever you run the `create_post()` command it will generate a new folder and the basic RMarkdown doc to get started with the arguments you passed.
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then a template:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;template &amp;lt;-
-&amp;#39;Hello {{name}}
-You have just won ${{value}}!
-{{#in_ca}}
-Well, ${{taxed_value}}, after taxes.
-{{/in_ca}}&amp;#39;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now, fill the template!&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;text &amp;lt;- whisker.render(template, data)
-cat(text)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;# Output
-Hello Chris
-You have just won $10000!
-Well, $6000, after taxes.&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;I use &lt;code&gt;whisker&lt;/code&gt; natively to generate the readme files for each week’s &lt;code&gt;#TidyTuesday&lt;/code&gt; submission. Separate blog-post to come for that!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id="usethisuse_template" class="section level3"&gt;
-&lt;h3&gt;&lt;code&gt;usethis::use_template()&lt;/code&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Alternatively to natively using &lt;code&gt;whisker&lt;/code&gt; &lt;a href="https://usethis.r-lib.org/reference/use_template.html"&gt;usethis::use_template()&lt;/a&gt; provides a more ready to use function, and uses &lt;code&gt;whisker&lt;/code&gt; internally.
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;use_template()&lt;/code&gt; Used as the engine for a templating function in other packages.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Sharla Gelfand, the “Queen of Reproducible Reporting”, put together lots of material using the &lt;code&gt;usethis::use_template()&lt;/code&gt; workflow in their work.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://sharla.party/post/usethis-for-reporting/"&gt;Sharla Gelfand’s &lt;code&gt;use_template()&lt;/code&gt; blogpost&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;In short, they turned an annual report from a mess of copy-pasting and manual work into a fast, streamlined, reproducible, and easily repeatable workflow using R, R Markdown, and &lt;code&gt;usethis::use_template()&lt;/code&gt;.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://rstudio.com/resources/rstudioconf-2020/don-t-repeat-yourself-talk-to-yourself-repeated-reporting-in-the-r-universe/"&gt;Recording&lt;/a&gt; of their presentation on the same topic&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://sharstudioconf.netlify.app/"&gt;Slides&lt;/a&gt; for that presentation.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id="fin" class="section level3"&gt;
-&lt;h3&gt;Fin&lt;/h3&gt;
-&lt;p&gt;So that’s an overview of my approach to &lt;strong&gt;sharing knowledge&lt;/strong&gt; around R Markdown, and like Alison said:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;But remember: there is no one way to learn R Markdown, and no one way to teach it either. I love seeing the creativity of the community when introducing the R Markdown family - so keep them coming!&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/div&gt;
-&lt;/div&gt;
+&lt;p&gt;create_post( title, # mandatory author = “auto”, slug = “auto”, # generates a website slug (URL) date_prefix = TRUE, # adds date for sorting draft = FALSE, edit = interactive() )&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+Note that a nice overview of the Blog Post Workflow is covered at the [`distill` site](https://rstudio.github.io/distill/blog_workflow.html). This includes collaborating via Git Branches (or using them as previews). I push to my main branch all the time since I&amp;#39;m working solo.
+
+## Step 7: Add to Git
+
+We’re following instructions at: [Chapter 17 Existing project, GitHub last | Happy Git and GitHub for the useR](https://happygitwithr.com/existing-github-last.html). If you&amp;#39;re a Git expert, feel free to use whatever method you like. From my experience setting up a few blogs this is the least painful if you&amp;#39;re NOT a Git expert.
+
+&amp;lt;aside&amp;gt; You could also do the create GitHub and then connect it to RStudio route [Chapter 17 Existing project, GitHub last | Happy Git and GitHub for the useR](https://happygitwithr.com/existing-github-last.html#make-and-connect-a-github-repo-option-2). &amp;lt;/aside&amp;gt;
+
+NOTE: if you don’t have a GitHub PAT, get one now by following these instructions [B GitHub Personal Access Tokens | Happy Git and GitHub for the useR](https://happygitwithr.com/github-pat.html).
+
+This will first use Git locally, and then create a new GitHub repo based off your existing local files.  
+
+Run the `usethis::use_git()` command, which will kick off some questions:  
+
+* Don’t commit just yet (Select `3: Not Now`)  
+* Restart RStudio (Select `2: Yes`)  
+
+You will know it all worked when you have the git logo at the top of RStudio  
+
+![Git logo](git.png)
+
+* Click on the Git logo and commit everything, notice we can’t push since 
+we haven’t configured GitHub yet  
+
+![Initial commit](inital-commit.png)
+
+* `usethis::use_github()` — this works if you have already configured a GitHub Personal Access Token  
+  * Next select https if you don’t have SSH keys  
+  * Say `1: yup` to the title and description  
+  
+Example of what your console commands are and their output seen below!
+  
+
+
+Once this is all run, it should open up a new webpage with your fancy new GitHub repo! Mine opened at: [GitHub - jthomasmock/demo-distill-blog](https://github.com/jthomasmock/demo-distill-blog).
+
+
+## Step 8: Netlify
+
+Now that we have our files on Github, we’re ready to deploy via Netlify!
+
+You&amp;#39;ll need to Create an account at netlify if you don’t have one already. 
+
+### Once you&amp;#39;re logged in:  
+
+
+* First click on import from Git  
+
+![New site from Git](netlify-new-site.png)
+
+* Click on `Configure netlify on GitHub`, and follow their instructions to allow access, and then add the selected repository you want to send over (demo-distill-blog for me)  
+  * Click Save!  
+  
+![Add specific repo](add-demo-repo.png)
+
+* Click on `demo-distill-blog` or whatever your blog&amp;#39;s name is!  
+
+**IMPORTANT**
+
+* Make sure to set the `Publish Directory` to `_site` (so Netlify can find the knitted HTML content)  
+* And then click deploy!  
+
+![Make sure to set publish directory to _site](publish-directory.png)
+
+* You’ll get a fun temporary name (mine was [https://confident-meitner-e6e7dc.netlify.app/](https://confident-meitner-e6e7dc.netlify.app/)). You can change this with the `Domain Settings` to `some-name.netlify.app` or even purchase a custom domain like I did for example `themockup.blog` or what Sharla Gelfand did with `sharla.party`.
+
+Now your website should be up and running! If you don&amp;#39;t see a site (it 404s), then I would check to make sure you set the `Publish Director` to `_site`, otherwise it won&amp;#39;t know where to find the actual HTML content.
+
+## Step 9: Blog post workflows
+
+&amp;gt; Workflow difference: Furthermore, website pages and root pages of blogs are re-rendered when the site is rebuilt but blog articles are not. Each blog article has to be rendered on its own, with intent. Why? Given that R package upgrades have a tendency to break older code, continuously re-rendering old posts is nearly impossible to do without errors, especially over longer periods of time.
+
+
+This means you can &amp;quot;Build Site&amp;quot; frequently locally to check out how things work. This is personally the workflow I prefer vs having to commit the output to GitHub or a GitHub branch just to see the preview. You can also knit individual blog posts and they will adapt to your theme, so you can again test local changes whenever you&amp;#39;d like!
+
+To get things into &amp;quot;production&amp;quot; once you have set up Netlify, you&amp;#39;ll just need to knit the new blog post, then commit and push to GitHub.
+
+You can use command line git or the git integration in RStudio.
+
+![Example of git in RStudio](git.png)
+
+Basic idea is click commit and then push.
+
+![Example of a commit](inital-commit.png)
+
+# Next Steps
+
+If this guide didn&amp;#39;t provide enough detail, make sure to check out the [Blog Post Workflow](https://rstudio.github.io/distill/blog_workflow.html) that goes into specific examples, like importing posts from elsewhere, changing URLs, updating old posts, etc.
+
+Now that you have a website running you can either leave it exactly as it is formatted, and just add new posts or you can do a little bit of customization to the &amp;quot;About Me&amp;quot;, Home page, etc.
+
+A lot of options are already covered at [Distill for R Markdown: Creating a Blog](https://rstudio.github.io/distill/blog.html#next-steps)
+
+A few notes: 
+
+* If you want Twitter cards to show up with your images, you need to add a `preview: some_img_name.png` argument to the YAML header for each post.  
+* If you define a custom domain you’ll need to change the [`base_url` at the `_site.yml` file](https://rstudio.github.io/distill/blog.html#Configuration)  
+
+
+## Customize Appearance 
+
+Probably of most interest to folks is customizing the appearance of the blog.
+
+* In general the strategy you should use is to inspect parts of the website for the class names and then you can apply CSS to change it  
+* A nice overview of the &amp;quot;Inspect&amp;quot; tool is covered [here](https://developers.google.com/web/tools/chrome-devtools/open)  
+* HTML/CSS classes and selectors are covered in the Mozilla docs [here](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors)  
+* To use a custom CSS file, you’ll need to change the output in `_site.yml` to include the below:
+
+
+
+I keep my `styles.css` file at the same level as my `_site.yml` file.
+
+### Example changes
+
+You&amp;#39;ll need to store all of these in your `styles.css` file, and note that some of them depend on other changes - specifically to use custom fonts you ALSO have to import the custom fonts!
+
+#### Bold silver title, pink background
+
+
+
+#### Want entire webpage to be &amp;quot;pink&amp;quot;?
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;body { background-color: #FF1493; }&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### Change hover color in nav bar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;.distill-site-nav a:hover { color: #383838; }&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### Change header font or color&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;/* Change appearance of headers */ h1, h2, h3, h4, h5 { font-family: ‘Fira Mono’, sans-serif; color: color: #383838; }&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### Import custom fonts from Google
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;/* Import fonts from Google’s API */ &lt;span class="citation"&gt;@import&lt;/span&gt; url(‘&lt;a href="https://fonts.googleapis.com/css2?family=Lato" class="uri"&gt;https://fonts.googleapis.com/css2?family=Lato&lt;/a&gt;’); &lt;span class="citation"&gt;@import&lt;/span&gt; url(‘&lt;a href="https://fonts.googleapis.com/css2?family=Fira+Mono" class="uri"&gt;https://fonts.googleapis.com/css2?family=Fira+Mono&lt;/a&gt;’);&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### Use those fonts throughout&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;/* Use specific font in the body of the text */ html, body, p {&lt;/p&gt;
+&lt;p&gt;font-family: ‘Lato’, sans-serif; font-weight: 200; line-height: 1.3; font-size: 1.0em; color: #333333; font-style: normal;&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### Change in-line code&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;/* Change the appearance of in-line code chunks */ code { font-family: ‘Fira Mono’, sans-serif; color: #383838; background: #F5F5F5; font-weight: 400; font-size: 0.9em; }&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+#### Change code chunk colors&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;d-code { background: grey; } ```&lt;/p&gt;
 
 
 
@@ -176,7 +235,17 @@ $(document).ready(function () {
 &lt;/script&gt;
 
 </description>
-      <distill:md5>6e9b990cdbd67ed6c093ba123a2728fe</distill:md5>
+      <distill:md5>b00f40f4a8cfa2a615d492eaa38f62d8</distill:md5>
+      <category>rmarkdown</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</guid>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>How I share knowledge around R Markdown</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</link>
+      <description>A meta collection of some R Markdown strategies.</description>
       <category>rmarkdown</category>
       <category>tidyverse</category>
       <guid>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</guid>

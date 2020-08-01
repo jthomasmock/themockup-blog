@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
-I recently rebuilt my blog in Radix, as opposed to `Blogdown`, mainly as a way to escape Hugo-dependency.
+I recently rebuilt my blog in `distill`, as opposed to `Blogdown`, mainly as a way to escape Hugo-dependency.
 
 If you are interested in building your own blog via R, .rmd, and RStudio - check out this [link](https://rstudio.github.io/radix/blog.html) on how to do so in the Radix format.
 
