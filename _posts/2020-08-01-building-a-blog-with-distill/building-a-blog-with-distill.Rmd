@@ -30,7 +30,7 @@ Please note that the docs for `distill` are already excellent, check them out at
 
 The **first** blog is typically the hardest and I've lived through the uncertainty of not really understanding how all the pieces work together. I appreciate the simplicity of `distill` for this very reason - there's less **stuff** to change. At its core `distill` is *just* writing articles for a website/blog!  
 
-I also have owed this post to many people, namely Maëlle Salmon and JD Long as seen [here](https://twitter.com/thomas_mock/status/1287936723843002368?s=20).
+I also have owed this post to many people, namely Maëlle Salmon and JD Long as seen on my [Twitter](https://twitter.com/thomas_mock/status/1287936723843002368?s=20).
 
 ## Why consider `distill`? 
 
