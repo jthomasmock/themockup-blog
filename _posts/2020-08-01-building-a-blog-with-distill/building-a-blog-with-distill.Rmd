@@ -26,19 +26,34 @@ twitter:
 
 `distill` is "Scientific and technical writing, native to the web". I've gotten lots of requests for creating a `distill` blog from scratch, so I've finally gotten around to building that!
 
-Please note that the docs for `distill` are already excellent, check them out at: [Distill: Creating a Blog](https://rstudio.github.io/distill/blog.html). This guide is aimed more at the end-to-end process of creating your first blog.
+Please note that the docs for `distill` are already excellent, check them out at: [Distill: Creating a Blog](https://rstudio.github.io/distill/blog.html). This guide is aimed more at the end-to-end process of creating your first blog.  
 
-I also have owed this post to many people, namely Maelle Salmon and JD Long as seen [here](https://twitter.com/thomas_mock/status/1287936723843002368?s=20).
+The **first** blog is typically the hardest and I've lived through the uncertainty of not really understanding how all the pieces work together. I appreciate the simplicity of `distill` for this very reason - there's less **stuff** to change. At it's core `distill` is *just* writing articles for a website/blog!  
+
+I also have owed this post to many people, namely Maëlle Salmon and JD Long as seen [here](https://twitter.com/thomas_mock/status/1287936723843002368?s=20).
 
 ## Why consider `distill`? 
 
-No Hugo dependency, no theme dependency, it’s a very stable format with the ability to customize just enough with a bit of effort. Think a self-hosted `Medium.com` in appearance. Very minimal, lightly themed, focused on writing and code! 
+### Pros
 
-I am always amazed at the power of both [`blogdown`](https://github.com/rstudio/blogdown) and the more recent [`hugodown`](https://hugodown.r-lib.org/), but you are still relying on a changing version of Hugo and your theme over time. For a personal blog I personally prefer `distill` because I can get busy, neglect my blog for a year, come back to write a new post, and it still *`just works`*.
+No Hugo dependency, no theme dependency, it’s a very stable format with the ability to customize just enough with a bit of effort. Think a self-hosted `Medium.com` in appearance. Very minimal, lightly themed, focused on writing and code! Again, I think that for someone getting started with creating websites or blogs it's a very good starting point.
 
-However, `blogdown` and `hugodown` allow dramatically more customization. `distill` is truly an **opinionated** framework, and most of the *easy* customization you can do is fonts, colors, and the navbar. If you expect to create gorgeous sites like [education.rstudio.com](education.rstudio.com) or something like Desirée de Leon's [blog](https://desiree.rbind.io/) you’re likely going to be disappointed!
+With `distill` you render/knit your articles locally, so you can quickly check your work without having to deploy to a git branch or to production. I do think that eventually it is a good idea to have git branches for previews or collaboration, but that's a lot to ask for an initial first stab at a blog/site.
 
-Again, for my blog I really just wanted a simple but IMO elegant minimalist theme, so I was fine with the tradeoff.
+`distill` also natively supports [citations](https://rstudio.github.io/distill/citations.html), footnotes and asides, a rich auto-generated table of contents, support for HTMLwidgets and/or custom javascript, and a reader friendly typography that is mobile friendly/auto-adapts to mobile.
+
+Another nicety is the ability to [import a post](https://rstudio.github.io/distill/blog_workflow.html#importing-a-post) with `import_post()`. This means you can take an existing blogpost from another website and import it into your new blog. This "does not require the original R Markdown document used to author the post—you only need access to the published HTML of a post to import it."  
+
+Lastly, I am always amazed at the power of both [`blogdown`](https://github.com/rstudio/blogdown) and the more recent [`hugodown`](https://hugodown.r-lib.org/), but you are still relying on a changing version of Hugo and your theme over time. For a personal blog I *personally* prefer `distill` because I can get busy, neglect my blog for a year, come back to write a new post, and it still *`just works`*.
+
+
+### Cons
+
+However, `blogdown` and `hugodown` allow dramatically more customization. `distill` is truly an **opinionated** framework, and most of the *easy* customization you can do is fonts, colors, and the navbar. If you expect to create gorgeous custom-layout sites like [education.rstudio.com](education.rstudio.com) or something like Desirée de Leon's [blog](https://desiree.rbind.io/) you’re likely going to be disappointed!
+
+Again, for my blog I really just wanted a simple but in my opinion elegant minimalist theme, so I was fine with the tradeoff, as I would have built something similar with `blogdown` anyway!
+
+`blogdown` also supports other static site generators like Jekyll in place of Hugo, and a rich set of pre-built themes across the various generators. The structure of the site is extensible as well, so you can generate a site that truly looks like your own creation.
 
 Lastly, note that you DO lose some niceties like hugo shortcodes for embedding, and again there is ONLY ONE THEME. Most appearance customization is done at the level of custom CSS.
 
@@ -247,7 +262,6 @@ Now your website should be up and running! If you don't see a site (it 404s), th
 ## Step 9: Blog post workflows
 
 > Workflow difference: Furthermore, website pages and root pages of blogs are re-rendered when the site is rebuilt but blog articles are not. Each blog article has to be rendered on its own, with intent. Why? Given that R package upgrades have a tendency to break older code, continuously re-rendering old posts is nearly impossible to do without errors, especially over longer periods of time.
-
 
 This means you can "Build Site" frequently locally to check out how things work. This is personally the workflow I prefer vs having to commit the output to GitHub or a GitHub branch just to see the preview. You can also knit individual blog posts and they will adapt to your theme, so you can again test local changes whenever you'd like!
 
