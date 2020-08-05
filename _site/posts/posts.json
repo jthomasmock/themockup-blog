@@ -1,5 +1,28 @@
 [
   {
+    "path": "posts/2020-08-05-a-bar-chart-5-ways/",
+    "title": "A bar chart 5 ways in ggplot2",
+    "description": "Andy, Tom, and ggplot2 walk into a bar...",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-05",
+    "categories": [
+      "data visualization",
+      "ggplot2",
+      "tidyverse",
+      "web scraping"
+    ],
+    "preview": "posts/2020-08-05-a-bar-chart-5-ways/label_above.png",
+    "last_modified": "2020-08-05T16:57:18-05:00",
+    "input_file": "a-bar-chart-5-ways.utf8.md",
+    "preview_width": 14000,
+    "preview_height": 6000
+  },
+  {
     "path": "posts/2020-08-01-building-a-blog-with-distill/",
     "title": "Building a blog with distill",
     "description": "I love simplicity.",
@@ -15,7 +38,7 @@
       "tidyverse"
     ],
     "preview": "posts/2020-08-01-building-a-blog-with-distill/modern.jpeg",
-    "last_modified": "2020-08-03T14:00:20-05:00",
+    "last_modified": "2020-08-03T16:05:44-05:00",
     "input_file": "building-a-blog-with-distill.utf8.md"
   },
   {
