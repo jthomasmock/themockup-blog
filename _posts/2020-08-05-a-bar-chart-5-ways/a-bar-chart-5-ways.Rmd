@@ -15,7 +15,7 @@ categories:
   - ggplot2
   - tidyverse
   - web scraping
-preview: preview.png
+preview: CopyOfpreview.png
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
@@ -101,7 +101,7 @@ font_height_bars <- df %>%
                        breaks = scales::breaks_pretty(n = 10)
                        )
 
-ggsave("font_height_bars.png", font_height_bars, dpi = 1000,
+ggsave("font_height_bars.png", font_height_bars, dpi = 300,
        height = 6, width = 14, units = "in")
 ```
 
@@ -127,7 +127,7 @@ invis_gridline <- df %>%
     scale_x_continuous(limits = c(0,2.7), expand = c(0, 0),
                        breaks = scales::breaks_pretty(n = 10))
 
-ggsave("invis_gridline.png", invis_gridline, dpi = 1000,
+ggsave("invis_gridline.png", invis_gridline, dpi = 300,
        height = 6, width = 14, units = "in")
 ```
 
@@ -157,7 +157,7 @@ direct_label <- df %>%
     scale_x_continuous(limits = c(0,2.7), expand = c(0, 0),
                        breaks = scales::breaks_pretty(n = 10))
 
-ggsave("direct_label.png", direct_label, dpi = 1000,
+ggsave("direct_label.png", direct_label, dpi = 300,
        height = 6, width = 14, units = "in")
 
 ```
@@ -190,7 +190,7 @@ label_above <- df %>%
     scale_x_continuous(limits = c(0,2.7), expand = c(0, 0),
                        breaks = scales::breaks_pretty(n = 10))
 
-ggsave("label_above.png", label_above, dpi = 1000,
+ggsave("label_above.png", label_above, dpi = 300,
        height = 6, width = 14, units = "in")
 ```
 
@@ -222,7 +222,7 @@ lollipop_bar <- df %>%
                        breaks = scales::breaks_pretty(n = 10)) +
     NULL
 
-ggsave("lollipop_bar.png", lollipop_bar, dpi = 1000,
+ggsave("lollipop_bar.png", lollipop_bar, dpi = 300,
        height = 8, width = 16, units = "in")
 ```
 
