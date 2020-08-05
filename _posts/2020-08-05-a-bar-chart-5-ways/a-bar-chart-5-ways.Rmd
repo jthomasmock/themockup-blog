@@ -15,7 +15,7 @@ categories:
   - ggplot2
   - tidyverse
   - web scraping
-preview: label_above.png
+preview: preview.png
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
@@ -35,7 +35,7 @@ tweetrmd::tweet_screenshot("https://twitter.com/visualisingdata/status/115149864
 ```
 <br>
 
-[Andy Kirk](https://twitter.com/visualisingdata/status/1151443335049023489?s=20) put together [Five Ways to present bar charts](https://www.visualisingdata.com/2019/07/five-ways-to-present-bar-charts/) as part of his `Five ways to...`  series back in 2019. 
+[Andy Kirk](https://twitter.com/visualisingdata/status/1151443335049023489?s=20) put together [Five Ways to present bar charts](https://www.visualisingdata.com/2019/07/five-ways-to-present-bar-charts/) as part of his `Five ways to...`  series back in 2019. The plots below are *his* original ideas, just recreated in `ggplot2`.
 
 I originally recreated his plots in `ggplot2` and published them as a [gist](https://gist.github.com/jthomasmock/2db9db2c534a48af9e2330758be90b8b) and on [Twitter](https://twitter.com/thomas_mock/status/1151492858215567362?s=20) in July 2019, stumbled upon it again recently, and thought why not capture it as a proper blog-post! 
 

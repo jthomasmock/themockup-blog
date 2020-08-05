@@ -30,8 +30,8 @@
 
 &lt;div id="credit" class="section level2"&gt;
 &lt;h2&gt;Credit&lt;/h2&gt;
-&lt;p&gt;&lt;img src="file5e351646f1f3_files/figure-html/embed%20tweet-1.png" width="672" /&gt; &lt;br&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://twitter.com/visualisingdata/status/1151443335049023489?s=20"&gt;Andy Kirk&lt;/a&gt; put together &lt;a href="https://www.visualisingdata.com/2019/07/five-ways-to-present-bar-charts/"&gt;Five Ways to present bar charts&lt;/a&gt; as part of his &lt;code&gt;Five ways to...&lt;/code&gt; series back in 2019.&lt;/p&gt;
+&lt;p&gt;&lt;img src="file612868a35857_files/figure-html/embed%20tweet-1.png" width="672" /&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://twitter.com/visualisingdata/status/1151443335049023489?s=20"&gt;Andy Kirk&lt;/a&gt; put together &lt;a href="https://www.visualisingdata.com/2019/07/five-ways-to-present-bar-charts/"&gt;Five Ways to present bar charts&lt;/a&gt; as part of his &lt;code&gt;Five ways to...&lt;/code&gt; series back in 2019. The plots below are &lt;em&gt;his&lt;/em&gt; original ideas, just recreated in &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;I originally recreated his plots in &lt;code&gt;ggplot2&lt;/code&gt; and published them as a &lt;a href="https://gist.github.com/jthomasmock/2db9db2c534a48af9e2330758be90b8b"&gt;gist&lt;/a&gt; and on &lt;a href="https://twitter.com/thomas_mock/status/1151492858215567362?s=20"&gt;Twitter&lt;/a&gt; in July 2019, stumbled upon it again recently, and thought why not capture it as a proper blog-post!&lt;/p&gt;
 &lt;p&gt;Additionally, when I originally made these remakes, &lt;code&gt;ggplot2&lt;/code&gt; required &lt;code&gt;coord_flip()&lt;/code&gt; whereas the most recent version of &lt;code&gt;ggplot2&lt;/code&gt; allows you to natively create horizontal bar charts! I’ve thus changed a little bit of the code from the original gist to reflect the new options in &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Again thank you to Andy Kirk for the prompt! Make sure to check out his &lt;a href="https://www.visualisingdata.com/"&gt;blog&lt;/a&gt; in general for all sorts of great data viz tips.&lt;/p&gt;
@@ -100,7 +100,7 @@ Note that there is &lt;code&gt;\&lt;/code&gt; in front of the song name and in t
 
 ggsave(&amp;quot;font_height_bars.png&amp;quot;, font_height_bars, dpi = 1000,
        height = 6, width = 14, units = &amp;quot;in&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/font_height_bars.png" width="7000" /&gt; # Chart 2: Bars with &lt;code&gt;invisible&lt;/code&gt; gridlines&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/font_height_bars.png" width="7000" /&gt; # Chart 2: Bars with invisible gridlines&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;invis_gridline &amp;lt;- df %&amp;gt;% 
     filter(num_rank &amp;lt;=10) %&amp;gt;% 
     ggplot(aes(x = streams, y = fct_reorder(lab_text, streams))) +
@@ -252,7 +252,7 @@ $(document).ready(function () {
       <category>web scraping</category>
       <guid>https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways</guid>
       <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
-      <media:content url="https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/label_above.png" medium="image" type="image/png" width="14000" height="6000"/>
+      <media:content url="https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/a-bar-chart-5-ways_files/figure-html5/embed tweet-1.png" medium="image" type="image/png" width="1100" height="1260"/>
     </item>
     <item>
       <title>Building a blog with distill</title>

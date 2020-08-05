@@ -16,11 +16,11 @@
       "tidyverse",
       "web scraping"
     ],
-    "preview": "posts/2020-08-05-a-bar-chart-5-ways/label_above.png",
-    "last_modified": "2020-08-05T16:57:18-05:00",
+    "preview": "posts/2020-08-05-a-bar-chart-5-ways/a-bar-chart-5-ways_files/figure-html5/embed tweet-1.png",
+    "last_modified": "2020-08-05T17:10:13-05:00",
     "input_file": "a-bar-chart-5-ways.utf8.md",
-    "preview_width": 14000,
-    "preview_height": 6000
+    "preview_width": 1100,
+    "preview_height": 1260
   },
   {
     "path": "posts/2020-08-01-building-a-blog-with-distill/",
