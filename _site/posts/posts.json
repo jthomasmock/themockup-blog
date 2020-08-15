@@ -43,8 +43,8 @@
   },
   {
     "path": "posts/2020-07-25-meta-rmarkdown/",
-    "title": "How I share knowledge around R Markdown",
-    "description": "A meta collection of some R Markdown strategies.",
+    "title": "Meta RMarkdown - Taxonomy and Use cases",
+    "description": "A meta collection of all things R Markdown.",
     "author": [
       {
         "name": "Thomas Mock",
@@ -57,8 +57,8 @@
       "tidyverse"
     ],
     "preview": "posts/2020-07-25-meta-rmarkdown/tools-flat.jpg",
-    "last_modified": "2020-07-27T10:00:24-05:00",
-    "input_file": {}
+    "last_modified": "2020-08-15T10:45:27-05:00",
+    "input_file": "meta-rmarkdown.utf8.md"
   },
   {
     "path": "posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/",

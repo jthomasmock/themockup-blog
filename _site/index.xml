@@ -30,7 +30,7 @@
 
 &lt;div id="credit" class="section level2"&gt;
 &lt;h2&gt;Credit&lt;/h2&gt;
-&lt;p&gt;&lt;img src="file62fb634fbec7_files/figure-html/embed%20tweet-1.png" width="672" /&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef26472d7889f_files/figure-html/embed%20tweet-1.png" width="672" /&gt; &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://twitter.com/visualisingdata/status/1151443335049023489?s=20"&gt;Andy Kirk&lt;/a&gt; put together &lt;a href="https://www.visualisingdata.com/2019/07/five-ways-to-present-bar-charts/"&gt;Five Ways to present bar charts&lt;/a&gt; as part of his &lt;code&gt;Five ways to...&lt;/code&gt; series back in 2019. The plots below are &lt;em&gt;his&lt;/em&gt; original ideas, just recreated in &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;I originally recreated his plots in &lt;code&gt;ggplot2&lt;/code&gt; and published them as a &lt;a href="https://gist.github.com/jthomasmock/2db9db2c534a48af9e2330758be90b8b"&gt;gist&lt;/a&gt; and on &lt;a href="https://twitter.com/thomas_mock/status/1151492858215567362?s=20"&gt;Twitter&lt;/a&gt; in July 2019, stumbled upon it again recently, and thought why not capture it as a proper blog-post!&lt;/p&gt;
 &lt;p&gt;Additionally, when I originally made these remakes, &lt;code&gt;ggplot2&lt;/code&gt; required &lt;code&gt;coord_flip()&lt;/code&gt; whereas the most recent version of &lt;code&gt;ggplot2&lt;/code&gt; allows you to natively create horizontal bar charts! I’ve thus changed a little bit of the code from the original gist to reflect the new options in &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
@@ -69,11 +69,11 @@ $ rank           &amp;lt;chr&amp;gt; &amp;quot;1&amp;quot;, &amp;quot;2&amp;quot
 $ song_name      &amp;lt;chr&amp;gt; &amp;quot;\&amp;quot;Shape of You\&amp;quot;&amp;quot;, &amp;quot;\&amp;quot;Rockstar\&amp;quot;&amp;quot;, &amp;quot;\&amp;quot;One D…
 $ artist         &amp;lt;chr&amp;gt; &amp;quot;Ed Sheeran&amp;quot;, &amp;quot;Post Malone featuring 21 Sava…
 $ album          &amp;lt;chr&amp;gt; &amp;quot;÷&amp;quot;, &amp;quot;Beerbongs &amp;amp; Bentleys&amp;quot;, &amp;quot;Views&amp;quot;, &amp;quot;Colla…
-$ streams        &amp;lt;dbl&amp;gt; 2.561, 1.973, 1.889, 1.823, 1.739, 1.582, 1.…
+$ streams        &amp;lt;dbl&amp;gt; 2.570, 1.981, 1.895, 1.830, 1.763, 1.599, 1.…
 $ date_published &amp;lt;chr&amp;gt; &amp;quot;6 January 2017&amp;quot;, &amp;quot;15 September 2017&amp;quot;, &amp;quot;5 Ap…
 $ num_rank       &amp;lt;dbl&amp;gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1…
-$ streams_comma  &amp;lt;chr&amp;gt; &amp;quot;2,561&amp;quot;, &amp;quot;1,973&amp;quot;, &amp;quot;1,889&amp;quot;, &amp;quot;1,823&amp;quot;, &amp;quot;1,739&amp;quot;,…
-$ streams_text   &amp;lt;chr&amp;gt; &amp;quot;2.56 billion streams&amp;quot;, &amp;quot;1.97&amp;quot;, &amp;quot;1.89&amp;quot;, &amp;quot;1.8…
+$ streams_comma  &amp;lt;chr&amp;gt; &amp;quot;2,570&amp;quot;, &amp;quot;1,981&amp;quot;, &amp;quot;1,895&amp;quot;, &amp;quot;1,830&amp;quot;, &amp;quot;1,763&amp;quot;,…
+$ streams_text   &amp;lt;chr&amp;gt; &amp;quot;2.57 billion streams&amp;quot;, &amp;quot;1.98&amp;quot;, &amp;quot;1.9&amp;quot;, &amp;quot;1.83…
 $ lab_text       &amp;lt;glue&amp;gt; &amp;quot;1. \&amp;quot;Shape of You\&amp;quot; by Ed Sheeran&amp;quot;, &amp;quot;2. \&amp;quot;…&lt;/code&gt;&lt;/pre&gt;
 &lt;aside&gt;
 Note that there is &lt;code&gt;\&lt;/code&gt; in front of the song name and in the lab_text as there we have to escape the &lt;code&gt;"&lt;/code&gt; in each of those strings.
@@ -565,10 +565,174 @@ $(document).ready(function () {
       <media:content url="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/modern.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
-      <title>How I share knowledge around R Markdown</title>
+      <title>Meta RMarkdown - Taxonomy and Use cases</title>
       <dc:creator>Thomas Mock</dc:creator>
       <link>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</link>
-      <description>A meta collection of some R Markdown strategies.</description>
+      <description>
+
+
+&lt;div class="container-fluid main-container"&gt;
+
+
+
+
+&lt;div class="fluid-row" id="header"&gt;
+
+
+
+
+&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+&lt;img src="https://media.giphy.com/media/L7TQTflWNF1YI/giphy.gif" alt="" /&gt;
+&lt;p class="caption"&gt;Gif of a machine creating jelly rolls&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="rmarkdown-for-templating" class="section level2"&gt;
+&lt;h2&gt;RMarkdown for Templating&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Goal&lt;/strong&gt;: Don’t repeat yourself, generate &lt;strong&gt;input&lt;/strong&gt; templates or &lt;strong&gt;output&lt;/strong&gt; documents from code.&lt;/p&gt;
+&lt;p&gt;Using R Markdown for templating is normally thought of for &lt;code&gt;knitr::render()&lt;/code&gt; + parameters, but there’s additional techniques to solve specific problems that don’t fit neatly into paramaterized reports as well.&lt;/p&gt;
+&lt;div id="knitting-w-knitrender" class="section level3"&gt;
+&lt;h3&gt;&lt;a href="https://rmarkdown.rstudio.com/docs/reference/render.html"&gt;Knitting w/ &lt;code&gt;knit::render()&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;This is the first step towards using a template, and lets you generate R Markdown outputs programatically with code. It can be coupled with parameters or with other arguments for outputs locations, etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="looping-outputs" class="section level3"&gt;
+&lt;h3&gt;Looping outputs&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;This is really still focused at data products, but programmatically building up portions WITHIN a document.
+&lt;ul&gt;
+&lt;li&gt;In this example, I’m taking a single function and using &lt;code&gt;purrr::walk()&lt;/code&gt; to generate new outputs from a template within the R Markdown report.&lt;/li&gt;
+&lt;li&gt;Note that for the chunk that outputs the repeated portions, you have to set &lt;code&gt;results="asis"&lt;/code&gt; in the chunk option.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Minimal example below with the &lt;a href="https://github.com/allisonhorst/palmerpenguins"&gt;&lt;code&gt;palmerpenguins&lt;/code&gt; dataset&lt;/a&gt;. I’ve included the code as an image placed below, as I’m essentially nesting R Markdown chunks inside R Markdown chunks in a R Markdown-based website. Full copy-pastable code at: &lt;a href="https://git.io/JJBcC"&gt;https://git.io/JJBcC&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Note that I’m writing one function and calling it &lt;code&gt;n&lt;/code&gt; times, it would loop across all the data based on the different inputs.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/loop-code.png" alt="" /&gt;
+&lt;p class="caption"&gt;Loop Code in RMD&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Which generates the following document:&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/palmer-penguins.png" alt="" /&gt;
+&lt;p class="caption"&gt;Loop Output in RMD&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="whisker" class="section level3"&gt;
+&lt;h3&gt;&lt;a href="https://github.com/edwindj/whisker"&gt;whisker&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;whisker&lt;/code&gt; is a templating engine for R conforming to the Mustache specification.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;It uses &lt;code&gt;glue&lt;/code&gt; style syntax to add data to templates either in memory or to an output file, where my mental model is it is &lt;code&gt;glue&lt;/code&gt; for documents rather than strings.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;You can include templates from all sorts of inputs, like R files, R Markdown, markdown or plain text.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;These templates can be local directories, or stored in the &lt;a href="https://r-pkgs.org/inst.html"&gt;&lt;code&gt;inst&lt;/code&gt;&lt;/a&gt; directory of an R package.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Lastly, these can also generate outputs in the same format, eg you can create templates/outputs for R, R Markdown or other plain-text formats!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Minimal &lt;code&gt;whisker&lt;/code&gt; example below:&lt;/p&gt;
+&lt;p&gt;First, some input data:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;data &amp;lt;- list(
+  name = &amp;quot;Chris&amp;quot;, 
+  value = 10000, 
+  taxed_value = 10000 - (10000 * 0.4), 
+  in_ca = TRUE
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then a template:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;template &amp;lt;-
+&amp;#39;Hello {{name}}
+You have just won ${{value}}!
+{{#in_ca}}
+Well, ${{taxed_value}}, after taxes.
+{{/in_ca}}&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, fill the template!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;text &amp;lt;- whisker.render(template, data)
+cat(text)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Output
+Hello Chris
+You have just won $10000!
+Well, $6000, after taxes.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I use &lt;code&gt;whisker&lt;/code&gt; natively to generate the readme files for each week’s &lt;code&gt;#TidyTuesday&lt;/code&gt; submission. Separate blog-post to come for that!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="usethisuse_template" class="section level3"&gt;
+&lt;h3&gt;&lt;code&gt;usethis::use_template()&lt;/code&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Alternatively to natively using &lt;code&gt;whisker&lt;/code&gt; &lt;a href="https://usethis.r-lib.org/reference/use_template.html"&gt;usethis::use_template()&lt;/a&gt; provides a more ready to use function, and uses &lt;code&gt;whisker&lt;/code&gt; internally.
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;use_template()&lt;/code&gt; Used as the engine for a templating function in other packages.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Sharla Gelfand, the “Queen of Reproducible Reporting”, put together lots of material using the &lt;code&gt;usethis::use_template()&lt;/code&gt; workflow in their work.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://sharla.party/post/usethis-for-reporting/"&gt;Sharla Gelfand’s &lt;code&gt;use_template()&lt;/code&gt; blogpost&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;In short, they turned an annual report from a mess of copy-pasting and manual work into a fast, streamlined, reproducible, and easily repeatable workflow using R, R Markdown, and &lt;code&gt;usethis::use_template()&lt;/code&gt;.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://rstudio.com/resources/rstudioconf-2020/don-t-repeat-yourself-talk-to-yourself-repeated-reporting-in-the-r-universe/"&gt;Recording&lt;/a&gt; of their presentation on the same topic&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://sharstudioconf.netlify.app/"&gt;Slides&lt;/a&gt; for that presentation.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="fin" class="section level3"&gt;
+&lt;h3&gt;Fin&lt;/h3&gt;
+&lt;p&gt;So that’s an overview of my approach to &lt;strong&gt;sharing knowledge&lt;/strong&gt; around R Markdown, and like Alison said:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;But remember: there is no one way to learn R Markdown, and no one way to teach it either. I love seeing the creativity of the community when introducing the R Markdown family - so keep them coming!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+
+&lt;/div&gt;
+
+&lt;script&gt;
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+&lt;/script&gt;
+
+&lt;!-- tabsets --&gt;
+
+&lt;script&gt;
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown &gt; .nav-tabs &gt; li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+&lt;/script&gt;
+
+&lt;!-- code folding --&gt;
+
+
+&lt;!-- dynamically load mathjax for compatibility with self-contained --&gt;
+&lt;script&gt;
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+&lt;/script&gt;
+
+</description>
+      <distill:md5>6e9b990cdbd67ed6c093ba123a2728fe</distill:md5>
       <category>rmarkdown</category>
       <category>tidyverse</category>
       <guid>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</guid>
