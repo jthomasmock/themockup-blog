@@ -28,6 +28,8 @@ twitter:
 
 My slides on this topic for the NYC R Conference are at [bit.ly/marvelRMD](https://docs.google.com/presentation/d/e/2PACX-1vRo1eXJtiwo6aTA8KZ2E-bUbv2GOonC2RIVk_5eWQ5y-ADXbRamBhHaa3w1vMW6BkEPOMJ13ZahSo8Q/embed?start=false&loop=true&delayms=30000&slide=id.p).
 
+[PDF Version](https://github.com/jthomasmock/radix_themockup/tree/master/_posts/2020-07-25-meta-rmarkdown/rmd-slides.pdf) for folks who want to try out the code-chunks.
+
 ## How Alison Hill teaches R Markdown
 
 If you haven't read it already make sure to read [Dr. Alison Hill's fantastic blogpost](https://alison.rbind.io/post/2020-05-28-how-i-teach-r-markdown/):  
