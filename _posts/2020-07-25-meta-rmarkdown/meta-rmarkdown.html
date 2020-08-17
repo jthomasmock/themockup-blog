@@ -53,7 +53,7 @@
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["loop-code.png","meta-rmarkdown_files/bowser-1.9.3/bowser.min.js","meta-rmarkdown_files/distill-2.2.21/template.v2.js","meta-rmarkdown_files/header-attrs-2.3/header-attrs.js","meta-rmarkdown_files/jquery-1.11.3/jquery.min.js","meta-rmarkdown_files/webcomponents-2.0.0/webcomponents.js","nyr-slide.png","palmer-penguins.png","rmd-slides.pdf","tools-flat.jpg"]}
+  {"type":"character","attributes":{},"value":["loop-code.png","meta-rmarkdown_files/bowser-1.9.3/bowser.min.js","meta-rmarkdown_files/distill-2.2.21/template.v2.js","meta-rmarkdown_files/figure-html5/loop output-1.png","meta-rmarkdown_files/figure-html5/loop output-2.png","meta-rmarkdown_files/figure-html5/loop output-3.png","meta-rmarkdown_files/header-attrs-2.3/header-attrs.js","meta-rmarkdown_files/jquery-1.11.3/jquery.min.js","meta-rmarkdown_files/webcomponents-2.0.0/webcomponents.js","nyr-slide.png","palmer-penguins.png","rmd-slides.pdf","tools-flat.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1190,11 +1190,56 @@
 <li>Note that for the chunk that outputs the repeated portions, you have to set <code>results="asis"</code> in the chunk option.</li>
 </ul></li>
 </ul>
-<p>Minimal example below with the <a href="https://github.com/allisonhorst/palmerpenguins"><code>palmerpenguins</code> dataset</a>. I’ve included the code as an image placed below, as I’m essentially nesting R Markdown chunks inside R Markdown chunks in a R Markdown-based website. Full copy-pastable code at: <a href="https://git.io/JJBcC">https://git.io/JJBcC</a>.</p>
+<p>Minimal example below with the <a href="https://github.com/allisonhorst/palmerpenguins"><code>palmerpenguins</code> dataset</a>. Full copy-pastable code at: <a href="https://git.io/JJBcC">https://git.io/JJBcC</a>.</p>
 <p>Note that I’m writing one function and calling it <code>n</code> times, it would loop across all the data based on the different inputs.</p>
-<figure>
-<img src="loop-code.png" alt="" /><figcaption>Loop Code in RMD</figcaption>
-</figure>
+<pre><code>
+---
+output: html_document
+---
+  
+  
+```{r penguin function, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(palmerpenguins)
+library(glue)
+penguins &lt;- palmerpenguins::penguins
+multiplot &lt;- function(penguin_name){
+  cat(glue::glue(&quot;  \n### {penguin_name}  \n  \n&quot;))
+  df_pen &lt;- penguins %&gt;% 
+    filter(as.character(species) == penguin_name) %&gt;% 
+    na.omit()
+  
+  flipper_len &lt;- df_pen %&gt;% 
+    summarize(mean = mean(flipper_length_mm)) %&gt;% 
+    pull(mean) %&gt;% 
+    round(digits = 1)
+  
+  bill_len &lt;- df_pen %&gt;% 
+    summarize(mean = mean(bill_length_mm)) %&gt;% 
+    pull(mean) %&gt;% 
+    round(digits = 1)
+  
+  cat(
+    glue::glue(&quot;There are {nrow(df_pen)} observations of {penguin_name} penguins. The average flipper length is {flipper_len} and the average bill length is {bill_len}.  \n&quot;)
+  )
+  
+  plot_out &lt;- df_pen %&gt;% 
+    ggplot(aes(x = bill_length_mm, y = flipper_length_mm)) +
+    geom_point() +
+    labs(x = &quot;Bill Length&quot;, y = &quot;Flipper Length&quot;, title = penguin_name)
+  
+  print(plot_out)
+  
+  cat(&quot;  \n  \n&quot;)
+}
+```
+
+```{r loop output,fig.width=6,echo=FALSE,message=FALSE,results=&quot;asis&quot;}
+purrr::walk(unique(as.character(penguins$species)), multiplot)
+```
+
+&lt;!-- https://git.io/JJBcC --&gt;</code></pre>
 <p>Which generates the following document:</p>
 <figure>
 <img src="palmer-penguins.png" alt="" /><figcaption>Loop Output in RMD</figcaption>

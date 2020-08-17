@@ -30,7 +30,7 @@
 
 &lt;div id="credit" class="section level2"&gt;
 &lt;h2&gt;Credit&lt;/h2&gt;
-&lt;p&gt;&lt;img src="file10c551ad41b95_files/figure-html/embed%20tweet-1.png" width="672" /&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file119e2b00d5a0_files/figure-html/embed%20tweet-1.png" width="672" /&gt; &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://twitter.com/visualisingdata/status/1151443335049023489?s=20"&gt;Andy Kirk&lt;/a&gt; put together &lt;a href="https://www.visualisingdata.com/2019/07/five-ways-to-present-bar-charts/"&gt;Five Ways to present bar charts&lt;/a&gt; as part of his &lt;code&gt;Five ways to...&lt;/code&gt; series back in 2019. The plots below are &lt;em&gt;his&lt;/em&gt; original ideas, just recreated in &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;I originally recreated his plots in &lt;code&gt;ggplot2&lt;/code&gt; and published them as a &lt;a href="https://gist.github.com/jthomasmock/2db9db2c534a48af9e2330758be90b8b"&gt;gist&lt;/a&gt; and on &lt;a href="https://twitter.com/thomas_mock/status/1151492858215567362?s=20"&gt;Twitter&lt;/a&gt; in July 2019, stumbled upon it again recently, and thought why not capture it as a proper blog-post!&lt;/p&gt;
 &lt;p&gt;Additionally, when I originally made these remakes, &lt;code&gt;ggplot2&lt;/code&gt; required &lt;code&gt;coord_flip()&lt;/code&gt; whereas the most recent version of &lt;code&gt;ggplot2&lt;/code&gt; allows you to natively create horizontal bar charts! I’ve thus changed a little bit of the code from the original gist to reflect the new options in &lt;code&gt;ggplot2&lt;/code&gt;.&lt;/p&gt;
@@ -584,40 +584,22 @@ $(document).ready(function () {
 &lt;/div&gt;
 
 
-&lt;div class="figure"&gt;
-&lt;img src="https://media.giphy.com/media/L7TQTflWNF1YI/giphy.gif" alt="" /&gt;
-&lt;p class="caption"&gt;Gif of a machine creating jelly rolls&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id="rmarkdown-for-templating" class="section level2"&gt;
-&lt;h2&gt;RMarkdown for Templating&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Goal&lt;/strong&gt;: Don’t repeat yourself, generate &lt;strong&gt;input&lt;/strong&gt; templates or &lt;strong&gt;output&lt;/strong&gt; documents from code.&lt;/p&gt;
-&lt;p&gt;Using R Markdown for templating is normally thought of for &lt;code&gt;knitr::render()&lt;/code&gt; + parameters, but there’s additional techniques to solve specific problems that don’t fit neatly into paramaterized reports as well.&lt;/p&gt;
-&lt;div id="knitting-w-knitrender" class="section level3"&gt;
-&lt;h3&gt;&lt;a href="https://rmarkdown.rstudio.com/docs/reference/render.html"&gt;Knitting w/ &lt;code&gt;knit::render()&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;This is the first step towards using a template, and lets you generate R Markdown outputs programatically with code. It can be coupled with parameters or with other arguments for outputs locations, etc.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id="looping-outputs" class="section level3"&gt;
-&lt;h3&gt;Looping outputs&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;This is really still focused at data products, but programmatically building up portions WITHIN a document.
-&lt;ul&gt;
-&lt;li&gt;In this example, I’m taking a single function and using &lt;code&gt;purrr::walk()&lt;/code&gt; to generate new outputs from a template within the R Markdown report.&lt;/li&gt;
-&lt;li&gt;Note that for the chunk that outputs the repeated portions, you have to set &lt;code&gt;results="asis"&lt;/code&gt; in the chunk option.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Minimal example below with the &lt;a href="https://github.com/allisonhorst/palmerpenguins"&gt;&lt;code&gt;palmerpenguins&lt;/code&gt; dataset&lt;/a&gt;. I’ve included the code as an image placed below, as I’m essentially nesting R Markdown chunks inside R Markdown chunks in a R Markdown-based website. Full copy-pastable code at: &lt;a href="https://git.io/JJBcC"&gt;https://git.io/JJBcC&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Note that I’m writing one function and calling it &lt;code&gt;n&lt;/code&gt; times, it would loop across all the data based on the different inputs.&lt;/p&gt;
-&lt;div class="figure"&gt;
-&lt;img src="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/loop-code.png" alt="" /&gt;
-&lt;p class="caption"&gt;Loop Code in RMD&lt;/p&gt;
-&lt;/div&gt;
+&lt;p&gt;```{r penguin function, echo=FALSE, message=FALSE} library(dplyr) library(ggplot2) library(palmerpenguins) library(glue) penguins &amp;lt;- palmerpenguins::penguins multiplot &amp;lt;- function(penguin_name){ cat(glue::glue(" ### {penguin_name} ")) df_pen &amp;lt;- penguins %&amp;gt;% filter(as.character(species) == penguin_name) %&amp;gt;% na.omit()&lt;/p&gt;
+&lt;p&gt;flipper_len &amp;lt;- df_pen %&amp;gt;% summarize(mean = mean(flipper_length_mm)) %&amp;gt;% pull(mean) %&amp;gt;% round(digits = 1)&lt;/p&gt;
+&lt;p&gt;bill_len &amp;lt;- df_pen %&amp;gt;% summarize(mean = mean(bill_length_mm)) %&amp;gt;% pull(mean) %&amp;gt;% round(digits = 1)&lt;/p&gt;
+&lt;p&gt;cat( glue::glue(“There are {nrow(df_pen)} observations of {penguin_name} penguins. The average flipper length is {flipper_len} and the average bill length is {bill_len}. ”) )&lt;/p&gt;
+&lt;p&gt;plot_out &amp;lt;- df_pen %&amp;gt;% ggplot(aes(x = bill_length_mm, y = flipper_length_mm)) + geom_point() + labs(x = “Bill Length”, y = “Flipper Length”, title = penguin_name)&lt;/p&gt;
+&lt;p&gt;print(plot_out)&lt;/p&gt;
+&lt;p&gt;cat(" ") }&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+```{r loop output,fig.width=6,echo=FALSE,message=FALSE,results=&amp;quot;asis&amp;quot;}
+purrr::walk(unique(as.character(penguins$species)), multiplot)&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- https://git.io/JJBcC --&gt;
+&lt;p&gt;````&lt;/p&gt;
 &lt;p&gt;Which generates the following document:&lt;/p&gt;
 &lt;div class="figure"&gt;
 &lt;img src="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/palmer-penguins.png" alt="" /&gt;
 &lt;p class="caption"&gt;Loop Output in RMD&lt;/p&gt;
-&lt;/div&gt;
 &lt;/div&gt;
 &lt;div id="whisker" class="section level3"&gt;
 &lt;h3&gt;&lt;a href="https://github.com/edwindj/whisker"&gt;whisker&lt;/a&gt;&lt;/h3&gt;
@@ -683,7 +665,6 @@ Well, $6000, after taxes.&lt;/code&gt;&lt;/pre&gt;
 &lt;blockquote&gt;
 &lt;p&gt;But remember: there is no one way to learn R Markdown, and no one way to teach it either. I love seeing the creativity of the community when introducing the R Markdown family - so keep them coming!&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;/div&gt;
 &lt;/div&gt;
 
 

@@ -197,12 +197,59 @@ Using R Markdown for templating is normally thought of for `knitr::render()` + p
   - In this example, I'm taking a single function and using `purrr::walk()` to generate new outputs from a template within the R Markdown report.
   - Note that for the chunk that outputs the repeated portions, you have to set `results="asis"` in the chunk option.
 
-Minimal example below with the [`palmerpenguins` dataset](https://github.com/allisonhorst/palmerpenguins). I've included the code as an image placed below, as I'm essentially nesting R Markdown chunks inside R Markdown chunks in a R Markdown-based website. Full copy-pastable code at: [https://git.io/JJBcC](https://git.io/JJBcC).
+Minimal example below with the [`palmerpenguins` dataset](https://github.com/allisonhorst/palmerpenguins). Full copy-pastable code at: [https://git.io/JJBcC](https://git.io/JJBcC).
 
 Note that I'm writing one function and calling it `n` times, it would loop across all the data based on the different inputs.
 
+````
+---
+output: html_document
+---
+  
+  
+```{r penguin function, echo=FALSE, message=FALSE}`r ''`
+library(dplyr)
+library(ggplot2)
+library(palmerpenguins)
+library(glue)
+penguins <- palmerpenguins::penguins
+multiplot <- function(penguin_name){
+  cat(glue::glue("  \n### {penguin_name}  \n  \n"))
+  df_pen <- penguins %>% 
+    filter(as.character(species) == penguin_name) %>% 
+    na.omit()
+  
+  flipper_len <- df_pen %>% 
+    summarize(mean = mean(flipper_length_mm)) %>% 
+    pull(mean) %>% 
+    round(digits = 1)
+  
+  bill_len <- df_pen %>% 
+    summarize(mean = mean(bill_length_mm)) %>% 
+    pull(mean) %>% 
+    round(digits = 1)
+  
+  cat(
+    glue::glue("There are {nrow(df_pen)} observations of {penguin_name} penguins. The average flipper length is {flipper_len} and the average bill length is {bill_len}.  \n")
+  )
+  
+  plot_out <- df_pen %>% 
+    ggplot(aes(x = bill_length_mm, y = flipper_length_mm)) +
+    geom_point() +
+    labs(x = "Bill Length", y = "Flipper Length", title = penguin_name)
+  
+  print(plot_out)
+  
+  cat("  \n  \n")
+}
+```
 
-![Loop Code in RMD](loop-code.png)
+```{r loop output,fig.width=6,echo=FALSE,message=FALSE,results="asis"}`r ''`
+purrr::walk(unique(as.character(penguins$species)), multiplot)
+```
+
+<!-- https://git.io/JJBcC -->
+````
 
 Which generates the following document:
 
