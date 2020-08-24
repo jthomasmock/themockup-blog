@@ -189,11 +189,11 @@
       "tidyverse",
       "tidymodels"
     ],
-    "preview": "posts/2020-05-01-tidy-long-models/off_stability_plot.png",
-    "last_modified": "2020-08-24T11:50:08-05:00",
-    "input_file": {},
-    "preview_width": 1500,
-    "preview_height": 1200
+    "preview": "posts/2020-05-01-tidy-long-models/distill-preview.png",
+    "last_modified": "2020-08-24T12:07:54-05:00",
+    "input_file": "tidy-models-long-data.utf8.md",
+    "preview_width": 3000,
+    "preview_height": 2400
   },
   {
     "path": "posts/2019-04-28-nflfastr-dbplyr-rsqlite/",

@@ -15,7 +15,7 @@ categories:
   - NFL
   - tidyverse
   - tidymodels
-preview: off_stability_plot.png
+# preview: off_stability_plot.png
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
@@ -244,7 +244,7 @@ I'd definitely recommend trying out the rest of the `tidymodels` ecosystem for y
           strip.text = element_textbox(face = "bold", color = "white")))
 
 # optional output
-# ggsave("off_stability_plot.png", off_plot, height = 8, width = 10, dpi = 450)
+# ggsave("off_stability_plot.png", off_plot, height = 8, width = 10, dpi = 100)
 ```
 
 
