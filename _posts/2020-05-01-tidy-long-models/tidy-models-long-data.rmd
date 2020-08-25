@@ -221,7 +221,7 @@ We can combine our labels that we generated with `glue` and the long-form data t
 
 I'd definitely recommend trying out the rest of the `tidymodels` ecosystem for your more advanced machine learning and statistical analyses. You can learn all about it at the [tidymodels.org site](https://www.tidymodels.org/learn/).
 
-```{r, fig.width = 10, fig.height = 8, dpi=150}
+```{r plot ex, eval = FALSE}
 (off_plot <- long_off_stats %>% 
     inner_join(long_off_stats, by = c("season2" = "season", "team", "metric")) %>% 
     mutate(metric = factor(metric,
@@ -244,7 +244,10 @@ I'd definitely recommend trying out the rest of the `tidymodels` ecosystem for y
           strip.text = element_textbox(face = "bold", color = "white")))
 
 # optional output
-# ggsave("off_stability_plot.png", off_plot, height = 8, width = 10, dpi = 100)
+# ggsave("off_stability_plot.png", off_plot, height = 8, width = 10, dpi = 150)
+```
+```{r include_img,layout="l-body-outset", echo=FALSE}
+knitr::include_graphics("off_stability_plot.png")
 ```
 
 
