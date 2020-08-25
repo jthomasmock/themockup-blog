@@ -190,10 +190,10 @@
       "tidymodels"
     ],
     "preview": "posts/2020-05-01-tidy-long-models/distill-preview.png",
-    "last_modified": "2020-08-24T12:10:50-05:00",
+    "last_modified": "2020-08-25T14:37:14-05:00",
     "input_file": "tidy-models-long-data.utf8.md",
-    "preview_width": 3000,
-    "preview_height": 2400
+    "preview_width": 720,
+    "preview_height": 576
   },
   {
     "path": "posts/2019-04-28-nflfastr-dbplyr-rsqlite/",

@@ -16,7 +16,7 @@ categories:
   - NFL
   - tidyverse
   - tidymodels
-# preview: off_stability_plot.png
+preview: distill-preview.png
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
@@ -222,7 +222,7 @@ We can combine our labels that we generated with `glue` and the long-form data t
 
 I'd definitely recommend trying out the rest of the `tidymodels` ecosystem for your more advanced machine learning and statistical analyses. You can learn all about it at the [tidymodels.org site](https://www.tidymodels.org/learn/).
 
-```{r, fig.width = 10, fig.height = 8, dpi=150, preview=TRUE}
+```{r, fig.width = 10, fig.height = 8, dpi=150}
 (off_plot <- long_off_stats %>% 
     inner_join(long_off_stats, by = c("season2" = "season", "team", "metric")) %>% 
     mutate(metric = factor(metric,
