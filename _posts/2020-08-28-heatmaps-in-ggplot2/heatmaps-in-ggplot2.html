@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Heatmaps in ggplot2</title>
+  
+  <meta property="description" itemprop="description" content="It&#39;s more than just a passing fad"/>
+  
+  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2020-08-28"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-08-28"/>
+  <meta name="article:author" content="Thomas Mock"/>
+  
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Heatmaps in ggplot2"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="It&#39;s more than just a passing fad"/>
+  <meta property="og:image" content="https://themockup.blog/preview.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="1200"/>
+  <meta property="og:locale" content="en_US"/>
+  
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary_large_image"/>
+  <meta property="twitter:title" content="Heatmaps in ggplot2"/>
+  <meta property="twitter:description" content="It&#39;s more than just a passing fad"/>
+  <meta property="twitter:image" content="https://themockup.blog/preview.png"/>
+  <meta property="twitter:image:width" content="1200"/>
+  <meta property="twitter:image:height" content="1200"/>
+  <meta property="twitter:site" content="@thomas_mock"/>
+  <meta property="twitter:creator" content="@thomas_mock"/>
+  
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","base_url","date","output","categories","preview","twitter"]}},"value":[{"type":"character","attributes":{},"value":["Heatmaps in ggplot2"]},{"type":"character","attributes":{},"value":["It's more than just a passing fad\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Mock"]}]}]},{"type":"character","attributes":{},"value":["https://themockup.blog"]},{"type":"character","attributes":{},"value":["08-28-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["data visualization","ggplot2","tidyverse","NFL"]},{"type":"character","attributes":{},"value":["preview.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["site","creator"]}},"value":[{"type":"character","attributes":{},"value":["@thomas_mock"]},{"type":"character","attributes":{},"value":["@thomas_mock"]}]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["heatmaps-in-ggplot2_files/bowser-1.9.3/bowser.min.js","heatmaps-in-ggplot2_files/distill-2.2.21/template.v2.js","heatmaps-in-ggplot2_files/figure-html5/add-field-plot-1.png","heatmaps-in-ggplot2_files/figure-html5/colors-1.png","heatmaps-in-ggplot2_files/figure-html5/colors-2.png","heatmaps-in-ggplot2_files/figure-html5/colors-3.png","heatmaps-in-ggplot2_files/figure-html5/create-passer-df-1.png","heatmaps-in-ggplot2_files/figure-html5/dens-calc-1.png","heatmaps-in-ggplot2_files/figure-html5/field_plot_moo-1.png","heatmaps-in-ggplot2_files/figure-html5/field_plot-1.png","heatmaps-in-ggplot2_files/figure-html5/hex-plot-1.png","heatmaps-in-ggplot2_files/figure-html5/hex-plot-2.png","heatmaps-in-ggplot2_files/figure-html5/initial-map-1.png","heatmaps-in-ggplot2_files/figure-html5/mahomes-2d-1.png","heatmaps-in-ggplot2_files/figure-html5/mahomes-alone-1.png","heatmaps-in-ggplot2_files/figure-html5/mahomes-compare-1.png","heatmaps-in-ggplot2_files/figure-html5/marginal-plots-1.png","heatmaps-in-ggplot2_files/figure-html5/marginal-plots2-1.png","heatmaps-in-ggplot2_files/figure-html5/not-heatmaps-1.png","heatmaps-in-ggplot2_files/figure-html5/sanity-check-1.png","heatmaps-in-ggplot2_files/figure-html5/unnamed-chunk-2-1.png","heatmaps-in-ggplot2_files/figure-html5/unnamed-chunk-3-1.png","heatmaps-in-ggplot2_files/figure-html5/unnamed-chunk-4-1.png","heatmaps-in-ggplot2_files/figure-html5/use-colors-1.png","heatmaps-in-ggplot2_files/figure-html5/use-colors2-1.png","heatmaps-in-ggplot2_files/jquery-1.11.3/jquery.min.js","heatmaps-in-ggplot2_files/webcomponents-2.0.0/webcomponents.js","preview.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+  
+  <style type="text/css">
+  
+  body {
+    background-color: white;
+  }
+  
+  .pandoc-table {
+    width: 100%;
+  }
+  
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+  
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+  
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+  
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+  
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+  
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+  
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .shaded-content {
+    background: white;
+  }
+  
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  d-article {
+    padding-bottom: 30px;
+  }
+  
+  d-appendix {
+    padding-top: 30px;
+  }
+  
+  d-article>p>img {
+    width: 100%;
+  }
+  
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+  
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS for table of contents */
+  
+  .d-toc {
+    color: rgba(0,0,0,0.8);
+    font-size: 0.8em;
+    line-height: 1em;
+  }
+  
+  .d-toc-header {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 1.3em;
+  }
+  
+  .d-toc a {
+    border-bottom: none;
+  }
+  
+  .d-toc ul {
+    padding-left: 0;
+  }
+  
+  .d-toc li>ul {
+    padding-top: 0.8em;
+    padding-left: 16px;
+    margin-bottom: 0.6em;
+  }
+  
+  .d-toc ul,
+  .d-toc li {
+    list-style-type: none;
+  }
+  
+  .d-toc li {
+    margin-bottom: 0.9em;
+  }
+  
+  .d-toc-separator {
+    margin-top: 20px;
+    margin-bottom: 2em;
+  }
+  
+  .d-article-with-toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  
+  
+  
+  /* Tweak code blocks (note that this CSS is repeated above in an injection
+     into the d-code shadow dom) */
+  
+  d-code {
+    overflow-x: auto !important;
+  }
+  
+  pre.d-code code.d-code {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+  
+  pre.text-output {
+  
+    font-size: 12px;
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  @media(min-width: 768px) {
+  
+  d-code {
+    overflow-x: visible !important;
+  }
+  
+  pre.d-code code.d-code  {
+      padding-left: 18px;
+      font-size: 14px;
+  }
+  pre.text-output {
+    font-size: 14px;
+  }
+  }
+  
+  /* Figure */
+  
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+  
+  .figure img {
+    width: 100%;
+  }
+  
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+  
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+  
+  
+  
+  /* Tweak 1000px media break to show more text */
+  
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+  
+    .grid {
+      grid-column-gap: 16px;
+    }
+  
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+  
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+  
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+  
+  
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+  
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  
+  /* Social footer */
+  
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+  
+  .disqus-comments {
+    margin-right: 30px;
+  }
+  
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+  
+  #disqus_thread {
+    margin-top: 30px;
+  }
+  
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+  
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+  
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+  
+  
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+  
+  
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+  
+  
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+  
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+  
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+  
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+  
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+  
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+  
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+  
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+  
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  </style>
+  
+  <script type="application/javascript">
+  
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+  
+  // show body when load is complete
+  function on_load_complete() {
+  
+    // set body to visible
+    document.body.style.visibility = 'visible';
+  
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+  
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+  
+  function init_distill() {
+  
+    init_common();
+  
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+  
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+  
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+  
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+  
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+  
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+  
+    // create d-bibliography
+    var bibliography = $('<d-bibliography></d-bibliography>');
+    $('#distill-bibliography').wrap(bibliography);
+  
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+  
+    // replace citations with <d-cite>
+    $('.citation').each(function(i, val) {
+      appendix = true;
+      var cites = $(this).attr('data-cites').split(" ");
+      var dt_cite = $('<d-cite></d-cite>');
+      dt_cite.attr('key', cites.join());
+      $(this).replaceWith(dt_cite);
+    });
+    // remove refs
+    $('#refs').remove();
+  
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+  
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-toc a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+  
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+  
+    // replace code blocks with d-code
+    $('pre>code').each(function(i, val) {
+      var code = $(this);
+      var pre = code.parent();
+      var clz = "";
+      var language = pre.attr('class');
+      if (language) {
+        // map unknown languages to "clike" (without this they just dissapear)
+        if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                                 "javascript", "js", "julia", "lua", "markdown",
+                                 "markup", "mathml", "python", "svg", "xml"]) == -1)
+          language = "clike";
+        language = ' language="' + language + '"';
+        var dt_code = $('<d-code block' + language + clz + '></d-code>');
+        dt_code.text(code.text());
+        pre.replaceWith(dt_code);
+      } else {
+        code.addClass('text-output').unwrap().changeElementType('pre');
+      }
+    });
+  
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+  
+      // capture layout
+      var layout = $(this).attr('data-layout');
+  
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('d-code, pre.text-output, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+  
+  
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+  
+    // load distill framework
+    load_distill_framework();
+  
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+  
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+  
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+  
+      // table of contents
+      if (have_authors) // adjust border if we are in authors
+        $('.d-toc').parent().addClass('d-article-with-toc');
+  
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+  
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+  
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+  
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+  
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+  
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+  
+      // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+      $('d-code').each(function(i, val) {
+        var style = document.createElement('style');
+        style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                          '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+        if (this.shadowRoot)
+          this.shadowRoot.appendChild(style);
+      });
+  
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+  
+      // clear polling timer
+      clearInterval(tid);
+  
+      // show body now that everything is ready
+      on_load_complete();
+    }
+  
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+  
+  }
+  
+  function init_downlevel() {
+  
+    init_common();
+  
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+  
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+  
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+  
+    // remove toc
+    $('.d-toc-header').remove();
+    $('.d-toc').remove();
+    $('.d-toc-separator').remove();
+  
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+  
+  
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+  
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+  
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+  
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+  
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+  
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+  
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+  
+    $('body').addClass('downlevel');
+  
+    on_load_complete();
+  }
+  
+  
+  function init_common() {
+  
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+  
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+  
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+  
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+  
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+  
+      }
+    });
+  
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+  
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+  
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+  
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+  
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+  
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+  
+  </script>
+  
+  <!--/radix_placeholder_distill-->
+  <script src="heatmaps-in-ggplot2_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="heatmaps-in-ggplot2_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="heatmaps-in-ggplot2_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="heatmaps-in-ggplot2_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Heatmaps in ggplot2","description":"It's more than just a passing fad","authors":[{"author":"Thomas Mock","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-08-28T00:00:00.000-05:00","citationText":"Mock, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Heatmaps in ggplot2</h1>
+<p><p>It’s more than just a passing fad</p></p>
+</div>
+
+<div class="d-byline">
+  Thomas Mock  
+  
+<br/>08-28-2020
+</div>
+
+<div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#load-everything">Load Everything</a></li>
+<li><a href="#why-not-just-plot-the-points">Why not just plot the points?</a><ul>
+<li><a href="#fear-the-beard">Fear the beard</a></li>
+<li><a href="#alternatives-to-the-beard">Alternatives to the beard</a></li>
+<li><a href="#dont-bury-the-lede">Don’t bury the lede?</a></li>
+</ul></li>
+<li><a href="#d-density-of-smaller-data">2D Density of “smaller” data</a></li>
+<li><a href="#build-the-field">Build the field</a><ul>
+<li><a href="#wrap-the-field-in-a-function">Wrap the field in a function</a></li>
+<li><a href="#qb-comparison">QB Comparison</a></li>
+<li><a href="#specify-color-schemes">Specify Color schemes</a></li>
+</ul></li>
+<li><a href="#pff_moo-style-field">PFF_Moo style Field</a></li>
+<li><a href="#get-the-density-estimates">Get the density estimates</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<p>Many thanks to <a href="https://twitter.com/ChiefsAnalytics">Ethan Douglas</a> for sharing his heatmap passing charts on <a href="https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/">OpenSource Football</a>! <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>This is a similar walkthrough in R + <code>ggplot2</code>, but credit for both collecting the data and the original plot were Ethan’s!</p>
+<h2 id="load-everything">Load Everything</h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(tidyverse)
+library(ggExtra)
+library(patchwork)
+library(paletteer)
+library(scales)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+souce_url &lt;- &quot;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&quot;
+
+pass_map_df &lt;- read_csv(souce_url) %&gt;%
+  na.omit() %&gt;%
+  select(-X1)
+
+glimpse(pass_map_df)</code></pre>
+<pre><code>
+Rows: 42,455
+Columns: 14
+$ game_id    &lt;dbl&gt; 2017091004, 2017091004, 2017091004, 2017091004, …
+$ name       &lt;chr&gt; &quot;Carson Palmer&quot;, &quot;Carson Palmer&quot;, &quot;Carson Palmer…
+$ pass_type  &lt;chr&gt; &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, …
+$ team       &lt;chr&gt; &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;,…
+$ week       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ x_coord    &lt;dbl&gt; -23.5, 2.8, 18.6, -8.4, -15.5, 26.8, 13.6, 11.2,…
+$ y_coord    &lt;dbl&gt; 14.6, 9.3, -1.1, 8.3, 8.0, 10.6, -2.8, 13.4, 5.3…
+$ type       &lt;chr&gt; &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;,…
+$ home_team  &lt;chr&gt; &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;,…
+$ away_team  &lt;chr&gt; &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;,…
+$ season     &lt;dbl&gt; 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, …
+$ game_url   &lt;chr&gt; &quot;http://www.nfl.com/liveupdate/game-center/20170…
+$ home_score &lt;dbl&gt; 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, …
+$ away_score &lt;dbl&gt; 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, …</code></pre>
+</div>
+<h2 id="why-not-just-plot-the-points">Why not just plot the points?</h2>
+<p>Why even mess around with <code>heatmaps</code> or 2d density plots? Well, we run the risk of overplotting by graphing just the points without thinking or adjusting any of the aesthetics.</p>
+<p>Hadley Wickham in <a href="https://ggplot2-book.org/statistical-summaries.html#overplotting"><code>ggplot2</code>: Elegant Graphics for Data Analysis</a>:</p>
+<blockquote>
+<p>When the data is large, points will be often plotted on top of each other, obscuring the true relationship. In extreme cases, you will only be able to see the extent of the data, and any conclusions drawn from the graphic will be suspect. This problem is called <strong>overplotting</strong>.</p>
+</blockquote>
+<p>Hadley uses an example with just 2000 data points, which already has a lot of overplotting due to a small sample x-y space. We have about 43,000 passes for this dataset, spread out over a relatively large space. We still need to be careful of overplotting though!</p>
+<aside>
+<p>Data to Viz has nice article on <a href="https://www.data-to-viz.com/caveat/overplotting.html">Overplotting</a> as well</p>
+</aside>
+<h3 id="fear-the-beard">Fear the beard</h3>
+<p>We can display our points with a quick <code>geom_point()</code> call but this returns a lot of overplotting albeit in a happy beard shape!</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_point()</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/sanity-check-1.png" width="384" /></p>
+</div>
+<p>We can add 90% transparency with <code>alpha = 0.1</code> and change the color to red, but this still leaves us with a difficulty parsing through the high vs medium pass locations. Passes around the 5 yard mark appear to be as common as at the 10 and even 15 yard mark in some cases! We can try to get at the data a bit close with <code>ggMarginal</code> from the <a href="https://github.com/daattali/ggExtra"><code>ggExtra</code></a> R package, which provides marginal histograms, box plots, or density plots.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+red_beard &lt;- pass_map_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_point(alpha = 0.1, color = &quot;red&quot;)
+
+red_beard</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/unnamed-chunk-2-1.png" width="384" /></p>
+</div>
+<p>We can add some marginal plots to help out a bit, but that still doesn’t solve the problem of honing in on specific areas of interest that well.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# add density or histogram in the margins
+ggMarginal(red_beard, type = &quot;density&quot;, fill = &quot;red&quot;)</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/marginal-plots-1.png" width="384" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# add density or histogram in the margins
+ggMarginal(red_beard, type = &quot;histogram&quot;, fill = &quot;red&quot;)</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/marginal-plots2-1.png" width="384" /></p>
+</div>
+<h3 id="alternatives-to-the-beard">Alternatives to the beard</h3>
+<p>Since we’re actually interested in the density/counts of observations at each x-y coordinate instead of plotting <em>each</em> individual point, we also have a few other tools in our toolbox! We can use <a href="https://ggplot2.tidyverse.org/reference/geom_hex.html"><code>geom_hex()</code></a> or <a href="https://ggplot2.tidyverse.org/reference/geom_bin2d.html"><code>geom_bin2d()</code></a>. Note that there are a few other methods such as <code>geom_raster()</code> which require you to provide your own “z” metric, and there are <code>stat_?</code> versions of each of these geoms for more custom calculations.</p>
+<aside>
+If you read the <code>ggplot2</code> + overplotting <a href="https://ggplot2-book.org/statistical-summaries.html#overplotting"><code>ggplot2</code> book chapter</a>, you can find more reproducible longer form examples and strategies with <code>geom_hex()</code> and <code>geom_bin2d()</code>.
+</aside>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+hex_plot &lt;- pass_map_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_hex(
+    binwidth = c(1, 1)
+  ) +
+  scale_fill_gradient(low = &quot;red&quot;, high = &quot;yellow&quot;) +
+  geom_hline(yintercept = c(0, 10), color = &quot;grey&quot;) +
+  scale_y_continuous(breaks = seq(-10, 60, 5))
+
+hex_plot</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/hex-plot-1.png" width="576" /></p>
+<pre class="r"><code>
+bin2d &lt;- pass_map_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_bin2d(
+    binwidth = c(1, 1)
+  ) +
+  scale_fill_gradient(low = &quot;red&quot;, high = &quot;yellow&quot;) +
+  geom_hline(yintercept = c(0, 10), color = &quot;grey&quot;) +
+  scale_y_continuous(breaks = seq(-10, 60, 5))
+
+bin2d</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/hex-plot-2.png" width="576" /></p>
+</div>
+<p>We can now see that while there ARE passes all over the field, the majority are around the 2-7 yard mark with small but relatively dense pockets elsewhere. Passes are most frequently thrown at 4, 5 or 6 yards and ~68% of passes are thrown 10 yards or shorter.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# histogram of just Y coord
+pass_map_df %&gt;%
+  ggplot(aes(x = y_coord)) +
+  geom_histogram(binwidth = 1) +
+  geom_vline(xintercept = c(5)) +
+  scale_x_continuous(breaks = seq(-10, 60, 5))</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/not-heatmaps-1.png" width="624" /></p>
+<pre class="r"><code>
+# calc some percentages
+pass_by_y &lt;- pass_map_df %&gt;%
+  mutate(y_rnd = round(y_coord, digits = 0)) %&gt;%
+  count(y_rnd) %&gt;%
+  mutate(
+    total = sum(n),
+    pct_total = n / total,
+    roll_total = cumsum(pct_total)
+  )
+
+# ~35.6% of passes between 2-7 yards
+pass_by_y %&gt;%
+  filter(between(y_rnd, 2, 7)) %&gt;%
+  summarize(pct = sum(pct_total))</code></pre>
+<pre><code>
+# A tibble: 1 x 1
+    pct
+  &lt;dbl&gt;
+1 0.356</code></pre>
+<pre class="r"><code>
+# passes are most commonly thrown at 4-6 yards
+# 68% of passes are thrown 10 yards or shorter
+pass_by_y %&gt;%
+  arrange(desc(pct_total))</code></pre>
+<pre><code>
+# A tibble: 68 x 5
+   y_rnd     n total pct_total roll_total
+   &lt;dbl&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+ 1     4  3237 42455    0.0762      0.413
+ 2     5  2966 42455    0.0699      0.482
+ 3     6  2805 42455    0.0661      0.549
+ 4     2  2371 42455    0.0558      0.284
+ 5     3  2229 42455    0.0525      0.336
+ 6     1  1598 42455    0.0376      0.228
+ 7     0  1535 42455    0.0362      0.190
+ 8     7  1521 42455    0.0358      0.584
+ 9     8  1465 42455    0.0345      0.619
+10    10  1374 42455    0.0324      0.678
+# … with 58 more rows</code></pre>
+</div>
+<h3 id="dont-bury-the-lede">Don’t bury the lede?</h3>
+<p>Another major advantage of <code>geom_hex</code> or <code>geom_bin2d()</code> is they’re remarkably faster for big data than plotting <code>geom_point()</code> along with reducing the likelihood of overplotting! For a toy example of about 1.7 million points, <code>geom_hex()</code> executes in about 2 sec vs 20 sec with <code>geom_point()</code>, and then subsequent 30-60 sec to “draw” the output in the viewer of R/RStudio.</p>
+<aside>
+Using these techniques are useful, as they are both computationally helpful (aka faster), and can help you better understand plots of “bigger” data.
+</aside>
+<h2 id="d-density-of-smaller-data">2D Density of “smaller” data</h2>
+<p>So we’ve covered hex and rectangular 2d bins. To me, these are not as attractive for “small data” like we may see for individual QB plots. Let’s take Patrick Mahomes for example, he <em>only</em> has ~1,000 passes in this dataset. We can plot with a <code>geom_hex()</code> for each 1x1 yard chunk like we did before, but I honestly have trouble determining trends of where he likes to throw with that graphic.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map_df %&gt;%
+  filter(str_detect(name, c(&quot;Mahomes&quot;))) %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_hex(binwidth = c(1, 1)) +
+  scale_y_continuous(breaks = seq(-10, 60, 5))</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/mahomes-alone-1.png" width="576" /></p>
+</div>
+<p>We could always use larger bins, but if we’re just trying to see large trends we have another strategy in <a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html"><code>geom_density_2d()</code></a>.</p>
+<blockquote>
+<p>Perform a 2D kernel density estimation using <a href="https://rdrr.io/pkg/MASS/man/kde2d.html"><code>MASS::kde2d()</code></a> and display the results with contours. This can be useful for dealing with overplotting. This is a 2D version of geom_density(). geom_density_2d() draws contour lines, and geom_density_2d_filled() draws filled contour bands.</p>
+</blockquote>
+<p>This essentially fits a polygon around the most frequent points by x/y coordinates, and then colors them according to density. In this case, x/y is basically the position on the field and “z” is the density of how many plots were thrown to that area.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map_df %&gt;%
+  filter(str_detect(name, c(&quot;Mahomes&quot;))) %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled() +
+  scale_y_continuous(breaks = seq(-10, 60, 5))</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/mahomes-2d-1.png" width="576" /></p>
+</div>
+<p>Now if we want to get even more clever, we can use this compare passing heatmaps of specific QBs. We can normalize across the facets, and drop the least frequent passes with specific breaks. I’ve binned into 10 specific breakpoints, and by setting breaks between 0.1 and 1.0, we also drop the very least frequent passes which otherwise show up as a light fill of the entire remaining plot. Additionally, by adding a horizontal reference line we can pretty clearly see that Carr’s most common passes are behind the 5 yard line, while Mahomes has passed beyond the 5 yard line much more frequently.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+pass_map_df %&gt;%
+  filter(str_detect(name, c(&quot;Mahomes|Derek Carr&quot;))) %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level..),
+    contour_var = &quot;ndensity&quot;, # normalize to each QBs total passes
+    breaks = seq(0.1, 1.0, length.out = 10) # drop the lowest passes
+  ) +
+  scale_y_continuous(breaks = seq(-10, 60, 5)) +
+  facet_wrap(~name) +
+  geom_hline(yintercept = 5)</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/mahomes-compare-1.png" width="960" /></p>
+</div>
+<p>This is all well and good, but it’s not the prettiest piece of dataviz.</p>
+<p>Thanks again to <a href="https://twitter.com/ChiefsAnalytics">Ethan Douglas</a> and his post on <a href="https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/">OpenSourceFootball.com</a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, we have a good framework about how to approach building a NFL field as a graph.</p>
+<h2 id="build-the-field">Build the field</h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+not_div_5 &lt;- function(x) {
+  # select only elements of the vector not divisible by 5
+  x[x %% 5 != 0]
+}
+
+center_df &lt;- tibble(
+  x_coord = c(rep(-3.1, 60), rep(3.1, 60)),
+  y_coord = seq(-14, 59, 1) %&gt;% rep(2) %&gt;% not_div_5(),
+  text = &quot;--&quot;
+)
+
+# line labels
+annotate_df &lt;- tibble(
+  x_coord = c(12.88, -12.88) %&gt;% rep(each = 5),
+  y_coord = seq(10, 50, 10) %&gt;% rep(2),
+  text = seq(10, 50, 10) %&gt;% rep(2) %&gt;% str_replace(&quot;(.)(.)&quot;, &quot;\\1 \\2&quot;),
+  rotation = c(90, 270) %&gt;% rep(each = 5)
+)
+
+# yardlines
+yardline_df &lt;- tibble(
+  y = seq(-15, 60, 5),
+  yend = seq(-15, 60, 5),
+  x = rep(-56 / 2, 16),
+  xend = rep(56 / 2, 16)
+)
+
+# sidelines
+sideline_df &lt;- tibble(
+  y = c(-15.15, -15.15),
+  yend = c(60.15, 60.15),
+  x = c(-56 / 2, 56 / 2),
+  xend = c(-56 / 2, 56 / 2)
+)</code></pre>
+</div>
+<p>After building some datasets, we can now plot just the field without any other data. This looks nice enough, but I don’t want to copy paste it for all the remaining examples, so let’s try putting it into a function that we can call with <code>+ add_field()</code>!</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+ggplot(data = NULL, aes(x = x_coord, y = y_coord)) +
+  coord_cartesian(
+    xlim = c(-53.333 / 2, 53.333 / 2),
+    ylim = c(-15, 60)
+  ) +
+  geom_text(
+    data = annotate_df, aes(label = text, angle = rotation),
+    color = &quot;black&quot;, size = 8
+  ) +
+  geom_segment(
+    data = yardline_df, color = &quot;black&quot;, size = 1,
+    aes(x = x, y = y, xend = xend, yend = yend)
+  ) +
+  geom_segment(
+    x = -56 / 2, y = 0, xend = 56 / 2, yend = 0,
+    color = &quot;blue&quot;, size = 1, alpha = 0.5
+  ) +
+  geom_segment(
+    data = sideline_df, color = &quot;black&quot;, size = 2,
+    aes(x = x, y = y, xend = xend, yend = yend)
+  ) +
+  geom_text(
+    data = center_df,
+    aes(label = text), color = &quot;black&quot;, vjust = 0.32
+  ) +
+  theme_void()</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/field_plot-1.png" width="576" /></p>
+</div>
+<h3 id="wrap-the-field-in-a-function">Wrap the field in a function</h3>
+<p>We can turn this into a function so that we don’t have to copy-paste it all over the place. Note that I’m wrapping it in a list so I can use it with <code>+</code> in a sequence of <code>ggplot2</code> calls.</p>
+<p>I’m also using <code>front_col</code> and <code>back_col</code> to let us switch from white on black to black on white if needed.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+add_field &lt;- function() {
+  list(
+    coord_cartesian(
+      xlim = c(-53.333 / 2, 53.333 / 2),
+      ylim = c(-15, 60)
+    ),
+    geom_text(
+      data = annotate_df, aes(label = text, angle = rotation),
+      color = front_col, size = 8
+    ),
+    geom_segment(
+      data = yardline_df, color = front_col, size = 1,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_segment(
+      x = -56 / 2, y = 0, xend = 56 / 2, yend = 0,
+      color = &quot;blue&quot;, size = 1, alpha = 0.5
+    ),
+    geom_segment(
+      data = sideline_df, color = front_col, size = 2,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_text(
+      data = center_df,
+      aes(label = text), color = front_col, vjust = 0.32
+    ),
+    theme_void(),
+    theme(
+      strip.text = element_text(size = 20, color = front_col),
+      plot.background = element_rect(fill = back_col, color = NA),
+      legend.position = &quot;none&quot;,
+      plot.margin = unit(c(2, 1, 0.5, 1), unit = &quot;cm&quot;),
+      plot.caption = element_text(color = front_col),
+      plot.title = element_text(color = front_col),
+      plot.subtitle = element_text(color = front_col),
+      panel.background = element_rect(fill = back_col, color = NA),
+      panel.border = element_blank()
+    )
+  )
+}</code></pre>
+</div>
+<h3 id="qb-comparison">QB Comparison</h3>
+<p>First let’s filter down to just our two QBs to compare, Patrick Mahomes and Russell Wilson.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+passer_df &lt;- pass_map_df %&gt;%
+  filter(str_detect(name, c(&quot;Mahomes|Russell&quot;))) %&gt;%
+  mutate(name = factor(name, levels = c(&quot;Patrick Mahomes&quot;, &quot;Russell Wilson&quot;))) %&gt;%
+  select(name, x_coord, y_coord)
+
+passer_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density2d_filled() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/create-passer-df-1.png" width="576" /></p>
+</div>
+<p>We’ll specify fill and color to both scale with the level/density and normal density peaks across our plots, and finally set our breaks to drop the lowest bin of passes.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map &lt;- passer_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level.., color = ..level..),
+    contour_var = &quot;ndensity&quot;, # normalize across facets
+    breaks = seq(0.1, 1.0, length.out = 10)
+  ) +
+  facet_wrap(~name)
+
+pass_map</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/initial-map-1.png" width="960" /></p>
+</div>
+<p>We can quickly add the field background to this with our function <code>add_field()</code>!</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+back_col &lt;- &quot;white&quot;
+front_col &lt;- &quot;black&quot;
+
+pass_map +
+  add_field()</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/add-field-plot-1.png" width="960" /></p>
+</div>
+<h3 id="specify-color-schemes">Specify Color schemes</h3>
+<p>While that’s essentially our final graph perhaps you don’t want to use <code>viridis</code> which is the default color scheme. We can generate custom color palettes or use a pre-built color palette via the <a href="https://github.com/EmilHvitfeldt/paletteer"><code>paleteer</code></a> R package. Note that the 3 color palettes I create all do essentially the same thing but it’s:</p>
+<ul>
+<li>Building your own custom color sequence with <code>grDevices::colorRampPalette()</code><br />
+</li>
+<li>Returning a pre-built palette w/ <code>paletteer::paletteer_d()</code><br />
+</li>
+<li>Expanding a pre-built palette to be longer with <code>colorRampPalette</code></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+heat_colors &lt;- grDevices::colorRampPalette(c(&quot;#800026FF&quot;, &quot;#FC4E2AFF&quot;, &quot;#FEB24CFF&quot;, &quot;#FFFFCCFF&quot;))(10)
+
+heat_palette &lt;- paletteer::paletteer_d(&quot;RColorBrewer::YlOrRd&quot;, n = 9, direction = -1)
+
+heat_colors_interpolated &lt;- colorRampPalette(paletteer::paletteer_d(&quot;RColorBrewer::YlOrRd&quot;, n = 9, direction = -1))(10)
+
+heat_colors %&gt;% scales::show_col()</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/colors-1.png" width="624" /></p>
+<pre class="r"><code>
+heat_palette %&gt;% scales::show_col()</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/colors-2.png" width="624" /></p>
+<pre class="r"><code>
+heat_colors_interpolated %&gt;% scales::show_col()</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/colors-3.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+pass_map +
+  add_field() +
+  scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c(&quot;fill&quot;, &quot;color&quot;))</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/use-colors-1.png" width="1152" /></p>
+</div>
+<h4 id="and-also-in-black">And also in black!</h4>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+back_col &lt;- &quot;black&quot;
+front_col &lt;- &quot;white&quot;
+
+pass_map +
+  add_field() +
+  scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c(&quot;fill&quot;, &quot;color&quot;))</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/use-colors2-1.png" width="1152" /></p>
+</div>
+<h2 id="pff_moo-style-field">PFF_Moo style Field</h2>
+<p><a href="https://twitter.com/PFF_Moo/status/1235681100837486592?s=20">PFF_Moo</a> takes a different approach to field lines, which can be recreated below. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+not_div_5 &lt;- function(x) {
+  # select only elements of the vector not divisible by 5
+  x[x %% 5 != 0]
+}
+
+center_df &lt;- tibble(
+  x_coord = c(rep(-3.1, 60), rep(3.1, 60)),
+  y_coord = seq(-14, 59, 1) %&gt;% rep(2) %&gt;% not_div_5(),
+  text = &quot;--&quot;
+)
+
+# line labels
+horiz_yd_df &lt;- tibble(
+  x_coord = c(12.88, -12.88) %&gt;% rep(each = 14),
+  y_coord = seq(-10, 55, 5) %&gt;% rep(2),
+  text = seq(-10, 55, 5) %&gt;% rep(2)
+)
+
+# yardlines
+yardline_df &lt;- tibble(
+  y = seq(-15, 60, 5),
+  yend = seq(-15, 60, 5),
+  x = rep(-56 / 2, 16),
+  xend = rep(56 / 2, 16)
+)
+
+# sidelines
+sideline_df &lt;- tibble(
+  y = c(-15.15, -15.15),
+  yend = c(60.15, 60.15),
+  x = c(-56 / 2, 56 / 2),
+  xend = c(-56 / 2, 56 / 2)
+)
+
+add_moo_field &lt;- function() {
+  list(
+    coord_cartesian(
+      xlim = c(-53.333 / 2, 53.333 / 2),
+      ylim = c(-15, 60)
+    ),
+    geom_segment(
+      data = yardline_df, color = front_col, size = 0.5,
+      linetype = &quot;dashed&quot;, alpha = 0.5,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_segment(
+      aes(x = -56 / 2, y = 0, xend = 56 / 2, yend = 0),
+      color = &quot;blue&quot;, size = 1
+    ),
+    geom_segment(
+      data = sideline_df, color = front_col, size = 2,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_text(
+      data = center_df,
+      aes(label = text), color = front_col, vjust = 0.32
+    ),
+    geom_text(
+      data = horiz_yd_df, aes(label = text),
+      color = front_col, size = 4, fontface = &quot;bold&quot;
+    ),
+    theme_void(),
+    theme(
+      strip.text = element_text(size = 20, color = front_col),
+      plot.background = element_rect(fill = back_col, color = NA),
+      legend.position = &quot;none&quot;,
+      plot.margin = unit(c(2, 1, 0.5, 1), unit = &quot;cm&quot;),
+      plot.caption = element_text(color = front_col),
+      plot.title = element_text(color = front_col),
+      plot.subtitle = element_text(color = front_col),
+      panel.background = element_rect(fill = back_col, color = NA),
+      panel.border = element_blank()
+    )
+  )
+}
+
+back_col &lt;- &quot;white&quot;
+front_col &lt;- &quot;black&quot;
+
+
+ggplot(pass_map_df, aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level..),
+    contour_var = &quot;ndensity&quot;, # normalize to each QBs total passes
+    breaks = seq(0.1, 1.0, length.out = 10) # drop the lowest passes
+  ) +
+  add_moo_field()</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/field_plot_moo-1.png" width="576" /></p>
+</div>
+<h2 id="get-the-density-estimates">Get the density estimates</h2>
+<p>Lastly, we can also get the raw density measures to use against the points for example or for other more computational measures as opposed to just graphics. <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+get_density &lt;- function(x, y, ...) {
+  density_out &lt;- MASS::kde2d(x, y, ...)
+  int_x &lt;- findInterval(x, density_out$x)
+  int_y &lt;- findInterval(y, density_out$y)
+  comb_int &lt;- cbind(int_x, int_y)
+  return(density_out$z[comb_int])
+}
+
+density_map &lt;- pass_map_df %&gt;% 
+  select(x_coord, y_coord, name) %&gt;% 
+  # function works in dplyr!
+  mutate(density = get_density(x_coord, y_coord, n = 100))
+
+density_map %&gt;% 
+  ggplot(aes(x = x_coord, y = y_coord, color = density)) +
+  geom_point(alpha = 0.2) +
+  scale_color_gradient(low = &quot;red&quot;, high = &quot;yellow&quot;)</code></pre>
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/dens-calc-1.png" width="576" /></p>
+</div>
+<aside>
+<p>Here’s the hexplot for comparison:</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="heatmaps-in-ggplot2_files/figure-html5/unnamed-chunk-3-1.png" width="480" /></p>
+</div>
+</aside>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from <a href="https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/" class="uri">https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from <a href="https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/" class="uri">https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><a href="https://twitter.com/PFF_Moo/status/1235681100837486592?s=20" class="uri">https://twitter.com/PFF_Moo/status/1235681100837486592?s=20</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>Function adapted from <a href="https://slowkow.com/notes/ggplot2-color-by-density/">Kamil Slowikowski</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

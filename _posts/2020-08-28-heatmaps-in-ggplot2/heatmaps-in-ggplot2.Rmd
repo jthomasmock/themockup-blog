@@ -1,0 +1,553 @@
+---
+title: "Heatmaps in ggplot2"
+description: |
+  It's more than just a passing fad
+author:
+  - name: Thomas Mock
+base_url: https://themockup.blog
+date: 08-28-2020
+output: 
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+    self_contained: false
+categories:
+  - data visualization
+  - ggplot2
+  - tidyverse
+  - NFL
+preview: preview.png
+twitter:
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggExtra)
+library(patchwork)
+library(paletteer)
+library(scales)
+```
+
+
+Many thanks to [Ethan Douglas](https://twitter.com/ChiefsAnalytics) for sharing his heatmap passing charts on [OpenSource Football](https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/)! ^[Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/]
+
+This is a similar walkthrough in R + `ggplot2`, but credit for both collecting the data and the original plot were Ethan's!
+
+## Load Everything
+
+```{r, eval = FALSE}
+library(tidyverse)
+library(ggExtra)
+library(patchwork)
+library(paletteer)
+library(scales)
+```
+
+
+```{r read_data, message=FALSE,warning=FALSE}
+souce_url <- "https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv"
+
+pass_map_df <- read_csv(souce_url) %>%
+  na.omit() %>%
+  select(-X1)
+
+glimpse(pass_map_df)
+```
+
+## Why not just plot the points?
+
+Why even mess around with `heatmaps` or 2d density plots? Well, we run the risk of overplotting by graphing just the points without thinking or adjusting any of the aesthetics. 
+
+Hadley Wickham in [`ggplot2`: Elegant Graphics for Data Analysis](https://ggplot2-book.org/statistical-summaries.html#overplotting):  
+
+> When the data is large, points will be often plotted on top of each other, obscuring the true relationship. In extreme cases, you will only be able to see the extent of the data, and any conclusions drawn from the graphic will be suspect. This problem is called **overplotting**.
+
+Hadley uses an example with just 2000 data points, which already has a lot of overplotting due to a small sample x-y space. We have about 43,000 passes for this dataset, spread out over a relatively large space. We still need to be careful of overplotting though!
+
+<aside>
+
+Data to Viz has nice article on [Overplotting](https://www.data-to-viz.com/caveat/overplotting.html) as well
+
+</aside>
+
+### Fear the beard
+
+We can display our points with a quick `geom_point()` call but this returns a lot of overplotting albeit in a happy beard shape!
+
+```{r sanity-check, fig.height=4, fig.width=4}
+pass_map_df %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_point()
+```
+
+We can add 90% transparency with `alpha = 0.1` and change the color to red, but this still leaves us with a difficulty parsing through the high vs medium pass locations. Passes around the 5 yard mark appear to be as common as at the 10 and even 15 yard mark in some cases! We can try to get at the data a bit close with `ggMarginal` from the [`ggExtra`](https://github.com/daattali/ggExtra) R package, which provides marginal histograms, box plots, or density plots.
+
+```{r, fig.height=4,fig.width=4}
+red_beard <- pass_map_df %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_point(alpha = 0.1, color = "red")
+
+red_beard
+```
+
+We can add some marginal plots to help out a bit, but that still doesn't solve the problem of honing in on specific areas of interest that well.
+
+```{r marginal-plots, fig.height=4,fig.width=4}
+# add density or histogram in the margins
+ggMarginal(red_beard, type = "density", fill = "red")
+```
+
+```{r marginal-plots2, fig.height=4,fig.width=4}
+# add density or histogram in the margins
+ggMarginal(red_beard, type = "histogram", fill = "red")
+```
+
+### Alternatives to the beard
+
+Since we're actually interested in the density/counts of observations at each x-y coordinate instead of plotting *each* individual point, we also have a few other tools in our toolbox! We can use [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html) or [`geom_bin2d()`](https://ggplot2.tidyverse.org/reference/geom_bin2d.html). Note that there are a few other methods such as `geom_raster()` which require you to provide your own "z" metric, and there are `stat_?` versions of each of these geoms for more custom calculations.
+
+<aside>
+If you read the `ggplot2` + overplotting [`ggplot2` book  chapter](https://ggplot2-book.org/statistical-summaries.html#overplotting), you can find more reproducible longer form examples and strategies with `geom_hex()` and `geom_bin2d()`.
+</aside>
+
+```{r hex-plot, fig.height=8,fig.width=6}
+hex_plot <- pass_map_df %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_hex(
+    binwidth = c(1, 1)
+  ) +
+  scale_fill_gradient(low = "red", high = "yellow") +
+  geom_hline(yintercept = c(0, 10), color = "grey") +
+  scale_y_continuous(breaks = seq(-10, 60, 5))
+
+hex_plot
+
+bin2d <- pass_map_df %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_bin2d(
+    binwidth = c(1, 1)
+  ) +
+  scale_fill_gradient(low = "red", high = "yellow") +
+  geom_hline(yintercept = c(0, 10), color = "grey") +
+  scale_y_continuous(breaks = seq(-10, 60, 5))
+
+bin2d
+```
+
+We can now see that while there ARE passes all over the field, the majority are around the 2-7 yard mark with small but relatively dense pockets elsewhere. Passes are most frequently thrown at 4, 5 or 6 yards and ~68% of passes are thrown 10 yards or shorter.
+
+```{r not-heatmaps}
+# histogram of just Y coord
+pass_map_df %>%
+  ggplot(aes(x = y_coord)) +
+  geom_histogram(binwidth = 1) +
+  geom_vline(xintercept = c(5)) +
+  scale_x_continuous(breaks = seq(-10, 60, 5))
+
+# calc some percentages
+pass_by_y <- pass_map_df %>%
+  mutate(y_rnd = round(y_coord, digits = 0)) %>%
+  count(y_rnd) %>%
+  mutate(
+    total = sum(n),
+    pct_total = n / total,
+    roll_total = cumsum(pct_total)
+  )
+
+# ~35.6% of passes between 2-7 yards
+pass_by_y %>%
+  filter(between(y_rnd, 2, 7)) %>%
+  summarize(pct = sum(pct_total))
+
+# passes are most commonly thrown at 4-6 yards
+# 68% of passes are thrown 10 yards or shorter
+pass_by_y %>%
+  arrange(desc(pct_total))
+```
+
+### Don't bury the lede? 
+
+Another major advantage of `geom_hex` or `geom_bin2d()` is they're remarkably faster for big data than plotting `geom_point()` along with reducing the likelihood of overplotting! For a toy example of about 1.7 million points, `geom_hex()` executes in about 2 sec vs 20 sec with `geom_point()`, and then subsequent 30-60 sec to "draw" the output in the viewer of R/RStudio.
+
+<aside>
+Using these techniques are useful, as they are both computationally helpful (aka faster), and can help you better understand plots of "bigger" data.
+</aside>
+
+## 2D Density of "smaller" data
+
+So we've covered hex and rectangular 2d bins. To me, these are not as attractive for "small data" like we may see for individual QB plots. Let's take Patrick Mahomes for example, he *only* has ~1,000 passes in this dataset. We can plot with a `geom_hex()` for each 1x1 yard chunk like we did before, but I honestly have trouble determining trends of where he likes to throw with that graphic. 
+
+```{r mahomes-alone, fig.height=8,fig.width=6}
+pass_map_df %>%
+  filter(str_detect(name, c("Mahomes"))) %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_hex(binwidth = c(1, 1)) +
+  scale_y_continuous(breaks = seq(-10, 60, 5))
+```
+
+We could always use larger bins, but if we're just trying to see large trends we have another strategy in [`geom_density_2d()`](https://ggplot2.tidyverse.org/reference/geom_density_2d.html).
+
+> Perform a 2D kernel density estimation using [`MASS::kde2d()`](https://rdrr.io/pkg/MASS/man/kde2d.html) and display the results with contours. This can be useful for dealing with overplotting. This is a 2D version of geom_density(). geom_density_2d() draws contour lines, and geom_density_2d_filled() draws filled contour bands.
+
+This essentially fits a polygon around the most frequent points by x/y coordinates, and then colors them according to density. In this case, x/y is basically the position on the field and "z" is the density of how many plots were thrown to that area.
+
+
+```{r mahomes-2d, fig.height=8,fig.width=6}
+pass_map_df %>%
+  filter(str_detect(name, c("Mahomes"))) %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled() +
+  scale_y_continuous(breaks = seq(-10, 60, 5))
+```
+
+Now if we want to get even more clever, we can use this compare passing heatmaps of specific QBs. We can normalize across the facets, and drop the least frequent passes with specific breaks. I've binned into 10 specific breakpoints, and by setting breaks between 0.1 and 1.0, we also drop the very least frequent passes which otherwise show up as a light fill of the entire remaining plot. Additionally, by adding a horizontal reference line we can pretty clearly see that Carr's most common passes are behind the 5 yard line, while Mahomes has passed beyond the 5 yard line much more frequently.
+
+```{r mahomes-compare, layout="l-body-outset", fig.height=8,fig.width=10}
+pass_map_df %>%
+  filter(str_detect(name, c("Mahomes|Derek Carr"))) %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level..),
+    contour_var = "ndensity", # normalize to each QBs total passes
+    breaks = seq(0.1, 1.0, length.out = 10) # drop the lowest passes
+  ) +
+  scale_y_continuous(breaks = seq(-10, 60, 5)) +
+  facet_wrap(~name) +
+  geom_hline(yintercept = 5)
+```
+
+This is all well and good, but it's not the prettiest piece of dataviz.
+
+Thanks again to [Ethan Douglas](https://twitter.com/ChiefsAnalytics) and his post on [OpenSourceFootball.com](https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/) ^[Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/], we have a good framework about how to approach building a NFL field as a graph. 
+
+## Build the field
+
+```{r build-field}
+not_div_5 <- function(x) {
+  # select only elements of the vector not divisible by 5
+  x[x %% 5 != 0]
+}
+
+center_df <- tibble(
+  x_coord = c(rep(-3.1, 60), rep(3.1, 60)),
+  y_coord = seq(-14, 59, 1) %>% rep(2) %>% not_div_5(),
+  text = "--"
+)
+
+# line labels
+annotate_df <- tibble(
+  x_coord = c(12.88, -12.88) %>% rep(each = 5),
+  y_coord = seq(10, 50, 10) %>% rep(2),
+  text = seq(10, 50, 10) %>% rep(2) %>% str_replace("(.)(.)", "\\1 \\2"),
+  rotation = c(90, 270) %>% rep(each = 5)
+)
+
+# yardlines
+yardline_df <- tibble(
+  y = seq(-15, 60, 5),
+  yend = seq(-15, 60, 5),
+  x = rep(-56 / 2, 16),
+  xend = rep(56 / 2, 16)
+)
+
+# sidelines
+sideline_df <- tibble(
+  y = c(-15.15, -15.15),
+  yend = c(60.15, 60.15),
+  x = c(-56 / 2, 56 / 2),
+  xend = c(-56 / 2, 56 / 2)
+)
+```
+
+After building some datasets, we can now plot just the field without any other data. This looks nice enough, but I don't want to copy paste it for all the remaining examples, so let's try putting it into a function that we can call with `+ add_field()`!
+
+```{r field_plot, fig.height=8,fig.width=6}
+ggplot(data = NULL, aes(x = x_coord, y = y_coord)) +
+  coord_cartesian(
+    xlim = c(-53.333 / 2, 53.333 / 2),
+    ylim = c(-15, 60)
+  ) +
+  geom_text(
+    data = annotate_df, aes(label = text, angle = rotation),
+    color = "black", size = 8
+  ) +
+  geom_segment(
+    data = yardline_df, color = "black", size = 1,
+    aes(x = x, y = y, xend = xend, yend = yend)
+  ) +
+  geom_segment(
+    x = -56 / 2, y = 0, xend = 56 / 2, yend = 0,
+    color = "blue", size = 1, alpha = 0.5
+  ) +
+  geom_segment(
+    data = sideline_df, color = "black", size = 2,
+    aes(x = x, y = y, xend = xend, yend = yend)
+  ) +
+  geom_text(
+    data = center_df,
+    aes(label = text), color = "black", vjust = 0.32
+  ) +
+  theme_void()
+```
+
+### Wrap the field in a function
+
+We can turn this into a function so that we don't have to copy-paste it all over the place. Note that I'm wrapping it in a list so I can use it with `+` in a sequence of `ggplot2` calls.
+
+I'm also using `front_col` and `back_col` to let us switch from white on black to black on white if needed.
+
+
+```{r field-function}
+add_field <- function() {
+  list(
+    coord_cartesian(
+      xlim = c(-53.333 / 2, 53.333 / 2),
+      ylim = c(-15, 60)
+    ),
+    geom_text(
+      data = annotate_df, aes(label = text, angle = rotation),
+      color = front_col, size = 8
+    ),
+    geom_segment(
+      data = yardline_df, color = front_col, size = 1,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_segment(
+      x = -56 / 2, y = 0, xend = 56 / 2, yend = 0,
+      color = "blue", size = 1, alpha = 0.5
+    ),
+    geom_segment(
+      data = sideline_df, color = front_col, size = 2,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_text(
+      data = center_df,
+      aes(label = text), color = front_col, vjust = 0.32
+    ),
+    theme_void(),
+    theme(
+      strip.text = element_text(size = 20, color = front_col),
+      plot.background = element_rect(fill = back_col, color = NA),
+      legend.position = "none",
+      plot.margin = unit(c(2, 1, 0.5, 1), unit = "cm"),
+      plot.caption = element_text(color = front_col),
+      plot.title = element_text(color = front_col),
+      plot.subtitle = element_text(color = front_col),
+      panel.background = element_rect(fill = back_col, color = NA),
+      panel.border = element_blank()
+    )
+  )
+}
+```
+
+### QB Comparison
+
+First let's filter down to just our two QBs to compare, Patrick Mahomes and Russell Wilson.
+
+```{r create-passer-df, fig.height=8,fig.width=6}
+passer_df <- pass_map_df %>%
+  filter(str_detect(name, c("Mahomes|Russell"))) %>%
+  mutate(name = factor(name, levels = c("Patrick Mahomes", "Russell Wilson"))) %>%
+  select(name, x_coord, y_coord)
+
+passer_df %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density2d_filled() +
+  theme(legend.position = "none")
+```
+
+We'll specify fill and color to both scale with the level/density and normal density peaks across our plots, and finally set our breaks to drop the lowest bin of passes.
+
+```{r initial-map, fig.height=10,fig.width=10}
+pass_map <- passer_df %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level.., color = ..level..),
+    contour_var = "ndensity", # normalize across facets
+    breaks = seq(0.1, 1.0, length.out = 10)
+  ) +
+  facet_wrap(~name)
+
+pass_map
+```
+
+We can quickly add the field background to this with our function `add_field()`!
+
+```{r add-field-plot, fig.height=10,fig.width=10, layout='l-body-outset'}
+back_col <- "white"
+front_col <- "black"
+
+pass_map +
+  add_field()
+```
+
+### Specify Color schemes
+
+While that's essentially our final graph perhaps you don't want to use `viridis` which is the default color scheme. We can generate custom color palettes or use a pre-built color palette via the [`paleteer`](https://github.com/EmilHvitfeldt/paletteer) R package. Note that the 3 color palettes I create all do essentially the same thing but it's:  
+
+* Building your own custom color sequence with `grDevices::colorRampPalette()`  
+* Returning a pre-built palette w/ `paletteer::paletteer_d()`  
+* Expanding a pre-built palette to be longer with `colorRampPalette`
+
+```{r colors}
+heat_colors <- grDevices::colorRampPalette(c("#800026FF", "#FC4E2AFF", "#FEB24CFF", "#FFFFCCFF"))(10)
+
+heat_palette <- paletteer::paletteer_d("RColorBrewer::YlOrRd", n = 9, direction = -1)
+
+heat_colors_interpolated <- colorRampPalette(paletteer::paletteer_d("RColorBrewer::YlOrRd", n = 9, direction = -1))(10)
+
+heat_colors %>% scales::show_col()
+heat_palette %>% scales::show_col()
+heat_colors_interpolated %>% scales::show_col()
+```
+
+```{r use-colors, fig.height=12,fig.width=12, layout='l-body-outset'}
+pass_map +
+  add_field() +
+  scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c("fill", "color"))
+```
+
+#### And also in black!
+
+```{r use-colors2, fig.height=12,fig.width=12, layout='l-body-outset'}
+back_col <- "black"
+front_col <- "white"
+
+pass_map +
+  add_field() +
+  scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c("fill", "color"))
+```
+
+
+## PFF_Moo style Field
+
+[PFF_Moo](https://twitter.com/PFF_Moo/status/1235681100837486592?s=20) takes a different approach to field lines, which can be recreated below. ^[https://twitter.com/PFF_Moo/status/1235681100837486592?s=20]
+
+```{r field_plot_moo, fig.height=10,fig.width=6}
+not_div_5 <- function(x) {
+  # select only elements of the vector not divisible by 5
+  x[x %% 5 != 0]
+}
+
+center_df <- tibble(
+  x_coord = c(rep(-3.1, 60), rep(3.1, 60)),
+  y_coord = seq(-14, 59, 1) %>% rep(2) %>% not_div_5(),
+  text = "--"
+)
+
+# line labels
+horiz_yd_df <- tibble(
+  x_coord = c(12.88, -12.88) %>% rep(each = 14),
+  y_coord = seq(-10, 55, 5) %>% rep(2),
+  text = seq(-10, 55, 5) %>% rep(2)
+)
+
+# yardlines
+yardline_df <- tibble(
+  y = seq(-15, 60, 5),
+  yend = seq(-15, 60, 5),
+  x = rep(-56 / 2, 16),
+  xend = rep(56 / 2, 16)
+)
+
+# sidelines
+sideline_df <- tibble(
+  y = c(-15.15, -15.15),
+  yend = c(60.15, 60.15),
+  x = c(-56 / 2, 56 / 2),
+  xend = c(-56 / 2, 56 / 2)
+)
+
+add_moo_field <- function() {
+  list(
+    coord_cartesian(
+      xlim = c(-53.333 / 2, 53.333 / 2),
+      ylim = c(-15, 60)
+    ),
+    geom_segment(
+      data = yardline_df, color = front_col, size = 0.5,
+      linetype = "dashed", alpha = 0.5,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_segment(
+      aes(x = -56 / 2, y = 0, xend = 56 / 2, yend = 0),
+      color = "blue", size = 1
+    ),
+    geom_segment(
+      data = sideline_df, color = front_col, size = 2,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_text(
+      data = center_df,
+      aes(label = text), color = front_col, vjust = 0.32
+    ),
+    geom_text(
+      data = horiz_yd_df, aes(label = text),
+      color = front_col, size = 4, fontface = "bold"
+    ),
+    theme_void(),
+    theme(
+      strip.text = element_text(size = 20, color = front_col),
+      plot.background = element_rect(fill = back_col, color = NA),
+      legend.position = "none",
+      plot.margin = unit(c(2, 1, 0.5, 1), unit = "cm"),
+      plot.caption = element_text(color = front_col),
+      plot.title = element_text(color = front_col),
+      plot.subtitle = element_text(color = front_col),
+      panel.background = element_rect(fill = back_col, color = NA),
+      panel.border = element_blank()
+    )
+  )
+}
+
+back_col <- "white"
+front_col <- "black"
+
+
+ggplot(pass_map_df, aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level..),
+    contour_var = "ndensity", # normalize to each QBs total passes
+    breaks = seq(0.1, 1.0, length.out = 10) # drop the lowest passes
+  ) +
+  add_moo_field()
+```
+
+## Get the density estimates
+
+Lastly, we can also get the raw density measures to use against the points for example or for other more computational measures as opposed to just graphics. ^[Function adapted from [Kamil Slowikowski](https://slowkow.com/notes/ggplot2-color-by-density/)]
+
+
+```{r dens-calc,fig.height=6, fig.width=6}
+
+get_density <- function(x, y, ...) {
+  density_out <- MASS::kde2d(x, y, ...)
+  int_x <- findInterval(x, density_out$x)
+  int_y <- findInterval(y, density_out$y)
+  comb_int <- cbind(int_x, int_y)
+  return(density_out$z[comb_int])
+}
+
+density_map <- pass_map_df %>% 
+  select(x_coord, y_coord, name) %>% 
+  # function works in dplyr!
+  mutate(density = get_density(x_coord, y_coord, n = 100))
+
+density_map %>% 
+  ggplot(aes(x = x_coord, y = y_coord, color = density)) +
+  geom_point(alpha = 0.2) +
+  scale_color_gradient(low = "red", high = "yellow")
+```
+  
+<aside>
+
+Here's the hexplot for comparison:
+
+```{r, echo = FALSE, fig.width=5, fig.height=6}
+hex_plot
+```
+
+</aside>

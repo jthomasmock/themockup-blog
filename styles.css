@@ -56,7 +56,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .distill-site-nav a:hover {
-  color: #383838;
+  color: #ff6700;
 }
 
 .nav-dropdown-content a {
@@ -81,4 +81,54 @@ h1, h2, h3, h4, h5 {
   .distill-site-nav {
     display: none;
   }
+}
+
+details {
+  background-color: hsla(60, 7%, 80%, 0.2);
+  cursor: pointer;
+  color: #2d2d2d;
+  margin-bottom:1vh;
+  padding: 1em;
+  border: none;
+  text-align: left;
+  outline: none;
+}
+
+.active, details:hover {
+  transition: max-height 0.2s ease-out;
+  /* background-color: #acc2c2; */
+}
+
+details {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  border-radius: 4px;
+}
+
+details.active {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+summary::after {
+  float: right;
+  font-family: "Font Awesome 5 Free";
+  content: "\f0fe";
+}
+
+details[open] summary::after {
+  float: right;
+  font-family: "Font Awesome 5 Free";
+  content: "\f146";
+}
+
+details h4 {
+margin: 0;
+color: #2d2d2d !important;
+line-height: inherit;
 }
