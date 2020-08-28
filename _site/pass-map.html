@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
-  <link rel="alternate" type="application/rss+xml" href="https://themockup.blog/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -20,20 +19,24 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>The Mockup Blog: Posts</title>
+  <title>The Mockup Blog: Untitled</title>
   
   
   
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2020-08-27"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-08-27"/>
+  <meta name="article:author" content="Thomas Mock"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="The Mockup Blog: Posts"/>
+  <meta property="og:title" content="The Mockup Blog: Untitled"/>
   <meta property="og:type" content="article"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="The Mockup Blog"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="The Mockup Blog: Posts"/>
+  <meta property="twitter:title" content="The Mockup Blog: Untitled"/>
   <meta property="twitter:site" content="@thomas_mock"/>
   <meta property="twitter:creator" content="@thomas_mock"/>
   
@@ -41,7 +44,7 @@
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","author","date","output","editor_options"]}},"value":[{"type":"character","attributes":{},"value":["Untitled"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Mock"]}]}]},{"type":"character","attributes":{},"value":["8/27/2020"]},{"type":"character","attributes":{},"value":["html_document"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["chunk_output_type"]}},"value":[{"type":"character","attributes":{},"value":["console"]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1371,12 +1374,12 @@
 
 </head>
 
-<body class="layout-listing">
+<body>
 
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Posts","authors":[]}
+{"title":"Untitled","authors":[{"author":"Thomas Mock","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-08-27T00:00:00.000-05:00","citationText":"Mock, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1406,682 +1409,536 @@
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
-<!--radix_placeholder_article_listing-->
-
-<style type="text/css">
-
-/* Styles for listing layout (hide title) */
-.layout-listing d-title, .layout-listing .d-title {
-  display: none;
-}
-
-/* Styles for posts lists (not auto-injected) */
-
-
-.posts-with-sidebar {
-  padding-left: 45px;
-  padding-right: 45px;
-}
-
-.posts-list .description h2,
-.posts-list .description p {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-}
-
-.posts-list .description h2 {
-  font-weight: 700;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.posts-list h2.post-tag {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding-bottom: 12px;
-}
-.posts-list {
-  margin-top: 60px;
-  margin-bottom: 24px;
-}
-
-.posts-list .post-preview {
-  text-decoration: none;
-  overflow: hidden;
-  display: block;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 24px 0;
-}
-
-.post-preview-last {
-  border-bottom: none !important;
-}
-
-.posts-list .posts-list-caption {
-  grid-column: screen;
-  font-weight: 400;
-}
-
-.posts-list .post-preview h2 {
-  margin: 0 0 6px 0;
-  line-height: 1.2em;
-  font-style: normal;
-  font-size: 24px;
-}
-
-.posts-list .post-preview p {
-  margin: 0 0 12px 0;
-  line-height: 1.4em;
-  font-size: 16px;
-}
-
-.posts-list .post-preview .thumbnail {
-  box-sizing: border-box;
-  margin-bottom: 24px;
-  position: relative;
-  max-width: 500px;
-}
-.posts-list .post-preview img {
-  width: 100%;
-  display: block;
-}
-
-.posts-list .metadata {
-  font-size: 12px;
-  line-height: 1.4em;
-  margin-bottom: 18px;
-}
-
-.posts-list .metadata > * {
-  display: inline-block;
-}
-
-.posts-list .metadata .publishedDate {
-  margin-right: 1em;
-}
-
-.posts-list .metadata .tags {
-  margin-top: 1em;
-}
-
-.posts-list .tags .tag {
-  color: rgba(0,0,0,0.67);
-  padding: 0.3em 0.5em;
-  margin: 0;
-  font-size: 80%;
-  border: 1px solid rgba(0,0,0,0.4);
-  border-radius: 3px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-.posts-list img {
-  opacity: 1;
-}
-
-.posts-list img[data-src] {
-  opacity: 0;
-}
-
-.posts-more {
-  clear: both;
-}
-
-
-.posts-sidebar {
-  font-size: 16px;
-}
-
-.posts-sidebar h3 {
-  font-size: 16px;
-  margin-top: 0;
-  margin-bottom: 0.5em;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.sidebar-section {
-  margin-bottom: 30px;
-}
-
-.categories ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.categories li {
-  color: rgba(0, 0, 0, 0.8);
-  margin-bottom: 0;
-}
-
-.categories li>a {
-  border-bottom: none;
-}
-
-.categories li>a:hover {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-}
-
-.categories .active {
-  font-weight: 600;
-}
-
-.categories .category-count {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-
-@media(min-width: 768px) {
-  .posts-list .post-preview h2 {
-    font-size: 26px;
-  }
-  .posts-list .post-preview .thumbnail {
-    float: right;
-    width: 35%;
-    margin-bottom: 0;
-  }
-  .posts-list .post-preview .description {
-    float: left;
-    width: 45%;
-  }
-  .posts-list .post-preview .metadata {
-    float: left;
-    width: 15%;
-    margin-top: 8px;
-  }
-  .posts-list .post-preview p {
-    margin: 0 0 12px 0;
-    line-height: 1.5em;
-    font-size: 16px;
-  }
-  .posts-with-sidebar .posts-list {
-    float: left;
-    width: 72%;
-  }
-  .posts-with-sidebar .posts-sidebar {
-    float: right;
-    width: 20%;
-    margin-top: 60px;
-    padding-top: 24px;
-    padding-bottom: 24px;
-  }
-}
-
-.downlevel .posts-list .post-preview {
-  color: inherit;
-}
-
-</style>
-
-<script type="application/javascript">
-
-function init_posts_list() {
-
-  function load_image(img) {
-    var src = $(img).attr('data-src');
-    if (src) {
-      $(img).attr('src', src);
-      $(img).load(function() {
-        img.removeAttribute('data-src');
-      });
-    }
-  }
-
-  function set_posts_visible(posts, visible) {
-    if (visible) {
-
-      // show bottom border by default
-      $(posts).removeClass('post-preview-last');
-
-      // apply limits if need be
-      var max_posts = 25;
-      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
-      if (apply_limits && posts.length > max_posts) {
-        posts = $(posts).slice(0, max_posts);
-      } else {
-        $('.posts-more a').addClass('hidden');
-      }
-
-      // apply last style
-      $(posts.slice(-1)[0]).addClass('post-preview-last');
-
-      $(posts).removeClass('hidden');
-      $(posts).find('img[data-src]').each(function(i, img) {
-        load_image(img);
-      });
-    } else {
-      $(posts).addClass('hidden');
-    }
-  }
-
-  function apply_hash_filter() {
-
-    // clear active state
-    $('.categories .active').removeClass('active');
-
-    // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children('a'), false);
-
-    // if we have a hash filter
-    if (window.location.hash) {
-
-      // mark posts that match the category visible
-      var page_category = window.location.hash.replace("#", "");
-      var posts = $('.post-metadata').map(function(idx, script) {
-        var metadata = $.parseJSON($(script).html());
-        var post = null;
-        $.each(metadata.categories, function(idx, category) {
-          category = category.replace(/ /g,"_");
-          if (category == page_category) {
-            post = $(script).parent().get();
-            return false;
-          }
-        });
-        return post;
-      });
-      set_posts_visible(posts, true);
-
-      // mark the hash active
-      $('.categories li>a[href="' + window.location.hash + '"]').addClass('active');
-
-    } else {
-
-      // no hash filter, make all posts visible (subject to max display)
-      set_posts_visible($('.posts-list').children(), true);
-
-    }
-  }
-
-  // more articles
-  function apply_post_limits(apply) {
-    if (apply) {
-      $('.posts-container').addClass('posts-apply-limit');
-      $('.posts-more a').removeClass('hidden');
-    } else {
-      $('.posts-container').removeClass('posts-apply-limit');
-      $('.posts-more a').addClass('hidden');
-    }
-  }
-
-  // hash filter handling
-  apply_hash_filter();
-  $(window).on('hashchange',function() {
-    apply_post_limits(true);
-    apply_hash_filter();
-  });
-
-  // more articles link
-  $('.posts-more a').click(function(e) {
-    e.preventDefault();
-    apply_post_limits(false);
-    apply_hash_filter();
-    return false;
-  });
-
-}
-
-</script>
-
-
-
-<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
-<div class="posts-list">
-<h1 class="posts-list-caption">Posts</h1>
-<a href="posts/2020-08-28-heatmaps-in-ggplot2/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["data visualization","ggplot2","tidyverse","NFL"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 28, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-08-28-heatmaps-in-ggplot2/preview.png"/>
-</div>
-<div class="description">
-<h2>Heatmaps in ggplot2</h2>
-<p>It's more than just a passing fad</p>
-</div>
-</a>
-<a href="posts/2020-08-05-a-bar-chart-5-ways/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["data visualization","ggplot2","tidyverse","web scraping"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 5, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-08-05-a-bar-chart-5-ways/CopyOfpreview.png"/>
-</div>
-<div class="description">
-<h2>A bar chart 5 ways in ggplot2</h2>
-<p>Andy, Tom, and ggplot2 walk into a bar...</p>
-</div>
-</a>
-<a href="posts/2020-08-01-building-a-blog-with-distill/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["rmarkdown","tidyverse"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 1, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-08-01-building-a-blog-with-distill/modern.jpeg"/>
-</div>
-<div class="description">
-<h2>Building a blog with distill</h2>
-<p>I love simplicity.</p>
-</div>
-</a>
-<a href="posts/2020-07-25-meta-rmarkdown/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["rmarkdown","tidyverse"]}</script>
-<div class="metadata">
-<div class="publishedDate">July 25, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-07-25-meta-rmarkdown/tools-flat.jpg"/>
-</div>
-<div class="description">
-<h2>Meta RMarkdown - Taxonomy and Use cases</h2>
-<p>A meta collection of all things R Markdown.</p>
-</div>
-</a>
-<a href="posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["NFL","tidyverse","crosstalk","plotly","tables","reactable"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 29, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/distill-preview.jpg"/>
-</div>
-<div class="description">
-<h2>Client-side interactivity - do more with Crosstalk</h2>
-<p>Because sharing data is caring</p>
-</div>
-</a>
-<a href="posts/2020-05-22-parsing-json-in-r-with-jsonlite/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["NFL","tidyverse","JSON","web scraping","API","purrr"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 22, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-05-22-parsing-json-in-r-with-jsonlite/distill-preview.jpg"/>
-</div>
-<div class="description">
-<h2>Easily parsing JSON in R with jsonlite and purrr</h2>
-<p>It's turtles all the way down...</p>
-</div>
-</a>
-<a href="posts/2020-05-16-gt-a-grammer-of-tables/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["NFL","tidyverse","tables"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 18, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-05-16-gt-a-grammer-of-tables/distill-preview.png"/>
-</div>
-<div class="description">
-<h2>gt - a (G)rammar of (T)ables</h2>
-<p>Not to be confused with a Game of Thrones</p>
-</div>
-</a>
-<a href="posts/2020-05-13-reactable-tables-the-rest-of-the-owl/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["NFL","tidyverse","tables"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 15, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png"/>
-</div>
-<div class="description">
-<h2>reactable - An Interactive Tables Guide</h2>
-<p>Part 2: How to draw the rest of the owl.</p>
-</div>
-</a>
-<a href="posts/2020-05-13-qb-salaries-vs-playoff-appearances/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["NFL","tidyverse","tables"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 13, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-05-13-qb-salaries-vs-playoff-appearances/distill-preview.png"/>
-</div>
-<div class="description">
-<h2>QB Salaries vs Playoff Appearances</h2>
-<p>Interactive tables make bad takes more fun.</p>
-</div>
-</a>
-<a href="posts/2020-05-01-tidy-long-models/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["espnscrapeR","NFL","tidyverse","tidymodels"]}</script>
-<div class="metadata">
-<div class="publishedDate">May 1, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-05-01-tidy-long-models/distill-preview.png"/>
-</div>
-<div class="description">
-<h2>Flipping tibbles for many models</h2>
-<p>Pivoting data from wide to long to run many models at once</p>
-</div>
-</a>
-<a href="posts/2019-04-28-nflfastr-dbplyr-rsqlite/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["NFL","nflscrapR","nflfastR","SQL","tidyverse"]}</script>
-<div class="metadata">
-<div class="publishedDate">April 28, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1526&amp;q=80"/>
-</div>
-<div class="description">
-<h2>Bigger, nflfastR, dbplyr</h2>
-<p>Doing more with dplyr and SQL</p>
-</div>
-</a>
-<a href="posts/2020-04-03-beer-and-pdftools-a-vignette/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":[]}</script>
-<div class="metadata">
-<div class="publishedDate">April 4, 2020</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Beer and pdftools - a vignette</h2>
-<p>A guide to extracting tables from many PDFs using the pdftools package</p>
-</div>
-</a>
-<a href="posts/2020-04-03-crossing-10000-tidy-simulation/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["tidyverse","purrr","simulation","probability"]}</script>
-<div class="metadata">
-<div class="publishedDate">Jan. 7, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-04-03-crossing-10000-tidy-simulation/distill-preview.png"/>
-</div>
-<div class="description">
-<h2>Crossing 10,000 - Tidy simulation</h2>
-<p>Tidy simulation with dice rolls</p>
-</div>
-</a>
-<a href="posts/2019-01-09-add-a-logo-to-your-plot/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["magick","data visualization","ggplot2"]}</script>
-<div class="metadata">
-<div class="publishedDate">Jan. 9, 2019</div>
-</div>
-<div class="thumbnail">
-<img data-src="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940"/>
-</div>
-<div class="description">
-<h2>Add a logo to your plot</h2>
-<p>Put a bird on it - Portlandia.</p>
-</div>
-</a>
-<a href="posts/2019-01-02-tidytuesday-enhancements/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["TidyTuesday","tidyverse","Automation"]}</script>
-<div class="metadata">
-<div class="publishedDate">Jan. 2, 2019</div>
-</div>
-<div class="thumbnail">
-<img data-src="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png"/>
-</div>
-<div class="description">
-<h2>TidyTuesday enhancements</h2>
-<p>Making #TidyTuesday better.</p>
-</div>
-</a>
-<a href="posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["TidyTuesday","tidyverse","Community"]}</script>
-<div class="metadata">
-<div class="publishedDate">April 5, 2018</div>
-</div>
-<div class="thumbnail">
-<img data-src="https://i.imgur.com/AXfD3Fk.png"/>
-</div>
-<div class="description">
-<h2>TidyTuesday</h2>
-<p>A weekly social data project in R</p>
-</div>
-</a>
-<a href="posts/2018-12-11-functional-progamming-in-r-with-purrr/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["purrr","tidyverse","statistics"]}</script>
-<div class="metadata">
-<div class="publishedDate">March 18, 2018</div>
-</div>
-<div class="thumbnail">
-<img data-src="https://i.imgur.com/LIvMxbN.jpg"/>
-</div>
-<div class="description">
-<h2>Functional Progamming in R with purrr</h2>
-<p>Minimizing repetition with further replication</p>
-</div>
-</a>
-<a href="posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":[]}</script>
-<div class="metadata">
-<div class="publishedDate">March 16, 2018</div>
-</div>
-<div class="thumbnail">
-<img data-src="https://i.imgur.com/o6k6Rne.jpg"/>
-</div>
-<div class="description">
-<h2>A Gentle Guide to Tidy Statistics in R</h2>
-<p>Working your way through a basic analysis</p>
-</div>
-</a>
-</div>
-<div class="posts-sidebar">
-<div class="sidebar-section categories">
-<h3>Categories</h3>
-<ul>
-<li>
-<a href="#API">API</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#Automation">Automation</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#Community">Community</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#crosstalk">crosstalk</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#data_visualization">data visualization</a>
-<span class="category-count">(3)</span>
-</li>
-<li>
-<a href="#espnscrapeR">espnscrapeR</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#ggplot2">ggplot2</a>
-<span class="category-count">(3)</span>
-</li>
-<li>
-<a href="#JSON">JSON</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#magick">magick</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#NFL">NFL</a>
-<span class="category-count">(8)</span>
-</li>
-<li>
-<a href="#nflfastR">nflfastR</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#nflscrapR">nflscrapR</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#plotly">plotly</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#probability">probability</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#purrr">purrr</a>
-<span class="category-count">(3)</span>
-</li>
-<li>
-<a href="#reactable">reactable</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#rmarkdown">rmarkdown</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#simulation">simulation</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#SQL">SQL</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#statistics">statistics</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#tables">tables</a>
-<span class="category-count">(4)</span>
-</li>
-<li>
-<a href="#tidymodels">tidymodels</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#TidyTuesday">TidyTuesday</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#tidyverse">tidyverse</a>
-<span class="category-count">(15)</span>
-</li>
-<li>
-<a href="#web_scraping">web scraping</a>
-<span class="category-count">(2)</span>
-</li>
-</ul>
-</div>
-</div>
-<div class="posts-more">
-<a href="#">More articles &raquo;</a>
-</div>
-</div>
-<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>Posts</h1>
+<h1>Untitled</h1>
 
 </div>
 
+<div class="d-byline">
+  
+  Thomas Mock
+  
+<br/>8/27/2020
+</div>
 
 <div class="d-article">
+<p>Many thanks to <a href="https://twitter.com/ChiefsAnalytics">Ethan Douglas</a> for sharing his heatmap passing charts on <a href="https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/">OpenSource Football</a>!</p>
+<p>This is a similar walkthrough in R + <code>ggplot2</code>, but credit for both collecting the data and a lot of the general ideas are Ethan’s!</p>
+<h1 id="read-in-data">Read in data</h1>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map_df &lt;- read_csv(&quot;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&quot;) %&gt;%
+  na.omit() %&gt;%
+  select(-X1)
 
+glimpse(pass_map_df)</code></pre>
+<pre><code>
+Rows: 42,455
+Columns: 14
+$ game_id    &lt;dbl&gt; 2017091004, 2017091004, 2017091004, 2017091004, …
+$ name       &lt;chr&gt; &quot;Carson Palmer&quot;, &quot;Carson Palmer&quot;, &quot;Carson Palmer…
+$ pass_type  &lt;chr&gt; &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, …
+$ team       &lt;chr&gt; &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;,…
+$ week       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ x_coord    &lt;dbl&gt; -23.5, 2.8, 18.6, -8.4, -15.5, 26.8, 13.6, 11.2,…
+$ y_coord    &lt;dbl&gt; 14.6, 9.3, -1.1, 8.3, 8.0, 10.6, -2.8, 13.4, 5.3…
+$ type       &lt;chr&gt; &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;,…
+$ home_team  &lt;chr&gt; &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;,…
+$ away_team  &lt;chr&gt; &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;,…
+$ season     &lt;dbl&gt; 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, …
+$ game_url   &lt;chr&gt; &quot;http://www.nfl.com/liveupdate/game-center/20170…
+$ home_score &lt;dbl&gt; 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, …
+$ away_score &lt;dbl&gt; 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, …</code></pre>
+</div>
+<h2 id="why-not-just-plot-the-points">Why not just plot the points?</h2>
+<p>We run the risk of overplotting by plotting just the points without thinking or adjusting any of the aesthetics.</p>
+<p>Hadley Wickham in <a href="https://ggplot2-book.org/statistical-summaries.html#overplotting"><code>ggplot2</code>: Elegant Graphics for Data Analysis</a>:</p>
+<blockquote>
+<p>However, when the data is large, points will be often plotted on top of each other, obscuring the true relationship. In extreme cases, you will only be able to see the extent of the data, and any conclusions drawn from the graphic will be suspect. This problem is called <strong>overplotting</strong>.</p>
+</blockquote>
+<p>Hadley uses an example w/ 2000 data points, which already has a lot of overplotting due to a small sample x-y space. We have about 43,000 passes for this dataset, spread out over a relatively large space. We still need to be careful of overplotting though!</p>
+<aside>
+<p>from Data to Viz has another short article on <a href="https://www.data-to-viz.com/caveat/overplotting.html">Overplotting</a></p>
+</aside>
+<h3 id="fear-the-beard">Fear the beard</h3>
+<p>We can display our points with a quick <code>geom_point()</code> call but this returns a lot of overplotting albeit in a happy beard shape!</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_point()</code></pre>
+<p><img src="pass-map_files/figure-html5/sanity-check-1.png" width="384" /></p>
+</div>
+<p>We can add 90% transparency with <code>alpha = 0.1</code> and change the color to red, but this still leaves us with a difficulty parsing through the high vs medium pass locations. Passes around the 5 yard mark appear to be as common as at the 10 and even 15 yard mark in some cases! We can try to get at the data a bit close with <code>ggMarginal</code> from the <a href="https://github.com/daattali/ggExtra"><code>ggExtra</code></a> R package, which provides marginal histograms, box plots, or density plots.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+red_beard &lt;- pass_map_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_point(alpha = 0.1, color = &quot;red&quot;)
+
+red_beard</code></pre>
+<p><img src="pass-map_files/figure-html5/unnamed-chunk-2-1.png" width="384" /></p>
+</div>
+<p>We can add some marginal plots to help out a bit, but that still doesn’t solve the problem of honing in on specific areas of interest that well.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# add density or histogram in the margins
+ggMarginal(red_beard, type = &quot;density&quot;, fill = &quot;red&quot;)</code></pre>
+<p><img src="pass-map_files/figure-html5/marginal-plots-1.png" width="384" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# add density or histogram in the margins
+ggMarginal(red_beard, type = &quot;histogram&quot;, fill = &quot;red&quot;)</code></pre>
+<p><img src="pass-map_files/figure-html5/marginal-plots2-1.png" width="384" /></p>
+</div>
+<h3 id="alternatives-to-the-beard">Alternatives to the beard</h3>
+<p>Since we’re actually interested in the density/counts of observations at each x-y coordinate instead of plotting <em>each</em> individual point, we also have a few other tools in our toolbox! We can use <a href="https://ggplot2.tidyverse.org/reference/geom_hex.html"><code>geom_hex()</code></a> or <a href="https://ggplot2.tidyverse.org/reference/geom_bin2d.html"><code>geom_bin2d()</code></a>. Note that there are a few other methods such as <code>geom_raster()</code> which require you to provide your own “z” metric, and there are <code>stat_?</code> versions of each of these geoms for more custom calculations.</p>
+<aside>
+If you read the <code>ggplot2</code> + overplotting <a href="https://ggplot2-book.org/statistical-summaries.html#overplotting"><code>ggplot2</code> book chapter</a>, you can find more reproducible longer form examples and strategies with <code>geom_hex()</code> and <code>geom_bin2d()</code>.
+</aside>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+hex_plot &lt;- pass_map_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_hex(
+    binwidth = c(1, 1)
+  ) +
+  scale_fill_gradient(low = &quot;red&quot;, high = &quot;yellow&quot;) +
+  geom_hline(yintercept = c(0, 10), color = &quot;grey&quot;) +
+  scale_y_continuous(breaks = seq(-10, 60, 5))
+
+hex_plot</code></pre>
+<p><img src="pass-map_files/figure-html5/hex-plot-1.png" width="576" /></p>
+<pre class="r"><code>
+bin2d &lt;- pass_map_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_bin2d(
+    binwidth = c(1, 1)
+  ) +
+  scale_fill_gradient(low = &quot;red&quot;, high = &quot;yellow&quot;) +
+  geom_hline(yintercept = c(0, 10), color = &quot;grey&quot;) +
+  scale_y_continuous(breaks = seq(-10, 60, 5))
+
+bin2d</code></pre>
+<p><img src="pass-map_files/figure-html5/hex-plot-2.png" width="576" /></p>
+</div>
+<p>We can now see that while there ARE passes all over the field, the majority are around the 2-7 yard mark with small but relatively dense pockets elsewhere. Passes are most frequently thrown at 4, 5 or 6 yards and ~68% of passes are thrown 10 yards or shorter.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# histogram of just Y coord
+pass_map_df %&gt;%
+  ggplot(aes(x = y_coord)) +
+  geom_histogram(binwidth = 1) +
+  geom_vline(xintercept = c(5)) +
+  scale_x_continuous(breaks = seq(-10, 60, 5))</code></pre>
+<p><img src="pass-map_files/figure-html5/not-heatmaps-1.png" width="624" /></p>
+<pre class="r"><code>
+# calc some percentages
+pass_by_y &lt;- pass_map_df %&gt;%
+  mutate(y_rnd = round(y_coord, digits = 0)) %&gt;%
+  count(y_rnd) %&gt;%
+  mutate(
+    total = sum(n),
+    pct_total = n / total,
+    roll_total = cumsum(pct_total)
+  )
+
+# ~35.6% of passes between 2-7 yards
+pass_by_y %&gt;%
+  filter(between(y_rnd, 2, 7)) %&gt;%
+  summarize(pct = sum(pct_total))</code></pre>
+<pre><code>
+# A tibble: 1 x 1
+    pct
+  &lt;dbl&gt;
+1 0.356</code></pre>
+<pre class="r"><code>
+# passes are most commonly thrown at 4-6 yards
+# 68% of passes are thrown 10 yards or shorter
+pass_by_y %&gt;%
+  arrange(desc(pct_total))</code></pre>
+<pre><code>
+# A tibble: 68 x 5
+   y_rnd     n total pct_total roll_total
+   &lt;dbl&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+ 1     4  3237 42455    0.0762      0.413
+ 2     5  2966 42455    0.0699      0.482
+ 3     6  2805 42455    0.0661      0.549
+ 4     2  2371 42455    0.0558      0.284
+ 5     3  2229 42455    0.0525      0.336
+ 6     1  1598 42455    0.0376      0.228
+ 7     0  1535 42455    0.0362      0.190
+ 8     7  1521 42455    0.0358      0.584
+ 9     8  1465 42455    0.0345      0.619
+10    10  1374 42455    0.0324      0.678
+# … with 58 more rows</code></pre>
+</div>
+<p>Another major advantage of <code>geom_hex</code> or <code>geom_bin2d()</code> is they’re remarkably faster for big data than plotting <code>geom_point()</code> along with reducing the likelihood of overplotting! For a toy example of about 1.7 million points, <code>geom_hex()</code> executes in about 2 sec vs 20 sec with <code>geom_point()</code>, and then subsequent 30-60 sec to “draw” the output in the viewer of R/RStudio.</p>
+<h2 id="d-density-of-smaller-data">2D Density of “smaller” data</h2>
+<p>So we’ve covered hex and rectangular 2d bins. To me, these are not as attractive for “small data” like we may see for individual QB plots. Let’s take Patrick Mahomes for example, he <em>only</em> has ~1,000 passes in this dataset. We can plot with a <code>geom_hex()</code> for each 1x1 yard chunk like we did before, but I honestly have trouble determining trends of where he likes to throw with that graphic.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map_df %&gt;%
+  filter(str_detect(name, c(&quot;Mahomes&quot;))) %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_hex(binwidth = c(1, 1)) +
+  scale_y_continuous(breaks = seq(-10, 60, 5))</code></pre>
+<p><img src="pass-map_files/figure-html5/mahomes-alone-1.png" width="576" /></p>
+</div>
+<p>We could always use larger bins, but if we’re just trying to see large trends we have another strategy in <a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html"><code>geom_density_2d()</code></a>.</p>
+<blockquote>
+<p>Perform a 2D kernel density estimation using <a href="https://rdrr.io/pkg/MASS/man/kde2d.html">MASS::kde2d()</a> and display the results with contours. This can be useful for dealing with overplotting. This is a 2D version of geom_density(). geom_density_2d() draws contour lines, and geom_density_2d_filled() draws filled contour bands.</p>
+</blockquote>
+<p>This essentially fits a polygon around the most frequent points by x/y coordinates, and then colors them according to density. x-y positions on the field and “z” is the density.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map_df %&gt;%
+  filter(str_detect(name, c(&quot;Mahomes&quot;))) %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled() +
+  scale_y_continuous(breaks = seq(-10, 60, 5))</code></pre>
+<p><img src="pass-map_files/figure-html5/mahomes-2d-1.png" width="576" /></p>
+</div>
+<p>Now if we want to get even more clever, we can use this compare passing heatmaps of specific QBs. We can normalize across the facets, and drop the least frequent passes with specific breaks. We’ve binned into 10 specific breakpoints. By adding a horizontal line we can pretty clearly see that Carr’s most common passes are behind the 5 yard line, while Mahomes has passed beyond the 5 yard line more frequently.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+pass_map_df %&gt;%
+  filter(str_detect(name, c(&quot;Mahomes|Derek Carr&quot;))) %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level..),
+    contour_var = &quot;ndensity&quot;, # normalize to each QBs total passes
+    breaks = seq(0.1, 1.0, length.out = 10) # drop the lowest passes
+  ) +
+  scale_y_continuous(breaks = seq(-10, 60, 5)) +
+  facet_wrap(~name) +
+  geom_hline(yintercept = 5)</code></pre>
+<p><img src="pass-map_files/figure-html5/mahomes-compare-1.png" width="960" /></p>
+</div>
+<p>This is all well and good, but it’s not the prettiest piece of dataviz.</p>
+<p>Thanks to <a href="https://twitter.com/ChiefsAnalytics">Ethan Douglas</a> and his post on <a href="https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/">OpenSourceFootball.com</a>, we have a good framework about how to approach building a NFL field as a graph.</p>
+<h2 id="build-the-field">Build the field</h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+not_div_5 &lt;- function(x) {
+  # select only elements of the vector not divisible by 5
+  x[x %% 5 != 0]
+}
+
+center_df &lt;- tibble(
+  x_coord = c(rep(-3.1, 60), rep(3.1, 60)),
+  y_coord = seq(-14, 59, 1) %&gt;% rep(2) %&gt;% not_div_5(),
+  text = &quot;--&quot;
+)
+
+# line labels
+annotate_df &lt;- tibble(
+  x_coord = c(12.88, -12.88) %&gt;% rep(each = 5),
+  y_coord = seq(10, 50, 10) %&gt;% rep(2),
+  text = seq(10, 50, 10) %&gt;% rep(2) %&gt;% str_replace(&quot;(.)(.)&quot;, &quot;\\1 \\2&quot;),
+  rotation = c(90, 270) %&gt;% rep(each = 5)
+)
+
+# yardlines
+yardline_df &lt;- tibble(
+  y = seq(-15, 60, 5),
+  yend = seq(-15, 60, 5),
+  x = rep(-56 / 2, 16),
+  xend = rep(56 / 2, 16)
+)
+yardline_df</code></pre>
+<pre><code>
+# A tibble: 16 x 4
+       y  yend     x  xend
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1   -15   -15   -28    28
+ 2   -10   -10   -28    28
+ 3    -5    -5   -28    28
+ 4     0     0   -28    28
+ 5     5     5   -28    28
+ 6    10    10   -28    28
+ 7    15    15   -28    28
+ 8    20    20   -28    28
+ 9    25    25   -28    28
+10    30    30   -28    28
+11    35    35   -28    28
+12    40    40   -28    28
+13    45    45   -28    28
+14    50    50   -28    28
+15    55    55   -28    28
+16    60    60   -28    28</code></pre>
+<pre class="r"><code>
+# sidelines
+sideline_df &lt;- tibble(
+  y = c(-15.15, -15.15),
+  yend = c(60.15, 60.15),
+  x = c(-56 / 2, 56 / 2),
+  xend = c(-56 / 2, 56 / 2)
+)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+ggplot(data = NULL, aes(x = x_coord, y = y_coord)) +
+  coord_cartesian(
+    xlim = c(-53.333 / 2, 53.333 / 2),
+    ylim = c(-15, 60)
+  ) +
+  geom_text(
+    data = annotate_df, aes(label = text, angle = rotation),
+    color = &quot;black&quot;, size = 8
+  ) +
+  geom_segment(
+    data = yardline_df, color = &quot;black&quot;, size = 1,
+    aes(x = x, y = y, xend = xend, yend = yend)
+  ) +
+  geom_segment(
+    x = -56 / 2, y = 0, xend = 56 / 2, yend = 0,
+    color = &quot;blue&quot;, size = 1, alpha = 0.5
+  ) +
+  geom_segment(
+    data = sideline_df, color = &quot;black&quot;, size = 2,
+    aes(x = x, y = y, xend = xend, yend = yend)
+  ) +
+  geom_text(
+    data = center_df,
+    aes(label = text), color = &quot;black&quot;, vjust = 0.32
+  ) +
+  theme_void()</code></pre>
+<p><img src="pass-map_files/figure-html5/field_plot-1.png" width="576" /></p>
+</div>
+<h3 id="wrap-it-into-a-function">Wrap it into a function</h3>
+<p>We can turn this into a function so that we don’t have to copy-paste it all over the place. Note that I’m wrapping it in a list so I can use it with <code>+</code> in a sequence of <code>ggplot2</code> calls.</p>
+<p>I’m also using <code>front_col</code> and <code>back_col</code> to let us switch from white on black to black on white if needed.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+add_field &lt;- function() {
+  list(
+    coord_cartesian(
+      xlim = c(-53.333 / 2, 53.333 / 2),
+      ylim = c(-15, 60)
+    ),
+    geom_text(
+      data = annotate_df, aes(label = text, angle = rotation),
+      color = front_col, size = 8
+    ),
+    geom_segment(
+      data = yardline_df, color = front_col, size = 1,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_segment(
+      x = -56 / 2, y = 0, xend = 56 / 2, yend = 0,
+      color = &quot;blue&quot;, size = 1, alpha = 0.5
+    ),
+    geom_segment(
+      data = sideline_df, color = front_col, size = 2,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_text(
+      data = center_df,
+      aes(label = text), color = front_col, vjust = 0.32
+    ),
+    theme_void(),
+    theme(
+      strip.text = element_text(size = 20, color = front_col),
+      plot.background = element_rect(fill = back_col, color = NA),
+      legend.position = &quot;none&quot;,
+      plot.margin = unit(c(2, 1, 0.5, 1), unit = &quot;cm&quot;),
+      plot.caption = element_text(color = front_col),
+      plot.title = element_text(color = front_col),
+      plot.subtitle = element_text(color = front_col),
+      panel.background = element_rect(fill = back_col, color = NA),
+      panel.border = element_blank()
+    )
+  )
+}</code></pre>
+</div>
+<h3 id="qb-comparison">QB Comparison</h3>
+<p>First let’s filter down to just our two QBs to compare, Patrick Mahomes and Russell Wilson.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+passer_df &lt;- pass_map_df %&gt;%
+  filter(str_detect(name, c(&quot;Mahomes|Russel&quot;))) %&gt;%
+  mutate(name = factor(name, levels = c(&quot;Patrick Mahomes&quot;, &quot;Russell Wilson&quot;))) %&gt;%
+  select(name, x_coord, y_coord)
+
+passer_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density2d_filled() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="pass-map_files/figure-html5/create-passer-df-1.png" width="576" /></p>
+</div>
+<p>We’ll specify fill and color to both scale with the level/density and normal density peaks across our plots, and finally set our breaks to drop the lowest bin of passes.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+pass_map &lt;- passer_df %&gt;%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level.., color = ..level..),
+    contour_var = &quot;ndensity&quot;, # normalize across facets
+    breaks = seq(0.1, 1.0, length.out = 10)
+  ) +
+  facet_wrap(~name)
+
+pass_map</code></pre>
+<p><img src="pass-map_files/figure-html5/initial-map-1.png" width="960" /></p>
+</div>
+<p>We can quickly add the field background to this with our function <code>add_field()</code>!</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+back_col &lt;- &quot;white&quot;
+front_col &lt;- &quot;black&quot;
+
+pass_map +
+  add_field()</code></pre>
+<p><img src="pass-map_files/figure-html5/add-field-plot-1.png" width="960" /></p>
+</div>
+<h3 id="specify-color-schemes">Specify Color schemes</h3>
+<p>While that’s essentially our final graph perhaps you don’t want to use <code>viridis</code> which is the default color scheme. We can generate custom color palettes or use a pre-built color palette via the <a href="https://github.com/EmilHvitfeldt/paletteer"><code>paleteer</code></a> R package. Note that the 3 color palettes I create all do essentially the same thing but it’s:</p>
+<ul>
+<li>Building your own custom color sequence with <code>grDevices::colorRampPalette()</code><br />
+</li>
+<li>Returning a pre-built palette w/ <code>paletteer::paletteer_d()</code><br />
+</li>
+<li>Expanding a pre-built palette to be longer with <code>colorRampPalette</code></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+heat_colors &lt;- grDevices::colorRampPalette(c(&quot;#800026FF&quot;, &quot;#FC4E2AFF&quot;, &quot;#FEB24CFF&quot;, &quot;#FFFFCCFF&quot;))(10)
+
+heat_palette &lt;- paletteer::paletteer_d(&quot;RColorBrewer::YlOrRd&quot;, n = 9, direction = -1)
+
+heat_colors_interpolated &lt;- colorRampPalette(paletteer::paletteer_d(&quot;RColorBrewer::YlOrRd&quot;, n = 9, direction = -1))(10)
+
+heat_colors %&gt;% scales::show_col()</code></pre>
+<p><img src="pass-map_files/figure-html5/colors-1.png" width="624" /></p>
+<pre class="r"><code>
+heat_palette %&gt;% scales::show_col()</code></pre>
+<p><img src="pass-map_files/figure-html5/colors-2.png" width="624" /></p>
+<pre class="r"><code>
+heat_colors_interpolated %&gt;% scales::show_col()</code></pre>
+<p><img src="pass-map_files/figure-html5/colors-3.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+pass_map +
+  add_field() +
+  scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c(&quot;fill&quot;, &quot;color&quot;))</code></pre>
+<p><img src="pass-map_files/figure-html5/use-colors-1.png" width="960" /></p>
+</div>
+<p>And also in black!</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+back_col &lt;- &quot;black&quot;
+front_col &lt;- &quot;white&quot;
+
+pass_map +
+  add_field() +
+  scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c(&quot;fill&quot;, &quot;color&quot;))</code></pre>
+<p><img src="pass-map_files/figure-html5/use-colors2-1.png" width="960" /></p>
+</div>
+<p>Beautiful!</p>
+<h3 id="pff_moo-style-field">PFF_Moo style Field</h3>
+<p><a href="https://twitter.com/PFF_Moo/status/1235681100837486592?s=20">PFF_Moo</a> takes a different approach to field lines, which can be recreated below.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+not_div_5 &lt;- function(x) {
+  # select only elements of the vector not divisible by 5
+  x[x %% 5 != 0]
+}
+
+center_df &lt;- tibble(
+  x_coord = c(rep(-3.1, 60), rep(3.1, 60)),
+  y_coord = seq(-14, 59, 1) %&gt;% rep(2) %&gt;% not_div_5(),
+  text = &quot;--&quot;
+)
+
+# line labels
+horiz_yd_df &lt;- tibble(
+  x_coord = c(12.88, -12.88) %&gt;% rep(each = 14),
+  y_coord = seq(-10, 55, 5) %&gt;% rep(2),
+  text = seq(-10, 55, 5) %&gt;% rep(2)
+)
+
+# yardlines
+yardline_df &lt;- tibble(
+  y = seq(-15, 60, 5),
+  yend = seq(-15, 60, 5),
+  x = rep(-56 / 2, 16),
+  xend = rep(56 / 2, 16)
+)
+
+# sidelines
+sideline_df &lt;- tibble(
+  y = c(-15.15, -15.15),
+  yend = c(60.15, 60.15),
+  x = c(-56 / 2, 56 / 2),
+  xend = c(-56 / 2, 56 / 2)
+)
+
+add_moo_field &lt;- function() {
+  list(
+    coord_cartesian(
+      xlim = c(-53.333 / 2, 53.333 / 2),
+      ylim = c(-15, 60)
+    ),
+    geom_segment(
+      data = yardline_df, color = front_col, size = 0.5,
+      linetype = &quot;dashed&quot;, alpha = 0.5,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_segment(
+      aes(x = -56 / 2, y = 0, xend = 56 / 2, yend = 0),
+      color = &quot;blue&quot;, size = 1
+    ),
+    geom_segment(
+      data = sideline_df, color = front_col, size = 2,
+      aes(x = x, y = y, xend = xend, yend = yend)
+    ),
+    geom_text(
+      data = center_df,
+      aes(label = text), color = front_col, vjust = 0.32
+    ),
+    geom_text(
+      data = horiz_yd_df, aes(label = text),
+      color = front_col, size = 4, fontface = &quot;bold&quot;
+    ),
+    theme_void(),
+    theme(
+      strip.text = element_text(size = 20, color = front_col),
+      plot.background = element_rect(fill = back_col, color = NA),
+      legend.position = &quot;none&quot;,
+      plot.margin = unit(c(2, 1, 0.5, 1), unit = &quot;cm&quot;),
+      plot.caption = element_text(color = front_col),
+      plot.title = element_text(color = front_col),
+      plot.subtitle = element_text(color = front_col),
+      panel.background = element_rect(fill = back_col, color = NA),
+      panel.border = element_blank()
+    )
+  )
+}
+
+back_col &lt;- &quot;white&quot;
+front_col &lt;- &quot;black&quot;
+
+
+ggplot(pass_map_df, aes(x = x_coord, y = y_coord)) +
+  geom_density_2d_filled(
+    aes(fill = ..level..),
+    contour_var = &quot;ndensity&quot;, # normalize to each QBs total passes
+    breaks = seq(0.1, 1.0, length.out = 10) # drop the lowest passes
+  ) +
+  add_moo_field()</code></pre>
+<p><img src="pass-map_files/figure-html5/field_plot_moo-1.png" width="576" /></p>
+</div>
+<h1 id="tldr">TLDR</h1>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

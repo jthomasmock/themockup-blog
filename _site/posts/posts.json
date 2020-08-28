@@ -1,5 +1,28 @@
 [
   {
+    "path": "posts/2020-08-28-heatmaps-in-ggplot2/",
+    "title": "Heatmaps in ggplot2",
+    "description": "It's more than just a passing fad",
+    "author": [
+      {
+        "name": "Thomas Mock",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-28",
+    "categories": [
+      "data visualization",
+      "ggplot2",
+      "tidyverse",
+      "NFL"
+    ],
+    "preview": "posts/2020-08-28-heatmaps-in-ggplot2/preview.png",
+    "last_modified": "2020-08-28T15:09:52-05:00",
+    "input_file": "heatmaps-in-ggplot2.utf8.md",
+    "preview_width": 1200,
+    "preview_height": 1200
+  },
+  {
     "path": "posts/2020-08-05-a-bar-chart-5-ways/",
     "title": "A bar chart 5 ways in ggplot2",
     "description": "Andy, Tom, and ggplot2 walk into a bar...",
