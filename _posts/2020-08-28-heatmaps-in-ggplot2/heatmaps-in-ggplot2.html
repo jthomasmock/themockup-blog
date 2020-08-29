@@ -1551,7 +1551,7 @@ density_map %&gt;%
 </aside>
 <h3 id="compare-2d-density">Compare 2D Density</h3>
 <p>Now for this, we’re actually creating two separate 2 dimensional density estimates, and then subtracting the density of QB2’s passes from QB1’s.</p>
-<p>This is requires us to play around a bit more with matrices, which is a good exercise! I’m going to keep working to see if this could fit into a <code>tibble</code> oriented workflow, but so far it’s a matrix up to the end.</p>
+<p>This is requires us to play around a bit more with matrices, which is a good exercise! I’m going to keep working to see if this could fit into a <code>tibble</code> oriented workflow, but so far it’s a matrix up to the end. Credit to eipi10 for code I adapted from <a href="https://stackoverflow.com/questions/28521145/r-calculate-and-plot-difference-between-two-density-countours">Stack Overflow</a>. <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 qb_density_compare &lt;- function(pass_df, qb1_name, qb2_name, n = 200){
@@ -1637,6 +1637,7 @@ compared_z %&gt;%
 <li id="fn3" role="doc-endnote"><p>Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from <a href="https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/" class="uri">https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4" role="doc-endnote"><p><a href="https://twitter.com/PFF_Moo/status/1235681100837486592?s=20" class="uri">https://twitter.com/PFF_Moo/status/1235681100837486592?s=20</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5" role="doc-endnote"><p>Function adapted from <a href="https://slowkow.com/notes/ggplot2-color-by-density/">Kamil Slowikowski</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p><a href="https://stackoverflow.com/questions/28521145/r-calculate-and-plot-difference-between-two-density-countours" class="uri">https://stackoverflow.com/questions/28521145/r-calculate-and-plot-difference-between-two-density-countours</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 <!--radix_placeholder_article_footer-->

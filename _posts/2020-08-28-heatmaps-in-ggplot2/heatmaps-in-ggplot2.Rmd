@@ -575,7 +575,7 @@ hex_plot
 
 Now for this, we're actually creating two separate 2 dimensional density estimates, and then subtracting the density of QB2's passes from QB1's.
 
-This is requires us to play around a bit more with matrices, which is a good exercise! I'm going to keep working to see if this could fit into a `tibble` oriented workflow, but so far it's a matrix up to the end.
+This is requires us to play around a bit more with matrices, which is a good exercise! I'm going to keep working to see if this could fit into a `tibble` oriented workflow, but so far it's a matrix up to the end. Credit to eipi10 for code I adapted from [Stack Overflow](https://stackoverflow.com/questions/28521145/r-calculate-and-plot-difference-between-two-density-countours). ^[https://stackoverflow.com/questions/28521145/r-calculate-and-plot-difference-between-two-density-countours]
 
 ```{r compare_qb_density}
 qb_density_compare <- function(pass_df, qb1_name, qb2_name, n = 200){
