@@ -20,6 +20,8 @@ preview: preview.png
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -32,7 +34,7 @@ library(scales)
 ```
 
 
-Many thanks to [Ethan Douglas](https://twitter.com/ChiefsAnalytics) for sharing his heatmap passing charts on [OpenSource Football](https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/)! ^[Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/]
+Many thanks to [Ethan Douglas](https://twitter.com/ChiefsAnalytics) for sharing his heatmap python code on [OpenSource Football](https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/)! ^[Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/]
 
 This is a similar walkthrough in R + `ggplot2`, but credit for both collecting the data and the original plot were Ethan's!
 
@@ -77,20 +79,37 @@ Data to Viz has nice article on [Overplotting](https://www.data-to-viz.com/cavea
 
 We can display our points with a quick `geom_point()` call but this returns a lot of overplotting albeit in a happy beard shape!
 
-```{r sanity-check, fig.height=4, fig.width=4}
+```{r sanity-check, fig.height=4, fig.width=8, layout ='l-body-outset'}
 pass_map_df %>%
   ggplot(aes(x = x_coord, y = y_coord)) +
   geom_point()
 ```
 
-We can add 90% transparency with `alpha = 0.1` and change the color to red, but this still leaves us with a difficulty parsing through the high vs medium pass locations. Passes around the 5 yard mark appear to be as common as at the 10 and even 15 yard mark in some cases! We can try to get at the data a bit close with `ggMarginal` from the [`ggExtra`](https://github.com/daattali/ggExtra) R package, which provides marginal histograms, box plots, or density plots.
+We can add 90% transparency with `alpha = 0.1` or set `alpha` as a ratio, and change the color to red, but this still leaves us with difficulty parsing through the high vs medium pass locations. Although the 1/20 ratio gets us a bit farther. The ratio denominator can be though of as the number of points that must stacked to give a solid color.
+
+<aside>
+
+`ggplot2` Book:  
+
+> If you specify alpha as a ratio, the denominator gives the number of points that must be overplotted to give a solid colour. Values smaller than ~ `1/500` are rounded down to zero, giving completely transparent points. ^[https://ggplot2-book.org/statistical-summaries.html#overplotting]
+
+</aside>
+
+Passes around the 5 yard mark appear to be as common as at the 10 and even 20 yard mark in some cases! We know this isn't true from `nflfastR` data. Maybe we can try to get closer views of the actual distributions with `ggMarginal` from the [`ggExtra`](https://github.com/daattali/ggExtra) R package, which provides marginal histograms, box plots, or density plots.
 
 ```{r, fig.height=4,fig.width=4}
 red_beard <- pass_map_df %>%
   ggplot(aes(x = x_coord, y = y_coord)) +
-  geom_point(alpha = 0.1, color = "red")
+  geom_point(alpha = 0.1, color = "red") +
+  labs(title = "Alpha = 0.1 or 90% transparency")
 
-red_beard
+red_beard_ratio <- pass_map_df %>%
+  ggplot(aes(x = x_coord, y = y_coord)) +
+  geom_point(alpha = 1/20, color = "red") +
+  labs(title = "Alpha = 1/20, so 20 points must be stacked to give solid color")
+
+
+red_beard + red_beard_ratio
 ```
 
 We can add some marginal plots to help out a bit, but that still doesn't solve the problem of honing in on specific areas of interest that well.
@@ -120,7 +139,7 @@ hex_plot <- pass_map_df %>%
     binwidth = c(1, 1)
   ) +
   scale_fill_gradient(low = "red", high = "yellow") +
-  geom_hline(yintercept = c(0, 10), color = "grey") +
+  geom_hline(yintercept = c(2, 7), color = "grey") +
   scale_y_continuous(breaks = seq(-10, 60, 5))
 
 hex_plot
@@ -131,7 +150,7 @@ bin2d <- pass_map_df %>%
     binwidth = c(1, 1)
   ) +
   scale_fill_gradient(low = "red", high = "yellow") +
-  geom_hline(yintercept = c(0, 10), color = "grey") +
+  geom_hline(yintercept = c(2, 7), color = "grey") +
   scale_y_continuous(breaks = seq(-10, 60, 5))
 
 bin2d
@@ -477,7 +496,7 @@ add_moo_field <- function() {
       color = "blue", size = 1
     ),
     geom_segment(
-      data = sideline_df, color = front_col, size = 2,
+      data = sideline_df, color = front_col, size = 4,
       aes(x = x, y = y, xend = xend, yend = yend)
     ),
     geom_text(
@@ -516,9 +535,9 @@ ggplot(pass_map_df, aes(x = x_coord, y = y_coord)) +
   add_moo_field()
 ```
 
-## Get the density estimates
+## Get the raw density estimates
 
-Lastly, we can also get the raw density measures to use against the points for example or for other more computational measures as opposed to just graphics. ^[Function adapted from [Kamil Slowikowski](https://slowkow.com/notes/ggplot2-color-by-density/)]
+Lastly, we can also get the raw density measures to use against the points for example or for other more computational measures as opposed to just graphics. ^[Function adapted from [Kamil Slowikowski](https://slowkow.com/notes/ggplot2-color-by-density/)] Note that this is for ALL the QBs at once.
 
 
 ```{r dens-calc,fig.height=6, fig.width=6}
@@ -551,3 +570,90 @@ hex_plot
 ```
 
 </aside>
+
+### Compare 2D Density
+
+Now for this, we're actually creating two separate 2 dimensional density estimates, and then subtracting the density of QB2's passes from QB1's.
+
+This is requires us to play around a bit more with matrices, which is a good exercise! I'm going to keep working to see if this could fit into a `tibble` oriented workflow, but so far it's a matrix up to the end.
+
+```{r compare_qb_density}
+qb_density_compare <- function(pass_df, qb1_name, qb2_name, n = 200){
+  
+  # filter to qb1
+  qb1 <- pass_df %>% 
+    select(x_coord, y_coord, name) %>% 
+    filter(str_detect(name, qb1_name))
+  
+  #filter to qb2
+  qb2 <- pass_df %>% 
+    select(x_coord, y_coord, name) %>% 
+    filter(str_detect(name, qb2_name))
+  
+  # get x/y coords as vectors
+  qb1_x <- pull(qb1, x_coord)
+  qb1_y <- pull(qb1, y_coord)
+  
+  # get x/y coords as vectors
+  qb2_x <- pull(qb2, x_coord)
+  qb2_y <- pull(qb2, y_coord)
+
+  # get x and y range to compute comparisons across
+  x_rng = range(c(qb1_x, qb2_x))
+  y_rng = range(c(qb1_y, qb2_y))
+  
+  # Calculate the 2d density estimate over the common range
+  d2_qb1 = MASS::kde2d(qb1_x, qb1_y, lims=c(x_rng, y_rng), n=n)
+  d2_qb2 = MASS::kde2d(qb2_x, qb2_y, lims=c(x_rng, y_rng), n=n)
+  
+  # create diff df
+  qb_diff <- d2_qb1
+  
+  # matrix subtraction density from qb2 from qb1
+  qb_diff$z <- d2_qb1$z - d2_qb2$z
+  
+  # add matrix col names
+  colnames(qb_diff$z) = qb_diff$y
+  
+  #### return tidy tibble ####
+  qb_diff$z %>% 
+    # each col_name is actually the y_coord from the matrix
+    as_tibble() %>% 
+    # add back the x_coord
+    mutate(x_coord= qb_diff$x) %>% 
+    pivot_longer(-x_coord, names_to = "y_coord", values_to = "z") %>% 
+    mutate(y_coord = as.double(y_coord))
+
+}
+```
+
+### Call the function
+
+Now we can just call the function to generate a beautiful dataset to plot or work with!
+
+Let's compare... Mahomes vs Rodgers.
+
+```{r compare_qb_plot, fig.height = 10, fig.width = 8, layout='l-body-outset'}
+compared_z <- qb_density_compare(pass_map_df, "Mahomes", "Rodgers", n = 200) 
+
+compared_z %>% 
+  ggplot(aes(x_coord, y_coord)) +
+  geom_raster(aes(x_coord, y_coord, fill=z))  +
+  stat_contour(aes(colour=..level.., z = z), 
+               breaks = seq(min(compared_z$z), max(compared_z$z), length.out = 10)
+               ) +
+  scale_fill_gradient2(low="blue",mid="white", high="red", midpoint=0) +
+  scale_colour_gradient2(low=muted("blue"), mid="white", high=muted("red"), midpoint=0) +
+  add_moo_field() +
+  theme(legend.position = "bottom", legend.key.width = unit(2, "cm"),
+        plot.title = element_text(size = 20, hjust = 0.5, face = "bold"),
+        plot.subtitle = element_text(size = 12, hjust = 0.5),
+        plot.caption = element_text(face = "bold")) +
+  labs(title = "Mahomes (QB1) vs Rodgers (QB2)",
+       subtitle = "Red = More by QB1, Blue = More by QB2",
+       caption = "\n\nPlot: @thomas_mock | Data: @ChiefsAnalytics") +
+  guides(colour=FALSE) 
+```
+
+
+Try it out for yourself!
