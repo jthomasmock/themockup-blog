@@ -26,24 +26,27 @@ twitter:
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggExtra)
+library(ggtext)
 library(patchwork)
 library(paletteer)
 library(scales)
 ```
 
 
-Many thanks to [Ethan Douglas](https://twitter.com/ChiefsAnalytics) for sharing his heatmap python code on [OpenSource Football](https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/)! ^[Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/]
+Many thanks to [Ethan Douglas](https://twitter.com/ChiefsAnalytics) for sharing his heatmap python code on [OpenSource Football](https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/)! ^[Douglas (2020, Aug. 21). Open Source Football: NFL Pass Location Visualization. Retrieved from https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/] This is a similar walkthrough to Ethan's post, but in R + `ggplot2`. Additionally, credit for both collecting the data and the original plot go to Ethan.
 
-This is a similar walkthrough in R + `ggplot2`, but credit for both collecting the data and the original plot were Ethan's!
+Please also note that the original code adapted from Ethan came from [Sarah Mallepalle et al, 2019](https://arxiv.org/abs/1906.03339). ^[https://arxiv.org/abs/1906.03339] Many thanks to Sarah, Ron, Konstantinos, and Sam for sharing this data collection tool!
+
 
 ## Load Everything
 
 ```{r, eval = FALSE}
-library(tidyverse)
-library(ggExtra)
-library(patchwork)
-library(paletteer)
-library(scales)
+library(tidyverse) # all the things
+library(ggExtra)   # marginal plots
+library(ggtext)    # color your text
+library(patchwork) # combine multiple plots
+library(paletteer) # get all the color palettes
+library(scales)    # helper functions from ggplot2
 ```
 
 
@@ -65,33 +68,106 @@ Hadley Wickham in [`ggplot2`: Elegant Graphics for Data Analysis](https://ggplot
 
 > When the data is large, points will be often plotted on top of each other, obscuring the true relationship. In extreme cases, you will only be able to see the extent of the data, and any conclusions drawn from the graphic will be suspect. This problem is called **overplotting**.
 
-Hadley uses an example with just 2000 data points, which already has a lot of overplotting due to a small sample x-y space. We have about 43,000 passes for this dataset, spread out over a relatively large space. We still need to be careful of overplotting though!
+Hadley uses an example with just 2000 data points, which already has a lot of overplotting due to a small sample x-y space. We have about 43,000 passes for this dataset, spread out over a relatively large space. We still need to be careful of overplotting though!  
 
 <aside>
 
-Data to Viz has nice article on [Overplotting](https://www.data-to-viz.com/caveat/overplotting.html) as well
+[Data to Viz](https://www.data-to-viz.com/caveat/overplotting.html) and [Clause Wilke](https://clauswilke.com/dataviz/overlapping-points.html) have good writeups on overplotting as well
 
 </aside>
+
+<details>
+<summary><strong>Claus Wilke | Fundamentals of Data Visualization^[https://clauswilke.com/dataviz/] </summary>  
+
+While it's not really focused on the problem at hand, Claus Wilke has a wonderful book on the *Fundaments of Data Visualization*. His chapters below are applicable and very helpful for best practices:  
+
+* [Visualizing Distributions](https://clauswilke.com/dataviz/histograms-density-plots.html) - Histograms and density plots  
+
+Main idea here is potentially overlapping plots to see where differences arise. Code adapted from Claus Wilke's source code. ^[https://github.com/clauswilke/dataviz/blob/master/visualizing_distributions_I.Rmd#L303-L323]
+
+```{r viz-distributions}
+pass_map_df %>% 
+  filter(str_detect(name, "Derek Carr|Mahomes")) %>% 
+  mutate(name = factor(name)) %>% 
+  ggplot() +
+  geom_density(aes(x = y_coord, y = ..count.., fill = name, color = name),
+               alpha = 0.5) +
+  geom_vline(xintercept = 5, color = "red", size = 1, alpha = 0.5) +
+  coord_cartesian(xlim = c(-10, 40)) +
+  scale_x_continuous(breaks = seq(-10, 40, 5), name = "Yardline") +
+  scale_y_continuous(breaks = seq(0, 100, 10), name = "scaled density") +
+  scale_fill_manual(values = c("#0072B2", "#D55E00"), name = "QB") +
+  scale_color_manual(values = scales::muted(c("#0072B2", "#D55E00")), name = "QB") +
+  guides(fill = guide_legend(override.aes = list(linetype = 0))) +
+  theme_minimal() +
+  theme(
+    axis.line.x = element_blank(),
+    legend.position = c(.9, .87),
+    legend.justification = c("right", "top"),
+    legend.box.background = element_rect(fill = "white", color = "white"),
+    plot.margin = margin(3, 7, 3, 1.5)
+  )
+```
+
+* [Visualizing many distributions at once](https://clauswilke.com/dataviz/boxplots-violins.html) - Plotting multiple or many distributions at once, and introduces the `ggridges` package  
+
+Main idea here is overlapping many distributions at once, to see general trends or differences.
+
+[`ggridges`](https://github.com/wilkelab/ggridges) has a [vignette](https://cran.r-project.org/web/packages/ggridges/vignettes/gallery.html) on now to use it, but here's a minimal example with the data at hand. Note that we are doing 1 dimensional density, so we could use this with `nflfastR` data as well!
+
+```{r ggridges}
+library(ggridges)
+
+pass_map_df %>% 
+  filter(str_detect(name, "Wilson|Mahomes|Prescott|Watson|Rodgers")) %>% 
+  mutate(name = word(name, 2)) %>% 
+  ggplot(aes(x = y_coord, group = name, y = name)) +
+  stat_density_ridges(quantile_lines = TRUE, quantiles = 2, scale = 2) +
+  theme_ridges() +
+  scale_x_continuous(breaks = seq(-10, 60, 10), name = "Yardline") +
+  labs(y = "")
+```
+
+* [Handling overlapping points](https://clauswilke.com/dataviz/overlapping-points.html) - Dealing with overplotting with small data or big data  
+
+We create some bins and then plot the data for Mahomes. Here the data is relatively small, but still stacks.
+
+```{r bin-data1, fig.dim=c(4, 6)}
+bin_data <- pass_map_df %>% 
+  filter(str_detect(name, "Mahomes"), between(y_coord, -5, 20)) %>% 
+  # create 5 yard bins on y axis
+  mutate(y_bins = y_coord - y_coord %% 5) 
+
+bin_data %>% 
+  ggplot(aes(x = x_coord, y = y_bins)) +
+  geom_point() +
+  scale_y_continuous(breaks = seq(-5, 20, 5))
+```
+
+We can add transparency with `alpha` along with `geom_jitter()` to add some random noise in the y-direction w/ `height`. Note that this is kind of a silly example since we have x and y coords, but you can imagine a situation where you only have binned data or like `nflfastR` you have large bins (left, middle right and short, long).
+
+```{r bin-data2, fig.dim=c(4, 6)}
+bin_data %>% 
+  ggplot(aes(x = x_coord, y = y_bins)) +
+  geom_jitter(height = 0.3, alpha = 0.5) +
+  scale_y_continuous(breaks = seq(-5, 20, 5))
+```
+
+Claus then goes on to cover details with `geom_bin2d()`, `geom_hex()`, and `geom_contour()`, still worth reading but stuff we've covered in the bulk of this post. Again, Claus' book is amazing, and a great resource regardless of what software you are plotting in. He used R, but intentionally left out code and focused on concepts.
+
+</details>
 
 ### Fear the beard
 
 We can display our points with a quick `geom_point()` call but this returns a lot of overplotting albeit in a happy beard shape!
 
-```{r sanity-check, fig.height=4, fig.width=8, layout ='l-body-outset'}
+```{r sanity-check, fig.height=4, fig.width=4}
 pass_map_df %>%
   ggplot(aes(x = x_coord, y = y_coord)) +
   geom_point()
 ```
 
-We can add 90% transparency with `alpha = 0.1` or set `alpha` as a ratio, and change the color to red, but this still leaves us with difficulty parsing through the high vs medium pass locations. Although the 1/20 ratio gets us a bit farther. The ratio denominator can be though of as the number of points that must stacked to give a solid color.
-
-<aside>
-
-`ggplot2` Book:  
-
-> If you specify alpha as a ratio, the denominator gives the number of points that must be overplotted to give a solid colour. Values smaller than ~ `1/500` are rounded down to zero, giving completely transparent points. ^[https://ggplot2-book.org/statistical-summaries.html#overplotting]
-
-</aside>
+We can add 90% transparency with `alpha = 0.1` or set `alpha` as a ratio, and change the color to red, but this still leaves us with difficulty parsing through the high vs medium pass locations. Although the 1/20 ratio gets us a bit farther. The ratio denominator can be though of as the "number of points that must overplotted to give a solid color." ^[https://ggplot2-book.org/statistical-summaries.html#overplotting]
 
 Passes around the 5 yard mark appear to be as common as at the 10 and even 20 yard mark in some cases! We know this isn't true from `nflfastR` data. Maybe we can try to get closer views of the actual distributions with `ggMarginal` from the [`ggExtra`](https://github.com/daattali/ggExtra) R package, which provides marginal histograms, box plots, or density plots.
 
@@ -122,7 +198,7 @@ ggMarginal(red_beard, type = "density", fill = "red")
 ggMarginal(red_beard, type = "histogram", fill = "red")
 ```
 
-### Alternatives to the beard
+## 2D Density Alternatives
 
 Since we're actually interested in the density/counts of observations at each x-y coordinate instead of plotting *each* individual point, we also have a few other tools in our toolbox! We can use [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html) or [`geom_bin2d()`](https://ggplot2.tidyverse.org/reference/geom_bin2d.html). Note that there are a few other methods such as `geom_raster()` which require you to provide your own "z" metric, and there are `stat_?` versions of each of these geoms for more custom calculations.
 
@@ -401,7 +477,7 @@ pass_map +
   add_field()
 ```
 
-### Specify Color schemes
+## Specify Color schemes
 
 While that's essentially our final graph perhaps you don't want to use `viridis` which is the default color scheme. We can generate custom color palettes or use a pre-built color palette via the [`paleteer`](https://github.com/EmilHvitfeldt/paletteer) R package. Note that the 3 color palettes I create all do essentially the same thing but it's:  
 
@@ -474,14 +550,14 @@ yardline_df <- tibble(
 sideline_df <- tibble(
   y = c(-15.15, -15.15),
   yend = c(60.15, 60.15),
-  x = c(-56 / 2, 56 / 2),
-  xend = c(-56 / 2, 56 / 2)
+  x = c(-56.5 / 2, 56.5 / 2),
+  xend = c(-56.5 / 2, 56.5 / 2)
 )
 
 add_moo_field <- function() {
   list(
     coord_cartesian(
-      xlim = c(-53.333 / 2, 53.333 / 2),
+      xlim = c(-53.333/2, 53.333/2),
       ylim = c(-15, 60)
     ),
     geom_segment(
@@ -494,7 +570,7 @@ add_moo_field <- function() {
       color = "blue", size = 1
     ),
     geom_segment(
-      data = sideline_df, color = front_col, size = 4,
+      data = sideline_df, color = front_col, size = 2,
       aes(x = x, y = y, xend = xend, yend = yend)
     ),
     geom_text(
@@ -600,9 +676,15 @@ qb_density_compare <- function(pass_df, qb1_name, qb2_name, n = 200){
   x_rng = range(c(qb1_x, qb2_x))
   y_rng = range(c(qb1_y, qb2_y))
   
+  # Explicitly calculate bandwidth for future use
+  bandwidth_x <- MASS::bandwidth.nrd(c(qb1_x, qb2_x))
+  bandwidth_y <- MASS::bandwidth.nrd(c(qb1_y, qb2_y))
+  
+  bandwidth_calc <- c(bandwidth_x, bandwidth_y)
+  
   # Calculate the 2d density estimate over the common range
-  d2_qb1 = MASS::kde2d(qb1_x, qb1_y, lims=c(x_rng, y_rng), n=n)
-  d2_qb2 = MASS::kde2d(qb2_x, qb2_y, lims=c(x_rng, y_rng), n=n)
+  d2_qb1 = MASS::kde2d(qb1_x, qb1_y, h = bandwidth_calc, n=n, lims=c(x_rng, y_rng))
+  d2_qb2 = MASS::kde2d(qb2_x, qb2_y, h = bandwidth_calc, n=n, lims=c(x_rng, y_rng))
   
   # create diff df
   qb_diff <- d2_qb1
@@ -620,7 +702,9 @@ qb_density_compare <- function(pass_df, qb1_name, qb2_name, n = 200){
     # add back the x_coord
     mutate(x_coord= qb_diff$x) %>% 
     pivot_longer(-x_coord, names_to = "y_coord", values_to = "z") %>% 
-    mutate(y_coord = as.double(y_coord))
+    mutate(y_coord = as.double(y_coord),
+           bandwidth = list(bandwidth_calc),
+           comparison = glue::glue("{qb1_name} (QB1) vs {qb2_name} (QB2)"))
 
 }
 ```
@@ -631,26 +715,33 @@ Now we can just call the function to generate a beautiful dataset to plot or wor
 
 Let's compare... Mahomes vs Rodgers.
 
-```{r compare_qb_plot, fig.height = 10, fig.width = 8, layout='l-body-outset'}
+```{r compare_qb_plot, fig.dim = c(5, 10)}
 compared_z <- qb_density_compare(pass_map_df, "Mahomes", "Rodgers", n = 200) 
 
-compared_z %>% 
+(compared_plot <- compared_z %>% 
   ggplot(aes(x_coord, y_coord)) +
+  
+  # add core heatmap - note that geom_raster or geom_tile both work
   geom_raster(aes(x_coord, y_coord, fill=z))  +
-  stat_contour(aes(colour=..level.., z = z), 
-               breaks = seq(min(compared_z$z), max(compared_z$z), length.out = 10)
-               ) +
+  
+  # add contour polygon lines around the most dense points
+  stat_contour(aes(color=..level.., z = z)) +
+  
+  # add a fill gradient from low (blue) to high (red) 
+  # with white as the zero midpoint
   scale_fill_gradient2(low="blue",mid="white", high="red", midpoint=0) +
-  scale_colour_gradient2(low=muted("blue"), mid="white", high=muted("red"), midpoint=0) +
+  scale_color_gradient2(low="blue", mid="white", high="red", midpoint=0) +
+  # drop the legends
+  guides(color=FALSE, fill = FALSE) +
   add_moo_field() +
-  theme(legend.position = "bottom", legend.key.width = unit(2, "cm"),
+  labs(title = unique(compared_z$comparison),
+       subtitle = "Color is more passes by <span style='color:red'>**QB1**</span> or by <span style='color:blue'>**QB2**</span>",
+       caption = "Plot: @thomas_mock | Data: @ChiefsAnalytics")) +
+  # add some customizations to the plot
+  theme(legend.position = "top", legend.key.width = unit(2, "cm"),
         plot.title = element_text(size = 20, hjust = 0.5, face = "bold"),
-        plot.subtitle = element_text(size = 12, hjust = 0.5),
-        plot.caption = element_text(face = "bold")) +
-  labs(title = "Mahomes (QB1) vs Rodgers (QB2)",
-       subtitle = "Red = More by QB1, Blue = More by QB2",
-       caption = "\n\nPlot: @thomas_mock | Data: @ChiefsAnalytics") +
-  guides(colour=FALSE) 
+        plot.subtitle = element_markdown(size = 12, hjust = 0.5),
+        plot.caption = element_text(face = "bold")) 
 ```
 
 
