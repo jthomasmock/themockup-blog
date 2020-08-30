@@ -78,7 +78,7 @@ $ away_score &amp;lt;dbl&amp;gt; 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
 &lt;pre class="r"&gt;&lt;code&gt;pass_map_df %&amp;gt;%
   ggplot(aes(x = x_coord, y = y_coord)) +
   geom_point()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/sanity-check-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/sanity-check-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;We can add 90% transparency with &lt;code&gt;alpha = 0.1&lt;/code&gt; or set &lt;code&gt;alpha&lt;/code&gt; as a ratio, and change the color to red, but this still leaves us with difficulty parsing through the high vs medium pass locations. Although the 1/20 ratio gets us a bit farther. The ratio denominator can be though of as the number of points that must stacked to give a solid color.&lt;/p&gt;
 &lt;aside&gt;
 &lt;p&gt;&lt;code&gt;ggplot2&lt;/code&gt; Book:&lt;/p&gt;
@@ -99,14 +99,14 @@ red_beard_ratio &amp;lt;- pass_map_df %&amp;gt;%
 
 
 red_beard + red_beard_ratio&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/unnamed-chunk-2-1.png" width="384" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/unnamed-chunk-2-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;We can add some marginal plots to help out a bit, but that still doesn’t solve the problem of honing in on specific areas of interest that well.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# add density or histogram in the margins
 ggMarginal(red_beard, type = &amp;quot;density&amp;quot;, fill = &amp;quot;red&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/marginal-plots-1.png" width="384" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/marginal-plots-1.png" width="384" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# add density or histogram in the margins
 ggMarginal(red_beard, type = &amp;quot;histogram&amp;quot;, fill = &amp;quot;red&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/marginal-plots2-1.png" width="384" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/marginal-plots2-1.png" width="384" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id="alternatives-to-the-beard" class="section level3"&gt;
 &lt;h3&gt;Alternatives to the beard&lt;/h3&gt;
@@ -124,7 +124,7 @@ If you read the &lt;code&gt;ggplot2&lt;/code&gt; + overplotting &lt;a href="http
   scale_y_continuous(breaks = seq(-10, 60, 5))
 
 hex_plot&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/hex-plot-1.png" width="576" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/hex-plot-1.png" width="576" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;bin2d &amp;lt;- pass_map_df %&amp;gt;%
   ggplot(aes(x = x_coord, y = y_coord)) +
   geom_bin2d(
@@ -135,7 +135,7 @@ hex_plot&lt;/code&gt;&lt;/pre&gt;
   scale_y_continuous(breaks = seq(-10, 60, 5))
 
 bin2d&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/hex-plot-2.png" width="576" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/hex-plot-2.png" width="576" /&gt;&lt;/p&gt;
 &lt;p&gt;We can now see that while there ARE passes all over the field, the majority are around the 2-7 yard mark with small but relatively dense pockets elsewhere. Passes are most frequently thrown at 4, 5 or 6 yards and ~68% of passes are thrown 10 yards or shorter.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# histogram of just Y coord
 pass_map_df %&amp;gt;%
@@ -143,7 +143,7 @@ pass_map_df %&amp;gt;%
   geom_histogram(binwidth = 1) +
   geom_vline(xintercept = c(5)) +
   scale_x_continuous(breaks = seq(-10, 60, 5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/not-heatmaps-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/not-heatmaps-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# calc some percentages
 pass_by_y &amp;lt;- pass_map_df %&amp;gt;%
   mutate(y_rnd = round(y_coord, digits = 0)) %&amp;gt;%
@@ -197,7 +197,7 @@ Using these techniques are useful, as they are both computationally helpful (aka
   ggplot(aes(x = x_coord, y = y_coord)) +
   geom_hex(binwidth = c(1, 1)) +
   scale_y_continuous(breaks = seq(-10, 60, 5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/mahomes-alone-1.png" width="576" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/mahomes-alone-1.png" width="576" /&gt;&lt;/p&gt;
 &lt;p&gt;We could always use larger bins, but if we’re just trying to see large trends we have another strategy in &lt;a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html"&gt;&lt;code&gt;geom_density_2d()&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Perform a 2D kernel density estimation using &lt;a href="https://rdrr.io/pkg/MASS/man/kde2d.html"&gt;&lt;code&gt;MASS::kde2d()&lt;/code&gt;&lt;/a&gt; and display the results with contours. This can be useful for dealing with overplotting. This is a 2D version of geom_density(). geom_density_2d() draws contour lines, and geom_density_2d_filled() draws filled contour bands.&lt;/p&gt;
@@ -208,7 +208,7 @@ Using these techniques are useful, as they are both computationally helpful (aka
   ggplot(aes(x = x_coord, y = y_coord)) +
   geom_density_2d_filled() +
   scale_y_continuous(breaks = seq(-10, 60, 5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/mahomes-2d-1.png" width="576" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/mahomes-2d-1.png" width="576" /&gt;&lt;/p&gt;
 &lt;p&gt;Now if we want to get even more clever, we can use this compare passing heatmaps of specific QBs. We can normalize across the facets, and drop the least frequent passes with specific breaks. I’ve binned into 10 specific breakpoints, and by setting breaks between 0.1 and 1.0, we also drop the very least frequent passes which otherwise show up as a light fill of the entire remaining plot. Additionally, by adding a horizontal reference line we can pretty clearly see that Carr’s most common passes are behind the 5 yard line, while Mahomes has passed beyond the 5 yard line much more frequently.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;pass_map_df %&amp;gt;%
   filter(str_detect(name, c(&amp;quot;Mahomes|Derek Carr&amp;quot;))) %&amp;gt;%
@@ -221,7 +221,7 @@ Using these techniques are useful, as they are both computationally helpful (aka
   scale_y_continuous(breaks = seq(-10, 60, 5)) +
   facet_wrap(~name) +
   geom_hline(yintercept = 5)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/mahomes-compare-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/mahomes-compare-1.png" width="960" /&gt;&lt;/p&gt;
 &lt;p&gt;This is all well and good, but it’s not the prettiest piece of dataviz.&lt;/p&gt;
 &lt;p&gt;Thanks again to &lt;a href="https://twitter.com/ChiefsAnalytics"&gt;Ethan Douglas&lt;/a&gt; and his post on &lt;a href="https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/"&gt;OpenSourceFootball.com&lt;/a&gt; &lt;a href="#fn3" class="footnote-ref" id="fnref3"&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;, we have a good framework about how to approach building a NFL field as a graph.&lt;/p&gt;
 &lt;/div&gt;
@@ -288,7 +288,7 @@ sideline_df &amp;lt;- tibble(
     aes(label = text), color = &amp;quot;black&amp;quot;, vjust = 0.32
   ) +
   theme_void()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/field_plot-1.png" width="576" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/field_plot-1.png" width="576" /&gt;&lt;/p&gt;
 &lt;div id="wrap-the-field-in-a-function" class="section level3"&gt;
 &lt;h3&gt;Wrap the field in a function&lt;/h3&gt;
 &lt;p&gt;We can turn this into a function so that we don’t have to copy-paste it all over the place. Note that I’m wrapping it in a list so I can use it with &lt;code&gt;+&lt;/code&gt; in a sequence of &lt;code&gt;ggplot2&lt;/code&gt; calls.&lt;/p&gt;
@@ -346,7 +346,7 @@ passer_df %&amp;gt;%
   ggplot(aes(x = x_coord, y = y_coord)) +
   geom_density2d_filled() +
   theme(legend.position = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/create-passer-df-1.png" width="576" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/create-passer-df-1.png" width="576" /&gt;&lt;/p&gt;
 &lt;p&gt;We’ll specify fill and color to both scale with the level/density and normal density peaks across our plots, and finally set our breaks to drop the lowest bin of passes.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;pass_map &amp;lt;- passer_df %&amp;gt;%
   ggplot(aes(x = x_coord, y = y_coord)) +
@@ -358,14 +358,14 @@ passer_df %&amp;gt;%
   facet_wrap(~name)
 
 pass_map&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/initial-map-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/initial-map-1.png" width="960" /&gt;&lt;/p&gt;
 &lt;p&gt;We can quickly add the field background to this with our function &lt;code&gt;add_field()&lt;/code&gt;!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;back_col &amp;lt;- &amp;quot;white&amp;quot;
 front_col &amp;lt;- &amp;quot;black&amp;quot;
 
 pass_map +
   add_field()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/add-field-plot-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/add-field-plot-1.png" width="960" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id="specify-color-schemes" class="section level3"&gt;
 &lt;h3&gt;Specify Color schemes&lt;/h3&gt;
@@ -384,15 +384,15 @@ heat_palette &amp;lt;- paletteer::paletteer_d(&amp;quot;RColorBrewer::YlOrRd&amp
 heat_colors_interpolated &amp;lt;- colorRampPalette(paletteer::paletteer_d(&amp;quot;RColorBrewer::YlOrRd&amp;quot;, n = 9, direction = -1))(10)
 
 heat_colors %&amp;gt;% scales::show_col()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/colors-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/colors-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;heat_palette %&amp;gt;% scales::show_col()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/colors-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/colors-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;heat_colors_interpolated %&amp;gt;% scales::show_col()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/colors-3.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/colors-3.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;pass_map +
   add_field() +
   scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c(&amp;quot;fill&amp;quot;, &amp;quot;color&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/use-colors-1.png" width="1152" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/use-colors-1.png" width="1152" /&gt;&lt;/p&gt;
 &lt;div id="and-also-in-black" class="section level4"&gt;
 &lt;h4&gt;And also in black!&lt;/h4&gt;
 &lt;pre class="r"&gt;&lt;code&gt;back_col &amp;lt;- &amp;quot;black&amp;quot;
@@ -401,7 +401,7 @@ front_col &amp;lt;- &amp;quot;white&amp;quot;
 pass_map +
   add_field() +
   scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c(&amp;quot;fill&amp;quot;, &amp;quot;color&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/use-colors2-1.png" width="1152" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/use-colors2-1.png" width="1152" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -495,7 +495,7 @@ ggplot(pass_map_df, aes(x = x_coord, y = y_coord)) +
     breaks = seq(0.1, 1.0, length.out = 10) # drop the lowest passes
   ) +
   add_moo_field()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/field_plot_moo-1.png" width="576" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/field_plot_moo-1.png" width="576" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id="get-the-raw-density-estimates" class="section level2"&gt;
 &lt;h2&gt;Get the raw density estimates&lt;/h2&gt;
@@ -517,10 +517,10 @@ density_map %&amp;gt;%
   ggplot(aes(x = x_coord, y = y_coord, color = density)) +
   geom_point(alpha = 0.2) +
   scale_color_gradient(low = &amp;quot;red&amp;quot;, high = &amp;quot;yellow&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/dens-calc-1.png" width="576" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/dens-calc-1.png" width="576" /&gt;&lt;/p&gt;
 &lt;aside&gt;
 &lt;p&gt;Here’s the hexplot for comparison:&lt;/p&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/unnamed-chunk-3-1.png" width="480" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/unnamed-chunk-3-1.png" width="480" /&gt;&lt;/p&gt;
 &lt;/aside&gt;
 &lt;div id="compare-2d-density" class="section level3"&gt;
 &lt;h3&gt;Compare 2D Density&lt;/h3&gt;
@@ -597,7 +597,7 @@ compared_z %&amp;gt;%
        subtitle = &amp;quot;Red = More by QB1, Blue = More by QB2&amp;quot;,
        caption = &amp;quot;\n\nPlot: @thomas_mock | Data: @ChiefsAnalytics&amp;quot;) +
   guides(colour=FALSE) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1467b30a9fb33_files/figure-html/compare_qb_plot-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file14a21768f409d_files/figure-html/compare_qb_plot-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;Try it out for yourself!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;

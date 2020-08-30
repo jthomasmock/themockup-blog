@@ -1,7 +1,7 @@
 ---
 title: "Heatmaps in ggplot2"
 description: |
-  It's more than just a passing fad
+  It's more than just a passing fad  
 author:
   - name: Thomas Mock
 base_url: https://themockup.blog
@@ -20,8 +20,6 @@ preview: preview.png
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -97,7 +95,7 @@ We can add 90% transparency with `alpha = 0.1` or set `alpha` as a ratio, and ch
 
 Passes around the 5 yard mark appear to be as common as at the 10 and even 20 yard mark in some cases! We know this isn't true from `nflfastR` data. Maybe we can try to get closer views of the actual distributions with `ggMarginal` from the [`ggExtra`](https://github.com/daattali/ggExtra) R package, which provides marginal histograms, box plots, or density plots.
 
-```{r, fig.height=4,fig.width=4}
+```{r, fig.height=4,fig.width=8}
 red_beard <- pass_map_df %>%
   ggplot(aes(x = x_coord, y = y_coord)) +
   geom_point(alpha = 0.1, color = "red") +
