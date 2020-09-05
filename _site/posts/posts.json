@@ -14,11 +14,11 @@
       "data visualization",
       "tables",
       "tidyverse",
-      "tidytuesday",
+      "TidyTuesday",
       "gt"
     ],
     "preview": "posts/2020-09-04-10-table-rules-in-r/preview.png",
-    "last_modified": "2020-09-04T19:02:10-05:00",
+    "last_modified": "2020-09-05T12:11:12-05:00",
     "input_file": "10-table-rules-in-r.utf8.md",
     "preview_width": 672,
     "preview_height": 863
@@ -41,8 +41,8 @@
       "NFL"
     ],
     "preview": "posts/2020-08-28-heatmaps-in-ggplot2/preview.png",
-    "last_modified": "2020-08-30T15:25:44-05:00",
-    "input_file": "heatmaps-in-ggplot2.utf8.md",
+    "last_modified": "2020-08-30T15:26:19-05:00",
+    "input_file": {},
     "preview_width": 1200,
     "preview_height": 1200
   },

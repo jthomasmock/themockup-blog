@@ -21,6 +21,8 @@ navbar:
 collections:
   posts:
     share: [twitter, linkedin]
+    subscribe: _subscribe.html
+    custom: _search.html
 google_analytics: "UA-166026965-1"
 twitter:
   site: "@thomas_mock"
@@ -29,4 +31,4 @@ output:
   distill::distill_article:
     css: styles.css
 rss:
-  full_content: TRUE
+  full_content: false

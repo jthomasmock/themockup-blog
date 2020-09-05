@@ -15,7 +15,7 @@ categories:
   - data visualization
   - tables
   - tidyverse
-  - tidytuesday
+  - TidyTuesday
   - gt
 preview: preview.png
 twitter:
@@ -36,9 +36,11 @@ tuesdata <- tidytuesdayR::tt_load(2020, "36")
 
 After seeing Jon's Twitter thread, I asked him if I could adapt the examples over to R. He graciously agreed, so I've gone ahead and adapted some examples from his 10 Guidelines article ^[https://www.cambridge.org/core/journals/journal-of-benefit-cost-analysis/article/ten-guidelines-for-better-tables/74C6FD9FEB12038A52A95B9FBCA05A12] below in the R package [`gt`](https://gt.rstudio.com/). Jon also has a *Better Data Visualizations* book coming out in Jan 2021 - check it out at [Columbia University Press](https://cup.columbia.edu/book/better-data-visualizations/9780231193115).
 
+Please note that the **10 Guidelines section headers** are quoted *verbatim* from Jon's article (after asking permission), while the tables themselves and text descriptions are original content inspired from his work.
+
 **10 Rules for Tables**  
-- [Twitter Thread](https://twitter.com/jschwabish/status/1290323581881266177)  
-- [Journal of Benefit Cost Analysis](https://cambridge.org/core/journals/journal-of-benefit-cost-analysis/article/ten-guidelines-for-better-tables/74C6FD9FEB12038A52A95B9FBCA05A12)  
+- [Twitter Thread](https://twitter.com/jschwabish/status/1290323581881266177) - In this thread, Jon covers the highpoints of each of the 10 guidelines  
+- [10 Guidelines in the Journal of Benefit Cost Analysis](https://cambridge.org/core/journals/journal-of-benefit-cost-analysis/article/ten-guidelines-for-better-tables/74C6FD9FEB12038A52A95B9FBCA05A12) - In this article, Jon dives even deeper into the WHY and longer explanations of the guidelines, along with some best practice examples  
 
 # Cole Nussbaumer Knaflic
 
@@ -94,6 +96,8 @@ tibble(
     md("Adapted from:<br>Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten*.(4)57")
   )
 ```
+
+This table thus separates Data Viz and Data Tables into their specific purposes, however like most rules you can bend these with creative use.
 
 ### Taxonomy of table *uses*
 
@@ -395,16 +399,271 @@ tibble(
 knitr::include_graphics("table-table.png")
 ```
 
+With this taxonomy you can specifically choose what you purpose/function you are giving the table. Again, it's important to not just throw data into a tabular format and call it a day, and make specific design decisions to help guide the reader towards the purpose of the table.
 
 ---
 
-# 10 Rules with `gt`
+# `gt`: A Grammar of Tables
 
 `gt` is again, an R package to create tables in R. It provides a `G`rammar of `T`ables to turn tabular data into a proper table!
+
+While `gt` is fantastic, I also greatly enjoy other table packages in R:  
+- [`kableExtra`](https://haozhu233.github.io/kableExtra/) - great for HTML/LaTex  
+- [`formattable`](https://renkun-ken.github.io/formattable/) - great for custom fill of cells and HTML  
+- [`DT`](https://rstudio.github.io/DT/) or [`reactable`](https://glin.github.io/reactable/) - great for reactive tables  
+- [`flextable`](https://davidgohel.github.io/flextable/) - A very useful package for Word-based tables  
+
+The "grammar" of tables can be seen below.
 
 ![Diagram of the parts of a table](https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg)
 
 With this as our starting point, we can use code to add specific portions and change the overall structure and appearance of the tables.
+
+```{r yield-data-hide, echo=FALSE}
+country_sel <- c("China", "India", "United States", "Indonesia", "Mexico", "Pakistan")
+
+yield_data_wide <- tuesdata$key_crop_yields %>% 
+  janitor::clean_names() %>% 
+  rename_with(~str_remove(., "_tonnes_per_hectare")) %>% 
+  select(entity:beans, -code) %>% 
+  pivot_longer(cols = wheat:beans, names_to = "crop", values_to = "yield") %>% 
+  rename(Country = entity) %>% 
+  filter(crop %in% c("potatoes", "maize"), 
+         year %in% c(2014:2016),
+         Country %in% country_sel) %>% 
+  pivot_wider(names_from = year, values_from = yield)
+```
+
+## Basic `gt` Table
+
+You can create a table by passing in data to `gt()`, and the idea is that you progressively add layers/changes to the `gt` table via the pipe.
+
+```{r}
+# This works!
+# gt(yield_data_wide)
+
+# pipe also works!
+yield_data_wide %>% 
+  gt()
+```
+
+### Add Groups
+
+You can "split" a table intro groups by passes a grouped tibble...
+
+```{r}
+yield_data_wide %>% 
+  head() %>% 
+  group_by(Country) %>% # respects grouping from dplyr
+  gt(rowname_col = "crop") 
+```
+
+Or by adding it as an explicit argument within `gt`. 
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) 
+```
+
+Groups are also useful for groupwise summary rows! Notice I'm also using `fmt_number()` to decrease the decimal point precision of the numbers. It will default to 2 decimal places, although you can specify whatever number of decimals you want. You may also notice that I referenced the columns by position in `fmt_number()`, but used tidy-eval w/ `vars()` in `summary_rows()`. You can always fall back to either method!
+
+```{r}
+yield_data_wide %>% 
+  mutate(crop = str_to_title(crop)) %>% 
+  group_by(crop) %>% 
+  gt(
+    rowname_col = "Country"
+  ) %>% 
+  fmt_number(
+    columns = 2:5, # reference cols by position
+    decimals = 2 # decrease decimal places
+    ) %>% 
+  summary_rows(
+    groups = TRUE,
+    columns = vars(`2014`, `2015`, `2016`), # reference cols by name
+    fns = list(
+      avg = ~mean(.), # add as many summary stats as you want!
+      sd = ~sd(.)
+    )
+  )
+  
+```
+
+### Add spanners
+
+Table spanners can be added quickly with `tab_spanner()` and again use either position (column number) or + `vars(name)`.
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %>% 
+  tab_spanner(
+    label = "Yield in Tonnes/Hectare", 
+    columns = 2:5
+    )
+```
+
+### Add notes and titles
+
+Footnotes can be added with `tab_footnote()`. Note that this is our first use of the `locations` argument. Locations is used with things like `cells_column_labels()` or `cells_body()`, `cells_summary()` to offer very tight control of where to place certain changes. While you can still reference columns by position, note that I use `1:3` here instead of `2:5` since I'm referencing just the column labels. You can again use `vars(name)` instead of position.
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %>% 
+  tab_footnote(
+    footnote = "Yield in Tonnes/Hectare", 
+    locations = cells_column_labels(
+      columns = 1:3 # note
+      )
+    )
+```
+
+Adding a `source_note()`
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %>% 
+  tab_footnote(
+    footnote = "Yield in Tonnes/Hectare", 
+    locations = cells_column_labels(
+      columns = 1:3 # note
+      )
+    ) %>% 
+  tab_source_note(source_note = "Data: OurWorldInData")
+```
+
+Adding a title or subtitle with `tab_header()` and notice that I used `md()` around the title and `html()` around subtitle to adjust their appearance. You can use these to parse those types of arbitrary code within a specific portion of the table. 
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %>%
+  tab_header(
+    title = md("**Crop Yields between 2014 and 2016**"),
+    subtitle = html("<em>Countries limited to Asia</em>")
+  )
+```
+
+### Adjust appearance
+
+You can customize large chunks of the table appearance all at once via `tab_options()`. The full reference to ALL the options you can customize are in the [`gt` packagedown site](https://gt.rstudio.com/reference/tab_options.html).
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %>%
+  tab_header(
+    title = "Crop Yields between 2014 and 2016",
+    subtitle = "Countries limited to Asia"
+  ) %>% 
+  tab_options(
+    heading.subtitle.font.size = 12,
+    heading.align = "left",
+    table.border.top.color = "black",
+    column_labels.border.bottom.color = "black",
+    column_labels.border.bottom.width= px(3),
+  )
+```
+
+If you want to style values or a specific cell, you'll want to use `tab_style()`, note that you can reference specific types of changes in the style, and by wrapping it in a list as seen below you can make multiple changes at a time. You are limited to one set of locations however.
+
+Locations can take column/row by position (eg `columns = 1`, `rows = c(5:6)`) or with columns by name via `vars(col_name)`. Lastly, you can use logical expressions in `rows = ` to match certain criteria to assign a style. Here I'm assigning red italics to China's crop outputs only with the following code: `rows = Country == "China"`. 
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt() %>% 
+  tab_style(
+    style = list(
+      cell_text(weight = "bold")
+    ),
+    locations = cells_column_labels(everything())
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_fill(color = "black", alpha = 0.2),
+      cell_borders(
+        side = c("left", "right"), 
+        color = "black",
+        weight = px(2)
+        )
+      ),
+    locations = cells_body(
+      columns = vars(crop)
+      )
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_text(color = "red", style = "italic")
+    ),
+    locations = cells_body(
+      columns = 3:5,
+      rows = Country == "China"
+    )
+  ) 
+```
+
+If you want to do more of a dataviz style color gradient rather than assigning colors one at a time, you can use `data_color()` along with something like [`scales::col_numeric()`](https://scales.r-lib.org/reference/col_numeric.html). Note that I'm using [`paletteer`](https://emilhvitfeldt.github.io/paletteer/) to provide the palette, but you can also provide your own palette. Also - domain could be specified for a specific range, otherwise it will fit the colors to whatever range is present in the data.
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %>% 
+  data_color(
+    columns = vars(`2014`, `2015`, `2016`),
+    colors = scales::col_numeric(
+      paletteer::paletteer_d(
+        palette = "ggsci::red_material") %>% as.character(),
+        domain = NULL
+        )
+      )
+```
+
+Here we create our own palette with just a vector of color names (could also be a vector of hex colors). You can see now that the red is dark enough that `gt` automatically changes the colors of the text to better contrast. You can turn this feature off with `autocolor_text = FALSE`
+
+```{r}
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %>% 
+  data_color(
+    columns = vars(`2014`, `2015`, `2016`),
+    colors = scales::col_numeric(
+      c("white", "pink", "red"),
+        domain = NULL
+        )
+      )
+```
+
+That's it for the basics of `gt`! Now, let's dive into Jon Schwabish's "10 Guidelines for Better Tables" where we can apply some of these techniques to some table examples.
+
+# 10 Guidelines with `gt`
 
 The core data comes from `#TidyTuesday` week 36 of 2020. Let's load up the data and clean it up a bit. We'll be using portions of this data throughout.
 
@@ -484,8 +743,7 @@ rule1_good <- potato_tb %>%
     table_body.hlines.color = "white",
     table.border.bottom.color = "white",
     table.border.bottom.width = px(3)
-  ) %>% 
-  tab_source_note("Table: @thomasmock | Data: OurWorldInData.org")
+  ) %>% tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 </details>
@@ -632,13 +890,13 @@ rule2_tab2 <- rule2_data %>%
 
 ```{r}
 rule2_tab2 %>% 
-  tab_source_note("Table: @thomasmock | Data: OurWorldInData.org")
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 
 ## Rule 3: Right-Align Numbers and Heads
 
-In this case, you want to right align numbers and ideally choose mono-spaced or numerically-aligned fonts, while avoiding "oldstyle" fonts which have numbers with varying vertical placement.
+In this case, you want to right align numbers and ideally choose mono-spaced or numerically-aligned fonts, while avoiding "oldstyle" fonts which have numbers with varying vertical placement. Importantly, `gt` already automatically follows best practices for the most part so we have to change some of the defaults to get **bad** examples.
 
 ```{r rule3-data}
 # Prep data
@@ -692,7 +950,7 @@ rule3_align <- rule3_data %>%
 
 ```{r}
 rule3_align %>% 
-  tab_source_note("Table: @thomasmock | Data: OurWorldInData.org")
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 
@@ -800,7 +1058,7 @@ rule3_text <- rule3_data %>%
 
 ```{r}
 rule3_text %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 
@@ -854,7 +1112,7 @@ rule4_tab_left <- tibble(
     center = md("Centered and<br>even harder to read"),
     left = md("Left-aligned and<br>easiest to read")
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 </details>
@@ -890,7 +1148,7 @@ rule5_tab <- yield_data %>%
     few = md("Too few<br>decimals"),
     right = md("About<br>right")
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 
 ```
 
@@ -964,7 +1222,7 @@ Note that while this table is useful it guides the reader towards vertical compa
 
 ```{r rule6-thin}
 rule6_tb %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 Alternatively, this "taller" table pushes the reader towards horizontal tracking of the table.
@@ -972,7 +1230,7 @@ Alternatively, this "taller" table pushes the reader towards horizontal tracking
 ```{r rule6-tall}
 rule6_tb %>% 
   tab_options(data_row.padding = px(20)) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 
@@ -987,7 +1245,7 @@ rule6_tb %>%
     rows = 1,
     scale_values = FALSE
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 We can try to align left for examples that ALL have the same range (ie all in the 10's) as the numbers will align properly, although variation in the units can again mess up the alignment.
@@ -1003,7 +1261,7 @@ rule6_tb %>%
     columns = 2:4,
     align = "left"
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 Alternatively, in some cultures, the `%` sign is placed on the left. We can use this to keep alignment properly although I'll acknowledge this looks awkward to me.
@@ -1016,7 +1274,7 @@ rule6_tb %>%
     scale_values = FALSE,
     placement = "left"
   )  %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 
@@ -1070,7 +1328,7 @@ rule8_tb <- rule8_data %>%
 
 ```{r}
 rule8_tb %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 However, with a bit of color added we can clearly focus on the outliers.
@@ -1113,7 +1371,7 @@ rule8_color <- rule8_tb %>%
     )
   )
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 </details>
@@ -1165,7 +1423,7 @@ rule8_fill <- rule8_tb %>%
       )
     )
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
   
 ```
 
@@ -1213,7 +1471,7 @@ rule9_bad <- rule9_data %>%
     vars(crop) ~ px(125),
     vars(`2015`, `2016`, pct_change) ~ 100
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
   
 </details>
@@ -1267,9 +1525,9 @@ rule9_grp <- rule9_data %>%
     table.border.bottom.color = "white",
     table.border.bottom.width = px(3),
     column_labels.border.bottom.color = "black",
-    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.width = px(2)
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 </details>
@@ -1325,7 +1583,7 @@ rule9_dup <- rule9_data %>%
     table.border.bottom.color = "white",
     table.border.bottom.width = px(3),
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 
 ```
 
@@ -1431,7 +1689,7 @@ rule10_spark <- rule10_data %>%
     column_labels.border.bottom.color = "black",
     column_labels.border.bottom.width = px(2),
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 </details>
@@ -1443,7 +1701,7 @@ rule10_spark
 
 ### 10. Barplot
 
-For example one we can use barplots to indicate the average across the 5 years. There's quite a bit of code below, and we actually use two datasets. Since we are creating the sparklines outside of `gt` make sure to align the graphs + data as `gt` doesn't control the overall relationship. For example, if you `arrange()` by a specific column you'll need to make sure to do it across both datasets.
+For example one we can use barplots to indicate the average across the 5 years. There's quite a bit of code below, and we actually use two datasets. Since we are creating the barplots outside of `gt` make sure to align the graphs + data as `gt` doesn't control the overall relationship. For example, if you `arrange()` by a specific column you'll need to make sure to do it across both datasets.
 
 <details>
 <summary><strong>Rule 10 | Barplot example `gt` code </summary>
@@ -1546,7 +1804,7 @@ rule10_bar <- rule10_data %>%
                locations = cells_column_labels(
                  columns =2:4
                )) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 </details>
@@ -1615,7 +1873,7 @@ rule10_heat <- rule10_wide %>%
     column_labels.border.bottom.color = "black",
     column_labels.border.bottom.width = px(2),
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 </details>
@@ -1694,7 +1952,7 @@ rule10_pct <- rule10_wide %>%
     column_labels.border.bottom.color = "black",
     column_labels.border.bottom.width = px(2),
   ) %>% 
-  tab_source_note(md("**Table**: @thomasmock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 </details>
@@ -1704,4 +1962,4 @@ rule10_pct
 ```
 
 
-
+So that's it - thanks for reading through and if you have more needs make sure to check out the [`gt` site](https://gt.rstudio.com/index.html).
