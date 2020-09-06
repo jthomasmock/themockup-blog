@@ -399,7 +399,16 @@ tibble(
 knitr::include_graphics("table-table.png")
 ```
 
-With this taxonomy you can specifically choose what you purpose/function you are giving the table. Again, it's important to not just throw data into a tabular format and call it a day, and make specific design decisions to help guide the reader towards the purpose of the table.
+With this taxonomy you can specifically choose what you purpose/function you are giving the table. Again, it's important to not just throw data into a tabular format and call it a day, but rather make specific design decisions to help guide the reader towards the purpose of the table. All too often we do all the heavy lifting to clean, summarize, and model the data only to let our readers down by not preparing a useful final data product.
+
+We should be making conscious decisions:  
+
+- What is the **Primary Function** of this table?  
+- How is the data **related**?  
+- How can I best present the data **relationships** to accomplish the **primary function**?  
+- Can I improve the readability?  
+- Can I reduce repetition?  
+- Can I guide the reader to use the table in a better way?  
 
 ---
 
@@ -586,6 +595,36 @@ yield_data_wide %>%
   )
 ```
 
+Because `gt` is built up by a series of piped examples, you can also pass along additional changes/customization as a function almost like a `ggplot2` theme! You'll notice that it's VERY easy and quick to build up the bulk of a `gt` table, but you can also spend 2-3x the amount of code to add all sorts of little tweaks and customizations. Saving some of these tweaks as a "theme" can save you lots of repeated code calls!
+
+```{r}
+
+my_theme <- function(data) {
+  tab_options(
+    data = data,
+    heading.subtitle.font.size = 12,
+    heading.align = "left",
+    table.border.top.color = "black",
+    column_labels.border.bottom.color = "black",
+    column_labels.border.bottom.width= px(3),
+  )
+}
+
+yield_data_wide %>% 
+  head() %>%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %>%
+  tab_header(
+    title = "Crop Yields between 2014 and 2016",
+    subtitle = "Countries limited to Asia"
+  ) %>% 
+  my_theme()
+  
+```
+
+
 If you want to style values or a specific cell, you'll want to use `tab_style()`, note that you can reference specific types of changes in the style, and by wrapping it in a list as seen below you can make multiple changes at a time. You are limited to one set of locations however.
 
 Locations can take column/row by position (eg `columns = 1`, `rows = c(5:6)`) or with columns by name via `vars(col_name)`. Lastly, you can use logical expressions in `rows = ` to match certain criteria to assign a style. Here I'm assigning red italics to China's crop outputs only with the following code: `rows = Country == "China"`. 
@@ -663,6 +702,8 @@ yield_data_wide %>%
 
 That's it for the basics of `gt`! Now, let's dive into Jon Schwabish's "10 Guidelines for Better Tables" where we can apply some of these techniques to some table examples.
 
+---
+
 # 10 Guidelines with `gt`
 
 The core data comes from `#TidyTuesday` week 36 of 2020. Let's load up the data and clean it up a bit. We'll be using portions of this data throughout.
@@ -702,7 +743,7 @@ potato_data <- yield_data %>%
 ### 1. Poor Example
 
 <details>
-<summary><strong>Rule 3 | Poor example `gt` code </summary>  
+<summary><strong>Rule 1 | Poor example `gt` code </summary>  
 
 ```{r rule1-poor}
 potato_tb <- potato_data %>% 
@@ -784,10 +825,15 @@ In this case, while you can probably tell clearly that the bottom row is the Ave
 
 ```{r rule2-poor}
 rule2_tab1 <- rule2_data %>% 
-  gt() %>% 
+  gt(
+    rowname_col = "Country"
+  ) %>% 
   cols_label(
     avg_07_11 = "Avg.",
     avg_12_16 = "Avg."
+  ) %>% 
+  cols_width(
+    1 ~ px(125)
   ) %>% 
   fmt_number(
     columns = 2:last_col()
@@ -825,7 +871,7 @@ rule2_tab1
 
 ### 2. Improved Example
 
-In this improved example we've clearly indicated the `Avg.` columns. Note that I've also manually calculated a summary row at the bottom, although you could create a `grand_summary_row()` with `gt`. We used that in the previous example.
+In this improved example we've clearly indicated the `Avg.` columns. Note that I've also manually calculated a summary row at the bottom just as an alternative example, although you could again create a `grand_summary_row()` with `gt` and probably should since you could add as many arbitrary summary rows as you'd like (by group even!). We used that in the previous example.
 
 <details>
 <summary><strong>Rule 2 | Improved `gt` code </summary>  
@@ -953,6 +999,57 @@ rule3_align %>%
   tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
+### 3. Addendums to alignment
+
+When aligning text of equal length (long or very short), center alignment of text can be fine or even preferable. For example, very short text with a long header can be better suited to center-align. Equal length text can be centered without negatively affecting the ability to quickly read.
+
+```{r}
+rule3_data_addendum <- yield_data %>% 
+  filter(
+    Country %in% c("Africa"), 
+    year >= 2015,
+    str_length(crop) == 5
+    ) %>%
+  group_by(year) %>% 
+  mutate(
+    crop = str_to_title(crop),
+    max_yield = max(yield),
+    `Top Crop` = if_else(yield == max_yield, "Y", "N")
+    ) %>%
+  select(Year = year, Crop = crop, `Top Crop`, Yield = yield) %>% 
+  ungroup()
+
+```
+
+While the table below could be improved in other ways and has quite a bit of repetition, note that the `Top Crop` column has too much white space on the right side due to defaulting to left-alignment. This makes it "stick" too much to the adjacent column.
+
+```{r}
+rule3_data_addendum %>% 
+  gt()
+```
+
+Moving the `Top Crop` column to center-alignment makes it easier to visually parse the column, and note that centering the `Crop` Column has no negative effect on the alignment or ability to read as each cell value has equal length (as long as the font-choice is one that doesn't have major differenceds in charater width). The left-alignment rule for text is a good default, but is more effective with variable width text especially with large variation (ie length = 10 interspersed with length = 5). 
+
+```{r}
+rule3_data_addendum %>% 
+  gt() %>% 
+  gt::cols_align(
+    align = "center",
+    columns = vars(`Top Crop`, Crop)
+  )
+```
+
+As an aside, note that `pivot_wider()` can also improve the function of this table, reducing repetition of both the `Crop` and `Top Crop` columns. Again, center alignment helps with the `Top Crop` column regardless.
+
+```{r}
+rule3_data_addendum %>% 
+  pivot_wider(names_from = Year, values_from = Yield) %>% 
+  gt() %>% 
+  gt::cols_align(
+    align = "center",
+    columns = vars(`Top Crop`)
+  ) 
+```
 
 ### 3. Choose fonts carefully
 
@@ -1069,7 +1166,7 @@ For labels/strings it is typically more appropriate to left-align. This allows y
 <details>
 <summary><strong>Rule 4 | Alignment `gt` code </summary>  
 
-```{r rule4-data}
+```{r rule4-data, layout='l-body-outset'}
 country_names <- c(
   "British Virgin Islands",
   "Cayman Islands",
@@ -1859,6 +1956,7 @@ rule10_heat <- rule10_wide %>%
     )
   ) %>%  
   cols_width(
+    1 ~ px(125),
     2:6 ~ px(65)
   ) %>% 
   tab_options(
@@ -1909,7 +2007,7 @@ rule10_pct <- rule10_wide %>%
   gt()%>% 
   fmt_number(2:7) %>% 
   cols_label(
-    pct_change = md("% Change<br>2013-2017")
+    pct_change = md("Percent Change")
   ) %>% 
   tab_style(
     style = list(
@@ -1917,7 +2015,7 @@ rule10_pct <- rule10_wide %>%
     ),
     locations = cells_body(
       columns = vars(pct_change),
-      rows = `2017` < `2013`
+      rows = pct_change <= 0
     )
   ) %>% 
   tab_style(
@@ -1926,7 +2024,7 @@ rule10_pct <- rule10_wide %>%
     ),
     locations = cells_body(
       columns = vars(pct_change),
-      rows = `2017` > `2013`
+      rows = pct_change > 0
     )
   ) %>% 
   tab_spanner(
@@ -1961,5 +2059,63 @@ rule10_pct <- rule10_wide %>%
 rule10_pct
 ```
 
+## Rule 11: Add Context to the Table
 
-So that's it - thanks for reading through and if you have more needs make sure to check out the [`gt` site](https://gt.rstudio.com/index.html).
+I'll add one more guideline of my own! We've been playing fairly fast and loose with not naming many of the tables and not providing all the context about even what's in the table, mostly because we're more concerned with showing curated and specific examples. However, naming and adding context to the table is important. This can be accomplished many different ways with `gt`.
+
+### Add a title
+
+Going back to our first table - let's tell the reader what the actual data is!
+
+```{r}
+rule1_good %>% 
+  tab_header(
+    title = md("**Potato yields in 6 major countries**"),
+    subtitle = "Yield in Tonnes/Hectare"
+    ) %>% 
+  tab_options(heading.align = "left",
+              table.border.top.color = "white",
+              table.border.top.width = px(3))
+```
+
+
+### Add a a Footer
+
+Alternatively, we could also add a footer to explain the yields.
+
+```{r}
+rule1_good %>% 
+  tab_footnote(
+    footnote = "Annual Potato Yield in Tonnes/Hectare",
+    locations = cells_column_labels(2:5)
+  )
+```
+
+### Redo an example
+
+Going a bit further into our rule 10 examples, while we added some nice color - we could further clarify the percent change, was it the sum of changes? Change from specific years? It was *just* the change from 2013 vs 2017.
+
+```{r}
+rule10_pct %>% 
+  tab_footnote(
+    "Percent Change: 2013 vs 2017",
+    locations = cells_column_labels(7)
+  )
+```
+
+What about our lovely table that had both column and row summaries? We renamed our column summaries to just `Avg.` and `Avg.` - we can assume that the reader understands it is the summary of the columns to their immediate left, but it can be helpful to also explicitly tell the reader what the calculation is. What if the second `Avg.` was in fact the average from all years (2007 to 2016), rather than just 2012 through 2016?
+
+```{r}
+rule2_tab2 %>% 
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish")) %>% 
+  tab_footnote(
+    footnote = "Average of 2007 through 2011",
+    locations = cells_column_labels(vars(avg_07_11))
+  ) %>% 
+  tab_footnote(
+    footnote = "Average of 2012 through 2016",
+    locations = cells_column_labels(vars(avg_12_16))
+  ) 
+```
+
+So that's it for now - thanks for reading through and if you have more needs make sure to check out the [`gt` site](https://gt.rstudio.com/index.html). 
