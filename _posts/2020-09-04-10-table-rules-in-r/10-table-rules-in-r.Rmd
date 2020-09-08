@@ -421,7 +421,11 @@ While `gt` is fantastic, I also greatly enjoy other table packages in R:
 - [`kableExtra`](https://haozhu233.github.io/kableExtra/) - great for HTML/LaTex  
 - [`formattable`](https://renkun-ken.github.io/formattable/) - great for custom fill of cells and HTML  
 - [`DT`](https://rstudio.github.io/DT/) or [`reactable`](https://glin.github.io/reactable/) - great for reactive tables  
-- [`flextable`](https://davidgohel.github.io/flextable/) - A very useful package for Word-based tables  
+- [`flextable`](https://davidgohel.github.io/flextable/) - A very useful package for Word-based tables 
+
+
+Additionally - if your primary output is model summaries rather than data tables, make sure to check out the wonderful [`gtsummary` R package](http://www.danieldsjoberg.com/gtsummary/) which extends the `gt` package for statistical model summaries. Note that while it uses `gt`, it also further supports `kable`, `kableExtra`, `flextable` (for Word docs), and `tibble` methods.
+
 
 The "grammar" of tables can be seen below.
 
