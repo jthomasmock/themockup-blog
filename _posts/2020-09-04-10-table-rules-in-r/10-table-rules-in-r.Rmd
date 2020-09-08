@@ -4,6 +4,7 @@ description: |
   Make tables people ACTUALLY want to read.
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 base_url: https://themockup.blog
 date: 09-04-2020
 output: 
@@ -1798,43 +1799,44 @@ rule10_spark
 
 ### 10. Barplot
 
-For example one we can use barplots to indicate the average across the 5 years. There's quite a bit of code below, and we actually use two datasets. Since we are creating the barplots outside of `gt` make sure to align the graphs + data as `gt` doesn't control the overall relationship. For example, if you `arrange()` by a specific column you'll need to make sure to do it across both datasets.
+For this example we can use barplots to indicate the average across the 5 years. Note that rather than building a `ggplot` for each of the rows, we can take some influence from the [`formattable` R package](https://github.com/renkun-ken/formattable/issues/79#issuecomment-573165954) and create a bar with just HTML/CSS! There's quite a bit of code below, but note that the `gt` package requires you to parse the HTML with `gt::html()`. Overall this method is "cleaner" than via `ggplot` as you are mutating columns within the same dataset, and it's much faster since you are just parsing HTML rather than creating, saving, and importing several `ggplot` images.
+
+Many thanks to the `formattable` author Renkun Kun and others like `rtjohnson12` who have shown examples about how to build up a bar chart with HTML! Thanks also to [Christophe Dervieux](https://community.rstudio.com/t/create-interactive-links-in-gt-table-in-rmarkdown/70266/2) for a great example of `gt` + custom HTML on RStudio Community.
 
 <details>
 <summary><strong>Rule 10 | Barplot example `gt` code </summary>
 
 ```{r rule10-barplot}
-plot_bar <- function(data){
+# Example of using glue to just paste the value into pre-created HTML block
+# Example adapted from rtjohnson12 at: 
+# https://github.com/renkun-ken/formattable/issues/79#issuecomment-573165954
 
-  data_range <- yield_data %>%
-  filter(
-    year %in% c(2013:2017),
-    crop == "potatoes",
-    Country %in% c(
-      country_sel, "Germany", "Brazil", "Ireland", "Lebanon", "Italy",
-      "Netherlands", "France", "Denmark", "El Salvador", "Denmark"
-    )
-  ) %>%
-  pull(yield) %>%
-  range()
+bar_chart <- function(value, color = "red", display_value = NULL){
   
-  yield_mean <- data %>% 
-    summarize(yield = mean(yield))
+  # Choose to display percent of total
+  if (is.null(display_value)) {
+    display_value <- "&nbsp;"
+  } else {
+    display_value <- display_value
+  }
   
-  
-col_pal <-  scales::col_numeric(as.character(paletteer::paletteer_d("ggsci::blue_material", n = 9)), 
-                                domain = data_range)(pull(yield_mean, yield))
-  
-    yield_mean %>% 
-    ggplot() +
-    geom_col(aes(x = 1, y = yield), size = 5,
-             fill = col_pal, color = col_pal, width = 0.7) +
-    coord_flip() +
-    theme_void() +
-      scale_y_continuous(limits = c(0, data_range[2])) +
-    theme(legend.position = "none")
+  # paste color and value into the html string
+  glue::glue("<span style=\"display: inline-block; direction: ltr; border-radius: 4px; padding-right: 2px; background-color: {color}; color: {color}; width: {value}%\"> {display_value} </span>")
 }
 
+# create a color palette w/ paletteer
+# note you could just pass a single color directly to the bar_chart function
+col_pal <- function(value){
+  
+  # set high and low
+  domain_range <- range(c(rule10_data$`2013`, rule10_data$`2017`))
+  
+  # create the color based of domain
+  scales::col_numeric(
+    paletteer::paletteer_d("ggsci::blue_material") %>% as.character(), 
+    domain = c(min(value), max(value))
+      )(value)
+}
 
 # BARPLOT
 
@@ -1845,36 +1847,42 @@ bar_yields <- yield_data %>%
     Country %in% c(
       country_sel, "Germany", "Brazil", "Ireland", "Lebanon", "Italy", 
       "Netherlands", "France", "Denmark", "El Salvador", "Denmark"
-    )
-  ) %>% 
-  nest(yields = c(year, yield)) %>% 
-  mutate(plot = map(yields, plot_bar))
+      )
+    ) %>% 
+  pivot_wider(names_from = year, values_from = yield) %>%  
+  select(-crop) %>% 
+  rowwise() %>% 
+  mutate(
+    mean = mean(c(`2013`, `2014`, `2015`, `2016`, `2017`))
+    ) %>% 
+  ungroup() %>% 
+  select(Country, `2013`, `2017`, `mean`) %>% 
+  mutate(
+    bar = round(mean/max(mean)*100, digits = 2),
+    color = col_pal(bar),
+    bar_chart = bar_chart(bar, color = color),
+    bar_chart = map(bar_chart, ~gt::html(as.character(.x)))) %>% 
+  select(-bar, -color)
   
 # BARPLOT
 
-rule10_bar <- rule10_data %>% 
-  select(-crop) %>% 
-  rowwise() %>% 
-  mutate(mean = mean(`2013`:`2017`),
-         ggplot = NA) %>% 
+rule10_bar <- bar_yields %>% 
   gt() %>% 
-  text_transform(
-    locations = cells_body(vars(ggplot)),
-    fn = function(x){
-      map(bar_yields$plot, ggplot_image, height = px(15), aspect_ratio = 4)
-    }
-  ) %>%
-  cols_width(vars(ggplot) ~ px(100),
+  cols_width(vars(bar_chart) ~ px(100),
              vars(`2013`) ~ px(75),
              vars(`2017`) ~ px(75)
              ) %>% 
   cols_label(
     mean = md("Average<br>2013-17"),
-    ggplot = ""
+    bar_chart = ""
   ) %>% 
   cols_align(
     align = "right",
     columns = 2:4
+  ) %>% 
+  cols_align(
+    align = "left",
+    columns = vars(bar_chart)
   ) %>% 
   fmt_number(2:4) %>% 
   tab_style(

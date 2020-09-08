@@ -30,5 +30,6 @@ twitter:
 output: 
   distill::distill_article:
     css: styles.css
+preview: static/site-preview.png
 rss:
   full_content: false
