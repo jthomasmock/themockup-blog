@@ -828,7 +828,7 @@ In this case, while you can probably tell clearly that the bottom row is the Ave
 <details>
 <summary><strong>Rule 2 | Poor example `gt` code </summary>  
 
-```{r rule2-poor}
+```{r rule2-poor, layout = 'l-page'}
 rule2_tab1 <- rule2_data %>% 
   gt(
     rowname_col = "Country"
@@ -881,7 +881,7 @@ In this improved example we've clearly indicated the `Avg.` columns. Note that I
 <details>
 <summary><strong>Rule 2 | Improved `gt` code </summary>  
 
-```{r rule2-improved}
+```{r rule2-improved, layout = 'l-page'}
 rule2_tab2 <- rule2_data %>% 
   add_row(
     rule2_data %>% 
@@ -1171,7 +1171,7 @@ For labels/strings it is typically more appropriate to left-align. This allows y
 <details>
 <summary><strong>Rule 4 | Alignment `gt` code </summary>  
 
-```{r rule4-data, layout='l-body-outset'}
+```{r rule4-data, layout = 'l-page'}
 country_names <- c(
   "British Virgin Islands",
   "Cayman Islands",
@@ -1379,6 +1379,67 @@ rule6_tb %>%
   tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
+You could always add the `%` sign to each of the column labels, so that it's clear that the columns are actually percentages rather than just raw numbers.
+
+```{r add-percent-sign}
+rule6_tb %>% 
+  cols_label(
+    `2014` = "2014 (%)",
+    `2015` = "2015 (%)",
+    `2016` = "2016 (%)"
+  ) %>% 
+  cols_width(
+    2:4 ~ px(100)
+  ) %>% 
+  tab_source_note(
+    md("Adapted from: Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten* p. 53-58<br>Table Examples: @thomas_mock")
+  )
+```
+
+Or add a spanner across the columns.
+
+```{r}
+rule6_tb %>% 
+  tab_spanner(
+    label = md("**% Yield of Total**"),
+    columns = 2:4
+  ) %>% 
+  tab_source_note(
+    md("Adapted from: Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten* p. 53-58<br>Table Examples: @thomas_mock")
+  )
+```
+
+Lastly - you could add a footnote.
+
+```{r}
+rule6_tb %>% 
+  tab_footnote(
+    footnote = md("**% Yield of Total**"),
+    locations = cells_column_labels(2:4)
+  ) %>% 
+  tab_source_note(
+    md("Adapted from: Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten* p. 53-58<br>Table Examples: @thomas_mock")
+  )
+```
+
+
+### Tradeoffs
+
+There are trade offs with these steps beyond the core idea of just reducing repetition. Ideally `gt` will add native support for dropping repeated units, but in the meantime these strategies can let you add context to a table without just keeping a unit in every column.
+
+As a truly final aside, note that for some currencies or other measures that are available at the start of a value rather than an end work out perfectly!
+
+```{r}
+rule6_tb %>% 
+  fmt_currency(
+    columns = 2:4,
+    rows = 1
+  ) %>% 
+  tab_source_note(
+    md("Adapted from: Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten* p. 53-58<br>Table Examples: @thomas_mock")
+  )
+```
+
 
 ## Rule 8: Highlight Outliers
 
@@ -1428,7 +1489,7 @@ rule8_tb <- rule8_data %>%
 
 </details>
 
-```{r}
+```{r, layout = 'l-page'}
 rule8_tb %>% 
   tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
@@ -1478,7 +1539,7 @@ rule8_color <- rule8_tb %>%
 
 </details>
 
-```{r}
+```{r, layout = 'l-page'}
 rule8_color
 ```
 
@@ -1531,7 +1592,7 @@ rule8_fill <- rule8_tb %>%
 
 </details>
 
-```{r}
+```{r, layout = 'l-page'}
 rule8_fill
 ```
 
@@ -1641,19 +1702,14 @@ rule9_grp
 
 ### 9. Remove duplicate data
 
-Alternatively, we can remove some observations to create more white space, similar to Jon's example. Here we are relying purely on white space rather than horizontal dividers.
+Alternatively, we can remove some observations to create more white space, similar to Jon's example. Here we are relying purely on white space rather than horizontal dividers. We can use `gt::text_transform()` to keep all the observations from our data in, but not display the repeats of Country in the `gt` table.
 
 <details>
 <summary><strong>Rule 9 | Group example `gt` code </summary>
 
 ```{r rule9-duplicate}
 rule9_dup <- rule9_data %>% 
-  group_by(Country) %>% 
-  arrange(Country, desc(`2015`)) %>% 
-  mutate(row_n = row_number()) %>% 
-  ungroup() %>% 
-  mutate(Country = if_else(row_n > 1, "", Country)) %>% 
-  select(-row_n) %>% 
+  arrange(Country) %>% 
   gt() %>% 
   cols_label(
     Country = "",
@@ -1664,6 +1720,15 @@ rule9_dup <- rule9_data %>%
               label = md("**Yield in Tonnes/Hectare**")) %>% 
   fmt_number(
     columns = vars(`2015`, `2016`, pct_change)
+  ) %>% 
+  text_transform(
+    locations = cells_body(
+      columns = vars(Country),
+      rows = crop != "Potatoes"
+    ),
+    fn = function(x){
+      paste0("")
+    }
   ) %>% 
   tab_style(
     style = cell_text(color = "black", weight = "bold"),
@@ -2117,7 +2182,7 @@ rule10_pct %>%
 
 What about our lovely table that had both column and row summaries? We renamed our column summaries to just `Avg.` and `Avg.` - we can assume that the reader understands it is the summary of the columns to their immediate left, but it can be helpful to also explicitly tell the reader what the calculation is. What if the second `Avg.` was in fact the average from all years (2007 to 2016), rather than just 2012 through 2016?
 
-```{r}
+```{r redo-tab2, layout = 'l-page'}
 rule2_tab2 %>% 
   tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish")) %>% 
   tab_footnote(
