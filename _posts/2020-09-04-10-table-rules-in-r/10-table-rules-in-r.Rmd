@@ -1390,10 +1390,8 @@ rule6_tb %>%
   ) %>% 
   cols_width(
     2:4 ~ px(100)
-  ) %>% 
-  tab_source_note(
-    md("Adapted from: Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten* p. 53-58<br>Table Examples: @thomas_mock")
-  )
+  )  %>% 
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 Or add a spanner across the columns.
@@ -1403,10 +1401,8 @@ rule6_tb %>%
   tab_spanner(
     label = md("**% Yield of Total**"),
     columns = 2:4
-  ) %>% 
-  tab_source_note(
-    md("Adapted from: Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten* p. 53-58<br>Table Examples: @thomas_mock")
-  )
+  )  %>% 
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 Lastly - you could add a footnote.
@@ -1416,10 +1412,8 @@ rule6_tb %>%
   tab_footnote(
     footnote = md("**% Yield of Total**"),
     locations = cells_column_labels(2:4)
-  ) %>% 
-  tab_source_note(
-    md("Adapted from: Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten* p. 53-58<br>Table Examples: @thomas_mock")
-  )
+  )  %>% 
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 
@@ -1434,10 +1428,8 @@ rule6_tb %>%
   fmt_currency(
     columns = 2:4,
     rows = 1
-  ) %>% 
-  tab_source_note(
-    md("Adapted from: Few, Stephen. (2012). *Show Me the Numbers: Designing Tables and Graphs to Enlighten* p. 53-58<br>Table Examples: @thomas_mock")
-  )
+  )  %>% 
+  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
 

@@ -1,0 +1,51 @@
+---
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(xml2)
+library(gt)
+
+```
+
+![](static/site-preview.png)
+
+## The Mockup Blog
+
+This is my personal blog, you can find it at [TheMockup.blog](https://themockup.blog/).
+
+If you want to customize your `distill` blog - you can use your own custom CSS. The CSS components you can change are on the [`distill` GitHub](https://github.com/rstudio/distill/blob/6be30c96dc469fcc0e3799d23ddfaac72c2a6466/inst/rmarkdown/templates/distill_article/resources/distill.html).
+
+A table of all my posts are below:  
+
+```{r, echo = FALSE, results='asis'}
+raw_xml <- read_xml("_site/index.xml") %>% 
+  as_list()
+
+raw_xml$rss$channel[7:length(raw_xml$rss$channel)] %>% 
+  tibble(data = .) %>% 
+  hoist(
+    data,
+    Title = "title",
+    Link = "link", 
+    Description = "description", 
+    Date = "pubDate"
+    ) %>% 
+  unchop(Title:Date) %>% 
+  unchop(Title:Date) %>% 
+  mutate(
+    Date = str_sub(Date, 6, 16),
+    Date = lubridate::dmy(Date)
+  ) %>% 
+  mutate(
+    Date = lubridate::as_date(Date),
+    Title = glue::glue("[{Title}]({Link})"),
+    Title = map(Title, gt::md)
+  ) %>% 
+  select(-data, -Link) %>% 
+  knitr::kable()
+
+```
+
