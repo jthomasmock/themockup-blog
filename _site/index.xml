@@ -26,7 +26,7 @@
       <title>Heatmaps in ggplot2</title>
       <dc:creator>Thomas Mock</dc:creator>
       <link>https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2</link>
-      <description>It's more than just a passing fad</description>
+      <description>It's more than just a passing fad.</description>
       <category>data visualization</category>
       <category>ggplot2</category>
       <category>tidyverse</category>
@@ -45,7 +45,7 @@
       <category>tidyverse</category>
       <category>web scraping</category>
       <guid>https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways</guid>
-      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
       <media:content url="https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/CopyOfpreview.png" medium="image" type="image/png" width="1440" height="617"/>
     </item>
     <item>
@@ -218,7 +218,7 @@
       <category>Community</category>
       <guid>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r</guid>
       <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
-      <media:content url="https://i.imgur.com/AXfD3Fk.png" medium="image" type="image/png"/>
+      <media:content url="https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/preview.png" medium="image" type="image/png" width="768" height="384"/>
     </item>
     <item>
       <title>Functional Progamming in R with purrr</title>
@@ -230,7 +230,7 @@
       <category>statistics</category>
       <guid>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr</guid>
       <pubDate>Sun, 18 Mar 2018 00:00:00 +0000</pubDate>
-      <media:content url="https://i.imgur.com/LIvMxbN.jpg" medium="image" type="image/jpeg"/>
+      <media:content url="https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>A Gentle Guide to Tidy Statistics in R</title>
@@ -239,7 +239,7 @@
       <description>Working your way through a basic analysis</description>
       <guid>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r</guid>
       <pubDate>Fri, 16 Mar 2018 00:00:00 +0000</pubDate>
-      <media:content url="https://i.imgur.com/o6k6Rne.jpg" medium="image" type="image/jpeg"/>
+      <media:content url="https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png" medium="image" type="image/png" width="1400" height="1225"/>
     </item>
   </channel>
 </rss>

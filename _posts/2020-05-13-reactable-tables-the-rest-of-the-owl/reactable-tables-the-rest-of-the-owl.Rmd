@@ -74,7 +74,7 @@ The core parts we want to change are:
 
 # Conditional Colors
 
-Like most things in R there are **MANY** ways to generate indeterminate length color palettes. For more info about using color to represent data values check out [Claus Wilke's book section](https://serialmentor.com/dataviz/color-basics.html#color-to-represent-data-values). Importantly - we want a sequential/continuous color scale. 
+Like most things in R there are **MANY** ways to generate indeterminate length color palettes. For more info about using color to represent data values check out [Claus Wilke's book section](https://clauswilke.com/dataviz/color-basics.html#color-to-represent-data-values). Importantly - we want a sequential/continuous color scale. 
 
 Per Claus:
 
@@ -82,7 +82,7 @@ Per Claus:
 > 
 > Sequential scales can be based on a single hue (e.g., from dark blue to light blue) or on multiple hues (e.g., from dark red to light yellow) (Figure 4.3). Multi-hue scales tend to follow color gradients that can be seen in the natural world, such as dark red, green, or blue to light yellow, or dark purple to light green. The reverse, e.g. dark yellow to light blue, looks unnatural and doesn’t make a useful sequential scale.
 
-![Figure 4.3](https://serialmentor.com/dataviz/color_basics_files/figure-html/sequential-scales-1.png)
+![Figure 4.3](https://clauswilke.com/dataviz/color_basics_files/figure-html/sequential-scales-1.png)
 
 Now there are plenty of palettes to choose from, such as `viridis`, `RColorBrewer`, `ggthemes`, as well as a nice meta collection via `paletteer`!
 

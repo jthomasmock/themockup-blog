@@ -252,6 +252,11 @@ playoff_salary %>%
     decimals = 1,
     # glue style pattern match & string conversion
     pattern = "{x} M"
+  ) %>%
+  # Align the now character column to be right-aligned
+  cols_align(
+    align = "right",
+    columns = vars(salary)
   )
 ```
 
@@ -287,6 +292,10 @@ playoff_salary %>%
     decimals = 1,
     pattern = "{x} M"
   ) %>%
+  cols_align(
+    align = "right",
+    columns = vars(salary)
+  ) %>% 
   ##########################
   ### This section changed
   ##########################
@@ -359,6 +368,10 @@ complete_table <- playoff_salary %>%
     decimals = 1,
     pattern = "{x} M"
   ) %>%
+  cols_align(
+    align = "right",
+    columns = vars(salary)
+  ) %>% 
   tab_style(
     style = list(
       cell_borders(
@@ -523,6 +536,10 @@ playoff_salary %>%
     decimals = 1,
     pattern = "{x} M"
   ) %>%
+  cols_align(
+    align = "right",
+    columns = vars(salary)
+  ) %>% 
   tab_style(
     style = list(
       cell_borders(

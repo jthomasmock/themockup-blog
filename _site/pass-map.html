@@ -333,48 +333,56 @@ library(scales)</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X1&#39; [1]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
+##   .default = col_character(),
 ##   X1 = col_double(),
 ##   game_id = col_double(),
-##   name = col_character(),
-##   pass_type = col_character(),
-##   team = col_character(),
-##   week = col_double(),
+##   week.x = col_double(),
 ##   x_coord = col_double(),
 ##   y_coord = col_double(),
-##   type = col_character(),
-##   home_team = col_character(),
-##   away_team = col_character(),
 ##   season = col_double(),
-##   game_url = col_character(),
+##   week.y = col_double(),
+##   gameday = col_date(format = &quot;&quot;),
+##   gametime = col_time(format = &quot;&quot;),
+##   away_score = col_double(),
 ##   home_score = col_double(),
-##   away_score = col_double()
+##   home_result = col_double()
 ## )</code></pre>
-<pre><code>## Warning: 1406 parsing failures.
-##  row  col expected     actual                                                                                                     file
-## 1730 week a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
-## 1731 week a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
-## 1732 week a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
-## 1733 week a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
-## 1734 week a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
-## .... .... ........ .......... ........................................................................................................
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre><code>## Warning: 2349 parsing failures.
+##  row    col expected     actual                                                                                                     file
+## 2050 week.x a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
+## 2051 week.x a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
+## 2052 week.x a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
+## 2053 week.x a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
+## 2054 week.x a double divisional &#39;https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv&#39;
+## .... ...... ........ .......... ........................................................................................................
 ## See problems(...) for more details.</code></pre>
 <pre class="r"><code>glimpse(pass_map_df)</code></pre>
-<pre><code>## Rows: 42,455
-## Columns: 14
-## $ game_id    &lt;dbl&gt; 2017091004, 2017091004, 2017091004, 2017091004, 2017091004…
-## $ name       &lt;chr&gt; &quot;Carson Palmer&quot;, &quot;Carson Palmer&quot;, &quot;Carson Palmer&quot;, &quot;Carson…
-## $ pass_type  &lt;chr&gt; &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;…
-## $ team       &lt;chr&gt; &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;A…
-## $ week       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-## $ x_coord    &lt;dbl&gt; -23.5, 2.8, 18.6, -8.4, -15.5, 26.8, 13.6, 11.2, -4.4, -19…
-## $ y_coord    &lt;dbl&gt; 14.6, 9.3, -1.1, 8.3, 8.0, 10.6, -2.8, 13.4, 5.3, 18.0, -4…
-## $ type       &lt;chr&gt; &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;reg&quot;, &quot;r…
-## $ home_team  &lt;chr&gt; &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;D…
-## $ away_team  &lt;chr&gt; &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;A…
-## $ season     &lt;dbl&gt; 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017…
-## $ game_url   &lt;chr&gt; &quot;http://www.nfl.com/liveupdate/game-center/2017091004/2017…
-## $ home_score &lt;dbl&gt; 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35…
-## $ away_score &lt;dbl&gt; 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23…</code></pre>
+<pre><code>## Rows: 49,758
+## Columns: 23
+## $ game_id     &lt;dbl&gt; 2017091004, 2017091004, 2017091004, 2017091004, 201709100…
+## $ team        &lt;chr&gt; &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;…
+## $ week.x      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+## $ name        &lt;chr&gt; &quot;Carson Palmer&quot;, &quot;Carson Palmer&quot;, &quot;Carson Palmer&quot;, &quot;Carso…
+## $ pass_type   &lt;chr&gt; &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE&quot;, &quot;COMPLETE…
+## $ x_coord     &lt;dbl&gt; 13.5, -13.7, 2.2, 23.9, -23.5, -4.4, 8.0, -19.0, -8.4, -1…
+## $ y_coord     &lt;dbl&gt; -2.8, -4.4, 7.1, 10.0, 14.6, 5.3, 5.2, 18.0, 8.3, 12.4, -…
+## $ game_id.y   &lt;chr&gt; &quot;2017_01_ARI_DET&quot;, &quot;2017_01_ARI_DET&quot;, &quot;2017_01_ARI_DET&quot;, …
+## $ season      &lt;dbl&gt; 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 201…
+## $ game_type   &lt;chr&gt; &quot;REG&quot;, &quot;REG&quot;, &quot;REG&quot;, &quot;REG&quot;, &quot;REG&quot;, &quot;REG&quot;, &quot;REG&quot;, &quot;REG&quot;, &quot;…
+## $ week.y      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+## $ gameday     &lt;date&gt; 2017-09-10, 2017-09-10, 2017-09-10, 2017-09-10, 2017-09-…
+## $ weekday     &lt;chr&gt; &quot;Sunday&quot;, &quot;Sunday&quot;, &quot;Sunday&quot;, &quot;Sunday&quot;, &quot;Sunday&quot;, &quot;Sunday…
+## $ gametime    &lt;time&gt; 13:00:00, 13:00:00, 13:00:00, 13:00:00, 13:00:00, 13:00:…
+## $ away_team   &lt;chr&gt; &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;ARI&quot;, &quot;…
+## $ home_team   &lt;chr&gt; &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;DET&quot;, &quot;…
+## $ away_score  &lt;dbl&gt; 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 2…
+## $ home_score  &lt;dbl&gt; 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 3…
+## $ home_result &lt;dbl&gt; 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1…
+## $ stadium     &lt;chr&gt; &quot;Ford Field&quot;, &quot;Ford Field&quot;, &quot;Ford Field&quot;, &quot;Ford Field&quot;, &quot;…
+## $ location    &lt;chr&gt; &quot;Home&quot;, &quot;Home&quot;, &quot;Home&quot;, &quot;Home&quot;, &quot;Home&quot;, &quot;Home&quot;, &quot;Home&quot;, &quot;…
+## $ roof        &lt;chr&gt; &quot;dome&quot;, &quot;dome&quot;, &quot;dome&quot;, &quot;dome&quot;, &quot;dome&quot;, &quot;dome&quot;, &quot;dome&quot;, &quot;…
+## $ surface     &lt;chr&gt; &quot;fieldturf&quot;, &quot;fieldturf&quot;, &quot;fieldturf&quot;, &quot;fieldturf&quot;, &quot;fiel…</code></pre>
 <div id="why-not-just-plot-the-points" class="section level2">
 <h2>Why not just plot the points?</h2>
 <p>We run the risk of overplotting by plotting just the points without thinking or adjusting any of the aesthetics.</p>
@@ -461,7 +469,7 @@ pass_by_y %&gt;%
 <pre><code>## # A tibble: 1 x 1
 ##     pct
 ##   &lt;dbl&gt;
-## 1 0.356</code></pre>
+## 1 0.351</code></pre>
 <pre class="r"><code># passes are most commonly thrown at 4-6 yards
 # 68% of passes are thrown 10 yards or shorter
 pass_by_y %&gt;%
@@ -469,16 +477,16 @@ pass_by_y %&gt;%
 <pre><code>## # A tibble: 68 x 5
 ##    y_rnd     n total pct_total roll_total
 ##    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;      &lt;dbl&gt;
-##  1     4  3237 42455    0.0762      0.413
-##  2     5  2966 42455    0.0699      0.482
-##  3     6  2805 42455    0.0661      0.549
-##  4     2  2371 42455    0.0558      0.284
-##  5     3  2229 42455    0.0525      0.336
-##  6     1  1598 42455    0.0376      0.228
-##  7     0  1535 42455    0.0362      0.190
-##  8     7  1521 42455    0.0358      0.584
-##  9     8  1465 42455    0.0345      0.619
-## 10    10  1374 42455    0.0324      0.678
+##  1     4  3705 49758    0.0745      0.408
+##  2     5  3420 49758    0.0687      0.477
+##  3     6  3248 49758    0.0653      0.542
+##  4     2  2774 49758    0.0557      0.282
+##  5     3  2550 49758    0.0512      0.333
+##  6     1  1894 49758    0.0381      0.226
+##  7     0  1775 49758    0.0357      0.188
+##  8     7  1771 49758    0.0356      0.578
+##  9     8  1736 49758    0.0349      0.612
+## 10    10  1642 49758    0.0330      0.672
 ## # … with 58 more rows</code></pre>
 <p>Another major advantage of <code>geom_hex</code> or <code>geom_bin2d()</code> is they’re remarkably faster for big data than plotting <code>geom_point()</code> along with reducing the likelihood of overplotting! For a toy example of about 1.7 million points, <code>geom_hex()</code> executes in about 2 sec vs 20 sec with <code>geom_point()</code>, and then subsequent 30-60 sec to “draw” the output in the viewer of R/RStudio.</p>
 </div>

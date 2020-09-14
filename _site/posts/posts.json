@@ -18,7 +18,7 @@
       "gt"
     ],
     "preview": "posts/2020-09-04-10-table-rules-in-r/preview.png",
-    "last_modified": "2020-09-10T12:39:00-05:00",
+    "last_modified": "2020-09-14T15:58:02-05:00",
     "input_file": "10-table-rules-in-r.utf8.md",
     "preview_width": 672,
     "preview_height": 863
@@ -26,7 +26,7 @@
   {
     "path": "posts/2020-08-28-heatmaps-in-ggplot2/",
     "title": "Heatmaps in ggplot2",
-    "description": "It's more than just a passing fad",
+    "description": "It's more than just a passing fad.",
     "author": [
       {
         "name": "Thomas Mock",
@@ -41,8 +41,8 @@
       "NFL"
     ],
     "preview": "posts/2020-08-28-heatmaps-in-ggplot2/preview.png",
-    "last_modified": "2020-08-30T15:26:19-05:00",
-    "input_file": {},
+    "last_modified": "2020-09-14T15:56:44-05:00",
+    "input_file": "heatmaps-in-ggplot2.utf8.md",
     "preview_width": 1200,
     "preview_height": 1200
   },
@@ -53,10 +53,10 @@
     "author": [
       {
         "name": "Thomas Mock",
-        "url": {}
+        "url": "https://twitter.com/thomas_mock"
       }
     ],
-    "date": "2020-08-05",
+    "date": "2020-08-01",
     "categories": [
       "data visualization",
       "ggplot2",
@@ -64,8 +64,8 @@
       "web scraping"
     ],
     "preview": "posts/2020-08-05-a-bar-chart-5-ways/CopyOfpreview.png",
-    "last_modified": "2020-08-05T17:16:59-05:00",
-    "input_file": {},
+    "last_modified": "2020-09-14T16:03:18-05:00",
+    "input_file": "a-bar-chart-5-ways.utf8.md",
     "preview_width": 1440,
     "preview_height": 617
   },
@@ -85,8 +85,8 @@
       "tidyverse"
     ],
     "preview": "posts/2020-08-01-building-a-blog-with-distill/modern.jpeg",
-    "last_modified": "2020-08-03T16:05:45-05:00",
-    "input_file": {}
+    "last_modified": "2020-09-14T15:55:10-05:00",
+    "input_file": "building-a-blog-with-distill.utf8.md"
   },
   {
     "path": "posts/2020-07-25-meta-rmarkdown/",
@@ -104,8 +104,8 @@
       "tidyverse"
     ],
     "preview": "posts/2020-07-25-meta-rmarkdown/tools-flat.jpg",
-    "last_modified": "2020-08-17T09:28:35-05:00",
-    "input_file": {}
+    "last_modified": "2020-09-14T15:53:55-05:00",
+    "input_file": "meta-rmarkdown.utf8.md"
   },
   {
     "path": "posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/",
@@ -127,8 +127,8 @@
       "reactable"
     ],
     "preview": "posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/distill-preview.jpg",
-    "last_modified": "2020-05-31T10:33:00-05:00",
-    "input_file": {}
+    "last_modified": "2020-09-14T15:53:34-05:00",
+    "input_file": "client-side-interactivity-do-more-with-crosstalk.utf8.md"
   },
   {
     "path": "posts/2020-05-22-parsing-json-in-r-with-jsonlite/",
@@ -150,8 +150,8 @@
       "purrr"
     ],
     "preview": "posts/2020-05-22-parsing-json-in-r-with-jsonlite/distill-preview.jpg",
-    "last_modified": "2020-05-25T10:36:06-05:00",
-    "input_file": {}
+    "last_modified": "2020-09-14T15:48:49-05:00",
+    "input_file": "parsing-json-in-r-with-jsonlite.utf8.md"
   },
   {
     "path": "posts/2020-05-16-gt-a-grammer-of-tables/",
@@ -170,8 +170,8 @@
       "tables"
     ],
     "preview": "posts/2020-05-16-gt-a-grammer-of-tables/distill-preview.png",
-    "last_modified": "2020-05-19T17:09:25-05:00",
-    "input_file": {},
+    "last_modified": "2020-09-14T15:48:18-05:00",
+    "input_file": "gt-a-grammer-of-tables.utf8.md",
     "preview_width": 1096,
     "preview_height": 805
   },
@@ -192,8 +192,8 @@
       "tables"
     ],
     "preview": "posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png",
-    "last_modified": "2020-05-13T16:14:41-05:00",
-    "input_file": {},
+    "last_modified": "2020-09-14T15:42:53-05:00",
+    "input_file": "reactable-tables-the-rest-of-the-owl.utf8.md",
     "preview_width": 1093,
     "preview_height": 652
   },
@@ -214,8 +214,8 @@
       "tables"
     ],
     "preview": "posts/2020-05-13-qb-salaries-vs-playoff-appearances/distill-preview.png",
-    "last_modified": "2020-05-13T12:25:36-05:00",
-    "input_file": {},
+    "last_modified": "2020-09-14T15:38:32-05:00",
+    "input_file": "qb-salaries-vs-playoff-appearances.utf8.md",
     "preview_width": 1093,
     "preview_height": 652
   },
@@ -237,8 +237,8 @@
       "tidymodels"
     ],
     "preview": "posts/2020-05-01-tidy-long-models/distill-preview.png",
-    "last_modified": "2020-08-25T14:47:37-05:00",
-    "input_file": {},
+    "last_modified": "2020-09-14T15:38:10-05:00",
+    "input_file": "tidy-models-long-data.utf8.md",
     "preview_width": 720,
     "preview_height": 576
   },
@@ -261,8 +261,8 @@
       "tidyverse"
     ],
     "preview": "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1526&q=80",
-    "last_modified": "2020-05-09T11:01:37-05:00",
-    "input_file": {}
+    "last_modified": "2020-09-14T15:34:38-05:00",
+    "input_file": "nflfastr-dbplyr-and-rsqlite.utf8.md"
   },
   {
     "path": "posts/2020-04-03-beer-and-pdftools-a-vignette/",
@@ -298,8 +298,8 @@
       "probability"
     ],
     "preview": "posts/2020-04-03-crossing-10000-tidy-simulation/distill-preview.png",
-    "last_modified": "2020-05-09T11:02:08-05:00",
-    "input_file": {},
+    "last_modified": "2020-09-14T15:35:26-05:00",
+    "input_file": "crossing-10000-tidy-simulation.utf8.md",
     "preview_width": 5400,
     "preview_height": 3600
   },
@@ -320,8 +320,8 @@
       "ggplot2"
     ],
     "preview": "https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "last_modified": "2020-05-09T11:00:56-05:00",
-    "input_file": {}
+    "last_modified": "2020-09-14T15:33:53-05:00",
+    "input_file": "add-a-logo-to-your-plot.utf8.md"
   },
   {
     "path": "posts/2019-01-02-tidytuesday-enhancements/",
@@ -359,9 +359,11 @@
       "tidyverse",
       "Community"
     ],
-    "preview": "https://i.imgur.com/AXfD3Fk.png",
-    "last_modified": "2020-05-09T11:00:24-05:00",
-    "input_file": {}
+    "preview": "posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/preview.png",
+    "last_modified": "2020-09-14T16:07:18-05:00",
+    "input_file": "tidytuesday-a-weekly-social-data-project-in-r.utf8.md",
+    "preview_width": 768,
+    "preview_height": 384
   },
   {
     "path": "posts/2018-12-11-functional-progamming-in-r-with-purrr/",
@@ -379,9 +381,9 @@
       "tidyverse",
       "statistics"
     ],
-    "preview": "https://i.imgur.com/LIvMxbN.jpg",
-    "last_modified": "2020-05-09T11:00:12-05:00",
-    "input_file": {}
+    "preview": "posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg",
+    "last_modified": "2020-09-14T16:06:08-05:00",
+    "input_file": "functional-progamming-in-r-with-purrr.utf8.md"
   },
   {
     "path": "posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/",
@@ -390,13 +392,15 @@
     "author": [
       {
         "name": "Thomas Mock",
-        "url": {}
+        "url": "https://twitter.com/thomas_mock"
       }
     ],
     "date": "2018-03-16",
     "categories": [],
-    "preview": "https://i.imgur.com/o6k6Rne.jpg",
-    "last_modified": "2020-05-09T10:57:10-05:00",
-    "input_file": {}
+    "preview": "posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png",
+    "last_modified": "2020-09-14T16:05:28-05:00",
+    "input_file": "a-gentle-guide-to-tidy-statistics-in-r.utf8.md",
+    "preview_width": 1400,
+    "preview_height": 1225
   }
 ]

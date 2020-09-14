@@ -4,9 +4,10 @@ description: |
   Working your way through a basic analysis
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 date: 03-16-2018
 base_url: https://themockup.blog
-preview: https://i.imgur.com/o6k6Rne.jpg
+preview: distill-preview.png
 output: 
   distill::distill_article:
     toc: true

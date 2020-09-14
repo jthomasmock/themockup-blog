@@ -12,7 +12,7 @@ output:
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
-preview: https://i.imgur.com/AXfD3Fk.png
+preview: preview.png
 categories:
   - TidyTuesday
   - tidyverse
