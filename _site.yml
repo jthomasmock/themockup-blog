@@ -22,7 +22,6 @@ collections:
   posts:
     share: [twitter, linkedin]
     subscribe: _subscribe.html
-    custom: _search.html
 google_analytics: "UA-166026965-1"
 twitter:
   site: "@thomas_mock"

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>example.utf8</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="site_libs/react-16.12.0/react.min.js"></script>
+<script src="site_libs/react-16.12.0/react-dom.min.js"></script>
+<script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="site_libs/reactable-binding-0.2.0/reactable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://twitter.com/thomas_mock">
+    <span class="fa fa fa fa-twitter"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/jthomasmock">
+    <span class="fa fa fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="index.xml">
+    <span class="fa fa fa fa-rss"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   game_id = col_character(),
+##   home_team = col_character(),
+##   away_team = col_character(),
+##   season_type = col_character(),
+##   posteam = col_character(),
+##   posteam_type = col_character(),
+##   defteam = col_character(),
+##   side_of_field = col_character(),
+##   game_date = col_date(format = &quot;&quot;),
+##   game_half = col_character(),
+##   time = col_time(format = &quot;&quot;),
+##   yrdln = col_character(),
+##   desc = col_character(),
+##   play_type = col_character(),
+##   pass_length = col_character(),
+##   pass_location = col_character(),
+##   run_location = col_character(),
+##   run_gap = col_character(),
+##   field_goal_result = col_character(),
+##   extra_point_result = col_character()
+##   # ... with 124 more columns
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre><code>## Warning: 149 parsing failures.
+##  row          col           expected  actual                                                                                            file
+## 1707 st_play_type 1/0/T/F/TRUE/FALSE PENALTY &#39;https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_2019.csv.gz&#39;
+## 1728 st_play_type 1/0/T/F/TRUE/FALSE PENALTY &#39;https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_2019.csv.gz&#39;
+## 1738 st_play_type 1/0/T/F/TRUE/FALSE PENALTY &#39;https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_2019.csv.gz&#39;
+## 1957 st_play_type 1/0/T/F/TRUE/FALSE PENALTY &#39;https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_2019.csv.gz&#39;
+## 4325 st_play_type 1/0/T/F/TRUE/FALSE PENALTY &#39;https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_2019.csv.gz&#39;
+## .... ............ .................. ....... ...............................................................................................
+## See problems(...) for more details.</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;name&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## Joining, by = &quot;posteam&quot;</code></pre>
+<div id="ggplotly" class="section level3">
+<h3><code>ggplotly</code></h3>
+<div id="htmlwidget-f3eba1a6c3db779d18f7" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f3eba1a6c3db779d18f7">{"x":{"data":[{"x":[0.427320490367776,0.379120879120879,0.418181818181818,0.386363636363636,0.359375,0.324074074074074],"y":[-0.0387083833779861,-0.209481853945339,-0.0407163777467194,-0.155794814556836,-0.153094128637483,-0.54633309141685],"text":["A.Dalton","D.Hodges","G.Minshew II","M.Rudolph","N.Foles","R.Finley"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":0.5,"size":[20.393925376843,10.4216972939953,20.0127688567618,14.6991873383998,7.23262717674119,3.77952755905512],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","name":"#000000","legendgroup":"#000000","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.421052631578947,0.520123839009288,0.417241379310345,0.462235649546828,0.381909547738693,0.49597423510467,0.529411764705882,0.48780487804878,0.427525622254758],"y":[0.0356395711605538,0.179854199510764,-0.107451977969912,0.082689526115819,-0.033973718172738,0.0676509925869204,0.188514838209363,0.121046444068182,0.0540477719091763],"text":["D.Lock","D.Prescott","J.Flacco","J.Goff","M.Mariota","P.Rivers","R.Tannehill","R.Wilson","T.Brady"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,34,68,1)","opacity":0.5,"size":[9.9081714102216,21.6891012134991,14.1962190887079,21.95346345802,11.1452407772011,21.2680368514984,17.1533248711485,22.5187582197999,22.2947115407992],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,34,68,1)"}},"hoveron":"points","name":"#002244","legendgroup":"#002244","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.446640316205534],"y":[-0.0157954396894829],"text":"J.Brissett","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,44,95,1)","opacity":0.5,"size":19.1836033085543,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,44,95,1)"}},"hoveron":"points","name":"#002c5f","legendgroup":"#002c5f","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.443217665615142],"y":[0.0267392019433884],"text":"J.Allen","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,51,141,1)","opacity":0.5,"size":21.4882398301988,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,51,141,1)"}},"hoveron":"points","name":"#00338d","legendgroup":"#00338d","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.467718794835007],"y":[0.0115245593276404],"text":"C.Wentz","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,73,83,1)","opacity":0.5,"size":22.5187582197999,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,73,83,1)"}},"hoveron":"points","name":"#004953","legendgroup":"#004953","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.347368421052632,0.416666666666667,0.4875],"y":[-0.22614802729307,-0.0623407989160748,0.191597261348525],"text":["D.Blough","J.Driskel","M.Stafford"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,90,139,1)","opacity":0.5,"size":[10.7715213788194,7.56220866689338,15.0220053944095],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,90,139,1)"}},"hoveron":"points","name":"#005a8b","legendgroup":"#005a8b","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.465703971119134],"y":[-0.0619363872249455],"text":"K.Allen","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,133,202,1)","opacity":0.5,"size":20.086057000463,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,133,202,1)"}},"hoveron":"points","name":"#0085ca","legendgroup":"#0085ca","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.31496062992126,0.46286701208981],"y":[-0.417712795432209,0.00425451044482943],"text":["J.Rosen","R.Fitzpatrick"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,142,151,1)","opacity":0.5,"size":[7.14519274162758,20.5368475606419],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,142,151,1)"}},"hoveron":"points","name":"#008e97","legendgroup":"#008e97","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.482319660537482],"y":[0.127336065585186],"text":"D.Watson","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(3,32,47,1)","opacity":0.5,"size":22.6771653543307,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(3,32,47,1)"}},"hoveron":"points","name":"#03202f","legendgroup":"#03202f","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.426621160409556],"y":[-0.0820550126215147],"text":"M.Trubisky","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(11,22,42,1)","opacity":0.5,"size":20.6609119091303,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(11,22,42,1)"}},"hoveron":"points","name":"#0b162a","legendgroup":"#0b162a","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.416195856873823,0.435064935064935],"y":[-0.0821438087700242,-0.0279784341336944],"text":["D.Jones","E.Manning"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(11,34,101,1)","opacity":0.5,"size":[19.6600319877056,9.01641241841823],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(11,34,101,1)"}},"hoveron":"points","name":"#0b2265","legendgroup":"#0b2265","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.443328550932568,0.420944558521561],"y":[0.0878209250047937,-0.0442076171181124],"text":["A.Rodgers","S.Darnold"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(32,55,49,1)","opacity":0.5,"size":[22.5187582197999,18.811421903253],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(32,55,49,1)"}},"hoveron":"points","name":"#203731","legendgroup":"#203731","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.500765696784073],"y":[0.281869266840299],"text":"L.Jackson","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(36,23,115,1)","opacity":0.5,"size":21.8052367662774,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(36,23,115,1)"}},"hoveron":"points","name":"#241773","legendgroup":"#241773","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.454545454545455],"y":[0.0762194702666071],"text":"K.Cousins","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(79,38,131,1)","opacity":0.5,"size":20.0127688567618,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(79,38,131,1)"}},"hoveron":"points","name":"#4f2683","legendgroup":"#4f2683","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.456928838951311,0.395256916996047],"y":[-0.0600788572008092,-0.200137368958927],"text":["C.Keenum","D.Haskins"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(119,49,65,1)","opacity":0.5,"size":[13.5157989659555,13.0772828274015],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(119,49,65,1)"}},"hoveron":"points","name":"#773141","legendgroup":"#773141","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.436746987951807],"y":[-0.0123252707396171],"text":"K.Murray","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(151,35,63,1)","opacity":0.5,"size":21.9862388424432,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(151,35,63,1)"}},"hoveron":"points","name":"#97233f","legendgroup":"#97233f","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.532066508313539,0.452488687782805],"y":[0.194803481080405,0.0932667428954905],"text":["D.Brees","T.Bridgewater"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(159,137,88,1)","opacity":0.5,"size":[17.4400175786422,11.9874516497494],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(159,137,88,1)"}},"hoveron":"points","name":"#9f8958","legendgroup":"#9f8958","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.490974729241877],"y":[0.117892598673922],"text":"D.Carr","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(165,172,175,1)","opacity":0.5,"size":20.086057000463,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(165,172,175,1)"}},"hoveron":"points","name":"#a5acaf","legendgroup":"#a5acaf","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.467551622418879],"y":[0.0475029923334679],"text":"M.Ryan","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(167,25,48,1)","opacity":0.5,"size":22.2140349741019,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(167,25,48,1)"}},"hoveron":"points","name":"#a71930","legendgroup":"#a71930","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.495],"y":[0.111236555055514],"text":"J.Garoppolo","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(170,0,0,1)","opacity":0.5,"size":20.906344702171,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(170,0,0,1)"}},"hoveron":"points","name":"#aa0000","legendgroup":"#aa0000","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.490084985835694],"y":[0.0862976047191685],"text":"J.Winston","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(213,10,10,1)","opacity":0.5,"size":22.6613844431898,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(213,10,10,1)"}},"hoveron":"points","name":"#d50a0a","legendgroup":"#d50a0a","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.512232415902141],"y":[0.308540404390916],"text":"P.Mahomes","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(227,24,55,1)","opacity":0.5,"size":21.8217665351861,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(227,24,55,1)"}},"hoveron":"points","name":"#e31837","legendgroup":"#e31837","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.424703891708968],"y":[-0.0289141454325498],"text":"B.Mayfield","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(251,79,20,1)","opacity":0.5,"size":20.7489739795303,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(251,79,20,1)"}},"hoveron":"points","name":"#fb4f14","legendgroup":"#fb4f14","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.304105336001646,0.542921802233153],"y":[-0.00258100757869683,-0.00258100757869683],"text":"","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.442422799574048,0.442422799574048],"y":[-0.589076766207239,0.351284079181305],"text":"","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":47.4819427148194,"r":7.30593607305936,"b":43.1050228310502,"l":53.4661685346617},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"QB success rate and EPA/play","font":{"color":"rgba(0,0,0,1)","family":"","size":21.2536322125363},"x":0.5,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.304105336001646,0.542921802233153],"tickmode":"array","ticktext":["0.35","0.40","0.45","0.50"],"tickvals":[0.35,0.4,0.45,0.5],"categoryorder":"array","categoryarray":["0.35","0.40","0.45","0.50"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":13.2835201328352},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Success rate","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.589076766207239,0.351284079181305],"tickmode":"array","ticktext":["-0.4","-0.2","0.0","0.2"],"tickvals":[-0.4,-0.2,0,0.2],"categoryorder":"array","categoryarray":["-0.4","-0.2","0.0","0.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":13.2835201328352},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"EPA per play","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"d1118e2f3e0":{"colour":{},"size":{},"x":{},"y":{},"text":{},"type":"scatter"},"d115bf903e3":{"yintercept":{}},"d11396e5b41":{"xintercept":{}}},"cur_data":"d1118e2f3e0","visdat":{"d1118e2f3e0":["function (y) ","x"],"d115bf903e3":["function (y) ","x"],"d11396e5b41":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="reactable" class="section level3">
+<h3><code>reactable</code></h3>
+<div id="htmlwidget-656849f2b8fcb79a489a" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-656849f2b8fcb79a489a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"name":["P.Mahomes","L.Jackson","D.Brees","M.Stafford","R.Tannehill","D.Prescott","D.Watson","R.Wilson","D.Carr","J.Garoppolo","T.Bridgewater","A.Rodgers","J.Winston","J.Goff","K.Cousins","P.Rivers","T.Brady","M.Ryan","D.Lock","J.Allen","C.Wentz","R.Fitzpatrick","K.Murray","J.Brissett","E.Manning","B.Mayfield","M.Mariota","A.Dalton","G.Minshew II","S.Darnold","C.Keenum","K.Allen","J.Driskel","M.Trubisky","D.Jones","J.Flacco","N.Foles","M.Rudolph","D.Haskins","D.Hodges","D.Blough","J.Rosen","R.Finley"],"posteam":["KC","BAL","NO","DET","TEN","DAL","HOU","SEA","LV","SF","NO","GB","TB","LA","MIN","LAC","NE","ATL","DEN","BUF","PHI","MIA","ARI","IND","NYG","CLE","TEN","CIN","JAX","NYJ","WAS","CAR","DET","CHI","NYG","DEN","JAX","PIT","WAS","PIT","DET","MIA","CIN"],"n_dropbacks":[644,523,419,316,390,624,669,680,548,579,217,692,692,651,536,617,675,674,168,575,669,569,608,492,152,583,189,556,545,477,264,546,123,566,519,287,126,304,246,176,189,127,104],"n_rush":[10,130,2,4,18,22,38,17,6,21,4,5,14,11,14,4,8,4,3,59,28,10,56,14,2,8,10,15,5,10,3,8,9,20,12,3,2,4,7,6,1,0,4],"n_plays":[654,653,421,320,408,646,707,697,554,600,221,697,706,662,550,621,683,678,171,634,697,579,664,506,154,591,199,571,550,487,267,554,132,586,531,290,128,308,253,182,190,127,108],"epa_per_play":[0.308540404390916,0.281869266840299,0.194803481080405,0.191597261348525,0.188514838209363,0.179854199510764,0.127336065585186,0.121046444068182,0.117892598673922,0.111236555055514,0.0932667428954905,0.0878209250047937,0.0862976047191685,0.082689526115819,0.0762194702666071,0.0676509925869204,0.0540477719091763,0.0475029923334679,0.0356395711605538,0.0267392019433884,0.0115245593276404,0.00425451044482943,-0.0123252707396171,-0.0157954396894829,-0.0279784341336944,-0.0289141454325498,-0.033973718172738,-0.0387083833779861,-0.0407163777467194,-0.0442076171181124,-0.0600788572008092,-0.0619363872249455,-0.0623407989160748,-0.0820550126215147,-0.0821438087700242,-0.107451977969912,-0.153094128637483,-0.155794814556836,-0.200137368958927,-0.209481853945339,-0.22614802729307,-0.417712795432209,-0.54633309141685],"success_per_play":[0.512232415902141,0.500765696784073,0.532066508313539,0.4875,0.529411764705882,0.520123839009288,0.482319660537482,0.48780487804878,0.490974729241877,0.495,0.452488687782805,0.443328550932568,0.490084985835694,0.462235649546828,0.454545454545455,0.49597423510467,0.427525622254758,0.467551622418879,0.421052631578947,0.443217665615142,0.467718794835007,0.46286701208981,0.436746987951807,0.446640316205534,0.435064935064935,0.424703891708968,0.381909547738693,0.427320490367776,0.418181818181818,0.420944558521561,0.456928838951311,0.465703971119134,0.416666666666667,0.426621160409556,0.416195856873823,0.417241379310345,0.359375,0.386363636363636,0.395256916996047,0.379120879120879,0.347368421052632,0.31496062992126,0.324074074074074]},"columns":[{"accessor":"name","name":"name","type":"character"},{"accessor":"posteam","name":"posteam","type":"character"},{"accessor":"n_dropbacks","name":"n_dropbacks","type":"numeric"},{"accessor":"n_rush","name":"n_rush","type":"numeric"},{"accessor":"n_plays","name":"n_plays","type":"numeric"},{"accessor":"epa_per_play","name":"EPA/Play","type":"numeric","format":{"cell":{"digits":2},"aggregated":{"digits":2}},"style":[{"background":"#3DA4EC"},{"background":"#49A9ED"},{"background":"#70BCF1"},{"background":"#72BCF1"},{"background":"#73BDF1"},{"background":"#77BFF1"},{"background":"#8FCAF4"},{"background":"#92CBF4"},{"background":"#93CCF4"},{"background":"#96CEF4"},{"background":"#9ED1F5"},{"background":"#A1D2F5"},{"background":"#A1D3F5"},{"background":"#A3D4F6"},{"background":"#A6D5F6"},{"background":"#AAD7F6"},{"background":"#B0DAF7"},{"background":"#B3DBF7"},{"background":"#B8DEF8"},{"background":"#BCDFF8"},{"background":"#C3E3F9"},{"background":"#C7E4F9"},{"background":"#CEE8FA"},{"background":"#D0E9FA"},{"background":"#D5EBFA"},{"background":"#D6EBFB"},{"background":"#D8ECFB"},{"background":"#DAEDFB"},{"background":"#DBEEFB"},{"background":"#DDEFFB"},{"background":"#E4F2FC"},{"background":"#E5F2FC"},{"background":"#E5F2FC"},{"background":"#EEF7FD"},{"background":"#EEF7FD"},{"background":"#F9FCFE"},{"background":"#FEF3F0"},{"background":"#FEF2EF"},{"background":"#FDE2DD"},{"background":"#FDDFD9"},{"background":"#FCD9D2"},{"background":"#F99783"},{"background":"#F76B4F"}]},{"accessor":"success_per_play","name":"Success/Play","type":"numeric","format":{"cell":{"digits":2},"aggregated":{"digits":2}},"style":[{"background":"#60B4EF"},{"background":"#74BEF1"},{"background":"#3DA4EC"},{"background":"#8CC9F3"},{"background":"#41A6EC"},{"background":"#52AEEE"},{"background":"#95CDF4"},{"background":"#8CC9F3"},{"background":"#86C6F3"},{"background":"#7FC3F2"},{"background":"#CBE6F9"},{"background":"#DBEEFB"},{"background":"#88C7F3"},{"background":"#B9DEF8"},{"background":"#C7E4F9"},{"background":"#7DC2F2"},{"background":"#F7FBFE"},{"background":"#B0DAF7"},{"background":"#FEFBFB"},{"background":"#DBEEFB"},{"background":"#AFD9F7"},{"background":"#B8DEF8"},{"background":"#E7F3FC"},{"background":"#D5EBFA"},{"background":"#EAF5FC"},{"background":"#FCFEFE"},{"background":"#FBC6BB"},{"background":"#F8FBFE"},{"background":"#FEF7F6"},{"background":"#FEFBFA"},{"background":"#C3E2F9"},{"background":"#B3DBF7"},{"background":"#FEF5F3"},{"background":"#F9FCFE"},{"background":"#FEF5F3"},{"background":"#FEF6F4"},{"background":"#FAA797"},{"background":"#FCCCC2"},{"background":"#FCD8D1"},{"background":"#FBC2B7"},{"background":"#F99783"},{"background":"#F76B4F"},{"background":"#F7775D"}]}],"defaultPageSize":15,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"383e2bd4762b3cccab3c6eab19aece8d"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

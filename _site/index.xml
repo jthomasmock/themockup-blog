@@ -7,7 +7,20 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 04 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 28 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Functions and Themes for gt tables</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables</link>
+      <description>Save time and effort in making beautiful tables</description>
+      <category>tables</category>
+      <category>tidyverse</category>
+      <category>gt</category>
+      <category>NFL</category>
+      <guid>https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables</guid>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/pff-themed-gt.png" medium="image" type="image/png" width="2090" height="1554"/>
+    </item>
     <item>
       <title>10+ Guidelines for Better Tables in R</title>
       <dc:creator>Thomas Mock</dc:creator>
@@ -36,6 +49,17 @@
       <media:content url="https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/preview.png" medium="image" type="image/png" width="1200" height="1200"/>
     </item>
     <item>
+      <title>Building a blog with distill</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</link>
+      <description>I love simplicity.</description>
+      <category>rmarkdown</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</guid>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/modern.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
       <title>A bar chart 5 ways in ggplot2</title>
       <dc:creator>Thomas Mock</dc:creator>
       <link>https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways</link>
@@ -47,17 +71,6 @@
       <guid>https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways</guid>
       <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
       <media:content url="https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/CopyOfpreview.png" medium="image" type="image/png" width="1440" height="617"/>
-    </item>
-    <item>
-      <title>Building a blog with distill</title>
-      <dc:creator>Thomas Mock</dc:creator>
-      <link>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</link>
-      <description>I love simplicity.</description>
-      <category>rmarkdown</category>
-      <category>tidyverse</category>
-      <guid>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</guid>
-      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
-      <media:content url="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/modern.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>Meta RMarkdown - Taxonomy and Use cases</title>

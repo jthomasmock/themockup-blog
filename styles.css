@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono');
+
+
 .distill-site-nav {
   font-family: 'Fira Mono', sans-serif;
   color: #000;
@@ -13,11 +17,6 @@
   font-size: 15px;
   font-weight: 400;
 }
-
-
-@import url('https://fonts.googleapis.com/css2?family=Lato');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Mono');
-
 
 html, body, p {
   
