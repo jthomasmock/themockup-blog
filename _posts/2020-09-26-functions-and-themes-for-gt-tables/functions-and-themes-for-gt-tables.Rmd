@@ -227,9 +227,6 @@ get_nfl_qbr(season = 2020, week = 1)
 
 Let's use a function to generate a relatively clean table quickly. Our goal here is to take the process of collecting and cleaning data then generating a `gt` table into a simple function for the year + week of interest.
 
-```{r qbr_table_ex, eval = FALSE}
-qbr_table(2020, 1)
-```
 
 ```{r, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -241,6 +238,10 @@ xaringanExtra::use_panelset()
 ::: {.panel}
 
 ## Table {.panel-name}
+
+```{r qbr_table_ex, eval = FALSE}
+qbr_table(2020, 1)
+```
 
 ```{r qbr_table_ex_out, echo = FALSE}
 qbr_table <- function(season_in, week_in){
@@ -260,11 +261,21 @@ qbr_table <- function(season_in, week_in){
       heading.align = "left"
     ) %>% 
     tab_header(
-      title = paste("Top 10 QBs for week", week_in)
+      title = glue::glue("Top 10 QBs for week {week_in} of {season_in}")
     )
 }
 
 qbr_table(2020, 1)
+```
+
+:::
+
+::: {.panel}
+
+## 2020 Week 3 {.panel-name}
+
+```{r}
+qbr_table(2020, 3)
 ```
 
 :::
@@ -288,7 +299,9 @@ Note you could still do a lot to this table to get it publication ready or speci
 
 We're going to explore 3 different formats for elegant tables with examples from ESPN, ProFootball Focus, and FiveThirtyEight. Of the three, I personally think that FiveThirtyEight has some of the best minimalist tables on the web right now, but for the sake of different tastes we'll go through each!
 
-Before diving *right* into the themes - I'd first like to show a quick example of a theme and walk through the code. Hopefully this gives you enough to make your own themes down the line! You can think of `gt` themes in a similar fashion to `ggplot2` themes. Just as `theme_bw()` just changes the appearance (eg theme) of the plot, a custom-defined `gt` theme will affect the overall appearance of a `gt` table (although as a function you could make it do even more!).
+Before diving *right* into the themes - I'd first like to show a quick example of a theme and walk through the code. Hopefully this gives you enough to make your own themes down the line! 
+
+You can think of `gt` themes in a similar fashion to `ggplot2` themes. Just as `theme_bw()` just changes the appearance (eg theme) of the plot, a custom-defined `gt` theme will affect the overall appearance of a `gt` table (although as a function you could make it do even more!).
 
 ```{r}
 mtcars %>% 
@@ -306,7 +319,7 @@ The core idea of a theme is that it's a function that passes `data` and `...`, w
 
 What this really means is that we are leaving any argument on the table for `tab_options()` which has the widest range of possible arguments in `gt` (> 100 possible arguments). You can see all the possible options in the [`gt` reference](https://gt.rstudio.com/reference/tab_options.html).
 
-Our basic example passes data as the first argument into `tab_options()` and leaves an `...` inside `tab_options()`.
+Our basic example passes data as the first argument into `tab_options()` and leaves a  `...` inside `tab_options()`.
 
 ```{r}
 basic_theme <- function(data, ...){
@@ -327,7 +340,7 @@ mtcars %>%
   basic_theme()
 ```
 
-However, since we left the `...` inside our theme, we can pass additional arguments into the `basic_theme()`. Let's chance the column label background to red.
+However, since we left the `...` inside our theme, we can pass additional arguments into the `basic_theme()`. Let's change the column label background to red.
 
 ```{r}
 mtcars %>% 
