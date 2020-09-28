@@ -575,7 +575,24 @@ knitr::include_graphics("pff-example.png")
 
 ::: {.panel}
 
+[Table Code]{.panel-name}
+
+```{r, eval = FALSE}
+fake_df %>% 
+  gt() %>% 
+  fmt_number(
+    columns = 6:9,
+    decimals = 1
+    ) %>% 
+  gt_theme_pff()
+```
+
+:::
+
+::: {.panel}
+
 [Theme Code]{.panel-name}
+
 
 ```{r gt_theme_pff, echo = TRUE, eval = FALSE, layout = "l-page"}
 ```
