@@ -288,6 +288,78 @@ Note you could still do a lot to this table to get it publication ready or speci
 
 We're going to explore 3 different formats for elegant tables with examples from ESPN, ProFootball Focus, and FiveThirtyEight. Of the three, I personally think that FiveThirtyEight has some of the best minimalist tables on the web right now, but for the sake of different tastes we'll go through each!
 
+Before diving *right* into the themes - I'd first like to show a quick example of a theme and walk through the code. Hopefully this gives you enough to make your own themes down the line! You can think of `gt` themes in a similar fashion to `ggplot2` themes. Just as `theme_bw()` just changes the appearance (eg theme) of the plot, a custom-defined `gt` theme will affect the overall appearance of a `gt` table (although as a function you could make it do even more!).
+
+```{r}
+mtcars %>% 
+  ggplot(aes(x = disp, y = mpg)) +
+  geom_point() +
+  # Here is a built in theme for ggplot2
+  theme_bw()
+```
+
+### Basic Theme
+
+The core idea of a theme is that it's a function that passes `data` and `...`, where the `data` is actually a `gt` object, and the `...` are a placeholder for user-defined expressions. The `...` can also be called "dot-dot-dot", "the dots" or "ellipsis", and you can read more about them in the [Tidy evaluation book](https://tidyeval.tidyverse.org/multiple.html#the-...-argument). A quick quote about them from that book chapter:  
+
+> The dot-dot-dot argument is one of the nicest aspects of the R language. A function that takes `...` accepts any number of arguments, named or unnamed. 
+
+What this really means is that we are leaving any argument on the table for `tab_options()` which has the widest range of possible arguments in `gt` (> 100 possible arguments). You can see all the possible options in the [`gt` reference](https://gt.rstudio.com/reference/tab_options.html).
+
+Our basic example passes data as the first argument into `tab_options()` and leaves an `...` inside `tab_options()`.
+
+```{r}
+basic_theme <- function(data, ...){
+  data %>% 
+    tab_options(
+      table.background.color = "purple",
+      ...
+    )
+}
+```
+
+If we use this theme, it will just change the table background color.
+
+```{r}
+mtcars %>% 
+  head() %>% 
+  gt() %>% 
+  basic_theme()
+```
+
+However, since we left the `...` inside our theme, we can pass additional arguments into the `basic_theme()`. Let's chance the column label background to red.
+
+```{r}
+mtcars %>% 
+  head() %>% 
+  gt() %>% 
+  basic_theme(
+    column_labels.background.color = "red"
+  )
+```
+
+As a final note, you can keep piping the results into further `gt` arguments! 
+
+```{r}
+mtcars %>% 
+  head() %>% 
+  gt() %>% 
+  basic_theme(
+    column_labels.background.color = "red",
+    table.font.size = px(12),
+    column_labels.font.size = px(20),
+    row.striping.background_color = "#9678b6",
+    heading.align = "left",
+    heading.title.font.size = px(30)
+  ) %>% 
+  opt_row_striping() %>% 
+  tab_header(title = "Important table with theme")
+```
+
+NOTE: While I've passed multiple arguments to our theme function as a show of possibility, the goal here is to push as much as the default theme elements you want to change into our theme function ahead of time to save repetitive typing!
+
+Enough of fun but toy examples - let's dive into the *real* themes!
+
 ---
 
 ### ESPN
