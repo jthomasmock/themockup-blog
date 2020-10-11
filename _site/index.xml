@@ -7,7 +7,22 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 28 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Embedding Images in ggplot</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot</link>
+      <description>Trials and tribulations of the various strategies.</description>
+      <category>data visualization</category>
+      <category>ggplot2</category>
+      <category>tidyverse</category>
+      <category>tables</category>
+      <category>gt</category>
+      <category>NFL</category>
+      <guid>https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot</guid>
+      <pubDate>Sun, 11 Oct 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot/preview.png" medium="image" type="image/png" width="1002" height="743"/>
+    </item>
     <item>
       <title>Functions and Themes for gt tables</title>
       <dc:creator>Thomas Mock</dc:creator>
