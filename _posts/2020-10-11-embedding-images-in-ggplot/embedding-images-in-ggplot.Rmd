@@ -41,7 +41,20 @@ library(systemfonts)
 
 ### QBR Data
 
-We'll gather the QBR data through week 4 via `espnscrapeR`. We're also adapting a function from [Emil Hvitfeldt](https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/) to create `<img>` tags for use by `ggtext` down the line.
+We'll gather the QBR data through week 4 via `espnscrapeR`. We're also adapting a function from [Emil Hvitfeldt](https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/) to create `<img>` tags for use by `ggtext` down the line. His [post](https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/) has some good examples of `rtweet` + emoji analysis with `ggtext` embedded images.
+
+```{r libs, eval = FALSE}
+library(tidyverse)
+library(espnscrapeR)
+library(ggtext)
+library(ggimage)
+library(tictoc)
+library(gt)
+library(glue)
+library(systemfonts) # custom fonts automagically
+library(ggrepel) # for last plot
+```
+
 
 ```{r, echo = TRUE}
 # Get QBR data
@@ -109,7 +122,7 @@ That's a fine plot, but unless we're very knowledgeable about team colors you pr
 <details>
 <summary><strong>Sideways Plot Code</strong></summary>
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, warning=FALSE}
 side_plot <- all_data %>% 
   mutate(label = link_to_img(headshot_href),
          rank = as.integer(rank)) %>% 
@@ -161,7 +174,7 @@ First we have `ggimage` + end of column labels. I also want to note that I'm exp
 
 **NOTE: I realise this graphic is distorted, it's an intentional display of a problem you may run into**
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, warning=FALSE}
 tic()
 qb_col_img <- basic_plot +
   geom_image(
@@ -213,7 +226,7 @@ geom_image(
 
 There isn't an explicit option for aspect ratio, but it exists as `asp`. So if we consider ahead of time the dimensions of the plot we want to make, we can define the aspect ratio at the plot level and at the `ggsave` level. Per some experiments on Windows specifically, we also need to include aspect ratio in the `theme()` call as well, and make sure this again aligns with your `ggsave()` call.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, warning=FALSE}
 # Define an aspect ratio to use throughout
 # This value is the golden ratio
 # which provides a wider than tall rectangle
@@ -267,7 +280,7 @@ link_to_img <- function(x, width = 50) {
 
 ```
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, warning=FALSE}
 tic()
 qb_col_text <- basic_plot + 
     geom_richtext(
@@ -308,9 +321,9 @@ theme(
 
 Here's the full code of the call with again some highlighted portions where we've changed code.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, warning=FALSE}
 tic()
-axis_plot <- basic_plot <- all_data %>% 
+axis_plot <- all_data %>% 
   mutate(label = link_to_img(headshot_href),
          rank = as.integer(rank)) %>% 
   ggplot() +
@@ -495,7 +508,7 @@ tab_data %>%
 ```
 
 
-```{r, layout="l-body-outset", echo = TRUE}
+```{r, layout="l-body-outset", echo = TRUE, warning=FALSE}
 img1 <- magick::image_read("gt-tab1.png")
 img2 <- magick::image_read("gt-tab2.png")
 
@@ -511,7 +524,7 @@ The equivalent plot that displays:
 
 We've also loaded the `ggrepel` package to add labels. This graphic is getting a bit busy at this point but is still useful. Given that we're trying to display 4 measures we have had to rely on size for run EPA which adds additional overhead to the understanding of this graphic as well.
 
-```{r, echo = TRUE, layout="l-body-outset", fig.dim=c(12, 8), dpi=350}
+```{r, echo = TRUE, layout="l-body-outset", fig.dim=c(12, 8), dpi=350, warning=FALSE}
 library(ggrepel)
 
 scatter_plot <- all_data %>% 
@@ -545,7 +558,7 @@ scatter_plot <- all_data %>%
     plot.caption = element_markdown(size = 12),
     axis.text = element_text(size = 14, face = "bold"),
     axis.title = element_text(size = 16, face = "bold"),
-    legend.position = c(0.1,0.9),
+    legend.position = c(0.1,0.85),
     legend.background = element_rect(fill = "lightgrey"),
     legend.title = element_text(size = 12, face = "bold"),
     legend.text = element_text(size = 10)
@@ -554,3 +567,63 @@ scatter_plot <- all_data %>%
 scatter_plot
 ```
 
+### Team Logos
+
+Team logos work just as well, and are arguably a bit easier to parse than player headshots. The strategies are all the same, but just want to show team-logos from `nflfastR` as well!
+
+<details>
+<summary><strong>Team Logo Code</strong></summary>
+
+```{r, echo = TRUE, warning=FALSE}
+tic()
+qb_col_logo <- all_data %>% 
+  mutate(team = if_else(team == "WSH", "WAS", team)) %>% 
+  left_join(
+    nflfastR::teams_colors_logos %>% select(team = team_abbr, team_logo_espn),
+    by = c("team")
+    ) %>% 
+  mutate(label = link_to_img(team_logo_espn, width = 35),
+         rank = as.integer(rank)) %>% 
+  ggplot() +
+  geom_col(
+    aes(
+      x = rank, y = qbr_total,
+      fill = team_color, color = alternate_color
+      ),
+    width = 0.4
+    ) + 
+  geom_richtext(
+    aes(x = rank, y = qbr_total, label = label), 
+    size = 1,
+    fill = NA, label.color = NA, # remove background and outline
+    label.padding = grid::unit(rep(0, 4), "pt") # remove padding
+    ) +
+  scale_color_identity(aesthetics =  c("fill", "color")) +
+  geom_hline(yintercept = 0, color = "black", size = 1) +
+  theme_minimal() +
+  scale_x_continuous(breaks = c(1, seq(5, 30, by = 5)), limits = c(0.5, 34)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  labs(x = NULL,
+       y = "QBR\n",
+       title = "QBR - 2020 Season",
+       subtitle = "Weeks: 1-4",
+       caption = "<br>**Data:** espnscrapeR | **Plot:** @thomas_mock") +
+  theme(
+    text = element_text(family = "Chivo"),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold", size = 20),
+    plot.subtitle = element_text(size = 16),
+    plot.caption = element_markdown(size = 12),
+    axis.text = element_text(size = 14, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold")
+    )
+
+ggsave("qbr-logo-ggtext.png", qb_col_logo, height = 10, width = 10 * asp_ratio, dpi = "retina")
+toc()
+```
+
+</details>
+
+```{r, layout="l-screen-inset"}
+knitr::include_graphics("qbr-logo-ggtext.png")
+```

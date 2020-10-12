@@ -123,7 +123,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["embedding-images-in-ggplot_files/anchor-4.2.2/anchor.min.js","embedding-images-in-ggplot_files/bowser-1.9.3/bowser.min.js","embedding-images-in-ggplot_files/distill-2.2.21/template.v2.js","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-18-1.png","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-19-1.png","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-2-1.png","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-3-1.png","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-5-1.png","embedding-images-in-ggplot_files/header-attrs-2.3/header-attrs.js","embedding-images-in-ggplot_files/header-attrs-2.4/header-attrs.js","embedding-images-in-ggplot_files/jquery-1.11.3/jquery.min.js","embedding-images-in-ggplot_files/webcomponents-2.0.0/webcomponents.js","gt-tab1.png","gt-tab2.png","preview.png","qb-col-ggtext.png","qbr-axis-img.png","qbr-ggimage.png","qbr-ggtext.png","qbr-img-asp.png"]}
+  {"type":"character","attributes":{},"value":["embedding-images-in-ggplot_files/anchor-4.2.2/anchor.min.js","embedding-images-in-ggplot_files/bowser-1.9.3/bowser.min.js","embedding-images-in-ggplot_files/distill-2.2.21/template.v2.js","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-18-1.png","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-19-1.png","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-2-1.png","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-3-1.png","embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-5-1.png","embedding-images-in-ggplot_files/header-attrs-2.3/header-attrs.js","embedding-images-in-ggplot_files/header-attrs-2.4/header-attrs.js","embedding-images-in-ggplot_files/jquery-1.11.3/jquery.min.js","embedding-images-in-ggplot_files/webcomponents-2.0.0/webcomponents.js","gt-tab1.png","gt-tab2.png","preview.png","qb-col-ggtext.png","qbr-axis-img.png","qbr-ggimage.png","qbr-ggtext.png","qbr-img-asp.png","qbr-logo-ggtext.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1470,11 +1470,15 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#ggtext-axis-labels"><code>ggtext</code> + Axis Labels</a></li>
 <li><a href="#ggtext-negatives"><code>ggtext</code> Negatives</a></li>
 <li><a href="#what-about-a-table">What about a table?</a></li>
+<li><a href="#team-logos">Team Logos</a></li>
 </ul>
 </nav>
 </div>
 <h3 id="qbr-data">QBR Data</h3>
-<p>We’ll gather the QBR data through week 4 via <code>espnscrapeR</code>. We’re also adapting a function from <a href="https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/">Emil Hvitfeldt</a> to create <code>&lt;img&gt;</code> tags for use by <code>ggtext</code> down the line.</p>
+<p>We’ll gather the QBR data through week 4 via <code>espnscrapeR</code>. We’re also adapting a function from <a href="https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/">Emil Hvitfeldt</a> to create <code>&lt;img&gt;</code> tags for use by <code>ggtext</code> down the line. His <a href="https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/">post</a> has some good examples of <code>rtweet</code> + emoji analysis with <code>ggtext</code> embedded images.</p>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='co'># Get QBR data</span>
@@ -1607,7 +1611,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>10.718 sec elapsed</code></pre>
+<pre><code>5.04 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-ggimage.png" width="2560" /></p>
@@ -1658,7 +1662,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>5.889 sec elapsed</code></pre>
+<pre><code>4.358 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-img-asp.png" width="2588" /></p>
@@ -1693,7 +1697,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>7.227 sec elapsed</code></pre>
+<pre><code>9.467 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-ggtext.png" width="2588" /></p>
@@ -1722,7 +1726,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='fu'>tic</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>axis_plot</span> <span class='op'>&lt;-</span> <span class='va'>basic_plot</span> <span class='op'>&lt;-</span> <span class='va'>all_data</span> <span class='op'>%&gt;%</span> 
+<span class='va'>axis_plot</span> <span class='op'>&lt;-</span> <span class='va'>all_data</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>mutate</span><span class='op'>(</span>label <span class='op'>=</span> <span class='fu'>link_to_img</span><span class='op'>(</span><span class='va'>headshot_href</span><span class='op'>)</span>,
          rank <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>rank</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>ggplot</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
@@ -1773,7 +1777,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>7.817 sec elapsed</code></pre>
+<pre><code>7.058 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-axis-img.png" width="2588" /></p>
@@ -1950,7 +1954,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
     plot.caption <span class='op'>=</span> <span class='fu'>element_markdown</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>,
     axis.text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>14</span>, face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,
     axis.title <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>16</span>, face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,
-    legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>,<span class='fl'>0.9</span><span class='op'>)</span>,
+    legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>,<span class='fl'>0.85</span><span class='op'>)</span>,
     legend.background <span class='op'>=</span> <span class='fu'>element_rect</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"lightgrey"</span><span class='op'>)</span>,
     legend.title <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span>, face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,
     legend.text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
@@ -1961,7 +1965,66 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p><img src="embedding-images-in-ggplot_files/figure-html5/unnamed-chunk-19-1.png" width="4200" /></p>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h3 id="team-logos">Team Logos</h3>
+<p>Team logos work just as well, and are arguably a bit easier to parse than player headshots. The strategies are all the same, but just want to show team-logos from <code>nflfastR</code> as well!</p>
+<details>
+<p><summary><strong>Team Logo Code</strong></summary></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'>tic</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>qb_col_logo</span> <span class='op'>&lt;-</span> <span class='va'>all_data</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>team <span class='op'>=</span> <span class='fu'>if_else</span><span class='op'>(</span><span class='va'>team</span> <span class='op'>==</span> <span class='st'>"WSH"</span>, <span class='st'>"WAS"</span>, <span class='va'>team</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>left_join</span><span class='op'>(</span>
+    <span class='fu'>nflfastR</span><span class='fu'>::</span><span class='va'><a href='https://mrcaseb.github.io/nflfastR//reference/teams_colors_logos.html'>teams_colors_logos</a></span> <span class='op'>%&gt;%</span> <span class='fu'>select</span><span class='op'>(</span>team <span class='op'>=</span> <span class='va'>team_abbr</span>, <span class='va'>team_logo_espn</span><span class='op'>)</span>,
+    by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"team"</span><span class='op'>)</span>
+    <span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>label <span class='op'>=</span> <span class='fu'>link_to_img</span><span class='op'>(</span><span class='va'>team_logo_espn</span>, width <span class='op'>=</span> <span class='fl'>35</span><span class='op'>)</span>,
+         rank <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>rank</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_col</span><span class='op'>(</span>
+    <span class='fu'>aes</span><span class='op'>(</span>
+      x <span class='op'>=</span> <span class='va'>rank</span>, y <span class='op'>=</span> <span class='va'>qbr_total</span>,
+      fill <span class='op'>=</span> <span class='va'>team_color</span>, color <span class='op'>=</span> <span class='va'>alternate_color</span>
+      <span class='op'>)</span>,
+    width <span class='op'>=</span> <span class='fl'>0.4</span>
+    <span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_richtext</span><span class='op'>(</span>
+    <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>rank</span>, y <span class='op'>=</span> <span class='va'>qbr_total</span>, label <span class='op'>=</span> <span class='va'>label</span><span class='op'>)</span>, 
+    size <span class='op'>=</span> <span class='fl'>1</span>,
+    fill <span class='op'>=</span> <span class='cn'>NA</span>, label.color <span class='op'>=</span> <span class='cn'>NA</span>, <span class='co'># remove background and outline</span>
+    label.padding <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/unit.html'>unit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>4</span><span class='op'>)</span>, <span class='st'>"pt"</span><span class='op'>)</span> <span class='co'># remove padding</span>
+    <span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_color_identity</span><span class='op'>(</span>aesthetics <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fill"</span>, <span class='st'>"color"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>0</span>, color <span class='op'>=</span> <span class='st'>"black"</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>30</span>, by <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>, limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>34</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/breaks_pretty.html'>pretty_breaks</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>,
+       y <span class='op'>=</span> <span class='st'>"QBR\n"</span>,
+       title <span class='op'>=</span> <span class='st'>"QBR - 2020 Season"</span>,
+       subtitle <span class='op'>=</span> <span class='st'>"Weeks: 1-4"</span>,
+       caption <span class='op'>=</span> <span class='st'>"&lt;br&gt;**Data:** espnscrapeR | **Plot:** @thomas_mock"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>
+    text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Chivo"</span><span class='op'>)</span>,
+    panel.grid.minor <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+    plot.title <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>,
+    plot.subtitle <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>16</span><span class='op'>)</span>,
+    plot.caption <span class='op'>=</span> <span class='fu'>element_markdown</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>12</span><span class='op'>)</span>,
+    axis.text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>14</span>, face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,
+    axis.title.y <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>16</span>, face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>
+    <span class='op'>)</span>
+
+<span class='fu'>ggsave</span><span class='op'>(</span><span class='st'>"qbr-logo-ggtext.png"</span>, <span class='va'>qb_col_logo</span>, height <span class='op'>=</span> <span class='fl'>10</span>, width <span class='op'>=</span> <span class='fl'>10</span> <span class='op'>*</span> <span class='va'>asp_ratio</span>, dpi <span class='op'>=</span> <span class='st'>"retina"</span><span class='op'>)</span>
+<span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>5.769 sec elapsed</code></pre>
+</div>
+</details>
+<div class="layout-chunk" data-layout="l-screen-inset">
+<p><img src="qbr-logo-ggtext.png" width="2588" /></p>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
