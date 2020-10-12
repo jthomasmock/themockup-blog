@@ -323,61 +323,133 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Untitled</h1>
 <h4 class="author">Thomas Mock</h4>
-<h4 class="date">8/17/2020</h4>
+<h4 class="date">9/28/2020</h4>
 
 </div>
 
 
-<div id="r-markdown-for-literate-programming" class="section level1">
-<h1>R Markdown for Literate Programming</h1>
-</div>
-<div id="workflows" class="section level1">
-<h1>Workflows</h1>
-<div id="herehere---even-with-r-markdown" class="section level2">
-<h2>here::here() - even with R Markdown</h2>
-</div>
-<div id="keyboard-shortcuts" class="section level2">
-<h2>Keyboard shortcuts</h2>
-</div>
-<div id="rstudio-ide-features" class="section level2">
-<h2>RStudio IDE features</h2>
-</div>
-</div>
-<div id="r-markdown-for-the-data-analyst" class="section level1">
-<h1>R Markdown for the Data Analyst</h1>
-<div id="aka-beyond-the-office" class="section level2">
-<h2>Aka Beyond The Office</h2>
-</div>
-<div id="have-to-use-sql-editor-excel-word-powerpoint" class="section level2">
-<h2>Have to use SQL editor, Excel, Word, Powerpoint</h2>
-<ul>
-<li>Duplication of work</li>
-<li>Intermediate data files</li>
-</ul>
-</div>
-<div id="r-markdown-is-one-software-suite" class="section level2">
-<h2>R Markdown is one software suite</h2>
-<ul>
-<li>Tidyverse + dbplyr + pure SQL or glue_sql</li>
-<li><code>bigger</code> data
-<ul>
-<li>data.table, dtplyr</li>
-</ul></li>
-</ul>
-</div>
-<div id="rich-outputs" class="section level2">
-<h2>Rich outputs</h2>
-<ul>
-<li>Tables, plots
-<ul>
-<li>Statistical tables</li>
-<li>Tables as dataviz</li>
-</ul></li>
-<li>HTML Widgets</li>
-<li>OfficeR and Redoc</li>
-<li>Reports</li>
-</ul>
-</div>
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<pre class="r"><code>espn_qbr &lt;- espnscrapeR::get_nfl_qbr(2020) %&gt;% 
+  select(
+    rk = rank, team, name, qbr = qbr_total, paa = points_added, plays = qb_plays,
+    epa = total_epa, pass, run, sack, pen = penalty, raw = raw_qbr
+    )</code></pre>
+<pre class="r"><code>with_tooltip &lt;- function(value, tooltip) {
+  tags$abbr(style = &quot;text-decoration: underline;&quot;,
+            title = tooltip, value)
+}
+
+espn_table &lt;- reactable(
+  espn_qbr,
+  defaultSorted = &quot;qbr&quot;,
+  defaultSortOrder = &quot;desc&quot;,
+  striped = TRUE,
+  borderless = TRUE,
+  pagination = FALSE,
+  showSortIcon = FALSE,
+  style = list(fontFamily = &quot;Lato, sans-serif&quot;, fontSize = &quot;14px&quot;), 
+  defaultColDef = colDef(
+    style = JS(&quot;function(rowInfo, colInfo, state) {
+      // Highlight sorted columns
+      for (var i = 0; i &lt; state.sorted.length; i++) {
+        if (state.sorted[i].id === colInfo.id) {
+          return { background: &#39;#e8effa&#39; }
+        }
+      }
+    }&quot;),
+    width = 90,
+    format = colFormat(digits = 1)
+    ),
+  columns = list(
+    rk = colDef(
+      &quot;RK&quot;,
+      format = colFormat(digits = 0),
+      width = 35
+    ),
+    plays = colDef(
+      header = with_tooltip(&quot;PLAYS&quot;, &quot;Plays on which the QB has a non-zero expected points contribution. Includes most plays that are not handoffs&quot;),
+      format = colFormat(digits = 0)
+    ),
+    qbr = colDef(
+      header = with_tooltip(&quot;QBR&quot;, &quot;Adjusted Total Quarterback Rating, which values the quarterback on all play types on a 0-100 scale adjusted for the strength of opposing defenses faced&quot;)
+    ),
+    paa = colDef(
+      header = with_tooltip(&quot;PAA&quot;, &quot;Number of points contributed by a quarterback, accounting for QBR and how much he plays, above the level of an average quarterback&quot;),
+      
+      ),
+    epa = colDef(
+      header = with_tooltip(&quot;EPA&quot;, &quot;Total expected points added with low leverage plays, according to ESPN Win Probability model, down-weighted&quot;)
+      
+      ),
+    pass = colDef(
+      header = with_tooltip(&quot;PASS&quot;, &quot;Expected points added on pass attempts with low leverage plays down-weighted&quot;)
+      
+      ),
+    run = colDef(
+      header = with_tooltip(&quot;RUN&quot;, &quot;Clutch-weighted expected points added through rushes&quot;)
+      
+      ),
+    sack = colDef(
+      header = with_tooltip(&quot;SACK&quot;, &quot;Expected points added on sacks with low leverage plays down-weighted&quot;)
+      
+      ),
+    pen = colDef(
+      header = with_tooltip(&quot;PEN&quot;, &quot;Expected points added on penalties with low leverage plays down-weighted&quot;)
+      
+      ),
+    raw = colDef(
+      header = with_tooltip(&quot;RAW&quot;, &quot;Raw Total Quarterback Rating, which values quarterback on all play types on a 0-100 scale (not adjusted for opposing defenses faced)&quot;)
+      
+      ),
+    name = colDef(
+      &quot;NAME&quot;,
+      # Show species under character names
+      cell = function(value, index) {
+        team &lt;- espn_qbr$team[index]
+        tagList(
+          span(style = list(fontWeight = 600, color = &quot;#3682d5&quot;), value),
+          &quot; &quot;,
+          span(style = list(fontSize = 12, color = &quot;grey&quot;), team)
+        )
+      },
+      width = 200
+    ),
+    team = colDef(show = FALSE)
+  )
+)</code></pre>
+<pre class="r"><code>h3(&quot;NFL Total QBR - 2020 Season Leaders&quot;)
+espn_table</code></pre>
+<pre class="r"><code>reactable(
+  data,
+  columns = list(
+    character = colDef(
+      # Show species under character names
+      cell = function(value, index) {
+        species &lt;- data$species[index]
+        species &lt;- if (!is.na(species)) species else &quot;Unknown&quot;
+        tagList(
+          div(style = list(fontWeight = 600), value),
+          div(style = list(fontSize = 12), species)
+        )
+      }
+    ),
+    species = colDef(show = FALSE)
+  ),
+  defaultPageSize = 6,
+  theme = reactableTheme(
+    # Vertically center cells
+    cellStyle = list(display = &quot;flex&quot;, flexDirection = &quot;column&quot;, justifyContent = &quot;center&quot;)
+  )
+)</code></pre>
+<pre class="r"><code>reactable(
+  mtcars,
+  defaultColGroup = colGroup(headerClass = &quot;group-header&quot;),
+  columnGroups = list(
+    colGroup(name = &quot;CAR 1&quot;, columns = c(&quot;mpg&quot;, &quot;cyl&quot;, &quot;disp&quot;)),
+    colGroup(name = &quot;CAR 2&quot;, columns = c(&quot;hp&quot;, &quot;drat&quot;, &quot;wt&quot;))
+    )
+  )</code></pre>
 </div>
 
 

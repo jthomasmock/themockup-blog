@@ -9,7 +9,7 @@
     <generator>Distill</generator>
     <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Embedding Images in ggplot</title>
+      <title>Plotting Points as Images in ggplot</title>
       <dc:creator>Thomas Mock</dc:creator>
       <link>https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot</link>
       <description>Trials and tribulations of the various strategies.</description>

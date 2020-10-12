@@ -32,7 +32,6 @@ library(gt)
 team_df <- espnscrapeR::get_nfl_teams() %>% select(team = team_short_name, logo)
 ```
 
-
 ```{r gt_theme_pff, echo = FALSE}
 gt_theme_pff <- function(data, ...) {
   data %>%
@@ -172,7 +171,6 @@ gt_theme_pff <- function(data, ...) {
 
 ```
 
-
 ## `gt` tables
 
 I'm continuing my series on `gt` tables with an exploration of `gt` functions and themes. Technically, they could be treated as the same thing but slightly different use cases.
@@ -203,7 +201,7 @@ mtcars_table <- function(cyl_match = 6){
 mtcars_table(4)
 ```
 
-In this case, we're just using the table to generate our output of interest. Now something cool about `gt` since it's pipe-oriented, is that you can continue working with the table. So let's make some changes from our `gt` function. 
+In this case, we're just using the table to generate our output of interest. Now something cool about `gt` since it's pipe-oriented, is that you can continue working with the table. So let's make some changes from our `gt` function.
 
 ```{r mtcars_extended}
 mtcars_table(6) %>% 
@@ -227,16 +225,12 @@ get_nfl_qbr(season = 2020, week = 1)
 
 Let's use a function to generate a relatively clean table quickly. Our goal here is to take the process of collecting and cleaning data then generating a `gt` table into a simple function for the year + week of interest.
 
-
 ```{r, echo=FALSE}
 xaringanExtra::use_panelset()
 ```
 
-
-::::: {.panelset}
-
+::: {.panelset}
 ::: {.panel}
-
 ## Table {.panel-name}
 
 ```{r qbr_table_ex, eval = FALSE}
@@ -267,29 +261,23 @@ qbr_table <- function(season_in, week_in){
 
 qbr_table(2020, 1)
 ```
-
 :::
 
 ::: {.panel}
-
 ## 2020 Week 3 {.panel-name}
 
 ```{r}
 qbr_table(2020, 3)
 ```
-
 :::
 
 ::: {.panel}
-
 ## Code {.panel-name}
 
 ```{r qbr_table_ex_out, eval = FALSE, echo = TRUE}
 ```
-
 :::
-
-:::::
+:::
 
 Boom! Ready to share an update on the top 10 QBs by QBR for week 1, or week 2 or week 3, or week 16 from 2015, or ANY other week/season combo! Putting this all into a function lets us simply focus on which data to input and generate a nice table.
 
@@ -299,7 +287,7 @@ Note you could still do a lot to this table to get it publication ready or speci
 
 We're going to explore 3 different formats for elegant tables with examples from ESPN, ProFootball Focus, and FiveThirtyEight. Of the three, I personally think that FiveThirtyEight has some of the best minimalist tables on the web right now, but for the sake of different tastes we'll go through each!
 
-Before diving *right* into the themes - I'd first like to show a quick example of a theme and walk through the code. Hopefully this gives you enough to make your own themes down the line! 
+Before diving *right* into the themes - I'd first like to show a quick example of a theme and walk through the code. Hopefully this gives you enough to make your own themes down the line!
 
 You can think of `gt` themes in a similar fashion to `ggplot2` themes. Just as `theme_bw()` just changes the appearance (eg theme) of the plot, a custom-defined `gt` theme will affect the overall appearance of a `gt` table (although as a function you could make it do even more!).
 
@@ -313,13 +301,13 @@ mtcars %>%
 
 ### Basic Theme
 
-The core idea of a theme is that it's a function that passes `data` and `...`, where the `data` is actually a `gt` object, and the `...` are a placeholder for user-defined expressions. The `...` can also be called "dot-dot-dot", "the dots" or "ellipsis", and you can read more about them in the [Tidy evaluation book](https://tidyeval.tidyverse.org/multiple.html#the-...-argument). A quick quote about them from that book chapter:  
+The core idea of a theme is that it's a function that passes `data` and `...`, where the `data` is actually a `gt` object, and the `...` are a placeholder for user-defined expressions. The `...` can also be called "dot-dot-dot", "the dots" or "ellipsis", and you can read more about them in the [Tidy evaluation book](https://tidyeval.tidyverse.org/multiple.html#the-...-argument). A quick quote about them from that book chapter:
 
-> The dot-dot-dot argument is one of the nicest aspects of the R language. A function that takes `...` accepts any number of arguments, named or unnamed. 
+> The dot-dot-dot argument is one of the nicest aspects of the R language. A function that takes `...` accepts any number of arguments, named or unnamed.
 
-What this really means is that we are leaving any argument on the table for `tab_options()` which has the widest range of possible arguments in `gt` (> 100 possible arguments). You can see all the possible options in the [`gt` reference](https://gt.rstudio.com/reference/tab_options.html).
+What this really means is that we are leaving any argument on the table for `tab_options()` which has the widest range of possible arguments in `gt` (\> 100 possible arguments). You can see all the possible options in the [`gt` reference](https://gt.rstudio.com/reference/tab_options.html).
 
-Our basic example passes data as the first argument into `tab_options()` and leaves a  `...` inside `tab_options()`.
+Our basic example passes data as the first argument into `tab_options()` and leaves a `...` inside `tab_options()`.
 
 ```{r}
 basic_theme <- function(data, ...){
@@ -351,7 +339,7 @@ mtcars %>%
   )
 ```
 
-As a final note, you can keep piping the results into further `gt` arguments! 
+As a final note, you can keep piping the results into further `gt` arguments!
 
 ```{r}
 mtcars %>% 
@@ -373,12 +361,11 @@ NOTE: While I've passed multiple arguments to our theme function as a show of po
 
 Enough of fun but toy examples - let's dive into the *real* themes!
 
----
+------------------------------------------------------------------------
 
 ### ESPN
 
 Our ESPN table is again using the original [QBR data](https://www.espn.com/nfl/qbr), and they are clean and simple. All caps on the column labels, row striping, but also add the player's team as smaller gray text after the player's name. Note that they also use hyperlinks to the player page (I'll just focus on showing an example of blue text). Lastly, ESPN also uses interactive tables so there is a highlighted column for sorting. I'll cover `reactable` themes on a later date so for now we'll focus on static HTML with `gt`.
-
 
 ```{r espn-theme-code, echo = FALSE}
 gt_theme_espn <- function(data, ...){
@@ -407,32 +394,24 @@ gt_theme_espn <- function(data, ...){
 }
 ```
 
-::::: {.panelset}
-
+::: {.panelset}
 ::: {.panel}
-
 [ESPN Table]{.panel-name}
 
 ```{r espn-tab, echo = FALSE}
 knitr::include_graphics("espn-themed-gt.png")
 ```
-
-
 :::
 
 ::: {.panel}
-
 [Original]{.panel-name}
 
 ```{r espn-img, echo = FALSE, out.width="100%"}
 knitr::include_graphics("espn-tab.png")
 ```
-
-
 :::
 
 ::: {.panel}
-
 [Table Code]{.panel-name}
 
 ```{r espn-tab-code, echo = TRUE, eval = FALSE}
@@ -459,30 +438,24 @@ espn_qbr %>%
   cols_align("left", columns = vars(name)) %>% 
   tab_source_note(md("**Data:** ESPN<br>**Table:** @thomas_mock"))
 ```
-
 :::
 
 ::: {.panel}
-
 [Theme Code]{.panel-name}
 
 ```{r espn-theme-code, eval = FALSE}
 ```
-
+:::
 :::
 
-:::::
-
----
+------------------------------------------------------------------------
 
 ### PFF
 
-The data for this example is **FAKE** example data for some edge defenders. Quick example `gt` of this data below. 
+The data for this example is **FAKE** example data for some edge defenders. Quick example `gt` of this data below.
 
-::::: {.panelset}
-
+::: {.panelset}
 ::: {.panel}
-
 ## Table {.panel-name}
 
 ```{r fake-data-code, echo=FALSE}
@@ -531,33 +504,26 @@ fake_df %>%
   )
 
 ```
-
 :::
 
 ::: {.panel}
-
 ## Code {.panel-name}
 
 ```{r fake-data-code, echo = TRUE, eval = FALSE, layout="l-page"}
 ```
-
 :::
-
-:::::
-
+:::
 
 Now, that's an ok table, but we can do a lot better with a theme, especially one to relatively match the theme PFF uses! Example from their [Position Grade data](https://www.pff.com/nfl/grades/position/ed).
 
-There's a few things of interest we want to do to:  
-- Row striping without horizontal lines  
-- Dark gray column labels background (but light gray for spanners) and all caps labels  
-- Team logos  
-- Bold text for PFF grade, but normal weights for snap counts  
+There's a few things of interest we want to do to:\
+- Row striping without horizontal lines\
+- Dark gray column labels background (but light gray for spanners) and all caps labels\
+- Team logos\
+- Bold text for PFF grade, but normal weights for snap counts
 
-:::::{.panelset}
-
+::: {.panelset}
 ::: {.panel}
-
 [PFF-themed Table]{.panel-name}
 
 ```{r pff_themed, echo = FALSE, layout = "l-page"}
@@ -573,21 +539,17 @@ pff_tab <- fake_df %>%
 # gtsave(pff_tab, "pff_themed_gt.png")
 knitr::include_graphics("pff-themed-gt.png")
 ```
-
 :::
 
 ::: {.panel}
-
 [PFF Example]{.panel-name}
 
 ```{r pff_img_load, echo = FALSE, EVAL = TRUE, layout = "l-page"}
 knitr::include_graphics("pff-example.png")
 ```
-
 :::
 
 ::: {.panel}
-
 [Table Code]{.panel-name}
 
 ```{r, eval = FALSE}
@@ -599,34 +561,26 @@ fake_df %>%
     ) %>% 
   gt_theme_pff()
 ```
-
 :::
 
 ::: {.panel}
-
 [Theme Code]{.panel-name}
-
 
 ```{r gt_theme_pff, echo = TRUE, eval = FALSE, layout = "l-page"}
 ```
-
 :::
-
-:::::
-
+:::
 
 While this theme is great, it's very tailored to this specific data, so it's closer to a function to generate PFF defensive grade tables. This is fine, as it would greatly speed up the ability to generate these for sharing somewhere, but it's not a very `generic` function that could be used for novel data structures. This is mainly as we are doing some sneaky things to get the grey boxes around `PFF GRADE` and `SNAPS` that involve transparent backgrounds at specific locations. You could adapt big chunks of this code to use elsewhere though, and note that it would still work for CBs, LBs, Edge, DL, and Safeties. That's pretty useful!
 
----
+------------------------------------------------------------------------
 
 ### FiveThirtyEight
 
 Now, since FiveThirtyEight tables are more minimal, the theme we'll use for those tables can be essentially be extended to almost any table! The original data and table come from a [FiveThirtyEight article](https://fivethirtyeight.com/features/sorry-running-backs-even-your-receiving-value-can-be-easily-replaced/) from 2018.
 
-::::: {.panelset}
-
+::: {.panelset}
 ::: {.panel}
-
 ## FiveThirtyEight Table {.panel-name}
 
 ```{r gt-theme-538, echo = FALSE}
@@ -669,26 +623,20 @@ gt_theme_538 <- function(data,...) {
 }
 ```
 
-
-
 ```{r gt_538_table, echo = FALSE}
 knitr::include_graphics("538-themed-gt.png")
 ```
-
 :::
 
 ::: {.panel}
-
 ## Original {.panel-name}
 
 ```{r, echo = FALSE, out.width="75%"}
 knitr::include_graphics("538-table.png")
 ```
-
 :::
 
 ::: {.panel}
-
 ## Table Code {.panel-name}
 
 ```{r 538_table_scrape, echo = TRUE, eval = FALSE}
@@ -729,49 +677,38 @@ tab_538 <- rb_receiving %>%
   ) %>% 
   gt_theme_538(table.width = px(550))
 ```
-
 :::
 
 ::: {.panel}
-
 ## Theme Code {.panel-name}
 
 Here's the theme code for the FiveThirtyEight theme.
 
 ```{r gt-theme-538, eval = FALSE, echo = TRUE}
 ```
-
 :::
-
-:::::
+:::
 
 Now, since that data is public via `nflfastR`, we could try and recreate that table for 2018 or 2019 (or really any year between 1999 and 2020). There's a small amount of difference between what FiveThirtyEight reported and what we calculated with `nflfastR` data, but perhaps they excluded some other plays (or excluded FBs). Feel free to dive in a bit deeper if you're interested in recreating (all the code is included below).
 
-::::: {.panelset}
-
+::: {.panelset}
 ::: {.panel}
-
 [2018 Table]{.panel-name}
 
 ```{r 2018-pass, echo = FALSE, out.width="500px"}
 knitr::include_graphics("rb-pass-2018.png")
 ```
-
-
 :::
 
 ::: {.panel}
-
 [2019 Table]{.panel-name}
 
 ```{r 2019-pass, echo = FALSE, out.width="500px"}
 knitr::include_graphics("rb-pass-2019.png")
 ```
-
 :::
 
 ::: {.panel}
-
 [Table Code]{.panel-name}
 
 ```{r gt-other-years, eval = FALSE}
@@ -831,12 +768,9 @@ season_stats %>%
   ) %>% 
   gt_theme_538(table.width = px(550))
 ```
-
-
 :::
 
 ::: {.panel}
-
 [Data Code]{.panel-name}
 
 ```{r nflfastR-code-rbs, eval = FALSE}
@@ -885,10 +819,8 @@ season_stats <- pos %>%
   arrange(desc(success_rate)) %>% 
   ungroup()
 ```
-
 :::
-
-:::::
+:::
 
 Last example - remember that our ESPN or FiveThirtyEight themes can be applied to novel data structures, while the PFF theme made additional changes for `gt` that were specific to at least the same columns we expect.
 
@@ -904,7 +836,6 @@ mtcars %>%
 knitr::include_graphics("538-style.png")
 ```
 
-
 ```{r espn-new, eval = FALSE}
 mtcars %>% 
   slice(1:10) %>% 
@@ -912,7 +843,6 @@ mtcars %>%
   gt_theme_espn() %>% 
   tab_header(title = md("**ESPN Style**"))
 ```
-
 
 ```{r espn-img-new, echo = FALSE, out.width="700px"}
 knitr::include_graphics("espn-style.png")
