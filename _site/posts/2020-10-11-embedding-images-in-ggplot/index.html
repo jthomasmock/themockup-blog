@@ -2385,7 +2385,7 @@ line-height: inherit;
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>5.04 sec elapsed</code></pre>
+<pre><code>12.124 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-ggimage.png" width="2560" /></p>
@@ -2436,7 +2436,7 @@ line-height: inherit;
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>4.358 sec elapsed</code></pre>
+<pre><code>11.373 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-img-asp.png" width="2588" /></p>
@@ -2471,7 +2471,7 @@ line-height: inherit;
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>9.467 sec elapsed</code></pre>
+<pre><code>14.013 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-ggtext.png" width="2588" /></p>
@@ -2551,7 +2551,7 @@ line-height: inherit;
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>7.058 sec elapsed</code></pre>
+<pre><code>17.538 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-axis-img.png" width="2588" /></p>
@@ -2561,11 +2561,15 @@ line-height: inherit;
 <p>OK wow, so why not just use <code>ggtext</code> all the time!?</p>
 <p>Cons:</p>
 <ul>
-<li>It’s <strong>verrrrrrry</strong> slow to draw in the RStudio plot-viewer, like on the order of a few minutes with 33 embedded images, however it will still save to <code>png</code> in a few seconds<br />
+<li>It <em>WAS</em> <strong>verrrrrrry</strong> slow to draw in the RStudio plot-viewer, like on the order of a few minutes with 33 embedded images, however it would still save to <code>png</code> in a few seconds
+<ul>
+<li>The latest version (<code>ggtext_0.1.0.9000</code>) from <code>GitHub</code> does “draw” in a few seconds though!<br />
 </li>
+</ul></li>
 <li>Can’t adjust size in <code>ggplot</code> - has to be done ahead of time w/ HTML syntax in our custom function</li>
 </ul>
-<p>I’m fine with these tradeoffs, as you can still <code>ggsave</code> it in a few seconds and you don’t have to worry about the scaling.</p>
+<p>I’m fine with these tradeoffs especially as the newer version is fast, and you don’t have to worry about the scaling.</p>
+<p>Latest version of <code>ggtext</code> can be installed via <code>remotes::install_github("wilkelab/ggtext")</code>.</p>
 <hr />
 <h3 id="what-about-a-table">What about a table?</h3>
 <p>So a slight hot-take is that since we’re showing values that we’re inherently asking people to look up and compare individual values (ie find your QB of interest vs the field), this should be a table!</p>
@@ -2792,7 +2796,7 @@ line-height: inherit;
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>5.769 sec elapsed</code></pre>
+<pre><code>6.566 sec elapsed</code></pre>
 </div>
 </details>
 <div class="layout-chunk" data-layout="l-screen-inset">

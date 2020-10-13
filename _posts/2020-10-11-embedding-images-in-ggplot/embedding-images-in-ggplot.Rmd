@@ -387,10 +387,13 @@ OK wow, so why not just use `ggtext` all the time!?
 
 Cons:  
 
-- It's **verrrrrrry** slow to draw in the RStudio plot-viewer, like on the order of a few minutes with 33 embedded images, however it will still save to `png` in a few seconds  
+- It *WAS* **verrrrrrry** slow to draw in the RStudio plot-viewer, like on the order of a few minutes with 33 embedded images, however it would still save to `png` in a few seconds  
+  - The latest version (`ggtext_0.1.0.9000`) from `GitHub` does "draw" in a few seconds though!  
 - Can't adjust size in `ggplot` - has to be done ahead of time w/ HTML syntax in our custom function  
 
-I'm fine with these tradeoffs, as you can still `ggsave` it in a few seconds and you don't have to worry about the scaling.
+I'm fine with these tradeoffs especially as the newer version is fast, and you don't have to worry about the scaling.
+
+Latest version of `ggtext` can be installed via `remotes::install_github("wilkelab/ggtext")`.
 
 ---
 
