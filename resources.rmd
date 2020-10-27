@@ -19,3 +19,11 @@ An in-depth guide to data visualization and techniques for play-by-play data.
 ### [Intro to `tidymodels` with `nflscrapR` data - HANIC edition Slides](https://jthomasmock.github.io/nfl_hanic/)
 
 A short presentation on using `tidymodels` to predict whether the opposing team will run or pass. Reminder: all models are bad - some are useful.
+
+### [Intro to `tidymodels` with `nflfastR` data - CMSAC Edition Slides](https://themockup.blog/static/slides/nfl-tidymodels.html)
+
+A full workshop on using `tidymodels` to predict whether the opposing team will run or pass.
+
+### [Intro to Tables Presentation](https://themockup.blog/static/slides/intro-tables.html)
+
+A presentation on 10 best practices for creating tables with `gt`.

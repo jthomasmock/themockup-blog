@@ -21,14 +21,14 @@ navbar:
 collections:
   posts:
     share: [twitter, linkedin]
-    subscribe: _subscribe.html
+   # subscribe: _subscribe.html
 google_analytics: "UA-166026965-1"
 twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
 output: 
-  distill::distill_article:
-    css: styles.css
+  distill::distill_article
+theme: theme.css
 preview: static/site-preview.png
 rss:
   full_content: false

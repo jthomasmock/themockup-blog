@@ -14,7 +14,7 @@ A table of all my posts are below:
 
 | Title                                                                                                                                          | Description                                                            | Date       |
 | :--------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- | :--------- |
-| [Embedding Images in ggplot](https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot)                                               | Trials and tribulations of the various strategies.                     | 2020-10-11 |
+| [Plotting Points as Images in ggplot](https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot)                                      | Trials and tribulations of the various strategies.                     | 2020-10-11 |
 | [Functions and Themes for gt tables](https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables)                               | Save time and effort in making beautiful tables                        | 2020-09-28 |
 | [10+ Guidelines for Better Tables in R](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r)                                           | Make tables people ACTUALLY want to read.                              | 2020-09-04 |
 | [Heatmaps in ggplot2](https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2)                                                             | It’s more than just a passing fad.                                     | 2020-08-28 |
