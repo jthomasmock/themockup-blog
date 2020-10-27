@@ -34,8 +34,81 @@ layout: true
 &lt;div class="my-footer"&gt;&lt;span&gt;themockup.blog/static/slides/intro-tables.html&lt;/span&gt;&lt;/div&gt;
 
 ---
+class:inverse, center
 
-### Tables with R
+# Why do we care about tables?
+
+---
+class:inverse, center
+
+### *Why do we care about tables?*
+
+# Why do we care about graphs?  
+
+---
+class:inverse, center
+
+### *Why do we care about tables?*  
+
+### *Why do we care about graphs?*  
+
+# *Both* Graphs AND Tables *are* tools for communication
+
+
+---
+class:inverse, center
+
+### *Why do we care about tables?*
+
+### *Why do we care about graphs?*
+
+### *Both Graphs and tables are tools for communication*
+
+# Better Graphs/Tables *are* better communication
+
+---
+
+### A **grammar** of graphics
+
+* `ggplot2` is an application of the **grammar of graphics** for R  
+
+--
+
+* A default dataset and set of mappings from variables to aesthetics  
+* One or more layers of geometric objects    
+* One scale for each aesthetic mapping used  
+* A coordinate system  
+* The facet specification  
+
+---
+
+### A **grammar** of graphics
+
+--
+
+Images from John-Burn Murdoch's presentation: [**ggplot2 as a creativity engine**](https://johnburnmurdoch.github.io/slides/r-ggplot/#/)  
+
+.pull-left[
+Easy enough to [*rapidly prototype*](https://johnburnmurdoch.github.io/slides/r-ggplot/#/14) graphics at the "speed of thought"  
+&lt;img src="https://johnburnmurdoch.github.io/slides/r-ggplot/football-tide-2.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+Powerful enough for [*final "publication"*](https://johnburnmurdoch.github.io/slides/r-ggplot/#/34)  
+&lt;img src="http://blogs.ft.com/ftdata/files/2016/03/eng.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+---
+
+### A **grammar** of tables
+
+--
 
 Construct a wide variety of useful tables with a cohesive set of table parts. These include the *table header*, the *stub*, the *column labels* and *spanner column labels*, the *table body* and the *table footer*.
 
@@ -47,19 +120,7 @@ Construct a wide variety of useful tables with a cohesive set of table parts. Th
 ![](https://gt.rstudio.com/reference/figures/gt_workflow_diagram.svg)
 --
 .pull-left[
-
-```r
-mtcars %&gt;% 
-  select(cyl:wt) %&gt;% 
-  head() %&gt;% 
-  gt() 
-```
-
-]
-
---
-
-.pull-right[
+Easy enough to *rapidly prototype*  
 <table style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; display: table; border-collapse: collapse; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;">
   
   <thead style="border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
@@ -118,6 +179,14 @@ mtcars %&gt;%
   
   
 </table>
+
+]
+
+--
+
+.pull-right[
+Powerful enough for *final "publication"*  
+&lt;img src="https://themockup.blog/static/slides/images/qbr_win_tab.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -448,7 +517,7 @@ yield_data_wide %&gt;%
     groupname_col = "crop",
     rowname_col = "Country"
   ) %&gt;%
-  tab_header(
+* tab_header(
     title = md("**Crop Yields between 2014 and 2016**"),
     subtitle = html("&lt;em&gt;Countries limited to Asia&lt;/em&gt;")
   )
@@ -529,7 +598,7 @@ yield_data_wide %&gt;%
     title = "Crop Yields between 2014 and 2016",
     subtitle = "Countries limited to Asia"
   ) %&gt;% 
-  my_theme()
+* my_theme()
 ```
 ]
 
@@ -558,10 +627,10 @@ yield_data_wide %&gt;%
     ),
     locations = cells_column_labels(everything())
   ) %&gt;% 
-  tab_style(
+* tab_style(
     style = list(
-      cell_fill(color = "black", alpha = 0.2),
-      cell_borders(
+*     cell_fill(color = "black", alpha = 0.2),
+*     cell_borders(
         side = c("left", "right"), 
         color = "black",
         weight = px(2)
@@ -573,11 +642,11 @@ yield_data_wide %&gt;%
   ) %&gt;% 
   tab_style(
     style = list(
-      cell_text(color = "red", style = "italic")
+*     cell_text(color = "red", style = "italic")
     ),
     locations = cells_body(
       columns = 3:5,
-      rows = Country == "China"
+*     rows = Country == "China"
     )
   )
 ```
@@ -614,9 +683,9 @@ yield_data_wide %&gt;%
     groupname_col = "crop",
     rowname_col = "Country"
   ) %&gt;% 
-  data_color(
+* data_color(
     columns = vars(`2014`, `2015`, `2016`),
-    colors = my_pal
+*   colors = my_pal
       )
 ```
 
@@ -2088,6 +2157,15 @@ rule10_pct &lt;- rule10_wide %&gt;%
 #### 9. Group Similar Data and Increase White Space  
 #### 10. Add Visualizations when Appropriate  
 ]
+
+---
+
+# Resources
+
+* 7 Different Table Guides on [TheMockUp.blog](https://themockup.blog/#category:tables)  
+* ALL code for this specific presentation in written form in [this post](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/)  
+* `gt` [documentation](https://gt.rstudio.com/)  
+* Stephen Few's *Show Me the Numbers* book - excellent resource on tables/graphs  
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -6,20 +6,20 @@
       "description": "Ignore the man behind the curtain",
       "author": [],
       "contents": "\nTom Mock\nBachelor’s degree from Southwestern University (where I thought I wanted to be a Physical Therapist).\nMaster’s degree from Florida Atlantic University (where I realized I actually really liked data and making graphs)\nDoctorate from UNT Health Science Center (where I realized I really didn’t like biomedical science, but still really liked data, graphs, and now R)\nCurrent State\nI fell in love with R and data science through my graduate research, using R and RStudio to wrangle, analyze, model, and visualize my data. I became passionate about growing the R community, and founded #TidyTuesday to help newcomers and seasoned vets improve their Tidyverse skills.\nI work at RStudio on their Customer Success team, helping our customers be as successful as possible with RStudio software in their environment.\nIn my home town of Dallas, my wife and I run on the local trails, play with our Boston Terrier puppy “Howard”, spend lots of time with our five nephews and families, and are always on the lookout for great new food, especially churros.\nContact\nYou should probably just tweet me @thomas_mock.\nThanks\nIf my blog has helped you, you can buy me a coffee!\n\n\n\n",
-      "last_modified": "2020-10-27T01:01:14-05:00"
+      "last_modified": "2020-10-27T10:42:05-05:00"
     },
     {
       "path": "index.html",
       "title": "Posts",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2020-10-27T01:01:16-05:00"
+      "last_modified": "2020-10-27T10:42:06-05:00"
     },
     {
       "path": "readme.html",
       "author": [],
       "contents": "",
-      "last_modified": "2020-10-27T01:01:19-05:00"
+      "last_modified": "2020-10-27T10:42:08-05:00"
     },
     {
       "path": "resources.html",
@@ -27,7 +27,7 @@
       "description": "Things I've made",
       "author": [],
       "contents": "\n#TidyTuesday\nA weekly data project aimed at the R ecosystem.\nespnscrapeR\nA small package to scrape or collect NFL data from ESPN or NFL.com\nImproving your nflscrapR graphics\nAn in-depth guide to data visualization and techniques for play-by-play data.\nIntro to tidymodels with nflscrapR data - HANIC edition Slides\nA short presentation on using tidymodels to predict whether the opposing team will run or pass. Reminder: all models are bad - some are useful.\nIntro to tidymodels with nflfastR data - CMSAC Edition Slides\nA full workshop on using tidymodels to predict whether the opposing team will run or pass.\nIntro to Tables Presentation\nA presentation on 10 best practices for creating tables with gt.\n\n\n\n",
-      "last_modified": "2020-10-27T01:07:22-05:00"
+      "last_modified": "2020-10-27T10:42:09-05:00"
     }
   ],
   "collections": ["posts/posts.json"]
