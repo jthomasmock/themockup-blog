@@ -7,7 +7,19 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Embedding custom HTML in gt tables</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables</link>
+      <description>HTML is basically a superpower.</description>
+      <category>data visualization</category>
+      <category>tables</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables</guid>
+      <pubDate>Sat, 31 Oct 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables/preview.png" medium="image" type="image/png" width="1384" height="755"/>
+    </item>
     <item>
       <title>Plotting Points as Images in ggplot</title>
       <dc:creator>Thomas Mock</dc:creator>
