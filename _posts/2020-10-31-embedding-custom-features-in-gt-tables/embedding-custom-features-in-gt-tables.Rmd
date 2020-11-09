@@ -15,6 +15,7 @@ output:
 categories:
   - data visualization
   - tables
+  - gt
   - tidyverse
 preview: preview.png
 twitter:
@@ -30,6 +31,8 @@ library(formattable)
 library(kableExtra)
 library(gt)
 library(sparkline)
+library(espnscrapeR)
+library(glue)
 sparkline(0)
 ```
 
@@ -41,7 +44,7 @@ A `gt` table can always be saved as an `.png` or `.pdf` file if you need to inco
 
 `gt` allows for HTML to be incorporated in MANY different locations with `gt::html()`. For example, we can use a `<span style>` to color the title for this table, and another `<span style>` to change the font size and weight for one off column. This really just scratches the surface of what is possible, and mostly you are free to use a lot of your creativity in building these tables.
 
-As a note - we are somewhat playing with fire as we're doing quite a bit of nesting for HTML. If you run into problems getting some of these tables to build in certain environments,you can try a `R Markdown` chunk with `results='asis'`, along with `gt() %>% as_raw_html(inline_css = TRUE)`.
+As a note - it's worth learning a bit more about how HTML works, as it will help with building R Markdown content, `shiny`, your personal website, and the syntax is used in the `ggtext` package, so it'll help with `ggplot2` as well! For a lot of this we're nesting HTML, things should really just work, BUT if you run into problems getting some HTML content to export into content, you can try a `R Markdown` chunk with `results='asis'`, along with `gt() %>% as_raw_html(inline_css = TRUE)`.
 
 Also, if you want to learn a bit more CSS/HTML to adjust tables beyond what I've shown below - check out either [Mozilla Docs](https://developer.mozilla.org/en-US/docs/Web/CSS) or the [W3schools](https://www.w3schools.com/).
 
@@ -158,7 +161,7 @@ So that's really cool and allows you to do some creative things with HTML-based 
 
 The fantastic [`kableExtra` package](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html#Overview) has some sparkline-esque graphing capabilities that export as SVG, meaning they can be integrated into HTML.
 
-Note that while I love `gt`, `kableExtra` is again a great package in it's own right and has more mature LaTeX integration today. If you REALLY have to use PDF/LaTex, it's the better choice over `gt` today.
+Note that while I love `gt`, `kableExtra` is again a great package in it's own right and has more mature LaTeX integration today. If you REALLY have to use PDF/LaTex, it's a great choice today.
 
 `kableExtra` approaches inline plots with the `spec_plot()` family of functions.
 
@@ -192,7 +195,7 @@ data.frame(
 
 ### `gt` + `kableExtra`
 
-We can adapt a similar idea for `gt`, here we are using `mutate` calls ahead of time to prep the data. Here we are going to keep all the data in a pipe, rather than having to `split` it and reference a dataset external to our table. We can essentially nest the same `mpg` column by group, keeping it in a single `tibble` this time.
+We can adapt a similar idea for `gt`, here we are using `mutate` calls ahead of time to prep the data. Here we are going to keep all the data in a pipe, rather than having to `split` it and reference a dataset external to our table. We can essentially nest the same `mpg` column by group, keeping it in a single `tibble` this time. As an aside, note that you can embed ANY `ggplot` into `gt` with `gt::ggplot_image()`, but the `ggplot_image()` method is quite a bit slower as of today. If you need the full power of `ggplot` it's totally worth it, but if you're just adding sparklines I'm a big fan of `kableExtra::spec_plot()`.
 
 ```{r}
 mtcars %>% 
@@ -353,7 +356,7 @@ tibble(
 
 OK so we now have a function, but we're referencing an external data object, rather than data within the "table" itself - not ideal!
 
-Can we use our `group_by` + `summarize` as list from before? (Spoiler = `nope`)
+Can we just use our `group_by` + `summarize` as list from before without any changes? (Spoiler = `nope`)
 
 ```{r}
 # doesn't work
@@ -447,7 +450,7 @@ mtcars %>%
 
 That worked beautifully!
 
-An alternative that doesn't require going into the `gt` object itself and coerces the character string back into numeric.
+An alternative that doesn't require going into the `gt` object itself and coerces the character string back into numeric. This is a bit clunkier, but totally possible.
 
 ```{r}
 # WORKS
@@ -477,7 +480,7 @@ gt_plot <- function(table_data, plot_col, data_col, plot_fun, ...){
   # save the data extract ahead of time 
   # to be used in our anonymous function below
   data_in = pluck(table_data, "_data", data_col)
-  
+
   text_transform(
     table_data,
     # note the use of {{}} here - this is tidy eval
@@ -490,6 +493,7 @@ gt_plot <- function(table_data, plot_col, data_col, plot_fun, ...){
     }
   )
 }
+
 ```
 
 This function will now work exactly as expected with the grouped list data columns!
@@ -509,7 +513,7 @@ mtcars %>%
 
 So the embedded sparklines as shown above are fantastic, quick and robust, but they're static. Since we're focusing on HTML content, why don't we also see if we can get javascript enabled interactivity?
 
-Quick example of this working below, but note you need to call `sparkline(0)` somewhere ahead of time in your RMarkdown doc to load the javascript library dependency. Also, if you try to view this interactively it will look like it failed and didn't pass anything through, but it will work when the RMarkdown is knit.
+Quick example of this working below, but note you need to call `sparkline(0)` somewhere ahead of time in your RMarkdown doc to load the javascript library dependency. Also, if you try to view this interactively it will look like it failed and didn't pass anything through, but it will work when the RMarkdown is knit and the JavaScript can be called properly.
 
 ```{r}
 tibble(
@@ -674,7 +678,7 @@ coef_table <- tibble(
 
 </details>
 
-Here's the code to create a quick table with a zero-indicated line, and some randomgly generated 
+Here's the code to create a quick table with a zero-indicated line, and some randomly generated "variation".
 
 ```{r}
 coef_table %>% 
@@ -697,7 +701,6 @@ coef_table %>%
 ### More custom HTML work
 
 For the next section, I'll be showing some functions that are mostly adapted from Greg Lin's fantastic examples for the [`reactable` package Cookbook](https://glin.github.io/reactable/articles/cookbook/cookbook.html). I love `reactable`, but want to show how some of the same ideas can translate in to mostly static tables as well. Note that some of the `tags$`, `div`, etc are from the `htmltools` package, and you can generally write your own HTML by hand if you wanted.
-
 
 
 <details>
@@ -807,7 +810,13 @@ bar_chart <- function(value, color = "red"){
 
 <br>
 
-All of these examples can be used in one example table! I've also added a HTML example of a hyperlink for the "data source" which links to the `gt` page for HTML content `r emo::ji("smile")`
+All of these examples can be used in one example table! I've also added a HTML example of a hyperlink for the "data source" which links to the `gt` page for HTML content `r emo::ji("smile")`. So now we have:  
+- Tooltips  
+- Embedded icons/font-awesome logos  
+- Badges + colors  
+- HTML-only bar charts  
+- Hyperlinks  
+- Expandable Tabke Key as "Details" with a [HTML `<details>` tag](https://www.w3schools.com/tags/tag_details.asp#:~:text=The%20tag%20specifies%20additional,and%20displays%20the%20content%20within.)  
 
 ```{r}
 set.seed(377)
@@ -849,10 +858,211 @@ mtcars %>%
         as.character()
       )
     ) %>% 
+  tab_source_note(
+    source_note = html(
+      "<details><h3 style='font-face:bold'>Table Key</h3><div>MPG: Miles Per Gallon</div><div>Cyl: Cylinders</div><div>disp: Displacement</div><div>hp: Horsepower</div><div>rank_change: Rank Change</div><div>rating: Rating</div></details>"
+    )
+  ) %>% 
   tab_options(
     data_row.padding = px(5)
   )
 ```
+
+
+### Put it all together
+
+Let's put all the things we've learned together into a publication-quality table, we'll collect some QBR data to use.
+
+```{r, cache=TRUE}
+# use espnscrapeR to get NFL standings + QBR ratings
+nfl_qbr <- get_nfl_qbr(2020)
+nfl_standings <- get_nfl_standings(2020)
+
+# also get weekly for embedded plot
+qbr_weekly <- crossing(season = 2020, week = 1:8) %>%
+  pmap_dfr(.f = get_nfl_qbr)
+```
+
+Then we'll summarise the data to prep for an embedded plot, and join together our NFL standings, QBR, and weekly QBR.
+
+<details>
+<summary><strong>Data Prep</summary>
+
+```{r}
+qbr_match <- qbr_weekly %>%
+  filter(short_name %in% nfl_qbr$short_name) %>%
+  group_by(short_name, team) %>%
+  summarise(qbr_weekly = list(qbr_total), .groups = "drop",
+            qbr = mean(qbr_total),
+            qbr_sd = sd(qbr_total),
+            plays = sum(qb_plays),
+            pass = mean(pass),
+            run = mean(run),
+            head = unique(headshot_href),
+            n = n()) %>%
+  arrange(desc(qbr)) %>% 
+  filter(n >= 7)
+
+# clean up the data a bit and combine
+tab_df <- qbr_match %>% 
+  left_join(nfl_standings, by = c("team" = "abb_name")) %>%
+  select(short_name, team, head, qbr_weekly:run, wins, losses, points_for) %>%
+  mutate(wl = glue("{wins}-{losses}")) %>%
+  select(-wins, -losses)
+tab_df
+
+# calc rank change
+qbr_rnk_chg <- qbr_weekly %>% 
+  mutate(game_week = as.integer(game_week)) %>% 
+  group_by(short_name) %>% 
+  mutate(mean_qbr = mean(qbr_total)) %>% 
+  ungroup() %>% 
+  select(game_week, rank, short_name, qbr_total, mean_qbr) %>% 
+  filter(game_week != max(game_week)) %>% 
+  filter(short_name %in% nfl_qbr$short_name) %>%
+  group_by(short_name) %>%
+  summarize(prev_qbr = mean(qbr_total), mean_qbr = unique(mean_qbr)) %>% 
+  mutate(
+    prev_week = rank(-prev_qbr),
+    rank = rank(-mean_qbr)
+    ) %>% 
+  mutate(rank_chg = prev_week-rank) %>% 
+  ungroup() %>% 
+  arrange(desc(mean_qbr)) %>% 
+  select(short_name, qbr = mean_qbr, rank_chg, rank)
+
+qbr_rnk_chg
+```
+
+</details>
+
+We can then combine the player name, team, and win-loss record into one set of "data" presented with some HTML formatting.
+
+<details>
+<summary><strong>Code for Name/Team/Record Combo</summary>
+
+```{r}
+combine_word <- function(name, team, wl){
+      glue::glue(
+        "<div style='line-height:10px'><span style='font-weight:bold;font-variant:small-caps;font-size:14px'>{name}</div>
+        <div style='line-height:12px'><span style ='font-weight:bold;color:grey;font-size:10px'>{team}&nbsp;&nbsp;{wl}</span></div>"
+      )
+    }
+
+combo_df <- tab_df %>% 
+  left_join(qbr_rnk_chg, by = c("short_name", "qbr")) %>%
+  select(rank, rank_chg, short_name:wl) %>% 
+  mutate(
+    rank = row_number(),
+    combo = combine_word(short_name, team, wl),
+    combo = map(combo, gt::html)
+    ) %>% 
+  select(rank, rank_chg, head, combo, qbr, qbr_weekly, plays, points_for)
+
+combo_df
+```
+
+</details>
+
+<details>
+<summary><strong>Table Code</summary>
+
+```{r}
+final_table <- combo_df %>% 
+  gt() %>% 
+  cols_align(
+    align = "left",
+    columns = vars(combo)
+  ) %>% 
+  tab_options(
+    data_row.padding = px(2)
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(head)),
+    fn = function(x){
+      gt::web_image(x)
+    }
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(rank_chg)),
+    fn = function(x){
+      
+      rank_chg <- as.integer(x)
+      
+      choose_logo <-function(x){
+        if (x == 0){
+        gt::html(fontawesome::fa("equals", fill = "grey"))
+      } else if (x > 0){
+         gt::html(glue::glue("<span style='color:#1134A6;font-face:bold;font-size:10px;'>{x}</span>"), fontawesome::fa("arrow-up", fill = "#1134A6"))
+      } else if (x < 0) {
+        gt::html(glue::glue("<span style='color:#DA2A2A;font-face:bold;font-size:10px;'>{x}</span>"), fontawesome::fa("arrow-down", fill = "#DA2A2A"))
+      }
+      } 
+      
+      map(rank_chg, choose_logo)
+    
+    }
+  ) %>% 
+  fmt_number(
+    columns = vars(qbr), 
+    decimals = 1
+    ) %>% 
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels(TRUE)
+  ) %>% 
+  cols_label(
+    rank = "RK",
+    combo = "",
+    head = "QB",
+    qbr = "QBR",
+    plays = "PLAYS",
+    points_for = "PF",
+    qbr_weekly = "WEEKLY",
+    rank_chg = ""
+  ) %>% 
+  gt_spark(qbr_weekly, "qbr_weekly") %>%
+  espnscrapeR::gt_theme_espn() %>% 
+  tab_source_note(
+    source_note = gt::html(
+      htmltools::tags$a(
+        href = "https://www.espn.com/nfl/qbr", 
+        target = "_blank", 
+        "Data: ESPN"
+        ) %>% 
+        as.character()
+      )
+    ) %>% 
+  cols_align(
+    "left",
+    columns = vars(qbr_weekly)
+  ) %>% 
+  cols_width(
+    vars(rank) ~ px(25),
+    vars(rank_chg) ~ px(35),
+    vars(head) ~ px(50),
+    vars(combo) ~ px(115),
+    vars(qbr) ~ px(35),
+    vars(plays) ~ px(35),
+    vars(points_for) ~ px(35),
+    vars(qbr_weekly) ~ px(75)
+  ) %>% 
+  tab_header(
+    title = gt::html("<h3>NFL QBR through Week 8</h3>")
+  ) %>% 
+  tab_options(
+    table.width = px(480),
+    data_row.padding = px(4)
+  )
+
+```
+
+</details>
+
+```{r}
+final_table
+```
+
 
 So that's all for now, but hopefully having this "cheatsheet" lets you go even further with all the possible creations you can make with a lot of `gt` and a little bit of HTML!
 

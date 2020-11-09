@@ -15,6 +15,7 @@
       <description>HTML is basically a superpower.</description>
       <category>data visualization</category>
       <category>tables</category>
+      <category>gt</category>
       <category>tidyverse</category>
       <guid>https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables</guid>
       <pubDate>Sat, 31 Oct 2020 00:00:00 +0000</pubDate>
