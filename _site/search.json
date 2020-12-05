@@ -13,13 +13,13 @@
       "title": "Posts",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2020-10-27T10:42:06-05:00"
+      "last_modified": "2020-12-05T12:04:17-06:00"
     },
     {
       "path": "readme.html",
       "author": [],
-      "contents": "",
-      "last_modified": "2020-10-27T10:42:08-05:00"
+      "contents": "\n\nThe Mockup Blog\nThis is my personal blog, you can find it at TheMockup.blog.\nIf you want to customize your distill blog - you can use your own custom CSS. The CSS components you can change are on the distill GitHub.\nA table of all my posts are below:\n\nTitle\nDescription\nDate\nBullet Chart Variants in R\nEfficient, space-saving, and useful bar chart alternatives.\n2020-11-29\nEmbedding custom HTML in gt tables\nHTML is basically a superpower.\n2020-10-31\nPlotting Points as Images in ggplot\nTrials and tribulations of the various strategies.\n2020-10-11\nFunctions and Themes for gt tables\nSave time and effort in making beautiful tables\n2020-09-28\n10+ Guidelines for Better Tables in R\nMake tables people ACTUALLY want to read.\n2020-09-04\nHeatmaps in ggplot2\nIt’s more than just a passing fad.\n2020-08-28\nBuilding a blog with distill\nI love simplicity.\n2020-08-01\nA bar chart 5 ways in ggplot2\nAndy, Tom, and ggplot2 walk into a bar…\n2020-08-01\nMeta RMarkdown - Taxonomy and Use cases\nA meta collection of all things R Markdown.\n2020-07-25\nClient-side interactivity - do more with Crosstalk\nBecause sharing data is caring\n2020-05-29\nEasily parsing JSON in R with jsonlite and purrr\nIt’s turtles all the way down…\n2020-05-22\ngt - a (G)rammar of (T)ables\nNot to be confused with a Game of Thrones\n2020-05-18\nreactable - An Interactive Tables Guide\nPart 2: How to draw the rest of the owl.\n2020-05-15\nQB Salaries vs Playoff Appearances\nInteractive tables make bad takes more fun.\n2020-05-13\nFlipping tibbles for many models\nPivoting data from wide to long to run many models at once\n2020-05-01\nBigger, nflfastR, dbplyr\nDoing more with dplyr and SQL\n2020-04-28\nBeer and pdftools - a vignette\nA guide to extracting tables from many PDFs using the pdftools package\n2020-04-04\nCrossing 10,000 - Tidy simulation\nTidy simulation with dice rolls\n2020-01-07\nAdd a logo to your plot\nPut a bird on it - Portlandia.\n2019-01-09\nTidyTuesday enhancements\nMaking #TidyTuesday better.\n2019-01-02\nTidyTuesday\nA weekly social data project in R\n2018-04-05\nFunctional Progamming in R with purrr\nMinimizing repetition with further replication\n2018-03-18\nA Gentle Guide to Tidy Statistics in R\nWorking your way through a basic analysis\n2018-03-16\n\n\n\n\n",
+      "last_modified": "2020-12-05T12:07:05-06:00"
     },
     {
       "path": "resources.html",
