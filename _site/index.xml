@@ -7,7 +7,18 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 29 Nov 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Bullet Chart Variants in R</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r</link>
+      <description>Efficient, space-saving, and useful bar chart alternatives.</description>
+      <category>data visualization</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r</guid>
+      <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r/test_bullet.png" medium="image" type="image/png" width="5004" height="2759"/>
+    </item>
     <item>
       <title>Embedding custom HTML in gt tables</title>
       <dc:creator>Thomas Mock</dc:creator>
