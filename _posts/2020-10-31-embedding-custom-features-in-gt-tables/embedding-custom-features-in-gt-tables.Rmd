@@ -12,6 +12,8 @@ output:
     toc: true
     toc_depth: 3
     self_contained: false
+    highlight: default
+    highlight_downlit: true
 categories:
   - data visualization
   - tables

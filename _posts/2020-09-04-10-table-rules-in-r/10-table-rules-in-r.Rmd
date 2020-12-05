@@ -748,7 +748,7 @@ potato_data <- yield_data %>%
 ### 1. Poor Example
 
 <details>
-<summary><strong>Rule 1 | Poor example `gt` code </summary>  
+<summary><strong>Rule 1 | Poor example `gt` code</strong></summary>  
 
 ```{r rule1-poor}
 potato_tb <- potato_data %>% 
@@ -771,7 +771,7 @@ potato_tb
 ### 1. Improved Example 
 
 <details>
-<summary><strong>Rule 1 | Improved `gt` code </summary>  
+<summary><strong>Rule 1 | Improved `gt` code </strong></summary>  
 
 ```{r rule1-good}
 rule1_good <- potato_tb %>% 
@@ -826,7 +826,7 @@ rule2_data <- yield_data %>%
 In this case, while you can probably tell clearly that the bottom row is the Average of each column, did you notice the Avg for 2007-11 and 2012-16?
 
 <details>
-<summary><strong>Rule 2 | Poor example `gt` code </summary>  
+<summary><strong>Rule 2 | Poor example `gt` code</strong></summary>  
 
 ```{r rule2-poor, layout = 'l-page'}
 rule2_tab1 <- rule2_data %>% 
@@ -879,7 +879,7 @@ rule2_tab1
 In this improved example we've clearly indicated the `Avg.` columns. Note that I've also manually calculated a summary row at the bottom just as an alternative example, although you could again create a `grand_summary_row()` with `gt` and probably should since you could add as many arbitrary summary rows as you'd like (by group even!). We used that in the previous example.
 
 <details>
-<summary><strong>Rule 2 | Improved `gt` code </summary>  
+<summary><strong>Rule 2 | Improved `gt` code</strong></summary>  
 
 ```{r rule2-improved, layout = 'l-page'}
 rule2_tab2 <- rule2_data %>% 
@@ -964,7 +964,7 @@ rule3_data <- yield_data %>%
 Notice that left-alignment or center-alignment of numbers impairs the ability to clearly compare numbers and decimal places. Right-alignment lets you align decimal places and numbers for easy parsing.
 
 <details>
-<summary><strong>Rule 3 | Alignment `gt` code </summary>  
+<summary><strong>Rule 3 | Alignment `gt` code</strong></summary>  
 
 ```{r rule3-align}
 rule3_align <- rule3_data %>% 
@@ -1061,7 +1061,7 @@ rule3_data_addendum %>%
 For the fonts below, notice that the Default for `gt` along with a monospaced font in `Fira Mono` have nice alignment of decimal places and equally-spaced numbers. In contrast, `Karla`, `Cabin`, and `Georgia` have issues with alignment of numbers/decimals horizontally and vertically. We've underlined the numbers so you can see the vertical-spacing issues with `Georgia` specifically.
 
 <details>
-<summary><strong>Rule 3 | Choosing Fonts `gt` code </summary>  
+<summary><strong>Rule 3 | Choosing Fonts `gt` code</strong></summary>  
 
 ```{r rule3-fonts}
 rule3_text <- rule3_data %>% 
@@ -1169,7 +1169,7 @@ rule3_text %>%
 For labels/strings it is typically more appropriate to left-align. This allows your eye to follow both short and long text vertically to scan a table, along with a clear border.
 
 <details>
-<summary><strong>Rule 4 | Alignment `gt` code </summary>  
+<summary><strong>Rule 4 | Alignment `gt` code</strong></summary>  
 
 ```{r rule4-data, layout = 'l-page'}
 country_names <- c(
@@ -1229,7 +1229,7 @@ rule4_tab_left
 While you can sometimes justify increased decimal places, often 1 or 2 can help with the appearance of the table and clean up the overall flow. Additionally, for many measure the accuracy in your dataset may be more detailed than what is appropriate from the data collection tool itself.
 
 <details>
-<summary><strong>Rule 5 | Precision `gt` code </summary>  
+<summary><strong>Rule 5 | Precision `gt` code</strong></summary>  
 
 ```{r rule5}
 rule5_tab <- yield_data %>% 
@@ -1265,7 +1265,7 @@ rule5_tab
 While there is a bit of art to the science of spacing - think of how you want to guide the reader. You want to make it easy to move horizontally and/or vertically depending on the purpose of the table. Additionally, increasing spacing can improve the overall readability of the table although TOO much space can be distracting.
 
 <details>
-<summary><strong>Rule 6 | Table Spacing `gt` code </summary>  
+<summary><strong>Rule 6 | Table Spacing `gt` code</strong></summary>  
 
 ```{r rule6}
 rule6_data <- yield_data %>% 
@@ -1451,7 +1451,7 @@ rule8_data <- yield_data %>%
 The plain data we don't fully recognize the negative values instantly.
 
 <details>
-<summary><strong>Rule 8 | Plain table `gt` code </summary>  
+<summary><strong>Rule 8 | Plain table `gt` code</strong></summary>  
 
 ```{r rule8-plain}
 rule8_tb <- rule8_data %>% 
@@ -1489,7 +1489,7 @@ rule8_tb %>%
 However, with a bit of color added we can clearly focus on the outliers.
 
 <details>
-<summary><strong>Rule 8 | Text color `gt` code </summary>  
+<summary><strong>Rule 8 | Text color `gt` code</strong></summary>  
 
 ```{r rule8-color}
 rule8_color <- rule8_tb %>% 
@@ -1538,7 +1538,7 @@ rule8_color
 We can *really* pull the focus with background fill of each cell outlier.
 
 <details>
-<summary><strong>Rule 8 | Cell fill `gt` code </summary>  
+<summary><strong>Rule 8 | Cell fill `gt` code</strong></summary>  
 
 ```{r rule8-fill}
 rule8_fill <- rule8_tb %>% 
@@ -1612,7 +1612,7 @@ rule9_data <- yield_data %>%
 Here we can see the table is a bit hard to follow with the Country labels not being grouped.
 
 <details>
-<summary><strong>Rule 9 | Bad example `gt` code </summary>  
+<summary><strong>Rule 9 | Bad example `gt` code</strong></summary>  
 
 ```{r rule9-tb}
 rule9_bad <- rule9_data %>% 
@@ -1641,7 +1641,7 @@ rule9_bad
 `gt` provides row group levels that we can use to separate by Country.
 
 <details>
-<summary><strong>Rule 9 | Groups `gt` code </summary>
+<summary><strong>Rule 9 | Groups `gt` code</strong></summary>
   
 ```{r rule9-groups}
 rule9_grp <- rule9_data %>% 
@@ -1697,7 +1697,7 @@ rule9_grp
 Alternatively, we can remove some observations to create more white space, similar to Jon's example. Here we are relying purely on white space rather than horizontal dividers. We can use `gt::text_transform()` to keep all the observations from our data in, but not display the repeats of Country in the `gt` table.
 
 <details>
-<summary><strong>Rule 9 | Group example `gt` code </summary>
+<summary><strong>Rule 9 | Group example `gt` code</strong></summary>
 
 ```{r rule9-duplicate}
 rule9_dup <- rule9_data %>% 
@@ -1776,7 +1776,7 @@ rule10_data <- yield_data %>%
 For example one we can use sparklines to indicate trends across time. There's quite a bit of code below, and we actually use two datasets. Since we are creating the sparklines outside of `gt` make sure to align the graphs + data as `gt` doesn't control the overall relationship. For example, if you `arrange()` by a specific column you'll need to make sure to do it across both datasets.
 
 <details>
-<summary><strong>Rule 10 | Sparkline example `gt` code </summary>
+<summary><strong>Rule 10 | Sparkline example `gt` code</strong></summary>
 
 ```{r rule10-spark}
 plot_spark <- function(data){
@@ -1865,7 +1865,7 @@ For this example we can use barplots to indicate the average across the 5 years.
 Many thanks to the `formattable` author Renkun Kun and others like `rtjohnson12` who have shown examples about how to build up a bar chart with HTML! Thanks also to [Christophe Dervieux](https://community.rstudio.com/t/create-interactive-links-in-gt-table-in-rmarkdown/70266/2) for a great example of `gt` + custom HTML on RStudio Community.
 
 <details>
-<summary><strong>Rule 10 | Barplot example `gt` code </summary>
+<summary><strong>Rule 10 | Barplot example `gt` code</strong></summary>
 
 ```{r rule10-barplot}
 # Example of using glue to just paste the value into pre-created HTML block
@@ -1985,7 +1985,7 @@ rule10_bar
 Lastly, you can add colors across the entire plot itself to show trends across the data over time and across country.
 
 <details>
-<summary><strong>Rule 10 | Heatmap example `gt` code </summary>
+<summary><strong>Rule 10 | Heatmap example `gt` code</strong></summary>
 
 ```{r rule10-heatmap}
 rule10_wide <- yield_data %>% 
@@ -2055,7 +2055,7 @@ rule10_heat
 Ok I lied! One more example, with color for a numeric column.
 
 <details>
-<summary><strong>Rule 10 | Percent change example `gt` code </summary>
+<summary><strong>Rule 10 | Percent change example `gt` code</strong></summary>
 
 ```{r rule10-wide-pct}
 rule10_wide <- yield_data %>% 

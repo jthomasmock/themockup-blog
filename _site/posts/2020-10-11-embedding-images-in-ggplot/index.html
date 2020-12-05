@@ -148,6 +148,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
     var header = $('header').get(0);
     var headerHeight = header.offsetHeight;
     var headroom = new Headroom(header, {
+      tolerance: 5,
       onPin : function() {
         if (window.headroom_prevent_pin) {
           window.headroom_prevent_pin = false;
@@ -495,22 +496,19 @@ function offsetURL(url) {
   return offset ? offset + '/' + url : url;
 }
 
-function createIndex() {
-  var options = {
-    keys: [
-      "title",
-      "categories",
-      "description",
-      "contents"
-    ]
-  };
-  return new window.Fuse([],options);
-}
-
 function createFuseIndex() {
 
   // create fuse index
-  var options = { keys: ["title", "description", "contents"] };
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
   var fuse = new window.Fuse([], options);
 
   // fetch the main search.json
@@ -578,12 +576,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             shouldSort: true,
             minMatchCharLength: 2,
             limit: 10,
-            keys: [
-              { name: 'title', weight: 20 },
-              { name: 'categories', weight: 15 },
-              { name: 'description', weight: 10 },
-              { name: 'contents', weight: 5 },
-            ],
           };
           var results = fuse.search(query, searchOptions);
           callback(results
@@ -881,7 +873,7 @@ d-article pre code {
 d-article pre,
 d-article div.sourceCode,
 d-article div.sourceCode pre {
-  overflow: hidden;
+  overflow: auto;
 }
 
 d-article div.sourceCode {
@@ -2052,10 +2044,11 @@ html {
   --heading-font:    sans-serif;
   --mono-font:       monospace;
   --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
 }
 
 /*-- ARTICLE METADATA --*/
-.d-byline {
+d-byline {
   --heading-size:    0.6rem;
   --heading-color:   rgba(0, 0, 0, 0.5);
   --body-size:       0.8rem;
@@ -2092,7 +2085,11 @@ d-appendix {
   --text-size:        15px;
   --hover-color:      white;
   --bkgd-color:       #0F2E3D;
-}</style>
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
 <style type="text/css">
 /* base variables */
 
@@ -2181,11 +2178,15 @@ d-appendix {
   --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
-body {
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
   font-family: var(--body-font), var(--body-default);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
   font-family: var(--heading-font), var(--heading-default);
 }
 
@@ -2285,16 +2286,21 @@ d-appendix d-footnote-list a.footnote-backlink {
 /*-- WEBSITE HEADER + FOOTER --*/
 .distill-site-header .title {
 	font-size: var(--title-size, 18px);
+	font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a:hover {
+	color: var(--hover-color, white);
 }
 
 .distill-site-header {
 	font-size: var(--text-size, 15px);
 	color: var(--text-color, rgba(255, 255, 255, 0.8));
 	background-color: var(--bkgd-color, #0F2E3D);
-}
-
-.distill-site-header a:hover {
-	color: var(--hover-color, white);
 }
 
 .distill-site-footer {
@@ -2307,7 +2313,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 	color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
-  <script src="../../site_libs/header-attrs-2.4/header-attrs.js"></script>
+  <script src="../../site_libs/header-attrs-2.5/header-attrs.js"></script>
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
   <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
@@ -2331,7 +2337,7 @@ gtag('config', 'UA-166026965-1');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Plotting Points as Images in ggplot","description":"Trials and tribulations of the various strategies.","authors":[{"author":"Thomas Mock","authorURL":"https://twitter.com/thomas_mock","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2020-10-11T00:00:00.000-05:00","citationText":"Mock, 2020"}
+{"title":"Plotting Points as Images in ggplot","description":"Trials and tribulations of the various strategies.","authors":[{"author":"Thomas Mock","authorURL":"https://twitter.com/thomas_mock","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2020-10-11T00:00:00.000+00:00","citationText":"Mock, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2424,7 +2430,9 @@ gtag('config', 'UA-166026965-1');
 </div>
 <p>A quick bar plot of the ranked performance by each QB. We’ve explicilty added colors for each player’s team, and already formatted it for a nice display with some <code>theme</code> changes.</p>
 <details>
-<p><summary><strong>Basic Plot Code</strong></summary></p>
+<summary>
+<strong>Basic Plot Code</strong>
+</summary>
 <div class="layout-chunk" data-layout="l-body-outset">
 <div class="sourceCode">
 <pre><code><span class='va'>basic_plot</span> <span class='op'>&lt;-</span> <span class='va'>all_data</span> <span class='op'>%&gt;%</span> 
@@ -2466,7 +2474,9 @@ gtag('config', 'UA-166026965-1');
 </div>
 <p>That’s a fine plot, but unless we’re very knowledgeable about team colors you probably can’t decide which player/team belongs to each column. Now, we could approach it a different way, and rather than plotting ranks we can flip the graph where QBR is on the X, and player name is on the Y, now explicitly sorting by rank.</p>
 <details>
-<p><summary><strong>Sideways Plot Code</strong></summary></p>
+<summary>
+<strong>Sideways Plot Code</strong>
+</summary>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='va'>side_plot</span> <span class='op'>&lt;-</span> <span class='va'>all_data</span> <span class='op'>%&gt;%</span> 
@@ -2537,7 +2547,7 @@ gtag('config', 'UA-166026965-1');
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>12.124 sec elapsed</code></pre>
+<pre><code>9.236 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-ggimage.png" width="2560" /></p>
@@ -2588,7 +2598,7 @@ gtag('config', 'UA-166026965-1');
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>11.373 sec elapsed</code></pre>
+<pre><code>7.453 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-img-asp.png" width="2588" /></p>
@@ -2623,7 +2633,7 @@ gtag('config', 'UA-166026965-1');
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>14.013 sec elapsed</code></pre>
+<pre><code>9.673 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-ggtext.png" width="2588" /></p>
@@ -2703,7 +2713,7 @@ gtag('config', 'UA-166026965-1');
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>17.538 sec elapsed</code></pre>
+<pre><code>9.4 sec elapsed</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <p><img src="qbr-axis-img.png" width="2588" /></p>
@@ -2735,7 +2745,9 @@ gtag('config', 'UA-166026965-1');
 <p>Now sure, we’re showing a shape of the graphic, but really this is a way to show how far ahead (or behind) one player is behind another which is comparing individual values. That being said, I think it’s totally fine to use this a graphic, it’s attractive, people seem to enjoy them, and everyone has the free will to make their own graph/table decisions!</p>
 <p>Below is an example of a table that occupies roughly the same space, tells the same story, uses the same headshots, but also adds more data in QB run vs pass EPA splits along with total plays.</p>
 <details>
-<p><summary><strong>Table Data + Function</strong></summary></p>
+<summary>
+<strong>Table Data + Function</strong>
+</summary>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='va'>tab_data</span> <span class='op'>&lt;-</span> <span class='va'>all_data</span> <span class='op'>%&gt;%</span> 
@@ -2898,14 +2910,16 @@ gtag('config', 'UA-166026965-1');
 <h3 id="team-logos">Team Logos</h3>
 <p>Team logos work just as well, and are arguably a bit easier to parse than player headshots. The strategies are all the same, but just want to show team-logos from <code>nflfastR</code> as well!</p>
 <details>
-<p><summary><strong>Team Logo Code</strong></summary></p>
+<summary>
+<strong>Team Logo Code</strong>
+</summary>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='fu'>tic</span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>qb_col_logo</span> <span class='op'>&lt;-</span> <span class='va'>all_data</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>mutate</span><span class='op'>(</span>team <span class='op'>=</span> <span class='fu'>if_else</span><span class='op'>(</span><span class='va'>team</span> <span class='op'>==</span> <span class='st'>"WSH"</span>, <span class='st'>"WAS"</span>, <span class='va'>team</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>left_join</span><span class='op'>(</span>
-    <span class='fu'>nflfastR</span><span class='fu'>::</span><span class='va'><a href='https://mrcaseb.github.io/nflfastR//reference/teams_colors_logos.html'>teams_colors_logos</a></span> <span class='op'>%&gt;%</span> <span class='fu'>select</span><span class='op'>(</span>team <span class='op'>=</span> <span class='va'>team_abbr</span>, <span class='va'>team_logo_espn</span><span class='op'>)</span>,
+    <span class='fu'>nflfastR</span><span class='fu'>::</span><span class='va'><a href='https://www.nflfastr.com//reference/teams_colors_logos.html'>teams_colors_logos</a></span> <span class='op'>%&gt;%</span> <span class='fu'>select</span><span class='op'>(</span>team <span class='op'>=</span> <span class='va'>team_abbr</span>, <span class='va'>team_logo_espn</span><span class='op'>)</span>,
     by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"team"</span><span class='op'>)</span>
     <span class='op'>)</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>mutate</span><span class='op'>(</span>label <span class='op'>=</span> <span class='fu'>link_to_img</span><span class='op'>(</span><span class='va'>team_logo_espn</span>, width <span class='op'>=</span> <span class='fl'>35</span><span class='op'>)</span>,
@@ -2948,7 +2962,7 @@ gtag('config', 'UA-166026965-1');
 <span class='fu'>toc</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>6.566 sec elapsed</code></pre>
+<pre><code>7.977 sec elapsed</code></pre>
 </div>
 </details>
 <div class="layout-chunk" data-layout="l-screen-inset">

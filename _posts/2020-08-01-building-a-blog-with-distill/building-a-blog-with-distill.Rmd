@@ -4,6 +4,7 @@ description: |
   I love simplicity.
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 date: 08-01-2020
 base_url: https://themockup.blog
 output: 

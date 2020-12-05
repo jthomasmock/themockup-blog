@@ -4,6 +4,7 @@ description: |
   Part 2: How to draw the rest of the owl.
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 base_url: https://themockup.blog
 date: 05-15-2020
 output: 

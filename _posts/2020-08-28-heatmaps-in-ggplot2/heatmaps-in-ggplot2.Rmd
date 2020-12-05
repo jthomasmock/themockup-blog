@@ -4,6 +4,7 @@ description: |
   It's more than just a passing fad.
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 base_url: https://themockup.blog
 date: 08-28-2020
 output: 

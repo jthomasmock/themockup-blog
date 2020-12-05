@@ -1,7 +1,7 @@
 ---
 title: "Bullet Chart Variants in R"
 description: |
-  Efficient, space-saving, and useful bar chart alternatives.
+  Efficient display of several measures at once.
 author:
   - name: Thomas Mock
     url: https://twitter.com/thomas_mock
@@ -12,9 +12,13 @@ output:
     toc: true
     toc_depth: 3
     self_contained: false
+    highlight: default
+    highlight_downlit: true
 categories:
   - data visualization
   - tidyverse
+  - ggplot2
+  - nfl
 preview: preview.png
 twitter:
   site: "@thomas_mock"
@@ -48,7 +52,7 @@ It's a hard problem to solve with a *general* function, given that often the bul
 
 My personal attempts are very much modeled after Bob's approach, which is layering graph components as opposed a single `geom_` call. 
 
-The `bulletchartr` approach on the other hand (which is relatively similiar to my `geom_bullet()`) is to create a function that takes a summary data frame and plots several columns from the data. 
+The `bulletchartr` approach on the other hand (which is relatively similar to my `geom_bullet()`) is to create a function that takes a summary data frame and plots several columns from the data. 
 
 ```{r, eval = FALSE}
 bulletchartr::bullet_chart(dataframe = bc_ex)
@@ -102,7 +106,7 @@ ex_df %>%
 
 ## Add a target
 
-Next we can also include a target measure. At this point you can see that we're really stretching what is reasonable for a dataset, as we're duplicating a lot of values that don't really need to be duplicated. We could store this outside or indicate them manually but again you can see why this can in theory be generalized, but it's complex.
+Next we can also include a target measure. At this point you can see that we're really stretching what is reasonable for one dataset, as we're duplicating a lot of values that don't really need to be duplicated. We could store this outside or indicate them manually but again you can see why this can in theory be generalized, but it's complex.
 
 ```{r, warning=FALSE, fig.dim=c(6,4)}
 ex_df <- bind_rows(
@@ -145,7 +149,7 @@ ex_df %>%
 
 The next layer of complexity arises around the idea of creating more qualitative ranges (ie poor, good, great). I've hidden the code in an expandable section due to the length, but it's all there! This is an example from an [older `#TidyTuesday` plot](https://twitter.com/thomas_mock/status/1184121610216886279) I did in 2019.
 
-<details><h4>Full Code</h4>
+<details><summary>Full Code</summary>
 
 ```{r, cache = TRUE, message=FALSE, warning=FALSE}
 big_epa_cars <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-10-15/big_epa_cars.csv")
@@ -535,7 +539,7 @@ Ben Baldwin also had another tweet that inspired me to apply a similar concept. 
 
 The part to note here is we are now comparing one measure to another, as opposed to the theoretical value + the minimal value we saw in the ESPN example. I also used *almost* the same code as above, but now the `actual` passing frequency bar is thinner than the `expected` passing range.
 
-<details><h4>Full Code</h4>
+<details><summary>Full Code</summary>
 
 ```{r, cache=TRUE, message = FALSE, warning=FALSE}
 library(patchwork)

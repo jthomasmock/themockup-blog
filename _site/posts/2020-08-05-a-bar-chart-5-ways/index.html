@@ -18,6 +18,72 @@
  <!--radix_placeholder_import_source-->
  <!--/radix_placeholder_import_source-->
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #545454; font-weight: bold; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #a1024a; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007faa; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #008000; } /* Char */
+code span.cn { color: #d91e18; } /* Constant */
+code span.co { color: #545454; } /* Comment */
+code span.cv { color: #545454; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #aa5d00; } /* DataType */
+code span.dv { color: #a1024a; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #a1024a; } /* Float */
+code span.fu { color: #4254a7; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #545454; font-weight: bold; } /* Information */
+code span.kw { color: #007faa; font-weight: bold; } /* Keyword */
+code span.op { color: #696969; } /* Operator */
+code span.ot { color: #007faa; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #008000; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #008000; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #008000; } /* VerbatimString */
+code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
   <!--radix_placeholder_meta_tags-->
 <title>The Mockup Blog: A bar chart 5 ways in ggplot2</title>
 
@@ -82,6 +148,7 @@
     var header = $('header').get(0);
     var headerHeight = header.offsetHeight;
     var headroom = new Headroom(header, {
+      tolerance: 5,
       onPin : function() {
         if (window.headroom_prevent_pin) {
           window.headroom_prevent_pin = false;
@@ -429,22 +496,19 @@ function offsetURL(url) {
   return offset ? offset + '/' + url : url;
 }
 
-function createIndex() {
-  var options = {
-    keys: [
-      "title",
-      "categories",
-      "description",
-      "contents"
-    ]
-  };
-  return new window.Fuse([],options);
-}
-
 function createFuseIndex() {
 
   // create fuse index
-  var options = { keys: ["title", "description", "contents"] };
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
   var fuse = new window.Fuse([], options);
 
   // fetch the main search.json
@@ -512,12 +576,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             shouldSort: true,
             minMatchCharLength: 2,
             limit: 10,
-            keys: [
-              { name: 'title', weight: 20 },
-              { name: 'categories', weight: 15 },
-              { name: 'description', weight: 10 },
-              { name: 'contents', weight: 5 },
-            ],
           };
           var results = fuse.search(query, searchOptions);
           callback(results
@@ -815,7 +873,7 @@ d-article pre code {
 d-article pre,
 d-article div.sourceCode,
 d-article div.sourceCode pre {
-  overflow: hidden;
+  overflow: auto;
 }
 
 d-article div.sourceCode {
@@ -1986,10 +2044,11 @@ html {
   --heading-font:    sans-serif;
   --mono-font:       monospace;
   --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
 }
 
 /*-- ARTICLE METADATA --*/
-.d-byline {
+d-byline {
   --heading-size:    0.6rem;
   --heading-color:   rgba(0, 0, 0, 0.5);
   --body-size:       0.8rem;
@@ -2026,7 +2085,11 @@ d-appendix {
   --text-size:        15px;
   --hover-color:      white;
   --bkgd-color:       #0F2E3D;
-}</style>
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
 <style type="text/css">
 /* base variables */
 
@@ -2115,11 +2178,15 @@ d-appendix {
   --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
-body {
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
   font-family: var(--body-font), var(--body-default);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
   font-family: var(--heading-font), var(--heading-default);
 }
 
@@ -2219,16 +2286,21 @@ d-appendix d-footnote-list a.footnote-backlink {
 /*-- WEBSITE HEADER + FOOTER --*/
 .distill-site-header .title {
 	font-size: var(--title-size, 18px);
+	font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a:hover {
+	color: var(--hover-color, white);
 }
 
 .distill-site-header {
 	font-size: var(--text-size, 15px);
 	color: var(--text-color, rgba(255, 255, 255, 0.8));
 	background-color: var(--bkgd-color, #0F2E3D);
-}
-
-.distill-site-header a:hover {
-	color: var(--hover-color, white);
 }
 
 .distill-site-footer {
@@ -2241,7 +2313,9 @@ d-appendix d-footnote-list a.footnote-backlink {
 	color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.5/header-attrs.js"></script>
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
   <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
@@ -2263,7 +2337,7 @@ gtag('config', 'UA-166026965-1');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"A bar chart 5 ways in ggplot2","description":"Andy, Tom, and ggplot2 walk into a bar...","authors":[{"author":"Thomas Mock","authorURL":"https://twitter.com/thomas_mock","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2020-08-01T00:00:00.000-05:00","citationText":"Mock, 2020"}
+{"title":"A bar chart 5 ways in ggplot2","description":"Andy, Tom, and ggplot2 walk into a bar...","authors":[{"author":"Thomas Mock","authorURL":"https://twitter.com/thomas_mock","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2020-08-01T00:00:00.000+00:00","citationText":"Mock, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2315,9 +2389,9 @@ gtag('config', 'UA-166026965-1');
 </div>
 
 <div class="d-article">
-<div class="d-contents">
-<nav class="toc" id="TOC">
-<h3>Table of Contents</h3>
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
 <ul>
 <li><a href="#credit">Credit</a></li>
 <li><a href="#source-data">Source Data</a></li>
@@ -2341,46 +2415,49 @@ gtag('config', 'UA-166026965-1');
 <h2 id="source-data">Source Data</h2>
 <p>The data comes from <a href="https://en.wikipedia.org/wiki/List_of_most-streamed_songs_on_Spotify">Wikipedia</a>, specifically a list of the most streamed songs on Spotify. We can scrape the table into R w/ <code>rvest</code>.</p>
 <div class="layout-chunk" data-layout="l-body">
-<pre class="r"><code>
-library(rvest)
-library(tidyverse)</code></pre>
+<div class="sourceCode">
+<pre><code><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://rvest.tidyverse.org/'>rvest</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+</code></pre>
+</div>
 </div>
 <p>Now that we have the libraries loaded, let’s read in the data, pull in the top 100, and add some new columns to use across our charts.</p>
 <div class="layout-chunk" data-layout="l-body">
-<pre class="r"><code>
-url &lt;- &quot;https://en.wikipedia.org/wiki/List_of_most-streamed_songs_on_Spotify&quot;
+<div class="sourceCode">
+<pre><code><span class='va'>url</span> <span class='op'>&lt;-</span> <span class='st'>"https://en.wikipedia.org/wiki/List_of_most-streamed_songs_on_Spotify"</span>
 
-df &lt;- url %&gt;% 
-  read_html() %&gt;% 
-  html_table(fill = TRUE) %&gt;% 
-  .[[1]] %&gt;% 
-  set_names(nm = c(&quot;rank&quot;, &quot;song_name&quot;, &quot;artist&quot;, &quot;album&quot;, &quot;streams&quot;, &quot;date_published&quot;)) %&gt;% 
-  slice(1:100) %&gt;% 
-  mutate(num_rank = parse_number(rank),
-         streams_comma = streams,
-         streams = parse_number(streams)/1000,
-         streams_text = if_else(
-           num_rank == 1,
-           paste(round(streams, digits = 2), &quot;billion streams&quot;),
-           as.character(round(streams, digits = 2))
-           ),
-         lab_text = glue::glue(&quot;{rank}. {song_name} by {artist}&quot;),
-  ) %&gt;% 
-  as_tibble()
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>url</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>read_html</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rvest.tidyverse.org/reference/html_table.html'>html_table</a></span><span class='op'>(</span>fill <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='va'>.</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>set_names</span><span class='op'>(</span>nm <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"rank"</span>, <span class='st'>"song_name"</span>, <span class='st'>"artist"</span>, <span class='st'>"album"</span>, <span class='st'>"streams"</span>, <span class='st'>"date_published"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>slice</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>num_rank <span class='op'>=</span> <span class='fu'>parse_number</span><span class='op'>(</span><span class='va'>rank</span><span class='op'>)</span>,
+         streams_comma <span class='op'>=</span> <span class='va'>streams</span>,
+         streams <span class='op'>=</span> <span class='fu'>parse_number</span><span class='op'>(</span><span class='va'>streams</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>1000</span>,
+         streams_text <span class='op'>=</span> <span class='fu'>if_else</span><span class='op'>(</span>
+           <span class='va'>num_rank</span> <span class='op'>==</span> <span class='fl'>1</span>,
+           <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>streams</span>, digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>, <span class='st'>"billion streams"</span><span class='op'>)</span>,
+           <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>streams</span>, digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+           <span class='op'>)</span>,
+         lab_text <span class='op'>=</span> <span class='fu'>glue</span><span class='fu'>::</span><span class='fu'><a href='https://glue.tidyverse.org/reference/glue.html'>glue</a></span><span class='op'>(</span><span class='st'>"{rank}. {song_name} by {artist}"</span><span class='op'>)</span>,
+  <span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>as_tibble</span><span class='op'>(</span><span class='op'>)</span>
 
-df %&gt;% glimpse()</code></pre>
-<pre><code>
-Rows: 100
+<span class='va'>df</span> <span class='op'>%&gt;%</span> <span class='fu'>glimpse</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Rows: 100
 Columns: 10
 $ rank           &lt;chr&gt; &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;,…
-$ song_name      &lt;chr&gt; &quot;\&quot;Shape of You\&quot;&quot;, &quot;\&quot;Rockstar\&quot;&quot;, &quot;\&quot;One D…
+$ song_name      &lt;chr&gt; &quot;\&quot;Shape of You\&quot;&quot;, &quot;\&quot;Rockstar\&quot;&quot;, &quot;\&quot;Dance…
 $ artist         &lt;chr&gt; &quot;Ed Sheeran&quot;, &quot;Post Malone featuring 21 Sava…
-$ album          &lt;chr&gt; &quot;÷ (album)&quot;, &quot;Beerbongs &amp; Bentleys&quot;, &quot;Views&quot;…
-$ streams        &lt;dbl&gt; 2.594, 2.007, 1.909, 1.849, 1.829, 1.637, 1.…
-$ date_published &lt;chr&gt; &quot;6 January 2017&quot;, &quot;15 September 2017&quot;, &quot;5 Ap…
+$ album          &lt;chr&gt; &quot;÷&quot;, &quot;Beerbongs &amp; Bentleys&quot;, &quot;The Kids Are C…
+$ streams        &lt;dbl&gt; 2.654, 2.064, 1.963, 1.944, 1.897, 1.732, 1.…
+$ date_published &lt;chr&gt; &quot;6 January 2017&quot;, &quot;15 September 2017&quot;, &quot;10 M…
 $ num_rank       &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1…
-$ streams_comma  &lt;chr&gt; &quot;2,594&quot;, &quot;2,007&quot;, &quot;1,909&quot;, &quot;1,849&quot;, &quot;1,829&quot;,…
-$ streams_text   &lt;chr&gt; &quot;2.59 billion streams&quot;, &quot;2.01&quot;, &quot;1.91&quot;, &quot;1.8…
+$ streams_comma  &lt;chr&gt; &quot;2,654&quot;, &quot;2,064&quot;, &quot;1,963&quot;, &quot;1,944&quot;, &quot;1,897&quot;,…
+$ streams_text   &lt;chr&gt; &quot;2.65 billion streams&quot;, &quot;2.06&quot;, &quot;1.96&quot;, &quot;1.9…
 $ lab_text       &lt;glue&gt; &quot;1. \&quot;Shape of You\&quot; by Ed Sheeran&quot;, &quot;2. \&quot;…</code></pre>
 </div>
 <aside>
@@ -2389,140 +2466,151 @@ Note that there is <code>\</code> in front of the song name and in the lab_text 
 <p>Data is ready to go!</p>
 <h1 id="chart-1-font-height-bars">Chart 1: Font-height bars</h1>
 <div class="layout-chunk" data-layout="l-body">
-<pre class="r"><code>
-font_height_bars &lt;- df %&gt;% 
-    filter(num_rank &lt;=10) %&gt;% 
-    ggplot(aes(y = fct_reorder(lab_text, streams), x = streams)) +
-    geom_col(fill = &quot;#7dc8c4&quot;, width = 0.3) +
-    theme(text = element_text(family = &quot;Nunito Bold&quot;, face = &quot;bold&quot;, size = 14),
-          axis.text = element_text(face = &quot;bold&quot;),
-          axis.ticks = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.grid.major.y = element_blank(),
-          panel.grid.major.x = element_line(color = &quot;lightgrey&quot;)) +
-    labs(x = &quot;\nNumber of streams in billions&quot;,
-         y = &quot;&quot;) +
-    scale_x_continuous(limits = c(0,2.700), expand = c(0, 0),
-                       breaks = scales::breaks_pretty(n = 10)
-                       )
+<div class="sourceCode">
+<pre><code><span class='va'>font_height_bars</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>num_rank</span> <span class='op'>&lt;=</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span>, x <span class='op'>=</span> <span class='va'>streams</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_col</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"#7dc8c4"</span>, width <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme</span><span class='op'>(</span>text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Nunito Bold"</span>, face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span>,
+          axis.text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,
+          axis.ticks <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          panel.grid.minor <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          panel.grid.major.y <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          panel.grid.major.x <span class='op'>=</span> <span class='fu'>element_line</span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"lightgrey"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"\nNumber of streams in billions"</span>,
+         y <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>scale_x_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>2.700</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+                       breaks <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/breaks_pretty.html'>breaks_pretty</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+                       <span class='op'>)</span>
 
-ggsave(&quot;font_height_bars.png&quot;, font_height_bars, dpi = 300,
-       height = 6, width = 14, units = &quot;in&quot;)</code></pre>
+<span class='fu'>ggsave</span><span class='op'>(</span><span class='st'>"font_height_bars.png"</span>, <span class='va'>font_height_bars</span>, dpi <span class='op'>=</span> <span class='fl'>300</span>,
+       height <span class='op'>=</span> <span class='fl'>6</span>, width <span class='op'>=</span> <span class='fl'>14</span>, units <span class='op'>=</span> <span class='st'>"in"</span><span class='op'>)</span>
+</code></pre>
+</div>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <p><img src="font_height_bars.png" width="2100" /></p>
 </div>
 <h1 id="chart-2-bars-with-invisible-gridlines">Chart 2: Bars with invisible gridlines</h1>
 <div class="layout-chunk" data-layout="l-body">
-<pre class="r"><code>
-invis_gridline &lt;- df %&gt;% 
-    filter(num_rank &lt;=10) %&gt;% 
-    ggplot(aes(x = streams, y = fct_reorder(lab_text, streams))) +
-    geom_col(fill = &quot;#3686d3&quot;, width = .9) +
-    geom_vline(data = data.frame(x = seq(0, 2.6, .2)),
-               aes(xintercept = x), color = &quot;white&quot;, size = 0.5) +
-    theme_minimal() +
-    theme(text = element_text(family = &quot;Nunito Bold&quot;, face = &quot;bold&quot;, size = 14),
-          axis.text = element_text(face = &quot;bold&quot;),
-          axis.ticks = element_blank(),
-          panel.grid = element_blank()) +
-    labs(x = &quot;\nNumber of streams in billions&quot;,
-         y = &quot;&quot;) +
-    scale_x_continuous(limits = c(0,2.7), expand = c(0, 0),
-                       breaks = scales::breaks_pretty(n = 10))
+<div class="sourceCode">
+<pre><code><span class='va'>invis_gridline</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>num_rank</span> <span class='op'>&lt;=</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>streams</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_col</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"#3686d3"</span>, width <span class='op'>=</span> <span class='fl'>.9</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_vline</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>2.6</span>, <span class='fl'>.2</span><span class='op'>)</span><span class='op'>)</span>,
+               <span class='fu'>aes</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"white"</span>, size <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme</span><span class='op'>(</span>text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Nunito Bold"</span>, face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span>,
+          axis.text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,
+          axis.ticks <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          panel.grid <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"\nNumber of streams in billions"</span>,
+         y <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>scale_x_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>2.7</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+                       breaks <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/breaks_pretty.html'>breaks_pretty</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
 
-ggsave(&quot;invis_gridline.png&quot;, invis_gridline, dpi = 300,
-       height = 6, width = 14, units = &quot;in&quot;)</code></pre>
+<span class='fu'>ggsave</span><span class='op'>(</span><span class='st'>"invis_gridline.png"</span>, <span class='va'>invis_gridline</span>, dpi <span class='op'>=</span> <span class='fl'>300</span>,
+       height <span class='op'>=</span> <span class='fl'>6</span>, width <span class='op'>=</span> <span class='fl'>14</span>, units <span class='op'>=</span> <span class='st'>"in"</span><span class='op'>)</span>
+</code></pre>
+</div>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <p><img src="invis_gridline.png" width="2100" /></p>
 </div>
 <h1 id="chart-3-direct-labels">Chart 3: Direct labels</h1>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
-<pre class="r"><code>
-direct_label &lt;- df %&gt;% 
-    filter(num_rank &lt;=10) %&gt;% 
-    ggplot(aes(x = streams, y = fct_reorder(lab_text, streams))) +
-    geom_col(fill = &quot;#303844&quot;, width = .9) +
-    geom_text(aes(y = fct_reorder(lab_text, streams), x = streams, label = streams_text),
-              color = &quot;white&quot;, hjust = 1, fontface = &quot;bold&quot;, position = position_nudge(x = -.020)) +
-    theme_minimal() +
-    theme(text = element_text(family = &quot;Nunito Bold&quot;, face = &quot;bold&quot;, size = 16),
-          axis.text = element_text(face = &quot;bold&quot;),
-          axis.text.x = element_blank(),
-          axis.ticks = element_blank(),
-          panel.grid = element_blank()) +
-    labs(y = &quot;&quot;,
-         x = &quot;&quot;) +
-    scale_x_continuous(limits = c(0,2.7), expand = c(0, 0),
-                       breaks = scales::breaks_pretty(n = 10))
+<div class="sourceCode">
+<pre><code><span class='va'>direct_label</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>num_rank</span> <span class='op'>&lt;=</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>streams</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_col</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"#303844"</span>, width <span class='op'>=</span> <span class='fl'>.9</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_text</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span>, x <span class='op'>=</span> <span class='va'>streams</span>, label <span class='op'>=</span> <span class='va'>streams_text</span><span class='op'>)</span>,
+              color <span class='op'>=</span> <span class='st'>"white"</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, fontface <span class='op'>=</span> <span class='st'>"bold"</span>, position <span class='op'>=</span> <span class='fu'>position_nudge</span><span class='op'>(</span>x <span class='op'>=</span> <span class='op'>-</span><span class='fl'>.020</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme</span><span class='op'>(</span>text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Nunito Bold"</span>, face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>16</span><span class='op'>)</span>,
+          axis.text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,
+          axis.text.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          axis.ticks <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          panel.grid <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>labs</span><span class='op'>(</span>y <span class='op'>=</span> <span class='st'>""</span>,
+         x <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>scale_x_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>2.7</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+                       breaks <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/breaks_pretty.html'>breaks_pretty</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
 
-ggsave(&quot;direct_label.png&quot;, direct_label, dpi = 300,
-       height = 6, width = 14, units = &quot;in&quot;)</code></pre>
+<span class='fu'>ggsave</span><span class='op'>(</span><span class='st'>"direct_label.png"</span>, <span class='va'>direct_label</span>, dpi <span class='op'>=</span> <span class='fl'>300</span>,
+       height <span class='op'>=</span> <span class='fl'>6</span>, width <span class='op'>=</span> <span class='fl'>14</span>, units <span class='op'>=</span> <span class='st'>"in"</span><span class='op'>)</span>
+</code></pre>
+</div>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <p><img src="direct_label.png" width="2100" /></p>
 </div>
 <h1 id="chart-4-labels-above">Chart 4: Labels above</h1>
 <div class="layout-chunk" data-layout="l-body">
-<pre class="r"><code>
-label_above &lt;- df %&gt;% 
-    filter(num_rank &lt;=10) %&gt;% 
-    ggplot(aes(x = streams, y = fct_reorder(lab_text, streams))) +
-    geom_col(fill = &quot;#c2545b&quot;, width = .2) +
-    geom_text(aes(x = 0, y = fct_reorder(lab_text, streams),  label = lab_text),
-              color = &quot;black&quot;, hjust = 0, position = position_nudge(y = 0.3),
-              fontface = &quot;bold&quot;, family = &quot;Nunito Bold&quot;, size = 4) +
-    geom_text(aes(x = streams, y = fct_reorder(lab_text, streams), label = streams_text),
-              color = &quot;#cf7a7f&quot;, hjust = 1, position = position_nudge(x = -.02, y = 0.3),
-              fontface = &quot;bold&quot;, family = &quot;Nunito Bold&quot;, size = 4) +
-    theme_minimal() +
-    theme(text = element_text(family = &quot;Nunito Bold&quot;, face = &quot;bold&quot;, size = 14),
-          axis.text = element_blank(),
-          axis.text.x = element_blank(),
-          axis.ticks = element_blank(),
-          panel.grid = element_blank()) +
-    labs(y = &quot;&quot;,
-         x = &quot;&quot;) +
-    scale_x_continuous(limits = c(0,2.7), expand = c(0, 0),
-                       breaks = scales::breaks_pretty(n = 10))
+<div class="sourceCode">
+<pre><code><span class='va'>label_above</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>num_rank</span> <span class='op'>&lt;=</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>streams</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_col</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"#c2545b"</span>, width <span class='op'>=</span> <span class='fl'>.2</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_text</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>0</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span>,  label <span class='op'>=</span> <span class='va'>lab_text</span><span class='op'>)</span>,
+              color <span class='op'>=</span> <span class='st'>"black"</span>, hjust <span class='op'>=</span> <span class='fl'>0</span>, position <span class='op'>=</span> <span class='fu'>position_nudge</span><span class='op'>(</span>y <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>,
+              fontface <span class='op'>=</span> <span class='st'>"bold"</span>, family <span class='op'>=</span> <span class='st'>"Nunito Bold"</span>, size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_text</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>streams</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span>, label <span class='op'>=</span> <span class='va'>streams_text</span><span class='op'>)</span>,
+              color <span class='op'>=</span> <span class='st'>"#cf7a7f"</span>, hjust <span class='op'>=</span> <span class='fl'>1</span>, position <span class='op'>=</span> <span class='fu'>position_nudge</span><span class='op'>(</span>x <span class='op'>=</span> <span class='op'>-</span><span class='fl'>.02</span>, y <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>,
+              fontface <span class='op'>=</span> <span class='st'>"bold"</span>, family <span class='op'>=</span> <span class='st'>"Nunito Bold"</span>, size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme</span><span class='op'>(</span>text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Nunito Bold"</span>, face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span>,
+          axis.text <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          axis.text.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          axis.ticks <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          panel.grid <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>labs</span><span class='op'>(</span>y <span class='op'>=</span> <span class='st'>""</span>,
+         x <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>scale_x_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>2.7</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+                       breaks <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/breaks_pretty.html'>breaks_pretty</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
 
-ggsave(&quot;label_above.png&quot;, label_above, dpi = 300,
-       height = 6, width = 14, units = &quot;in&quot;)</code></pre>
+<span class='fu'>ggsave</span><span class='op'>(</span><span class='st'>"label_above.png"</span>, <span class='va'>label_above</span>, dpi <span class='op'>=</span> <span class='fl'>300</span>,
+       height <span class='op'>=</span> <span class='fl'>6</span>, width <span class='op'>=</span> <span class='fl'>14</span>, units <span class='op'>=</span> <span class='st'>"in"</span><span class='op'>)</span>
+</code></pre>
+</div>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <p><img src="label_above.png" width="2100" /></p>
 </div>
 <h1 id="chart-5-lollipop">Chart 5: Lollipop</h1>
 <div class="layout-chunk" data-layout="l-body">
-<pre class="r"><code>
-lollipop_bar &lt;- df %&gt;% 
-    filter(num_rank &lt;=10) %&gt;% 
-    ggplot(aes(x = streams, y = fct_reorder(lab_text, streams))) +
-    geom_col(fill = &quot;grey&quot;, width = .8) +
-    geom_point(shape = 21, fill = &quot;orange&quot;, color = &quot;black&quot;, size = 20, stroke = 1) +
-    geom_text(aes(x = streams, y = fct_reorder(lab_text, streams), label = streams),
-              color = &quot;black&quot;, hjust = 0.5, 
-              fontface = &quot;bold&quot;) +
-    theme_minimal() +
-    theme(text = element_text(family = &quot;Nunito Bold&quot;, face = &quot;bold&quot;, size = 14),
-          axis.text = element_text(face = &quot;bold&quot;),
-          axis.text.x = element_blank(),
-          axis.ticks = element_blank(),
-          panel.grid = element_blank(),
-          axis.title.x = element_text(hjust = 0)) +
-    labs(y = &quot;&quot;,
-         x = &quot;Number of streams in billions&quot;) +
-    scale_x_continuous(limits = c(0,2.7), expand = c(0, 0),
-                       breaks = scales::breaks_pretty(n = 10)) +
-    NULL
+<div class="sourceCode">
+<pre><code><span class='va'>lollipop_bar</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>num_rank</span> <span class='op'>&lt;=</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>streams</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_col</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"grey"</span>, width <span class='op'>=</span> <span class='fl'>.8</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_point</span><span class='op'>(</span>shape <span class='op'>=</span> <span class='fl'>21</span>, fill <span class='op'>=</span> <span class='st'>"orange"</span>, color <span class='op'>=</span> <span class='st'>"black"</span>, size <span class='op'>=</span> <span class='fl'>20</span>, stroke <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_text</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>streams</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>lab_text</span>, <span class='va'>streams</span><span class='op'>)</span>, label <span class='op'>=</span> <span class='va'>streams</span><span class='op'>)</span>,
+              color <span class='op'>=</span> <span class='st'>"black"</span>, hjust <span class='op'>=</span> <span class='fl'>0.5</span>, 
+              fontface <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>theme</span><span class='op'>(</span>text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>family <span class='op'>=</span> <span class='st'>"Nunito Bold"</span>, face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>14</span><span class='op'>)</span>,
+          axis.text <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,
+          axis.text.x <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          axis.ticks <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          panel.grid <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+          axis.title.x <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>hjust <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>labs</span><span class='op'>(</span>y <span class='op'>=</span> <span class='st'>""</span>,
+         x <span class='op'>=</span> <span class='st'>"Number of streams in billions"</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>scale_x_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>2.7</span><span class='op'>)</span>, expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+                       breaks <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/breaks_pretty.html'>breaks_pretty</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='cn'>NULL</span>
 
-ggsave(&quot;lollipop_bar.png&quot;, lollipop_bar, dpi = 300,
-       height = 8, width = 16, units = &quot;in&quot;)</code></pre>
+<span class='fu'>ggsave</span><span class='op'>(</span><span class='st'>"lollipop_bar.png"</span>, <span class='va'>lollipop_bar</span>, dpi <span class='op'>=</span> <span class='fl'>300</span>,
+       height <span class='op'>=</span> <span class='fl'>8</span>, width <span class='op'>=</span> <span class='fl'>16</span>, units <span class='op'>=</span> <span class='st'>"in"</span><span class='op'>)</span>
+</code></pre>
+</div>
 </div>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <p><img src="lollipop_bar.png" width="2400" /></p>
 </div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">

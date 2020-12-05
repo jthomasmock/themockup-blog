@@ -4,6 +4,7 @@ description: |
   A meta collection of all things R Markdown.
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 date: 07-25-2020
 base_url: https://themockup.blog
 output: 

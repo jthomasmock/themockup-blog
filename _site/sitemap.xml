@@ -2,110 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
   <url>
     <loc>https://themockup.blog/about.html</loc>
-    <lastmod>2020-09-28T13:03:33-05:00</lastmod>
+    <lastmod>2020-12-05T14:49:10-06:00</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/</loc>
     <lastmod>2020-08-17T16:14:36-05:00</lastmod>
   </url>
   <url>
-    <loc>https://themockup.blog/readme.html</loc>
-    <lastmod>2020-12-05T12:07:01-06:00</lastmod>
-  </url>
-  <url>
     <loc>https://themockup.blog/resources.html</loc>
     <lastmod>2020-10-27T01:02:19-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r/</loc>
-    <lastmod>2020-12-05T12:08:58-06:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables/</loc>
-    <lastmod>2020-11-08T18:57:59-06:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot/</loc>
-    <lastmod>2020-10-13T10:48:50-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/</loc>
-    <lastmod>2020-09-28T10:09:08-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/</loc>
-    <lastmod>2020-09-14T15:59:14-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/</loc>
-    <lastmod>2020-09-14T15:56:45-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/</loc>
-    <lastmod>2020-09-14T15:55:11-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/</loc>
-    <lastmod>2020-09-14T16:03:18-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-07-25-meta-rmarkdown/</loc>
-    <lastmod>2020-09-14T15:53:56-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/</loc>
-    <lastmod>2020-09-14T15:53:38-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite/</loc>
-    <lastmod>2020-09-14T15:48:50-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables/</loc>
-    <lastmod>2020-09-14T15:48:19-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/</loc>
-    <lastmod>2020-09-14T15:42:55-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances/</loc>
-    <lastmod>2020-09-14T15:38:33-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-01-tidy-long-models/</loc>
-    <lastmod>2020-09-14T15:38:10-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite/</loc>
-    <lastmod>2020-09-14T15:34:38-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette/</loc>
-    <lastmod>2020-04-04T10:14:02-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation/</loc>
-    <lastmod>2020-09-14T15:35:29-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot/</loc>
-    <lastmod>2020-09-14T15:33:53-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2019-01-02-tidytuesday-enhancements/</loc>
-    <lastmod>2020-05-09T11:00:31-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/</loc>
-    <lastmod>2020-09-14T16:07:18-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/</loc>
-    <lastmod>2020-09-14T16:06:08-05:00</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/</loc>
-    <lastmod>2020-09-14T16:05:28-05:00</lastmod>
   </url>
 </urlset>

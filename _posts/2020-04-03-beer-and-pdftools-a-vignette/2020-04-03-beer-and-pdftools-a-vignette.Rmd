@@ -1,0 +1,520 @@
+---
+title: "Beer and pdftools - a vignette"
+description: |
+  A guide to extracting tables from many PDFs using the pdftools package
+author:
+  - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
+date: 04-04-2020
+base_url: https://themockup.blog
+output: 
+  distill::distill_article:
+    toc: true
+    toc_depth: 4
+preview: https://raw.githubusercontent.com/jthomasmock/pdftools-guide/master/beer-kegs.jpeg
+categories:
+  - purrr
+  - pdftools
+  - tidyverse
+twitter:
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+![](beer-kegs.jpeg)
+
+# Scraping Complex Tables from PDFs with PDF Tools
+
+The goal of this is to provide a guide to extracting irregularly formatted tables from PDFs.
+
+## Load Libraries
+
+We'll use ROpenSci's `pdftools` package along with several `tidyverse` packages:
+- `stringr` - text manipulation
+- `dplyr` - general data manipulation
+- `tidyr` - data cleaning
+- `purrr` - repeated application of a function
+
+```{r}
+library(tidyverse)
+library(pdftools)
+```
+
+# PDFs
+
+The PDFs for this guide come from [Alcohol and Tobacco Tax and Trade Bureau](https://www.ttb.gov/beer/statistics). We'll use the 2011-2014 data for this example (84 total PDFs). For the purpose of today the files have already been downloaded, but I used the following script.
+
+```{r, eval = FALSE}
+# General function for download
+download_monthly_stats_pdf <- function(year){
+  
+  message(paste0("Downloading ", year))
+  
+  # The general format is yearmonth like 201101 for Jan 2011.
+  month_in <- c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
+  
+  year_vec <- rep(year, 12)
+  
+  url_build <- function(year_vec, month_in){
+      glue::glue("https://www.ttb.gov/images/pdfs/statistics/{year}/{year}{month_in}beer.pdf")
+  }
+  
+  # output to the pdfs folder
+  download_monthly_pdf <- function(year, month, url_in){
+    download.file(
+      url = url_in,
+      destfile = glue::glue("pdfs/ttb_monthly_stats_{year}-{month}.pdf")
+      )
+  }
+  
+  # build all the input urls and attach to an input dataframe
+  full_df <- tibble(year = year_vec, month = month_in) %>% 
+    mutate(url_in = pmap_chr(.l = list(year_vec, month_in), .f = url_build)) 
+  
+  # The pwalk here takes all 3 inputs and applies them to download_monthly_pdf function
+  pwalk(full_df, .f = download_monthly_pdf)
+  
+}
+```
+
+We could apply that function to all the years of interest with another `purrr::walk()` call. This will run `download_monthly_stats_pdf()` for 2011, 2012, 2013, and 2014.
+
+```{r, eval = FALSE}
+walk(c(2011:2014), download_monthly_stats_pdf)
+```
+
+## List File Names
+
+```{r}
+# list all the files we have downloaded so far
+all_files <- list.files("pdfs")
+length(all_files)
+```
+
+We have 48 PDFs, as expected - 12 months x 4 years = 48! 
+
+Now let's take a peek inside one of the PDFs.
+
+![](PDF-table.png)
+
+# Raw PDFs
+
+When we run `pdftools::pdf_text()` we can see a decently formatted table. The main issue to consider is that there is a lot erroneous header descriptions, and there are unequal spacing between "columns" in the table. Importantly, each line of the PDF is separated by a newline `\n`. This is key to our strategy for pulling out individual lines.
+
+```{r}
+pdftools::pdf_text("pdfs/ttb_monthly_stats_2011-01.pdf")
+```
+
+## Split by row
+
+We can use `stringr::str_split()` to separate the text at each of the `\n` newlines. This generates a list of character strings, we call `unlist()` to extract to a vector. We now have a nicely separated vector of character strings, where each row is a new string.
+
+```{r}
+raw_text <- pdftools::pdf_text("pdfs/ttb_monthly_stats_2011-01.pdf") %>% 
+  str_split("\n") %>% 
+  unlist()
+raw_text
+```
+
+## Build Table
+
+Now that we have the data split into a vector we can start finding "rows" to drop. We can see that the 9th string is actually the column titles, and the table ends at the 36th string. However, this could change according to which PDF we are looking at, so rather than going by position we can use `stringr::str_which()` to match a logical with matched text.
+
+```{r}
+# Start of table - column names
+raw_text[9]
+# End of table - last value
+raw_text[36]
+```
+
+We get the same "rows" with our matching `str_which()`.
+
+```{r}
+# find start of table
+stringr::str_which(raw_text, "MANUFACTURE OF BEER")
+# find end of table
+stringr::str_which(raw_text, "Total Used")
+```
+
+Let's actually assign this now, rather than just printing. We can also remove leading/trailing whitespace with `stringr::str_trim()`. When we look at table_trimmed we can "see" a group of text strings that much closer resemble a table!
+
+```{r}
+table_start <- stringr::str_which(raw_text, "MANUFACTURE OF BEER")
+  
+# End of table (drop all the asterisks and the other descriptors)
+table_end <- stringr::str_which(raw_text, "Total Used")
+  
+# Trim the table to the start/end and drop whitespace at each line
+table_trimmed <- raw_text[table_start:table_end] %>% 
+  str_trim()
+table_trimmed
+```
+
+### Remove all the extra whitespace
+
+Next we need to remove all the huge whitespaces from between columns. The regular expression (regex) of `"\\s{2,}"` matches whitespaces of 2 or more. If we use `stringr::str_replace_all()` to take all the whitespaces > 2 and replace with a new delimiter such as `"|"` we can move to our next step. While we're at it, let's remove all the commas so that we can go straight to doubles rather than characters for all the beer production variables.
+  
+  
+```{r}
+# Replace long spaces with a col break symbol
+squished_table <- str_replace_all(table_trimmed, "\\s{2,}", "|") %>% 
+  str_remove_all(",")
+squished_table
+```
+  
+### Convert to tibble
+
+Now we have a nicely formatted vector of strings! We can use `tibble::enframe()` to create a dataframe/tibble out of the vector.
+
+```{r}
+# Convert to tibble
+raw_df <- enframe(squished_table)
+raw_df
+```
+Next we can separate value into the 5 columns. Notice that there are a few "rows" where the data is NA as there were rows that acted only as indicators of the type of beer production. We'll use them later.
+
+```{r}
+year <- 2011
+month <- "02"
+# Convert to tibble
+beer_df <- raw_df %>% 
+    separate(value, 
+             into = c("type", "month_current", "month_prior_year", "ytd_current", "ytd_prior_year"), 
+             sep = "\\|") %>% 
+  slice(-1) %>% 
+  mutate_at(vars(month_current:ytd_prior_year), as.double) %>% 
+  mutate(year = as.integer(year), month = as.integer(month)) %>% 
+  select(year, month, type, everything())
+beer_df
+```
+
+Technically at this point, we have successfully converted from raw text to a dataframe/table/tibble! HOWEVER, for many many examples in the wild you will need to do additional data cleaning, data manipulation, factor assignment, etc. As such, I'll continue working on this to get to a final output. I'll also work on repeating this many times as opposed to one time.
+
+# Alternative method via `readr`
+
+Thanks to Grant McDermott for bringing up a good point [here](https://github.com/jthomasmock/pdftools-guide/issues/1) - I based this method off of tables where the white-space between columns is varying. If the white space is fixed between columns you could skip some steps as seen in the below example using `readr::read_fwf()`, courtesy of Grant. I believe for most cases either using `readr::read_table()` or `readr::read_fwf()` would be simple, but will keep the additional workflow steps in case they help someone down the road!
+
+Overall, using `readr` to natively parse the table-format could save the workflow step of trimming, coercing to a tibble, and then separating, and just requires you to indicate the spacing of empty cells either manually with `fwf_widths()` or guessing/parsing of columns via `fwf_empty()`.
+
+```{r read_fwf}
+table_start_fwf <- stringr::str_which(raw_text, "Production") ## Changed since we're dropping the first row anyway
+table_end_fwf <- stringr::str_which(raw_text, "Total Used")
+## Trim the table to the start/end (NB: Don't drop whitespace this time!)
+table_trimmed_fwf <- raw_text[table_start_fwf:table_end_fwf]
+beer_df_fwf <- read_fwf(table_trimmed_fwf, 
+                        fwf_empty(table_trimmed_fwf, 
+                                  col_names = c("type", 
+                                                "month_current", 
+                                                "month_prior_year", 
+                                                "ytd_current", 
+                                                "ytd_prior_year")
+                                  )
+                        )
+beer_df_fwf
+```
+
+One more alternative would be to just use [`readr::read_table()`](https://readr.tidyverse.org/reference/read_table.html) or [`readr::read_table2()`](https://readr.tidyverse.org/reference/read_table.html). Now in practice this should be fairly robust, and works just fine for the examples here, but for messier tables it may fail which leads to the more complex and longer workflow shown below. Specifically, from the `readr::read_table()` [docs](https://readr.tidyverse.org/reference/read_table.html):
+
+> `read_table()` and `read_table2()` are designed to read the type of textual data where each column is separated by one (or more) > columns of space.
+> 
+> `read_table2()` is like `read.table()`, it allows any number of whitespace characters between columns, and the lines can be of different lengths.
+> 
+> `read_table()` is more strict, each line must be the same length, and each field is in the same position in every line. It first finds empty columns and then parses like a fixed width file.
+
+```{r}
+read_table(raw_text[table_start:table_end], skip =1,
+           col_names = c("type", "month_current", "month_prior_year", 
+                         "ytd_current", "ytd_prior_year"))
+```
+
+
+# Proper Cleaning
+
+This is actually two datasets that are combined into one large reporting table. As such we need to identify the specific row/point to split the dataset at. We can filter to just the row that matches either the string "MATERIALS USED" or "IN POUNDS", as that indicates a label starting the 2nd dataset.
+
+```{r}
+slice_num <- beer_df %>% 
+  # find a string that has MATERIALS USED or IN POUNDS
+  # | means OR
+    filter(str_detect(type, "MATERIALS USED|IN POUNDS")) %>%
+    pull(name)
+slice_num
+```
+
+## Split dataframe
+
+Next we will add a column based on logic for the `slice_num`, and assign a grouping variable for either `Barrels Produced` (dataset 1) or `Pounds of Materials Used` (dataset 2). We can then drop the unneeded rows with a `filter()`, `group_by(`) the newly produced grouping variable, and use `dplyr::group_split()` to separate the combined dataset into a list of both datasets.
+
+```{r}
+# split data into materials vs barrels produced
+split_df <- beer_df %>% 
+  mutate(data_type = ifelse(name >= slice_num, "Pounds of Materials Used", "Barrels Produced"),
+         type = str_remove(type, ":")) %>% 
+  select(data_type, everything(), -name) %>% 
+  filter(!str_detect(type, "IN POUNDS|MATERIALS USED|MANUFACTURE OF BEER|BARRELS")) %>% 
+  group_by(data_type) %>% 
+  group_split()
+glimpse(split_df)
+```
+
+## Factor cleaning and final dataframes
+
+We can see that the `split_df` object is a list of 2 tibbles/dataframes. We can now operate on the individual dataframes and finalize the factor cleaning and assignment to make the data a bit tidier and analysis ready.
+
+```{r}
+manufacture_df <- split_df[[1]] %>% 
+  mutate(
+    tax_status = case_when(
+      type %in% c("In bottles and cans", "In kegs", "In barrels and kegs",
+                  "Tax Determined, Premises Use") ~ "Taxable",
+      type == "Sub Total Taxable" ~ "Sub Total Taxable",
+      type %in% c("For export", "For vessels and aircraft", 
+                  "Consumed on brewery premises") ~ "Tax Free",
+      type == "Sub Total Tax-Free" ~ "Sub Total Tax-Free",
+      type %in% c("Production", "Total Removals", 
+                  "Stocks On Hand end-of-month:") ~ "Totals"
+      ),
+    tax_rate = dplyr::if_else(year <= 2017, "$7/$18 per barrel", "$3.50/$16 per barrel")
+    ) %>% 
+  filter(!is.na(tax_status)) %>% 
+  select(data_type, tax_status, everything())
+```
+
+
+```{r}
+ 
+# clean up the material dataset
+material_df <- split_df[[2]] %>% 
+  mutate(
+    material_type = case_when(
+      str_detect(type, "Malt|Corn|Rice|Barley|Wheat") ~ "Grain Products",
+      str_detect(type, "Sugar|Hops|Other") ~ "Non-Grain Products",
+      str_detect(type, "Total") ~ type
+    )
+  ) %>% 
+  select(data_type, material_type, everything())
+```
+
+### Print the dataframes
+
+The manufacture dataframe now has the labels, factors, etc separated into nice columns, with the 4x columns for specific barrels produced.
+
+```{r}
+manufacture_df
+```
+
+
+The material dataframe now has the labels, factors, etc separated into nice columns, with the 4x columns for specific pounds of product used.
+
+
+```{r}
+material_df
+```
+
+### Finished Cleaning
+
+We have now finished cleaning the manufacting and material dataframes! However, we did this all line-by-line without functions and would need to repeat this for the other 47 PDFs! Let's convert ALL that code into a function that outputs the final dataframes.
+  
+# Use a function
+
+```{r}
+# create a function that works for most years
+get_beer_tables <- function(year, month) {
+  
+  # read in the raw PDF
+  raw_text <- pdftools::pdf_text(glue::glue("pdfs/ttb_monthly_stats_{year}-{month}.pdf")) %>%
+    str_split("\n") %>%
+    unlist()
+  ## Build Table
+  # find start of table
+  table_start <- stringr::str_which(raw_text, "MANUFACTURE OF BEER")
+  # End of table (drop all the asterisks and the other descriptors)
+  table_end <- stringr::str_which(raw_text, "Total Used")
+  # Trim the table to the start/end and drop whitespace at each line
+  table_trimmed <- raw_text[table_start:table_end] %>%
+    str_trim()
+  table_trimmed
+  ### Remove all the extra whitespace
+  # Replace long spaces with a col break symbol
+  squished_table <- str_replace_all(table_trimmed, "\\s{2,}", "|") %>%
+    str_remove_all(",")
+  ### Convert to tibble
+  # Convert to tibble
+  raw_df <- enframe(squished_table)
+  
+  # split the rows into their columns
+  beer_df <- suppressWarnings(raw_df %>%
+    separate(value,
+      into = c("type", "month_current", "month_prior_year", "ytd_current", "ytd_prior_year"),
+      sep = "\\|"
+    ) %>%
+    slice(-1) %>%
+    mutate_at(vars(month_current:ytd_prior_year), as.double) %>%
+    mutate(year = as.integer(year), month = as.integer(month)) %>%
+    select(year, month, type, everything()))
+  ### Proper Cleaning
+  # ID the specific row/point to split the dataset at.
+  slice_num <- beer_df %>%
+    # find a string that has MATERIALS USED or IN POUNDS
+    # | means OR
+    filter(str_detect(type, "MATERIALS USED|IN POUNDS")) %>%
+    pull(name)
+  #### Split dataframe
+  # split data into materials vs barrels produced
+  split_df <- suppressWarnings(beer_df %>%
+    mutate(
+      data_type = ifelse(name >= slice_num, "Pounds of Materials Used", "Barrels Produced"),
+      type = str_remove(type, ":")
+    ) %>%
+    select(data_type, everything(), -name) %>%
+    filter(!str_detect(type, "IN POUNDS|MATERIALS USED|MANUFACTURE OF BEER|BARRELS")) %>%
+    group_by(data_type) %>%
+    group_split())
+  #### Factor cleaning and final dataframes
+  # clean manufacture df
+  manufacture_df <- split_df[[1]] %>%
+    mutate(
+      tax_status = case_when(
+        type %in% c(
+          "In bottles and cans", "In kegs", "In barrels and kegs",
+          "Tax Determined, Premises Use"
+        ) ~ "Taxable",
+        type == "Sub Total Taxable" ~ "Sub Total Taxable",
+        type %in% c(
+          "For export", "For vessels and aircraft",
+          "Consumed on brewery premises"
+        ) ~ "Tax Free",
+        type == "Sub Total Tax-Free" ~ "Sub Total Tax-Free",
+        type %in% c(
+          "Production", "Total Removals",
+          "Stocks On Hand end-of-month:"
+        ) ~ "Totals"
+      ),
+      tax_rate = dplyr::if_else(year <= 2017, "$7/$18 per barrel", "$3.50/$16 per barrel")
+    ) %>%
+    filter(!is.na(tax_status)) %>%
+    select(data_type, tax_status, everything())
+  # clean up the material dataset
+  material_df <- split_df[[2]] %>%
+    mutate(
+      material_type = case_when(
+        str_detect(type, "Malt|Corn|Rice|Barley|Wheat") ~ "Grain Products",
+        str_detect(type, "Sugar|Hops|Other") ~ "Non-Grain Products",
+        str_detect(type, "Total") ~ type
+      )
+    ) %>%
+    select(data_type, material_type, everything())
+  # output a list of both dfs
+  list(manufacture_df, material_df)
+}
+```
+
+
+Really the only code we have changed is we added a `glue` call to add the year, month to which PDF to read in, and we have the output as a list of both dataframes. Let's test our function!
+
+```{r}
+get_beer_tables(2011, "01")
+```
+
+Boom! Function is working for our example, let's try it out with more than 1 input via `purrr`!
+
+# `purrr` - iteration without repetition
+
+We'll be using `pmap()` to apply our function multiple times, where `pmap` can take any number of inputs. For example if we call `get_beer_tables()` via `pmap`, we can get our tables for that 1 year/month combo!
+
+```{r}
+# Quick test of purrr
+pmap(list(2011, "02"), get_beer_tables)
+```
+
+However our goal is all the inputs at once! We can create a vector of the month inputs as character strings, and then use `tidyr::crossing()` to output all the possible combinations of year + month as a dataframe. Notice two columns, year and month with a length of 48 - equal to all of our PDFs!
+
+```{r}
+# add the month_num as vector
+month_num <- c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
+# use crossing to generate all combos for the data 
+# 2010 is missing, but as the data has prior year data we can theoretically
+# add it back in after the fact
+crossing(
+  year = c(2011:2014), 
+  month = month_num
+  ) %>% glimpse()
+```
+
+## All possible combos
+
+We can use `tidyr::crossing()` again to generate the possible inputs and create the output dataframes as list column of two dataframes. Running this takes only about 2 seconds across the 48 PDFs! The output is not very exciting as the data is simply the year & month columns, plus a list-column called data. Let's get the final outputs!
+
+```{r, cache = TRUE, warning=FALSE, message=FALSE}
+# add the month_num as vector
+month_num <- c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
+# use crossing to generate all combos for the data 
+df_2011_2014 <- crossing(year = c(2011:2014), 
+                         month = month_num) %>% 
+  mutate(data = pmap(., get_beer_tables))
+df_2011_2014
+```
+
+## Final output
+
+We can now get just the output data, drop the other columns. We're still working with list-columns, so let's get to the `manufacture_df` and `material_df`.
+
+```{r}
+final_output <- df_2011_2014 %>%
+  # grab the data into respective columns
+  mutate(manufacture_data = map(data, 1),
+         material_data = map(data, 2)) %>% 
+  select(manufacture_data, material_data)
+final_output
+```
+
+
+The manufacture dataframe can be combined as below.
+
+```{r}
+# Grab just the manufacture data
+manufacture_df <- final_output %>% 
+  select(manufacture_data) %>% 
+  unnest(manufacture_data)
+# Grab just the manufacture data
+material_df <- final_output %>% 
+  select(material_data) %>% 
+  unnest(material_data)
+```
+
+
+And now we can look at the outputs!
+
+### Manufacture dataset
+
+```{r}
+glimpse(manufacture_df)
+```
+
+### Material dataset
+
+```{r}
+glimpse(material_df)
+```
+
+# Do it all in 6 Lines of Code!
+
+Now all of that could have been done in about 6 lines of `tidyverse` code since we created a function.
+
+```{r, eval=FALSE}
+# Use crossing to generate all 48 combos for the data 
+# Use purrr to read in, clean, and output the 96 tables from the 48 PDFs
+final_output <- crossing(year = c(2011:2014), month = month_num) %>% 
+  mutate(data = pmap(., get_beer_tables)) %>% 
+  mutate(manufacture_data = map(data, 1), material_data = map(data, 2)) %>% 
+  select(manufacture_data, material_data)
+# Grab just the manufacture data
+manufacture_df <- final_output %>% select(manufacture_data) %>% unnest(manufacture_data)
+# Grab just the manufacture data
+material_df <- final_output %>% select(material_data) %>% unnest(material_data)
+```

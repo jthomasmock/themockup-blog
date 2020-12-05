@@ -125,6 +125,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
       var header = $('header').get(0);
       var headerHeight = header.offsetHeight;
       var headroom = new Headroom(header, {
+        tolerance: 5,
         onPin : function() {
           if (window.headroom_prevent_pin) {
             window.headroom_prevent_pin = false;
@@ -472,22 +473,19 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
     return offset ? offset + '/' + url : url;
   }
 
-  function createIndex() {
-    var options = {
-      keys: [
-        "title",
-        "categories",
-        "description",
-        "contents"
-      ]
-    };
-    return new window.Fuse([],options);
-  }
-
   function createFuseIndex() {
 
     // create fuse index
-    var options = { keys: ["title", "description", "contents"] };
+    var options = {
+      keys: [
+        { name: 'title', weight: 20 },
+        { name: 'categories', weight: 15 },
+        { name: 'description', weight: 10 },
+        { name: 'contents', weight: 5 },
+      ],
+      ignoreLocation: true,
+      threshold: 0
+    };
     var fuse = new window.Fuse([], options);
 
     // fetch the main search.json
@@ -555,12 +553,6 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
               shouldSort: true,
               minMatchCharLength: 2,
               limit: 10,
-              keys: [
-                { name: 'title', weight: 20 },
-                { name: 'categories', weight: 15 },
-                { name: 'description', weight: 10 },
-                { name: 'contents', weight: 5 },
-              ],
             };
             var results = fuse.search(query, searchOptions);
             callback(results
@@ -858,7 +850,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
   d-article pre,
   d-article div.sourceCode,
   d-article div.sourceCode pre {
-    overflow: hidden;
+    overflow: auto;
   }
 
   d-article div.sourceCode {
@@ -2029,10 +2021,11 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
     --heading-font:    sans-serif;
     --mono-font:       monospace;
     --body-font:       sans-serif;
+    --navbar-font:     sans-serif;  /* websites + blogs only */
   }
 
   /*-- ARTICLE METADATA --*/
-  .d-byline {
+  d-byline {
     --heading-size:    0.6rem;
     --heading-color:   rgba(0, 0, 0, 0.5);
     --body-size:       0.8rem;
@@ -2069,7 +2062,11 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
     --text-size:        15px;
     --hover-color:      white;
     --bkgd-color:       #0F2E3D;
-  }</style>
+  }
+
+  /*-- Additional custom styles --*/
+  /* Add any additional CSS rules below                      */
+  </style>
   <style type="text/css">
   /* base variables */
 
@@ -2158,11 +2155,15 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
     --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
   }
 
-  body {
+  body,
+  .posts-list .post-preview p,
+  .posts-list .description p {
     font-family: var(--body-font), var(--body-default);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3, h4, h5, h6,
+  .posts-list .post-preview h2,
+  .posts-list .description h2 {
     font-family: var(--heading-font), var(--heading-default);
   }
 
@@ -2262,16 +2263,21 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
   /*-- WEBSITE HEADER + FOOTER --*/
   .distill-site-header .title {
   	font-size: var(--title-size, 18px);
+  	font-family: var(--navbar-font), var(--heading-default);
+  }
+
+  .distill-site-header a {
+    font-family: var(--navbar-font), var(--heading-default);
+  }
+
+  .distill-site-header a:hover {
+  	color: var(--hover-color, white);
   }
 
   .distill-site-header {
   	font-size: var(--text-size, 15px);
   	color: var(--text-color, rgba(255, 255, 255, 0.8));
   	background-color: var(--bkgd-color, #0F2E3D);
-  }
-
-  .distill-site-header a:hover {
-  	color: var(--hover-color, white);
   }
 
   .distill-site-footer {
@@ -2284,7 +2290,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
   	color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.4/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
   <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
   <script src="site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
@@ -2349,6 +2355,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 
 
 <div class="d-article">
+<p>If my blog has helped you, you can <a href="https://www.buymeacoffee.com/thomasmock">buy me a coffee</a>!</p>
 <h1 id="tom-mock">Tom Mock</h1>
 <ul>
 <li>Bachelor’s degree from Southwestern University (where I thought I wanted to be a Physical Therapist).</li>
@@ -2361,8 +2368,6 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <p>In my home town of Dallas, my wife and I run on the local trails, play with our Boston Terrier puppy “Howard”, spend lots of time with our five nephews and families, and are always on the lookout for great new food, especially churros.</p>
 <h2 id="contact">Contact</h2>
 <p>You should probably just tweet me <a href="https://twitter.com/thomas_mock"><code>@thomas_mock</code></a>.</p>
-<h2 id="thanks">Thanks</h2>
-<p>If my blog has helped you, you can <a href="https://www.buymeacoffee.com/thomasmock">buy me a coffee</a>!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

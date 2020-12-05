@@ -4,6 +4,7 @@ description: |
   Not to be confused with a Game of Thrones
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 base_url: https://themockup.blog
 date: 05-18-2020
 output: 

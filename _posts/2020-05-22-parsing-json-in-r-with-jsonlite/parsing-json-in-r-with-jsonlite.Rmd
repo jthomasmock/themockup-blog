@@ -4,6 +4,7 @@ description: |
   It's turtles all the way down...
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 base_url: https://themockup.blog
 date: 05-22-2020
 output: 

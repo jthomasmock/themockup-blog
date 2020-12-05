@@ -4,6 +4,7 @@ description: |
   Because sharing data is caring
 author:
   - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
 base_url: https://themockup.blog
 date: 05-29-2020
 output: 

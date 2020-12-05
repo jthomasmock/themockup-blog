@@ -101,7 +101,7 @@ library(ggtext) # for formatted text in ggplot
 
 First we'll get all the data from the 2000-2019 seasons for NFL offenses via `espnscrapeR::scrape_team_stats_nfl()`.
 
-```{r scrape data}
+```{r scrape data, cache = TRUE}
 # Get data from espnscrapeR
 all_off <- 2000:2019 %>% 
   map_dfr(scrape_team_stats_nfl)
