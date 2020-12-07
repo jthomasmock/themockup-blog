@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>The Mockup Blog</title>
+    <link>https://themockup.blog</link>
+    <atom:link href="https://themockup.blog/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Exploring the wonderful world of R
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Sun, 29 Nov 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Bullet Chart Variants in R</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r</link>
+      <description>Efficient display of several measures at once.</description>
+      <category>data visualization</category>
+      <category>tidyverse</category>
+      <category>ggplot2</category>
+      <category>nfl</category>
+      <guid>https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r</guid>
+      <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r/preview.png" medium="image" type="image/png" width="1440" height="1440"/>
+    </item>
+    <item>
+      <title>Embedding custom HTML in gt tables</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables</link>
+      <description>HTML is basically a superpower.</description>
+      <category>data visualization</category>
+      <category>tables</category>
+      <category>gt</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables</guid>
+      <pubDate>Sat, 31 Oct 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables/preview.png" medium="image" type="image/png" width="1384" height="755"/>
+    </item>
+    <item>
+      <title>Plotting Points as Images in ggplot</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot</link>
+      <description>Trials and tribulations of the various strategies.</description>
+      <category>data visualization</category>
+      <category>ggplot2</category>
+      <category>tidyverse</category>
+      <category>tables</category>
+      <category>gt</category>
+      <category>NFL</category>
+      <guid>https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot</guid>
+      <pubDate>Sun, 11 Oct 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot/preview.png" medium="image" type="image/png" width="1002" height="743"/>
+    </item>
+    <item>
+      <title>Functions and Themes for gt tables</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables</link>
+      <description>Save time and effort in making beautiful tables</description>
+      <category>tables</category>
+      <category>tidyverse</category>
+      <category>gt</category>
+      <category>NFL</category>
+      <guid>https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables</guid>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/pff-themed-gt.png" medium="image" type="image/png" width="2090" height="1554"/>
+    </item>
+    <item>
+      <title>10+ Guidelines for Better Tables in R</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-09-04-10-table-rules-in-r</link>
+      <description>Make tables people ACTUALLY want to read.</description>
+      <category>data visualization</category>
+      <category>tables</category>
+      <category>tidyverse</category>
+      <category>TidyTuesday</category>
+      <category>gt</category>
+      <guid>https://themockup.blog/posts/2020-09-04-10-table-rules-in-r</guid>
+      <pubDate>Fri, 04 Sep 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/preview.png" medium="image" type="image/png" width="672" height="863"/>
+    </item>
+    <item>
+      <title>Heatmaps in ggplot2</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2</link>
+      <description>It's more than just a passing fad.</description>
+      <category>data visualization</category>
+      <category>ggplot2</category>
+      <category>tidyverse</category>
+      <category>NFL</category>
+      <guid>https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2</guid>
+      <pubDate>Fri, 28 Aug 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/preview.png" medium="image" type="image/png" width="1200" height="1200"/>
+    </item>
+    <item>
+      <title>Building a blog with distill</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</link>
+      <description>I love simplicity.</description>
+      <category>rmarkdown</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill</guid>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/modern.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>A bar chart 5 ways in ggplot2</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways</link>
+      <description>Andy, Tom, and ggplot2 walk into a bar...</description>
+      <category>data visualization</category>
+      <category>ggplot2</category>
+      <category>tidyverse</category>
+      <category>web scraping</category>
+      <guid>https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways</guid>
+      <pubDate>Sat, 01 Aug 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/CopyOfpreview.png" medium="image" type="image/png" width="1440" height="617"/>
+    </item>
+    <item>
+      <title>Meta RMarkdown - Taxonomy and Use cases</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</link>
+      <description>A meta collection of all things R Markdown.</description>
+      <category>rmarkdown</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2020-07-25-meta-rmarkdown</guid>
+      <pubDate>Sat, 25 Jul 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-07-25-meta-rmarkdown/tools-flat.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>Client-side interactivity - do more with Crosstalk</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk</link>
+      <description>Because sharing data is caring</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>crosstalk</category>
+      <category>plotly</category>
+      <category>tables</category>
+      <category>reactable</category>
+      <guid>https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk</guid>
+      <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/distill-preview.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>Easily parsing JSON in R with jsonlite and purrr</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite</link>
+      <description>It's turtles all the way down...</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>JSON</category>
+      <category>web scraping</category>
+      <category>API</category>
+      <category>purrr</category>
+      <guid>https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite</guid>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite/distill-preview.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>gt - a (G)rammar of (T)ables</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables</link>
+      <description>Not to be confused with a Game of Thrones</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>tables</category>
+      <guid>https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables</guid>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables/distill-preview.png" medium="image" type="image/png" width="1096" height="805"/>
+    </item>
+    <item>
+      <title>reactable - An Interactive Tables Guide</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl</link>
+      <description>Part 2: How to draw the rest of the owl.</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>tables</category>
+      <guid>https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl</guid>
+      <pubDate>Fri, 15 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png" medium="image" type="image/png" width="1093" height="652"/>
+    </item>
+    <item>
+      <title>QB Salaries vs Playoff Appearances</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances</link>
+      <description>Interactive tables make bad takes more fun.</description>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>tables</category>
+      <guid>https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances</guid>
+      <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances/distill-preview.png" medium="image" type="image/png" width="1093" height="652"/>
+    </item>
+    <item>
+      <title>Flipping tibbles for many models</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-05-01-tidy-long-models</link>
+      <description>Pivoting data from wide to long to run many models at once</description>
+      <category>espnscrapeR</category>
+      <category>NFL</category>
+      <category>tidyverse</category>
+      <category>tidymodels</category>
+      <guid>https://themockup.blog/posts/2020-05-01-tidy-long-models</guid>
+      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-05-01-tidy-long-models/distill-preview.png" medium="image" type="image/png" width="720" height="576"/>
+    </item>
+    <item>
+      <title>Bigger, nflfastR, dbplyr</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite</link>
+      <description>Doing more with dplyr and SQL</description>
+      <category>NFL</category>
+      <category>nflscrapR</category>
+      <category>nflfastR</category>
+      <category>SQL</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite</guid>
+      <pubDate>Tue, 28 Apr 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1526&amp;q=80" medium="image" type="text/plain"/>
+    </item>
+    <item>
+      <title>Beer and pdftools - a vignette</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette</link>
+      <description>A guide to extracting tables from many PDFs using the pdftools package</description>
+      <guid>https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette</guid>
+      <pubDate>Sat, 04 Apr 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette/beer-kegs.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>Crossing 10,000 - Tidy simulation</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation</link>
+      <description>Tidy simulation with dice rolls</description>
+      <category>tidyverse</category>
+      <category>purrr</category>
+      <category>simulation</category>
+      <category>probability</category>
+      <guid>https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation</guid>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation/distill-preview.png" medium="image" type="image/png" width="5400" height="3600"/>
+    </item>
+    <item>
+      <title>Add a logo to your plot</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot</link>
+      <description>Put a bird on it - Portlandia.</description>
+      <category>magick</category>
+      <category>data visualization</category>
+      <category>ggplot2</category>
+      <guid>https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot</guid>
+      <pubDate>Wed, 09 Jan 2019 00:00:00 +0000</pubDate>
+      <media:content url="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" medium="image" type="text/plain"/>
+    </item>
+    <item>
+      <title>TidyTuesday enhancements</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2019-01-02-tidytuesday-enhancements</link>
+      <description>Making #TidyTuesday better.</description>
+      <category>TidyTuesday</category>
+      <category>tidyverse</category>
+      <category>Automation</category>
+      <guid>https://themockup.blog/posts/2019-01-02-tidytuesday-enhancements</guid>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      <media:content url="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png" medium="image" type="image/png"/>
+    </item>
+    <item>
+      <title>TidyTuesday</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r</link>
+      <description>A weekly social data project in R</description>
+      <category>TidyTuesday</category>
+      <category>tidyverse</category>
+      <category>Community</category>
+      <guid>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r</guid>
+      <pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/preview.png" medium="image" type="image/png" width="768" height="384"/>
+    </item>
+    <item>
+      <title>Functional Progamming in R with purrr</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr</link>
+      <description>Minimizing repetition with further replication</description>
+      <category>purrr</category>
+      <category>tidyverse</category>
+      <category>statistics</category>
+      <guid>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr</guid>
+      <pubDate>Sun, 18 Mar 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>A Gentle Guide to Tidy Statistics in R</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r</link>
+      <description>Working your way through a basic analysis</description>
+      <guid>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r</guid>
+      <pubDate>Fri, 16 Mar 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png" medium="image" type="image/png" width="1400" height="1225"/>
+    </item>
+  </channel>
+</rss>
