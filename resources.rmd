@@ -27,3 +27,7 @@ A full workshop on using `tidymodels` to predict whether the opposing team will 
 ### [Intro to Tables Presentation](https://themockup.blog/static/slides/intro-tables.html)
 
 A presentation on 10 best practices for creating tables with `gt`.
+
+### [100 Women of 2020](https://themockup.blog/static/100-women.html)
+
+A `#TidyTuesday` submission for the [BBC's 100 Women of 2020](https://www.bbc.com/news/world-55042935) [dataset](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-12-08/readme.md).
