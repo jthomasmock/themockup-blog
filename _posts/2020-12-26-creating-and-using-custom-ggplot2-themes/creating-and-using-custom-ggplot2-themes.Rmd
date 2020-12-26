@@ -196,6 +196,14 @@ Story one is a continuation of our data above. We're exploring the relationship 
 
 The second story will be about a specific team (the Indianapolis Colts), and how their approach to defense is effective while being very different than other teams.
 
+Note that since this is using *live* data feeds, to recreate the plots exactly as they are you'd need to read in the data I used below.
+
+```{r, eval = FALSE}
+diff_df <- readr::read_csv("https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/diff_df.csv")
+combo_pass <- readr::read_csv("https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/combo_pass.csv")
+```
+
+
 ---
 
 # Point Differential
@@ -821,7 +829,7 @@ stand_df %>%
 ---
 
 
-## Blitzing
+# Blitzing
 
 Now for the next example of a story with various components, we can look at blitz rate vs pressure rate, or blitz rate vs pass affected rate (sacks + ints + passes defended)/pass att. This is building off an article from [FiveThirtyEight highlighting the Colts defense](https://fivethirtyeight.com/features/the-indianapolis-colts-finally-built-a-defensive-monster/) about a month ago.
 
@@ -829,7 +837,7 @@ Now for the next example of a story with various components, we can look at blit
 
 The data they used is available at [Pro-Football-Reference](https://www.pro-football-reference.com/years/2020/opp.htm) under a few defensive categories.
 
-### Get the data
+## Get the data
 
 First we have to download the data from PFR. There are two defensive datasets we'll need, the Advanced Stats for pressure/blitz rates and the general Passing Stats for passes defended + intercetions.
 
@@ -879,7 +887,7 @@ combo_pass <- left_join(
 combo_pass
 ```
 
-### Initial Plot
+## Initial Plot
 
 We'll first plot the data and try out our theme. I want to add the colors of the specific article we're recreating.
 
@@ -895,7 +903,7 @@ combo_pass %>%
   theme_538()
 ```
 
-### Add color
+## Add color
 
 If we add color specifically for the Colts, and then also expand the axis range to match the article, we get the following plot. I'll save the `mutate` calls into a new dataframe, and then plot it.
 
@@ -936,7 +944,7 @@ colt_df %>%
 ```
 
 
-### Add labels
+## Add labels
 
 We can create a small "helper" dataset to plot the labels, and we've basically re-created the original plot!
 
@@ -981,7 +989,7 @@ colt_df %>%
 ```
 
 
-## Pass Affected Rate
+# Pass Affected Rate
 
 The Colts are also getting good pass affected rate, which I've extended to be (interceptions + sacks + passes defended)/pass att. This is a proxy for the number of plays where the defense either stops the pass or is directly defending the reception.
 
