@@ -5,6 +5,10 @@
     <lastmod>2020-12-05T14:49:10-06:00</lastmod>
   </url>
   <url>
+    <loc>https://themockup.blog/ggplot.html</loc>
+    <lastmod>2020-12-24T12:41:53-06:00</lastmod>
+  </url>
+  <url>
     <loc>https://themockup.blog/</loc>
     <lastmod>2020-08-17T16:14:36-05:00</lastmod>
   </url>
@@ -15,6 +19,10 @@
   <url>
     <loc>https://themockup.blog/resources.html</loc>
     <lastmod>2020-12-08T14:51:33-06:00</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-12-26-creating-and-using-custom-ggplot2-themes/</loc>
+    <lastmod>2020-12-26T14:25:55-06:00</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/</loc>
