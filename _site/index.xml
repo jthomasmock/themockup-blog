@@ -7,7 +7,22 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 13 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 26 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Creating and using custom ggplot2 themes</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2020-12-26-creating-and-using-custom-ggplot2-themes</link>
+      <description>The best way to make each plot your own.</description>
+      <category>ggplot2</category>
+      <category>data visualization</category>
+      <category>theme</category>
+      <category>tidyverse</category>
+      <category>NFL</category>
+      <category>espnscrapeR</category>
+      <guid>https://themockup.blog/posts/2020-12-26-creating-and-using-custom-ggplot2-themes</guid>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2020-12-26-creating-and-using-custom-ggplot2-themes/preview.png" medium="image" type="image/png" width="1000" height="778"/>
+    </item>
     <item>
       <title>Extracting JSON data from websites and public APIs with R</title>
       <dc:creator>Thomas Mock</dc:creator>

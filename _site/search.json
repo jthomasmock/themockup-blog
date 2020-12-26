@@ -6,20 +6,20 @@
       "description": "Ignore the man behind the curtain",
       "author": [],
       "contents": "\nIf my blog has helped you, you can buy me a coffee!\nTom Mock\nBachelor’s degree from Southwestern University (where I thought I wanted to be a Physical Therapist).\nMaster’s degree from Florida Atlantic University (where I realized I actually really liked data and making graphs)\nDoctorate from UNT Health Science Center (where I realized I really didn’t like biomedical science, but still really liked data, graphs, and now R)\nCurrent State\nI fell in love with R and data science through my graduate research, using R and RStudio to wrangle, analyze, model, and visualize my data. I became passionate about growing the R community, and founded #TidyTuesday to help newcomers and seasoned vets improve their Tidyverse skills.\nI work at RStudio on their Customer Success team, helping our customers be as successful as possible with RStudio software in their environment.\nIn my home town of Dallas, my wife and I run on the local trails, play with our Boston Terrier puppy “Howard”, spend lots of time with our five nephews and families, and are always on the lookout for great new food, especially churros.\nContact\nYou should probably just tweet me @thomas_mock.\n\n\n\n",
-      "last_modified": "2020-12-07T13:42:33-06:00"
+      "last_modified": "2020-12-26T14:32:13-06:00"
     },
     {
       "path": "index.html",
       "title": "Posts",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2020-12-07T13:42:34-06:00"
+      "last_modified": "2020-12-26T14:32:14-06:00"
     },
     {
       "path": "readme.html",
       "author": [],
       "contents": "\nThe Mockup Blog\nThis is my personal blog, you can find it at TheMockup.blog.\nIf you want to customize your distill blog - you can use your own custom CSS. The CSS components you can change are on the distill GitHub.\nA table of all my posts are below:\nTitle\nDescription\nBullet Chart Variants in R\nEfficient, space-saving, and useful bar chart alternatives.\nEmbedding custom HTML in gt tables\nHTML is basically a superpower.\nPlotting Points as Images in ggplot\nTrials and tribulations of the various strategies.\nFunctions and Themes for gt tables\nSave time and effort in making beautiful tables\n10+ Guidelines for Better Tables in R\nMake tables people ACTUALLY want to read.\nHeatmaps in ggplot2\nIt’s more than just a passing fad.\nBuilding a blog with distill\nI love simplicity.\nA bar chart 5 ways in ggplot2\nAndy, Tom, and ggplot2 walk into a bar…\nMeta RMarkdown - Taxonomy and Use cases\nA meta collection of all things R Markdown.\nClient-side interactivity - do more with Crosstalk\nBecause sharing data is caring\nEasily parsing JSON in R with jsonlite and purrr\nIt’s turtles all the way down…\ngt - a (G)rammar of (T)ables\nNot to be confused with a Game of Thrones\nreactable - An Interactive Tables Guide\nPart 2: How to draw the rest of the owl.\nQB Salaries vs Playoff Appearances\nInteractive tables make bad takes more fun.\nFlipping tibbles for many models\nPivoting data from wide to long to run many models at once\nBigger, nflfastR, dbplyr\nDoing more with dplyr and SQL\nBeer and pdftools - a vignette\nA guide to extracting tables from many PDFs using the pdftools package\nCrossing 10,000 - Tidy simulation\nTidy simulation with dice rolls\nAdd a logo to your plot\nPut a bird on it - Portlandia.\nTidyTuesday enhancements\nMaking #TidyTuesday better.\nTidyTuesday\nA weekly social data project in R\nFunctional Progamming in R with purrr\nMinimizing repetition with further replication\nA Gentle Guide to Tidy Statistics in R\nWorking your way through a basic analysis\n",
-      "last_modified": "2020-12-07T13:42:34-06:00"
+      "last_modified": "2020-12-26T14:32:15-06:00"
     },
     {
       "path": "resources.html",
@@ -27,7 +27,7 @@
       "description": "Things I've made",
       "author": [],
       "contents": "\n#TidyTuesday\nA weekly data project aimed at the R ecosystem.\nespnscrapeR\nA small package to scrape or collect NFL data from ESPN or NFL.com\nImproving your nflscrapR graphics\nAn in-depth guide to data visualization and techniques for play-by-play data.\nIntro to tidymodels with nflscrapR data - HANIC edition Slides\nA short presentation on using tidymodels to predict whether the opposing team will run or pass. Reminder: all models are bad - some are useful.\nIntro to tidymodels with nflfastR data - CMSAC Edition Slides\nA full workshop on using tidymodels to predict whether the opposing team will run or pass.\nIntro to Tables Presentation\nA presentation on 10 best practices for creating tables with gt.\n100 Women of 2020\nA #TidyTuesday submission for the BBC’s 100 Women of 2020 dataset.\n\n\n\n",
-      "last_modified": "2020-12-08T14:51:47-06:00"
+      "last_modified": "2020-12-26T14:32:15-06:00"
     }
   ],
   "collections": ["posts/posts.json"]
