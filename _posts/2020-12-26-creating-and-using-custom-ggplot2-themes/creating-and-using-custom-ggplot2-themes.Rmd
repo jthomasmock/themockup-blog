@@ -150,6 +150,7 @@ plot_object +
 ```
 
 For the theme elements, there are:  
+
 - `element_line()` - change line element components, takes arguments like `color`, `size`, `linetype` (dotted, dashed, solid, etc)   
 
 - `element_rect()` - change rectangular components like plot backgrounds, legend backgrounds, etc, takes arguments like `fill`, `color`, `size`  
@@ -385,6 +386,7 @@ A quick example of a FiveThirtyEight style plot:
 ![](https://fivethirtyeight.com/wp-content/uploads/2019/04/roeder-jeopary-folo-2.png?w=700)
 
 In short, a few concepts that make up the FiveThirtyEight "style guide":  
+
 - Focus on Web, ie relatively small graphics  
 - Light smoke-grey background with grey gridlines  
 - Black Plot Titles/Subtitles and Axis Labels  
