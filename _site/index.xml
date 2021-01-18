@@ -7,7 +7,18 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 31 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Reading tables from images with magick</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2021-01-18-reading-tables-from-images-with-magick</link>
+      <description>magick is an R package for manipulating images in R</description>
+      <category>magick</category>
+      <category>web scraping</category>
+      <guid>https://themockup.blog/posts/2021-01-18-reading-tables-from-images-with-magick</guid>
+      <pubDate>Mon, 18 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2021-01-18-reading-tables-from-images-with-magick/norm_normal_file_format.png" medium="image" type="image/png" width="303" height="474"/>
+    </item>
     <item>
       <title>2020 in Review</title>
       <dc:creator>Thomas Mock</dc:creator>
