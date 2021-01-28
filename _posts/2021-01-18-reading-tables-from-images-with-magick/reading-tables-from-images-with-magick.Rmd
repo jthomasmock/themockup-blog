@@ -40,7 +40,7 @@ While you can use it from various APIs, tools or CLIs, one of the easiest ways f
 
 I've written briefly about `magick` before, specifically in using it to [add logos to final `ggplot2` images](https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot/), but today will be a different use-case, namely using `magick` to read data embedded in images.
 
-Another note is that while the docs for `ImageMagick` proper and the `magick` R wrapper are very good, `ImageMagick` is an entire piece of software. This means that there is an amazing breadth of applications, knowledge, and tricks to apply. I think of it a lot like `regex`, where it's very useful but for many applications we only scratch the surface. For a nice "cookbook" for using `ImageMagick`, check out this [resource](great resource: https://legacy.imagemagick.org/Usage/). It's a "legacy" guide, but many of the examples can be converted to `magick` in R or from the CLI itself.
+Another note is that while the docs for `ImageMagick` proper and the `magick` R wrapper are very good, `ImageMagick` is an entire piece of software. This means that there is an amazing breadth of applications, knowledge, and tricks to apply. I think of it a lot like `regex`, where it's very useful but for many applications we only scratch the surface. For a nice "cookbook" for using `ImageMagick`, check out this [resource](https://legacy.imagemagick.org/Usage/). It's a "legacy" guide, but many of the examples can be converted to `magick` in R or from the CLI itself.
 
 # The problem
 
@@ -64,7 +64,7 @@ Given that it was a quality image, and there were 3 of them, I wanted to try OCR
 
 # Excel Screenshot
 
-So let's get after it! We'll need two packages, but I'll also load `tidyverse` for the eventual analysis/plotting as well. Also, note that I adapted this from a [StackOverflow post](code adapted from: https://stackoverflow.com/questions/54000691/extracting-tables-from-jpeg-into-a-dataframe-in-r) talking about extracting tables from images.
+So let's get after it! We'll need two packages, but I'll also load `tidyverse` for the eventual analysis/plotting as well. Also, note that I adapted some of this from a [StackOverflow post](code adapted from: https://stackoverflow.com/questions/54000691/extracting-tables-from-jpeg-into-a-dataframe-in-r) talking about extracting tables from images.
 
 ```{r}
 library(tidyverse)
@@ -90,7 +90,6 @@ raw_img %>%
 ```
 
 Ultimately, it does pretty well! But you can see that there are some "misses" if we look closely. Let's make it easier on the OCR engine by cleaning up the image for higher contrast.
-
 
 ## Remove the background and grid
 

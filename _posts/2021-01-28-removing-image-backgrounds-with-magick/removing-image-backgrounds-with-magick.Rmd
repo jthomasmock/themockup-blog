@@ -1,0 +1,265 @@
+---
+title: "Removing image backgrounds with magick"
+description: |
+  Tables with dark backgrounds deserve transparent logos!
+author:
+  - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
+date: 01-28-2021
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+    self_contained: false
+    highlight: default
+    highlight_downlit: true
+preview: preview.png
+twitter:
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
+categories:
+  - magick
+  - tables
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(gt)
+library(magick)
+```
+
+## The Problem
+
+Colin Welsh reached out on [Twitter](https://twitter.com/fakeColinW/status/1353860010758049793?s=20) asking about removing the background from player headshots for use in dark-themed table. He had a bunch of player headshots for the NHL, but they had a white background which he wanted to remove and then embed the headshots in `gt`.
+
+He thought that `{magick}` could be used to remove the background, and let's see what we can do!
+
+If you missed my last [blogpost](https://themockup.blog/posts/2021-01-18-reading-tables-from-images-with-magick/), it has some more details on the  [`{magick}`](https://docs.ropensci.org/magick/index.html) package. In short, `{magick}` is an R wrapper around the ImageMagick library that is used for image processing.
+
+## Load the Data
+
+We'll load our libraries and pull in the data of interest, there are a lot of columns but I'll limit it to a subset later on. 
+
+```{r}
+library(tidyverse)
+library(gt)
+library(magick)
+
+skater_game_score <- read_rds(url('https://github.com/Colinifer/hockey/blob/master/gt_help_dataset.rds?raw=true'))
+
+glimpse(skater_game_score)
+```
+
+## Initial Table
+
+We can quickly convert this into `gt` table like so. Look pretty good, and the player headshots look fine as well.
+
+```{r}
+skater_game_score %>% 
+  slice(1:10) %>%
+  select(player, headshot_url, games:pts)%>% 
+  gt() %>% 
+  text_transform(
+    locations = cells_body(vars(headshot_url)),
+    fn = function(x){
+      web_image(url = x)
+    }
+  )
+```
+
+The _real_ problem here is that Colin was interested in using a black background for his table. Let's see what that looks like. Here we can see that the player background adds a lot of unnecessary white to our otherwise nice looking black table.
+
+```{r}
+skater_game_score %>% 
+  slice(1:10) %>%
+  select(player, headshot_url, games:pts)%>% 
+  gt() %>% 
+  text_transform(
+    locations = cells_body(vars(headshot_url)),
+    fn = function(x){
+      web_image(url = x)
+    }
+  ) %>% 
+  tab_options(
+    table.background.color = "black"
+  )
+```
+
+## Clean the images
+
+So our goal is to remove the white background and turn it transparent. There are 3 steps here:  
+
+* Extract the image name  
+* Optionally trim extra whitespace from the images  
+* Turn the background white into transparent and save to disk  
+
+### Extract the image name
+
+We have a url that points at a player headshot. An example is:  
+
+`https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8478402.jpg`  
+
+Which returns:  
+
+![](https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8478402.jpg)
+
+Now, we only need the image name, not the URL. We can remove the extra "fluff" around the image name with `regex` + `stringr::str_replace()` or `base::gsub()`.
+
+Now... if you're anything like me, the below `regex` kind of looks like gibberish.
+
+```{r}
+ex_url <- "https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8478402.jpg"
+
+str_replace(ex_url, ".*[/]([^.]+)[.].*", "\\1")
+```
+
+If you want to see some explanations for the `regex`, see the details tag below.
+
+
+<details><summary>Fun aside on `regex`</summary>
+
+This `regex` code: `.*[/]([^.]+)[.].*` gives us the following explanation at [regex101.com](https://regex101.com/)  
+
+* `.*` matches any character (except for line terminators)  
+  * `*` Quantifier — Matches between zero and unlimited times, as many times as possible, giving back as needed (greedy)
+  * This basically finds everything up to the next portion  
+* Match a single character present in the list below `[/]`
+  * `/` matches the character `/` literally (case sensitive)
+  * This finds a literal `/` and with the previous code (`.*`) all the stuff before it  
+* 1st Capturing Group `([^.]+)`
+  * Match a single character not present in the list below `[^.]+`
+    * `+` Quantifier — Matches between one and unlimited times, as many times as possible, giving back as needed (greedy)
+    * `.` matches the character `.` literally (case sensitive)
+  * A capture group allows us to reference this portion later (with `\\1`)  
+* Match a single character present in the list below `[.]`
+  * `.` matches the character . literally (case sensitive)
+  * Find the `.` and then anything after the `.`  
+* `.*` matches any character (except for line terminators)
+  * `*` Quantifier — Matches between zero and unlimited times, as many times as possible, giving back as needed (greedy)
+
+We can see the capture group via `str_match()`, this will separate out the full match from the capture group.
+
+```{r}
+str_match(ex_url, ".*[/]([^.]+)[.].*")
+```
+
+</details>
+
+Note that this could actually be much simpler to fix...just remove the static portions!
+
+```{r}
+ex_url %>% 
+  str_remove("https://cms.nhl.bamgrid.com/images/headshots/current/168x168/") %>% 
+  str_remove(".jpg")
+```
+
+
+### Trim the image and remove background
+
+We can now trim the image if necessary and turn the background "white" into transparent. 
+
+```{r}
+# clean image and write to disk
+clean_img_transparent <- function(img_url, trim = FALSE){
+  
+  # find the name of the img and extract it
+  img_name <- str_replace(img_url, ".*[/]([^.]+)[.].*", "\\1")
+  
+  # some images need to be trimmed
+  trim_area <- if(isTRUE(trim)){
+    geometry_area(0, 0, 0, 10)
+  } else {
+    geometry_area(0, 0, 0, 0)
+  }
+  
+  img_url %>% 
+    image_read() %>% 
+    image_crop(geometry = trim_area) %>% 
+    image_transparent(color = "white", fuzz = 5)
+}
+```
+
+We can test the function with and without trimming, then stack them next to each other. I will use `image_ggplot()` to "show" the image in this RMarkdown blog, but interactively you could remove that as it prints to the R Console.
+
+```{r}
+img_ex <- clean_img_transparent(ex_url)
+img_ex_trim <- clean_img_transparent(ex_url, trim = TRUE) 
+
+c(img_ex, img_ex_trim) %>% 
+  image_append() %>% 
+  image_ggplot()
+```
+
+This looks great, but the for the last portion we'll need to write to disk.
+
+### Write to disk
+
+We can now use `image_write()` to write the image to disk so it can be used with `gt::local_image()`. We'll add that to our function.
+
+
+```{r}
+# clean image and write to disk
+clean_img_transparent <- function(img_url, trim = FALSE){
+  
+  # find the name of the img and extract it
+  img_name <- str_replace(img_url, ".*[/]([^.]+)[.].*", "\\1")
+  
+  # some images need to be trimmed
+  trim_area <- if(isTRUE(trim)){
+    geometry_area(0, 0, 0, 10)
+  } else {
+    geometry_area(0, 0, 0, 0)
+  }
+  
+  img_url %>% 
+    image_read() %>% 
+    image_crop(geometry = trim_area) %>% 
+    image_transparent(color = "white", fuzz = 5) %>% 
+    image_write(path = paste0(img_name, ".png"), format = "png")
+}
+```
+
+
+# All together now
+
+Now we need to get the top 10 players, grab the `headshot_url` column, and then remove any missing images (`na.jpg`), trim the first image, and then write out to disk.
+
+```{r}
+skater_game_score <- read_rds(url('https://github.com/Colinifer/hockey/blob/master/gt_help_dataset.rds?raw=true'))
+
+skater_include <- skater_game_score %>% 
+  slice(1:10) %>%
+  select(img_url = headshot_url) %>% 
+  filter(str_detect(img_url, pattern = "NA.jpg", negate = TRUE)) %>% 
+  mutate(trim = c(TRUE, rep(FALSE, 9)))
+
+skater_include
+```
+
+I'll use `pwalk()` to pass the urls + trim argument to `clean_img_transparent()` for each of the combos.
+
+```{r}
+skater_include%>% 
+  pwalk(clean_img_transparent)
+```
+
+We can then read them back in and apply to a `gt` table, and boom we're done!
+
+```{r}
+skater_game_score %>% 
+  slice(1:10) %>%
+  mutate(
+    img_name = str_replace(headshot_url, ".*[/]([^.]+)[.].*", "\\1"),
+    img_name = paste0(img_name, ".png"),
+    img_name = map(img_name, local_image),
+    img_name = map(img_name, ~html(as.character(.x)))
+    ) %>% 
+  select(player:pts, img_name) %>% 
+  gt() %>% 
+  tab_options(
+    table.background.color = "black"
+  ) 
+```
+
+Thanks to Colin for sharing this problem!
