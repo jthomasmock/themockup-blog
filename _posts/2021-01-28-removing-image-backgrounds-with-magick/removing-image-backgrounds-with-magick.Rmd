@@ -37,6 +37,8 @@ He thought that `{magick}` could be used to remove the background, and let's see
 
 If you missed my last [blogpost](https://themockup.blog/posts/2021-01-18-reading-tables-from-images-with-magick/), it has some more details on the  [`{magick}`](https://docs.ropensci.org/magick/index.html) package. In short, `{magick}` is an R wrapper around the ImageMagick library that is used for image processing.
 
+For another fantastic longer form blogpost, make sure to check out Deemah's blogpost on [Miracles with magick](https://www.ddrive.no/post/miracles-with-magick-and-bunny/)! I adapted some of his examples for the logos at the end. He pointed out rightfully so, that simply replacing ALL white with transparent can have some negative effects (this REALLy is a problem with logos). I've gone ahead and rebuilt the examples with that in mind.
+
 ## Load the Data
 
 We'll load our libraries and pull in the data of interest, there are a lot of columns but I'll limit it to a subset later on. 
@@ -157,7 +159,13 @@ ex_url %>%
 
 ### Trim the image and remove background
 
-We can now trim the image if necessary and turn the background "white" into transparent. 
+We can now trim the image if necessary and turn the background "white" into transparent. Note we're using `image_fill()` here instead of simply `image_background()` which would replace ALL the white in the image with transparency.
+
+* `fuzz`: relative color distance (value between 0 and 100) to be considered similar in the filling algorithm  
+* `refcolor = "white"`: the reference color that we're replacing   
+* `color = "transparent"`: the replacement of white with transparent  
+* `point = "+1+1"`: The location where we start "filling" or flooding the image with replacement, where `'1+1'` indicates 1 pixel in from the top left  
+
 
 ```{r}
 # clean image and write to disk
@@ -176,7 +184,12 @@ clean_img_transparent <- function(img_url, trim = FALSE){
   img_url %>% 
     image_read() %>% 
     image_crop(geometry = trim_area) %>% 
-    image_transparent(color = "white", fuzz = 5)
+    image_fill(
+      color = "transparent", 
+      refcolor = "white", 
+      fuzz = 4,
+      point = "+1+1" # start at top left 1 pixel in
+      ) 
 }
 ```
 
@@ -191,7 +204,23 @@ c(img_ex, img_ex_trim) %>%
   image_ggplot()
 ```
 
-This looks great, but the for the last portion we'll need to write to disk.
+This looks great, but the for the last portion we'll need to write to disk. It doesn't really "look" any different, but the whitepspace around the player image is now "transparent".
+
+We could see this more clearly by replacing with a different color. Note that again if you just used `image_transparent()` as I did in a previous version of this post you'd "lose" some white details in the player's jersey/sweater.
+
+```{r}
+ex_url %>% 
+    image_read() %>% 
+    image_crop(geometry = geometry_area(0, 0, 0, 10)) %>% 
+    image_fill(
+      color = "green", 
+      refcolor = "white", 
+      fuzz = 4,
+      point = "+1+1" # start at top left 1 pixel in
+      ) %>% 
+  image_ggplot()
+```
+
 
 ### Write to disk
 
@@ -215,7 +244,12 @@ clean_img_transparent <- function(img_url, trim = FALSE){
   img_url %>% 
     image_read() %>% 
     image_crop(geometry = trim_area) %>% 
-    image_transparent(color = "white", fuzz = 5) %>% 
+    image_fill(
+      color = "transparent", 
+      refcolor = "white", 
+      fuzz = 4,
+      point = "+1+1"
+      ) %>% 
     image_write(path = paste0(img_name, ".png"), format = "png")
 }
 ```
@@ -255,11 +289,206 @@ skater_game_score %>%
     img_name = map(img_name, local_image),
     img_name = map(img_name, ~html(as.character(.x)))
     ) %>% 
-  select(player:pts, img_name) %>% 
+  select(player, img_name, games:pts) %>% 
   gt() %>% 
   tab_options(
     table.background.color = "black"
   ) 
 ```
 
-Thanks to Colin for sharing this problem!
+# What about the logos?
+
+Now, the logos present another problem, they have large whitespace areas INSIDE the logos themselves... so if you were to apply a global transparency they would end up transparent INSIDE the logos where they should be white.
+
+Again, for another fantastic longer form blogpost, make sure to check out Deemah's blogpost on [Miracles with magick](https://www.ddrive.no/post/miracles-with-magick-and-bunny/)! I looked through some of his examples, although I used a slightly different workflow here for the logos. Another `ImageMagick` proper blogpost from [Nate Murray](http://tech.natemurray.com/2007/12/convert-white-to-transparent.html) was also very useful.
+
+So here, we'll need to convert some of our code, but it will still turn out pretty good! Again please note, that I'm using `image_ggplot()` just to show it in the blogpost, and interactively you can just return the output to the RStudio viewer.
+
+## Logo Fill
+
+We can use a logo with a lot of whitespace, to play around with.
+
+```{r}
+logo_url  <- "http://content.sportslogos.net/logos/1/16/thumbs/124.gif"                     
+
+raw_logo <- logo_url %>%
+  image_read() 
+
+raw_logo %>%
+  image_ggplot()
+```
+
+For our steps we're going to fill (basically flood) in the white space around the logo with green. Now because some logos (like the Avalanche) have areas that can't get flooded with color in one path, I'm going to flood at each corner (top left, top right, bottom left, bottom right). For our real usage, we're going to convert this "green" space to transparent instead.
+
+```{r}
+img_filled <- raw_logo %>% 
+    image_fill("green", "+1+1", fuzz = 50, refcolor = "white") %>% 
+    image_fill("green", "+140+1", fuzz = 50, refcolor = "white") %>% 
+    image_fill("green", "+1+99", fuzz = 50, refcolor = "white") %>% 
+    image_fill("green", "+140+99", fuzz = 50, refcolor = "white")
+
+img_filled %>% 
+  image_ggplot()
+
+img_filled <- raw_logo %>% 
+    image_fill("transparent", "+1+1", fuzz = 50, refcolor = "white") %>% 
+    image_fill("transparent", "+140+1", fuzz = 50, refcolor = "white") %>% 
+    image_fill("transparent", "+1+99", fuzz = 50, refcolor = "white") %>% 
+    image_fill("transparent", "+140+99", fuzz = 50, refcolor = "white")
+```
+
+## Logo edges and mask
+
+Now that we have a transparency around the logo, we can take that 'opacity' channel and extract everything but that.
+
+```{r}
+img_filled %>% 
+    image_channel("Opacity") %>% 
+    image_convert(matte=FALSE) %>% 
+  image_ggplot()
+```
+
+Now to create a proper "mask" that we can apply to the image, we can negate this and apply a gentle blur to make the edges not as "sharp" against the background.
+
+```{r}
+logo_mask <- img_filled %>% 
+    image_channel("Opacity") %>% 
+    image_convert(matte=FALSE) %>% 
+    image_negate() %>% 
+    image_blur()
+
+logo_mask %>% 
+  image_ggplot()
+```
+
+This looks great as a mask! Note, that you can't really "see" the mask here since it's really just affecting the whitespace around the logo.
+
+```{r}
+image_composite(raw_logo, logo_mask, operator = "CopyOpacity") %>% 
+  image_ggplot()
+```
+
+## Function applied
+
+We can convert this to a function just like we did above. We're getting the name, then reading in the image from a url, applying our fills, converting to transparent, flipping the image as a mask, and then applying our blur. Once we apply the mask we'll write it back to disk.
+
+```{r}
+clean_logo_transparent <- function(img_url) {
+  
+  # find the name of the img and extract it
+  img_name <- str_replace(img_url, ".*[/]([^.]+)[.].*", "\\1")
+
+  raw_img <- img_url %>%
+    image_read() %>% 
+    image_convert("PNG")
+  
+  img_mask <- raw_img  %>% 
+    image_fill("transparent", "+1+1", fuzz = 2, refcolor = "white") %>% 
+    image_fill("transparent", "+1+99", fuzz = 2, refcolor = "white") %>% 
+    image_fill("transparent", "+140+1", fuzz = 2, refcolor = "white") %>% 
+    image_fill("transparent", "+140+99", fuzz = 2, refcolor = "white") %>% 
+    image_channel("Opacity") %>%
+    image_convert(matte=FALSE) %>%
+    image_negate() %>%
+    image_blur()
+  
+  
+  image_composite(raw_img, img_mask, operator = "CopyOpacity") %>%
+    image_write(paste0(img_name, ".png"))
+}
+```
+
+Once again, we can use `purrr::pwalk()` to write out the images to disk in bulk.
+
+```{r}
+skater_game_score %>% 
+  slice(1:10) %>%
+  select(img_url = logo) %>% 
+  filter(str_detect(img_url, pattern = "NA.jpg", negate = TRUE)) %>% 
+  pwalk(clean_logo_transparent)
+```
+
+
+## Put in a table
+
+Our code here is again just a repeat of what we did above. This turns out remarkably nice!
+
+```{r}
+skater_game_score %>% 
+  slice(1:10) %>%
+  mutate(
+    img_name = str_replace(logo, ".*[/]([^.]+)[.].*", "\\1"),
+    img_name = paste0(img_name, ".png"),
+    img_name = map(img_name, local_image),
+    img_name = map(img_name, ~html(as.character(.x)))
+  ) %>% 
+  select(player, img_name, games:pts) %>% 
+  gt() %>% 
+  tab_options(
+    table.background.color = "black"
+  ) 
+
+```
+
+
+# Logos without Mask
+
+OK so one more spoiler, we don't HAVE to create a mask, but it could be useful in the future! We can just flood the area with transparency and write it out. 
+
+Still fun to play around with various techniques!
+
+```{r}
+clean_logo_transparent <- function(img_url) {
+  
+  # find the name of the img and extract it
+  img_name <- str_replace(img_url, ".*[/]([^.]+)[.].*", "\\1")
+
+  raw_img <- img_url %>%
+    image_read() %>% 
+    image_convert("PNG")
+  
+  img_out <- raw_img  %>% 
+    image_fill("transparent", "+1+1", fuzz = 2, refcolor = "white") %>% 
+    image_fill("transparent", "+1+99", fuzz = 2, refcolor = "white") %>% 
+    image_fill("transparent", "+140+1", fuzz = 2, refcolor = "white") %>% 
+    image_fill("transparent", "+140+99", fuzz = 2, refcolor = "white")
+  
+  
+  img_out %>% 
+    image_write(paste0(img_name, ".png"))
+}
+```
+
+Once again, we can use `purrr::pwalk()` to write out the images to disk in bulk.
+
+```{r}
+skater_game_score %>% 
+  slice(1:10) %>%
+  select(img_url = logo) %>% 
+  filter(str_detect(img_url, pattern = "NA.jpg", negate = TRUE)) %>% 
+  pwalk(clean_logo_transparent)
+```
+
+
+## Put in a table
+
+Our code here is again just a repeat of what we did above. This turns out remarkably nice!
+
+```{r}
+skater_game_score %>% 
+  slice(1:10) %>%
+  mutate(
+    img_name = str_replace(logo, ".*[/]([^.]+)[.].*", "\\1"),
+    img_name = paste0(img_name, ".png"),
+    img_name = map(img_name, local_image),
+    img_name = map(img_name, ~html(as.character(.x)))
+  ) %>% 
+  select(player, img_name, games:pts) %>% 
+  gt() %>% 
+  tab_options(
+    table.background.color = "black"
+  ) 
+
+```
+
+Thanks to Colin for sharing this problem, and for Deemah pointing me to his blogpost!
