@@ -7,7 +7,19 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 28 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 13 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Joins vs case whens - speed and memory tradeoffs</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs</link>
+      <description>Spoiler - joins are fastest, and can be easy to prep!</description>
+      <category>tidyverse</category>
+      <category>data cleaning</category>
+      <category>joins</category>
+      <guid>https://themockup.blog/posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs</guid>
+      <pubDate>Sat, 13 Feb 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/preview.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Removing image backgrounds with magick</title>
       <dc:creator>Thomas Mock</dc:creator>
