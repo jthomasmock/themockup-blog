@@ -2453,7 +2453,7 @@ gtag('config', 'UA-166026965-1');
 <li><a href="#step-1-datapasta">Step 1: <code>datapasta</code></a></li>
 <li><a href="#step-2-multiple-line-selection-in-rstudio">Step 2: Multiple line selection in RStudio</a></li>
 </ul></li>
-<li><a href="#dplyr-join-solution"><code>dplyr</code> join solution</a>
+<li><a href="#a-join-solution">A join solution</a>
 <ul>
 <li><a href="#tribble"><code>tribble</code></a></li>
 </ul></li>
@@ -2468,7 +2468,10 @@ gtag('config', 'UA-166026965-1');
 <p>While there isn’t a <strong>wrong</strong> way to do this, I’ve made mistakes in the past of making things more complicated for myself during data cleaning/prep steps. Most importantly to me in my data cleaning steps are “speed of thought” - aka how long it takes me to type out or reason through, but there are also tradeoffs in memory usage and in execution speed.</p>
 <p>I’m going to step through some strategies, honed by years of TidyTuesday data cleaning and prep!</p>
 <hr />
-<p>In general I want to preface all these examples with the fact that this exercise is easily translatable to various <code>join</code> options. Joins are great, but there are situations where the logicals aren’t simple matches/index (like <code>x == "val"</code>) but rather more complex queries (like <code>x &gt; 5 &amp; grp == "val"</code>), but I’m going to live within the constraints of my example use case.</p>
+<p>In general I want to preface all these examples with the fact that this exercise is easily translatable to various <code>join</code> options. Joins are great, but there are situations where the logicals aren’t simple matches/index (like <code>x == "val"</code>) but rather more complex queries (like <code>x &gt; 5 &amp; var %in% c("val", "val2")</code>), but I’m going to live within the constraints of my example use case. Also note that joins could join on more than one key or add as many variables as needed rather than just one, so there’s additional complexity possible here.</p>
+<hr />
+<p>To avoid burying the lede, joins are by far the fastest and most memory-efficient method if you can fit your problem to that solution, <code>data.table::fcase()</code> provides a easy to use and remarkably fast/memory-efficient intermediate method that works in base R, <code>data.tables</code> or <code>dplyr</code>, and <code>dplyr::case_when()</code> is the slowest/most-memory hungry for in-memory cases, BUT is probably fast enough for relatively small data (&lt; 1,000,000 rows) and is the option that allows pushing compute into a remote backend via <code>dbplyr</code>/<code>sparklyr</code>.</p>
+<hr />
 <h2 id="example-data">Example Data</h2>
 <p>We’re going to simulate a dataset with NFL team abbreviations and a “stat” that is relatively in scope with something like EPA, but again this is all simulated data.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -2619,7 +2622,7 @@ gtag('config', 'UA-166026965-1');
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/tictoc/man/tic.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>0.48 sec elapsed</code></pre>
+<pre><code>0.243 sec elapsed</code></pre>
 </div>
 <p>We can use a few tricks in RStudio to make this easier!</p>
 <p>We’ll use “multiple cursors” in RStudio and combine that with the amazing <a href="https://github.com/MilesMcBain/datapasta"><code>{datapasta}</code></a> package from Miles McBain.</p>
@@ -2656,7 +2659,7 @@ gtag('config', 'UA-166026965-1');
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9OgYTCzPqdE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 <p>Once we have this “skeleton” quickly created we can then add the individual “match outputs”, like “Cardinals” for “ARI”, “Falcons” for “ATL”, etc, but we’ve saved ourself the need to type out a lot of the repeated “skeleton” of the <code>case_when()</code>.</p>
-<h2 id="dplyr-join-solution"><code>dplyr</code> join solution</h2>
+<h2 id="a-join-solution">A join solution</h2>
 <p>While the above method is pretty quick to create and understand, we still had to type quite a bit (which is decreased if you use multiple cursors), and in many situations a true join is more efficient in terms of typing, “speed of thought”, and execution time.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2685,12 +2688,12 @@ gtag('config', 'UA-166026965-1');
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/tictoc/man/tic.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code>0.134 sec elapsed</code></pre>
+<pre><code>0.026 sec elapsed</code></pre>
 </div>
-<p>Now you may say, well of course I could just use a join if I have a perfect dataset, what do I do with data cleaning?!</p>
-<p>We can still “create” a proper joining dataset and use it pretty easily!</p>
+<p>Now you may say, well of course I could just use a join if I have a perfect dataset, what do I do with data cleaning?! I would say that a while ago this was a revelation as I typically only would move to key-value pairs + joins when it was obvious, and sometimes I’d end up using a case when solution when a join was easily possible.</p>
+<p>So, keep in mind that we can often “create” a joining dataset and use it pretty easily!</p>
 <h3 id="tribble"><code>tribble</code></h3>
-<p>We can use <a href="https://tibble.tidyverse.org/reference/tribble.html"><code>tribble</code></a> to use almost the <em>exact</em> same setup as the <code>case_when()</code>. We can even use the same multiple cursor workflow to take our existing <code>case_when()</code> code and turn it into the <code>tribble</code> setup.</p>
+<p>We can use <a href="https://tibble.tidyverse.org/reference/tribble.html"><code>tribble</code></a> to use almost the <em>exact</em> same setup as the <code>case_when()</code>. We can even use the same multiple cursor workflow to take alter our existing <code>case_when()</code> code and turn it into the below <code>tribble</code> setup.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>tribble</span><span class='op'>(</span>
@@ -2780,8 +2783,11 @@ gtag('config', 'UA-166026965-1');
 </div>
 <h2 id="data.tablefcase"><code>data.table::fcase</code></h2>
 <p>Now there is also an equivalent function to <code>case_when()</code> in <code>data.table</code> called <a href="https://github.com/Rdatatable/data.table/issues/3823"><code>fcase</code></a> (short for fast case when) as of late 2019. Since it operates on any vector, you can use it as a drop in replacement for most in-memory cases of <code>case_when()</code> in <code>dplyr</code>, or use it in native <code>data.table</code> objects. The expectation is that it will operate similarly in output but be more efficient with regards to memory/time.</p>
+<aside>
+<p><code>data.table</code> actually provides all sorts of cool optimized functions like this that work anywhere, and you can generally assume a “f” in front of an existing base R function name for the “faster” version of it. See <code>fifelse</code>, <code>rleid</code>, <code>fsetdiff</code> for example.</p>
+</aside>
 <p>Note, you do <em>not</em> have the ability to push the translation of <code>fcase()</code> into SQL though, as <code>dbplyr</code> only has SQL-translation for <code>case_when()</code>.</p>
-<p>The syntax of <code>fcase()</code> and <code>case_when()</code> are <em>essentially</em> the same, but rather than a formula-syntax via <code>~</code>, it relies on another comma to assign by <strong>position</strong>.</p>
+<p>The syntax of <code>fcase()</code> and <code>case_when()</code> are <em>essentially</em> the same, but rather than a formula-syntax for assignment via <code>~</code>, it relies on another comma to assign by <strong>position</strong>.</p>
 <p>Compare the syntax below:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2877,7 +2883,7 @@ Show code
 </code></pre>
 </div>
 </details>
-<pre><code>0.127 sec elapsed</code></pre>
+<pre><code>0.05 sec elapsed</code></pre>
 <details>
 <summary>
 Show code
@@ -2990,7 +2996,7 @@ Show code
 </div>
 </details>
 </div>
-<p>We can then compare their execution multiple times with the <code>bench</code> package. This will vary by the execution, but with 3 iterations and 100,000 rows, I have seen about a 10x speed improvement in <code>left_join</code> vs <code>case_when</code>. Note that in most cases this is still pretty much instantaneous in <em>“human time”</em> as it’s all less than 200 ms…</p>
+<p>We can then compare their execution multiple times with the <code>bench</code> package. This will vary by the execution, but with 3 iterations and 100,000 rows, I have seen about a 10x speed improvement in <code>left_join</code> vs <code>case_when</code>. Note that in most cases this is still pretty much instantaneous in “human time”.</p>
 <aside>
 <p>Visual reaction time in young adults is in the range of about 250 ms per <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4456887/">Jain et al</a>.</p>
 </aside>
@@ -3010,8 +3016,8 @@ Show code
 <pre><code># A tibble: 2 x 4
   expression            min   median mem_alloc
   &lt;bch:expr&gt;       &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:byt&gt;
-1 case_when_expr()  202.9ms    495ms  150.81MB
-2 join_expr()        28.1ms   34.6ms    5.34MB</code></pre>
+1 case_when_expr() 154.93ms  217.7ms  150.81MB
+2 join_expr()        9.79ms   13.7ms    5.34MB</code></pre>
 </div>
 <p>The 150 Mb of memory used, may not seem like a lot with smaller datasets (100,000), but if we were to bump this up to 1,000,000 rows we see a similar 10x increase of memory. Specifically we are now up to ~1.5 Gb of memory used for <code>case_when()</code>. So if you’re going beyond the millions or 10s of millions of rows AND are trying to do a LOT of comparisons, probably a good idea to start refactoring into a <code>join</code> if possible!</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -3037,19 +3043,15 @@ Show code
   <span class='fu'>case_when_expr</span><span class='op'>(</span><span class='op'>)</span>,
   <span class='fu'>join_expr</span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'>select</span><span class='op'>(</span><span class='va'>expression</span>, <span class='va'>min</span>, <span class='va'>median</span>, <span class='va'>mem_alloc</span>, <span class='va'>n_itr</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'>mutate</span><span class='op'>(</span>
-    times_faster <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='op'>(</span><span class='va'>median</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>median</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>as.double</a></span><span class='op'>(</span><span class='op'>)</span>,
-    mem_used_pct <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>mem_alloc</span><span class='op'>)</span><span class='op'>/</span><span class='va'>mem_alloc</span>
-    <span class='op'>)</span>
+  <span class='fu'>select</span><span class='op'>(</span><span class='va'>expression</span>, <span class='va'>min</span>, <span class='va'>median</span>, <span class='va'>mem_alloc</span>, <span class='va'>n_itr</span><span class='op'>)</span>
 </code></pre>
 </div>
 </details>
-<pre><code># A tibble: 2 x 6
-  expression            min median mem_alloc times_faster mem_used_pct
-  &lt;bch:expr&gt;       &lt;bch:tm&gt; &lt;bch:&gt; &lt;bch:byt&gt;        &lt;dbl&gt;    &lt;bch:byt&gt;
-1 case_when_expr()    1.47s     3s    1.47GB          1             1B
-2 join_expr()       84.02ms 87.7ms   53.41MB         34.2        28.2B</code></pre>
+<pre><code># A tibble: 2 x 4
+  expression            min   median mem_alloc
+  &lt;bch:expr&gt;       &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:byt&gt;
+1 case_when_expr()     1.3s    1.36s    1.47GB
+2 join_expr()        71.3ms  74.53ms   53.41MB</code></pre>
 </div>
 <p>There are situations where a <code>join</code> doesn’t solve the problem, so we can go one step further and add in our <code>data.table::fcase()</code> or <code>dtplyr</code>-translation of <code>dplyr</code> into <code>data.table</code>. All the example reprex code is in an expandable chunk below.</p>
 <div class="layout-chunk" data-layout="l-body">

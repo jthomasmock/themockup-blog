@@ -44,7 +44,13 @@ I'm going to step through some strategies, honed by years of TidyTuesday data cl
 
 ---
 
-In general I want to preface all these examples with the fact that this exercise is easily translatable to various `join` options. Joins are great, but there are situations where the logicals aren't simple matches/index (like `x == "val"`) but rather more complex queries (like `x > 5 & grp == "val"`), but I'm going to live within the constraints of my example use case.
+In general I want to preface all these examples with the fact that this exercise is easily translatable to various `join` options. Joins are great, but there are situations where the logicals aren't simple matches/index (like `x == "val"`) but rather more complex queries (like `x > 5 & var %in% c("val", "val2")`), but I'm going to live within the constraints of my example use case. Also note that joins could join on more than one key or add as many variables as needed rather than just one, so there's additional complexity possible here.
+
+---
+
+To avoid burying the lede, joins are by far the fastest and most memory-efficient method if you can fit your problem to that solution,  `data.table::fcase()` provides a easy to use and remarkably fast/memory-efficient intermediate method that works in base R, `data.tables` or `dplyr`, and `dplyr::case_when()` is the slowest/most-memory hungry for in-memory cases, BUT is probably fast enough for relatively small data (< 1,000,000 rows) and is the option that allows pushing compute into a remote backend via  `dbplyr`/`sparklyr`.
+
+---
 
 ## Example Data
 
@@ -200,7 +206,7 @@ Note that the enabling multi-line selection is done in RStudio via:
 
 Once we have this "skeleton" quickly created we can then add the individual "match outputs", like "Cardinals" for "ARI", "Falcons" for "ATL", etc, but we've saved ourself the need to type out a lot of the repeated "skeleton" of the `case_when()`.
 
-## `dplyr` join solution
+## A join solution
 
 While the above method is pretty quick to create and understand, we still had to type quite a bit (which is decreased if you use multiple cursors), and in many situations a true join is more efficient in terms of typing, "speed of thought", and execution time.
 
@@ -213,13 +219,13 @@ left_join(ex_df, team_join, by = "team")
 toc()
 ```
 
-Now you may say, well of course I could just use a join if I have a perfect dataset, what do I do with data cleaning?!
+Now you may say, well of course I could just use a join if I have a perfect dataset, what do I do with data cleaning?! I would say that a while ago this was a revelation as I typically only would move to key-value pairs + joins when it was obvious, and sometimes I'd end up using a case when solution when a join was easily possible.
 
-We can still "create" a proper joining dataset and use it pretty easily!
+So, keep in mind that we can often "create" a joining dataset and use it pretty easily!
 
 ### `tribble`
 
-We can use [`tribble`](https://tibble.tidyverse.org/reference/tribble.html) to use almost the _exact_ same setup as the `case_when()`. We can even use the same multiple cursor workflow to take our existing `case_when()` code and turn it into the `tribble` setup.
+We can use [`tribble`](https://tibble.tidyverse.org/reference/tribble.html) to use almost the _exact_ same setup as the `case_when()`. We can even use the same multiple cursor workflow to take alter our existing `case_when()` code and turn it into the below `tribble` setup.
 
 ```{r}
 tribble(
@@ -282,9 +288,15 @@ ex_df %>%
 
 Now there is also an equivalent function to `case_when()` in `data.table` called [`fcase`](https://github.com/Rdatatable/data.table/issues/3823) (short for fast case when) as of late 2019. Since it operates on any vector, you can use it as a drop in replacement for most in-memory cases of `case_when()` in `dplyr`, or use it in native `data.table` objects. The expectation is that it will operate similarly in output but be more efficient with regards to memory/time.
 
+<aside>
+
+`data.table` actually provides all sorts of cool optimized functions like this that work anywhere, and you can generally assume a "f" in front of an existing base R function name for the "faster" version of it. See `fifelse`, `rleid`, `fsetdiff` for example.
+
+</aside>
+
 Note, you do _not_ have the ability to push the translation of `fcase()` into SQL though, as `dbplyr` only has SQL-translation for `case_when()`.
 
-The syntax of `fcase()` and `case_when()` are _essentially_ the same, but rather than a formula-syntax via `~`, it relies on another comma to assign by **position**.
+The syntax of `fcase()` and `case_when()` are _essentially_ the same, but rather than a formula-syntax for assignment via `~`, it relies on another comma to assign by **position**.
 
 Compare the syntax below:  
 
@@ -462,7 +474,7 @@ case_when_expr <- function(){
 
 ```
 
-We can then compare their execution multiple times with the `bench` package. This will vary by the execution, but with 3 iterations and 100,000 rows, I have seen about a 10x speed improvement in `left_join` vs `case_when`. Note that in most cases this is still pretty much instantaneous in _"human time"_ as it's all less than 200 ms...
+We can then compare their execution multiple times with the `bench` package. This will vary by the execution, but with 3 iterations and 100,000 rows, I have seen about a 10x speed improvement in `left_join` vs `case_when`. Note that in most cases this is still pretty much instantaneous in "human time".
 
 <aside>
 
@@ -503,11 +515,7 @@ bench::mark(
   case_when_expr(),
   join_expr()
 ) %>% 
-  select(expression, min, median, mem_alloc, n_itr) %>% 
-  mutate(
-    times_faster = 1/(median/max(median)) %>% as.double(),
-    mem_used_pct = max(mem_alloc)/mem_alloc
-    )
+  select(expression, min, median, mem_alloc, n_itr)
 ```
 
 There are situations where a `join` doesn't solve the problem, so we can go one step further and add in our `data.table::fcase()` or `dtplyr`-translation of `dplyr` into `data.table`. All the example reprex code is in an expandable chunk below.
