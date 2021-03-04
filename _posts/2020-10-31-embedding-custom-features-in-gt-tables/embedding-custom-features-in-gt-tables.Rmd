@@ -892,7 +892,7 @@ Then we'll summarise the data to prep for an embedded plot, and join together ou
 
 ```{r}
 qbr_match <- qbr_weekly %>%
-  filter(short_name %in% nfl_qbr$short_name) %>%
+  filter(short_name %in% unique(nfl_qbr$short_name)) %>%
   group_by(short_name, team) %>%
   summarise(qbr_weekly = list(qbr_total), .groups = "drop",
             qbr = mean(qbr_total),
@@ -907,8 +907,8 @@ qbr_match <- qbr_weekly %>%
 
 # clean up the data a bit and combine
 tab_df <- qbr_match %>% 
-  left_join(nfl_standings, by = c("team" = "abb_name")) %>%
-  select(short_name, team, head, qbr_weekly:run, wins, losses, points_for) %>%
+  left_join(nfl_standings, by = c("team" = "team_name")) %>%
+  select(short_name, team, head, qbr_weekly:run, wins, losses, pts_for) %>%
   mutate(wl = glue("{wins}-{losses}")) %>%
   select(-wins, -losses)
 tab_df
@@ -959,7 +959,7 @@ combo_df <- tab_df %>%
     combo = combine_word(short_name, team, wl),
     combo = map(combo, gt::html)
     ) %>% 
-  select(rank, rank_chg, head, combo, qbr, qbr_weekly, plays, points_for)
+  select(rank, rank_chg, head, combo, qbr, qbr_weekly, plays, pts_for)
 
 combo_df
 ```
@@ -1019,7 +1019,7 @@ final_table <- combo_df %>%
     head = "QB",
     qbr = "QBR",
     plays = "PLAYS",
-    points_for = "PF",
+    pts_for = "PF",
     qbr_weekly = "WEEKLY",
     rank_chg = ""
   ) %>% 
@@ -1046,7 +1046,7 @@ final_table <- combo_df %>%
     vars(combo) ~ px(115),
     vars(qbr) ~ px(35),
     vars(plays) ~ px(35),
-    vars(points_for) ~ px(35),
+    vars(pts_for) ~ px(35),
     vars(qbr_weekly) ~ px(75)
   ) %>% 
   tab_header(

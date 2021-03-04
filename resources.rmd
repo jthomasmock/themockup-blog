@@ -31,3 +31,8 @@ A presentation on 10 best practices for creating tables with `gt`.
 ### [100 Women of 2020](https://themockup.blog/static/100-women.html)
 
 A `#TidyTuesday` submission for the [BBC's 100 Women of 2020](https://www.bbc.com/news/world-55042935) [dataset](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-12-08/readme.md).
+
+
+### [`{nflseedR}` interactive table](https://themockup.blog/static/nflseedr-reactable)
+
+Example with code of creating a `{reactable}` table for `{nflseedR}` output
