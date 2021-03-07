@@ -7,7 +7,19 @@
     <description>Exploring the wonderful world of R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 13 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 07 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Creating a custom gt function for aligning first-row text and testing it with testthat</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2021-03-07-creating-a-custom-gt-function-for-aligning-first-row-text-and-testing-it-with-testthat</link>
+      <description>Creating and testing your own functions is fun!</description>
+      <category>gt</category>
+      <category>functions</category>
+      <category>testing</category>
+      <guid>https://themockup.blog/posts/2021-03-07-creating-a-custom-gt-function-for-aligning-first-row-text-and-testing-it-with-testthat</guid>
+      <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2021-03-07-creating-a-custom-gt-function-for-aligning-first-row-text-and-testing-it-with-testthat/preview.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Joins vs case whens - speed and memory tradeoffs</title>
       <dc:creator>Thomas Mock</dc:creator>
