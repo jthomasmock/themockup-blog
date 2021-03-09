@@ -5,3 +5,21 @@ listing: posts
 ---
 
 
+```{r, include=FALSE, results='asis'}
+library(metathis)
+
+meta() %>%
+  meta_social(
+    title = "The MockUp Blog",
+    description = "Tom's musings on all things R",
+    url = "https://themockup.blog/",
+    image = "logo-plog.png",
+    image_alt = "Chaos into tidy code",
+    og_type = "website",
+    og_author = "Tom Mock",
+    twitter_card_type = "summary",
+    twitter_creator = "@thomas_mock"
+  )
+
+```
+
