@@ -13,7 +13,7 @@ meta() %>%
     title = "The MockUp Blog",
     description = "Tom's musings on all things R",
     url = "https://themockup.blog/",
-    image = "logo-plog.png",
+    image = "logo-plot.png",
     image_alt = "Chaos into tidy code",
     og_type = "website",
     og_author = "Tom Mock",
