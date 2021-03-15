@@ -124,7 +124,8 @@ schotter_plot <- function(
 
 library(ggtext)
 
-test_plot <- schotter_plot(n_rows = 24, n_cols = 20, control_distance = 50, control_rotation = 100, square_color =  "grey3", square_alpha = 0.9)
+test_plot <- schotter_plot(n_rows = 24, n_cols = 20, control_distance = 100, control_rotation = 140, square_color =  "grey3", square_alpha = 0.9)
+test_plot
 final_plot <- test_plot +
   # geom_richtext(aes(x = 11, y = 2.5), 
   #               label = "The MockUp Blog", 

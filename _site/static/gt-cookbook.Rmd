@@ -1,0 +1,2146 @@
+---
+title: "Examples"
+output:
+  html_document:
+    theme: spacelab
+    toc: true
+    toc_float:
+      smooth_scroll: false
+    anchor_sections: TRUE
+    syntax_highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(gt)
+library(dplyr)
+library(reactable)
+library(htmltools)
+library(shiny)
+library(metathis)
+```
+
+```{r, echo = FALSE}
+meta() %>%
+  meta_social(
+    title = "The GT cookbook",
+    description = "Over 2,000 lines of the Grammar of Tables",
+    url = "https://themockup.blog/static/gt-cookbook.html",
+    image = "https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png",
+    image_alt = "Chaos into tidy code",
+    og_type = "website",
+    og_author = "Tom Mock",
+    twitter_card_type = "summary",
+    twitter_creator = "@thomas_mock"
+  )
+```
+
+
+```{css toc, echo = FALSE}
+#TOC {
+  color: #484848;
+}
+
+
+.tocify-extend-page {
+  height: 0px !important;
+}
+
+
+/*------------Table of Contents (TOC)----------- */
+
+.tocify {
+      border: none;   /*Removes border */
+      border-radius: 0px; /* Gets rid of rounded corners on TOC */
+      font-size: 14px;
+    }
+
+.tocify ul, .tocify li { /* Increases spacing between TOC headers*/
+        line-height: 20px !important;
+    }
+
+.tocify ul {
+  border-right: solid 1px #eee; /* Thin right border on TOC list */
+}
+
+/* Active TOC links*/
+
+  .list-group-item.active,
+  .list-group-item.active:hover{
+    color: #787878;
+    background-color: #ffffff;
+    border-color: #ccc;
+    border-right: medium #e8f4f8;
+  }
+
+/* Hovered TOC links*/
+
+.list-group-item:hover {
+  color: #787878;
+  background-color: #e8f4f8;
+  border: none;
+}
+
+
+```
+
+
+
+
+
+## Basic Usage
+
+To create a `{gt}` table, use `gt()` on a data frame.
+
+```{r}
+library(gt)
+library(dplyr)
+gt(head(mtcars))
+
+# pipe also works just fine!
+head(mtcars) %>% 
+  gt()
+```
+
+### Preview long table
+
+Sometimes you may want to see just a small portion of your input data. We can use `gt_preview()` in place of `gt()` to get the first x rows of data and the last y rows of data (which can be set by the `top_n` and `bottom_n` arguments). 
+
+```{r}
+gtcars %>%
+  dplyr::select(mfr, model, year) %>%
+  gt_preview()
+```
+
+
+## Grouping and Summary Rows
+
+You can group rows in a table by specifying one or more columns in `groupname_col`:
+
+```{r}
+head(mtcars) %>% 
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  gt(groupname_col = "cyl")
+```
+
+Or by simply using `dplyr::group_by()`
+
+```{r}
+head(mtcars) %>% 
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  group_by(cyl) %>% 
+  gt()
+```
+
+### Custom groups
+
+You can also create custom groups with `gt::tab_row_group()`. This is typically useful for creating your own groups within `gt` itself, and it can include specific rows based on a logical statement (ie `hp > 600`).
+
+```{r, warning=FALSE}
+gtcars %>%
+  dplyr::select(model, year, hp, trq) %>%
+  head(8) %>% 
+  gt() %>% 
+  tab_row_group(
+    group = "powerful",
+    rows = hp <= 600
+  ) %>%
+  tab_row_group(
+    group = "super powerful",
+    rows = hp > 600
+  )
+```
+
+You can also create meta-groups of a grouping category this way.
+
+```{r, warning = FALSE}
+gtcars %>% 
+  dplyr::select(mfr:hp, mpg_c, mpg_h) %>% 
+  dplyr::filter(mfr %in% c("Ford", "Dodge", "Chevrolet", "Nissan", "Acura")) %>% 
+  gt() %>% 
+  tab_row_group(
+    group = "Japanese",
+    rows = mfr %in% c("Nissan", "Acura")
+  ) %>% 
+  tab_row_group(
+    group = "American",
+    rows = mfr %in% c("Ford", "Dodge", "Chevrolet")
+  )
+```
+
+### Row names
+
+You can also convert a column into table rownames and specify it in the original `gt()` call.
+
+```{r}
+head(mtcars) %>% 
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  gt(rowname_col = "cyl")
+```
+
+If you have a data.frame with rownames attached, you can use the `rownames_to_stub` argument to parse these properly.
+
+```{r}
+head(mtcars) %>% 
+  gt(rownames_to_stub = TRUE)
+```
+
+However, a `tibble` will drop rownames, so you can convert a data.frame's existing rownames to a column with `tibble::rownames_to_column()`. `gt` will automatically use columns named `rowname` as a rowname stub.
+
+```{r}
+head(mtcars) %>% 
+  tibble::rownames_to_column() %>% 
+  gt()
+```
+
+### Rownames and groups
+
+Combining rownames with groups can sometimes make the table easier to parse. Compare the two tables below:
+
+:::: {style="display: flex;"}
+
+::: {}
+
+
+```{r}
+mtcars %>% 
+  head() %>% 
+  select(cyl, mpg:drat) %>% 
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  gt(groupname_col = "cyl")
+```
+
+:::
+
+::: {}
+
+
+```{r}
+head(mtcars) %>% 
+  select(cyl, mpg:drat) %>% 
+  tibble::rownames_to_column() %>% 
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  gt(groupname_col = "cyl", rowname_col = "rowname")
+```
+
+:::
+
+::::
+
+### Create blank rownames
+
+I typically will use a rowname column whenever I group data, but sometimes there may not be a "good" column to use here. You can pass in blank spaces to artificially move the group label to be presented closer to a "stub".
+
+```{r}
+head(mtcars) %>% 
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  mutate(blank_rowname = purrr::map(list(rep("&nbsp", 8)), gt::html)) %>% 
+  gt(rowname_col = "blank_rowname", groupname_col = "cyl")
+```
+
+### Summary Rows
+
+When rows are grouped, you can create summary rows in a column using the `summary_rows` function:
+
+```{r}
+mtcars %>% 
+  head(8) %>% 
+  tibble::rownames_to_column(var = "name") %>%
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  gt(groupname_col = "cyl", rowname_col = "name") %>% 
+  summary_rows(
+    groups = TRUE,
+    fns = list(Average = ~mean(.))
+    )
+```
+
+### Further customization of Summary Rows
+
+You can pass additional summarization functions to the `fns` argument, optionally specify columns to apply the summary to, and apply a formatter to format the output.
+
+```{r}
+mtcars %>% 
+  head(8) %>% 
+  tibble::rownames_to_column(var = "name") %>%
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  gt(groupname_col = "cyl", rowname_col = "name") %>% 
+  summary_rows(
+    groups = TRUE,
+    columns = vars(mpg, disp, hp),
+    fns = list(
+      min = ~min(.),
+      max = ~max(.),
+      avg = ~mean(.)
+      ),
+    formatter = fmt_number
+    )
+```
+
+
+You can use any of R's built-in aggregate functions, or a custom function.
+```r
+# some examples
+sum()     # Sum of numbers
+mean()    # Mean of numbers
+max()     # Maximum of numbers
+min()     # Minimum of numbers
+median()  # Median of numbers
+sd()      # Standard Deviation of numbers
+```
+
+Or a custom aggregate function:
+```{r}
+mode <- function(x) {
+  unique_var <- unique(x)
+  unique_var[which.max(tabulate(match(x, unique_var)))]
+}
+```
+
+### Multiple groups
+
+You can supply multiple groups via `dplyr::group_by()`, which are then appended with a `-` separator.
+
+```{r}
+head(mtcars, 8) %>% 
+  tibble::rownames_to_column(var = "name") %>%
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  group_by(cyl, gear) %>% 
+  arrange(cyl) %>%
+  gt(rowname_col = "name") %>% 
+  summary_rows(
+    groups = TRUE,
+    fns = list(Average = ~mean(.))
+    )
+```
+
+### Grand summary
+
+Grand summary rows incorporate all of the available data, regardless of whether some of the data are part of row groups.
+
+```{r}
+head(mtcars, 8) %>% 
+  tibble::rownames_to_column(var = "name") %>%
+  mutate(cyl = paste(cyl, "Cylinders")) %>% 
+  gt(rowname_col = "name", groupname_col = "cyl") %>% 
+  grand_summary_rows(fns = list(Average = ~mean(.)))
+```
+
+
+## Column Formatting
+
+You can format data in a column by using the various `fmt_???` functions:
+
+```r
+info_date_style() # View a table with info on date styles
+
+info_time_style() # View a table with info on time styles
+
+info_currencies() # View a table with info on supported currencies
+
+info_locales()    # View a table with info on supported locales
+```
+
+### `exibble`
+
+The `exibble` dataset is built into `gt` and has a lot of different formats to demo the specific `fmt_???` functions.
+
+```{r}
+dplyr::glimpse(exibble)
+```
+
+```{r}
+exibble %>% 
+  gt(rowname_col = "row", groupname_col = "group") %>% 
+  fmt_number(columns = vars(num)) %>% 
+  fmt_date(columns = vars(date)) %>% 
+  fmt_time(columns = vars(time)) %>% 
+  fmt_datetime(columns = vars(datetime)) %>% 
+  fmt_currency(columns = vars(currency))
+```
+
+
+To use a specific locale for data formatting, provide specific arguments to the respective functions.
+
+### Date formatting
+
+```{r}
+exibble %>% 
+  select(date, time, datetime) %>% 
+  gt(rowname_col = "row", groupname_col = "group") %>% 
+  fmt_date(columns = vars(date), date_style = 3) %>% 
+  fmt_time(columns = vars(time), time_style = 5) %>% 
+  fmt_datetime(columns = vars(datetime), date_style = 6, time_style = 4)
+```
+
+### Currency formatting
+
+```{r}
+money <- data.frame(
+  USD = c(12.12, 2141.213, 0.42, 1.55, 34414),
+  EUR = c(10.68, 1884.27, 0.37, 1.36, 30284.32),
+  INR = c(861.07, 152122.48, 29.84, 110, 2444942.63),
+  JPY = c(1280, 226144, 44.36, 164, 3634634.61),
+  MAD = c(115.78, 20453.94, 4.01, 15, 328739.73)
+)
+
+money %>%
+  gt() %>%
+  fmt_currency(columns = vars(USD), currency = "USD") %>%
+  fmt_currency(columns = vars(EUR), currency = "EUR") %>%
+  fmt_currency(columns = vars(INR), currency = "INR") %>%
+  fmt_currency(columns = vars(JPY), currency = "JPY") %>%
+  fmt_currency(columns = vars(MAD), currency = "MAD")
+```
+
+### Percent formatting
+
+```{r}
+data.frame(
+  x = 1:5,
+  y = 6:10,
+  percent = seq(from = 0.1, to =  0.2, by = 0.025)
+) %>% 
+  gt() %>% 
+  fmt_percent(columns = vars(percent), decimals = 1)
+```
+
+### Number formatting
+
+Numeric formatting can include changes to the number of decimals, separators (ie ","), or even suffixing (ie K, Mb, etc).
+
+```{r}
+exibble %>% 
+  select(group, num, currency) %>% 
+  gt() %>% 
+  fmt_number(columns = vars(num), decimals = 4, sep_mark = "") %>% 
+  # Suffixing scale and apply suffixes to larger numbers 
+  fmt_number(columns = vars(currency), decimals = 1, suffixing = TRUE)
+```
+
+
+### Displaying missing values
+
+Missing values are ignored by formatters and shown as NA by default. You can specify missing values with other indicators with `fmt_missing`
+
+```{r}
+exibble %>% 
+  select(group, currency, num) %>% 
+  gt() %>% 
+  fmt_missing(columns = vars(currency), rows = is.na(currency)) %>% 
+  fmt_missing(columns = vars(num), rows = is.na(num), missing_text = "none")
+  
+```
+
+### Format markdown
+
+You can also parse cell content that contains arbitrary markdown.
+
+```{r}
+# Create a few Markdown-based
+# text snippets
+text_1a <- "
+### This is Markdown.
+
+Markdown’s syntax is comprised entirely of
+punctuation characters, which punctuation
+characters have been carefully chosen so as
+to look like what they mean... assuming
+you’ve ever used email.
+"
+
+text_1b <- "
+Info on Markdown syntax can be found
+[here](https://daringfireball.net/projects/markdown/).
+"
+
+text_2a <- "
+The **gt** package has these datasets:
+
+ - `countrypops`
+ - `sza`
+ - `gtcars`
+ - `sp500`
+ - `pizzaplace`
+ - `exibble`
+"
+
+text_2b <- "
+There's a quick reference [here](https://commonmark.org/help/).
+"
+
+# Arrange the text snippets as a tibble
+# using the `dplyr::tribble()` function;
+# then, create a gt table and format
+# all columns with `fmt_markdown()`
+dplyr::tribble(
+  ~Markdown, ~md,
+  text_1a,   text_2a,
+  text_1b,   text_2b,
+  ) %>%
+  gt() %>%
+  fmt_markdown(columns = TRUE) %>%
+  tab_options(table.width = px(400))
+```
+
+
+### Custom data formatting
+
+If none of the built-in formatters apply to your data, you can use `fmt()` instead.
+
+```{r}
+data.frame(
+  count = c(1L, 2L, 3L, 4L, 5L),
+  weight_g = c(150.65, 149.65, 171.28, 142.58, 139.04),
+  color = c("green", "yellow", "yellow", "green", "yellow")
+) %>% 
+  gt() %>% 
+  fmt(
+    columns = vars(count),
+    fns = function(x){ paste(x, "bananas")}
+  ) 
+```
+
+## Create or Modify Parts
+
+### Add a header
+
+```{r}
+data.frame(
+  count = c(1L, 2L, 3L, 4L, 5L),
+  weight_g = c(150.65, 149.65, 171.28, 142.58, 139.04),
+  color = c("green", "yellow", "yellow", "green", "yellow")
+) %>% 
+  gt() %>% 
+  tab_header(
+    title = "Number of bananas, weight, and ripeness",
+    subtitle = "Bananas sourced in Mar 2021"
+    )
+```
+
+#### Format header
+
+You can parse markdown with `md()` or HTML with `html()`.
+
+```{r}
+data.frame(
+  count = c(1L, 2L, 3L, 4L, 5L),
+  weight_g = c(150.65, 149.65, 171.28, 142.58, 139.04),
+  color = c("green", "yellow", "yellow", "green", "yellow")
+) %>% 
+  gt() %>% 
+  tab_header(
+    title = md("**Number of bananas, weight, and ripeness**"),
+    subtitle = html("Bananas sourced in <em><b>Mar 2021<b></em>")
+    )
+```
+
+### Add spanner column labels
+
+You can create column label "groups" with the `tab_spanner()` function.
+
+```{r}
+head(gtcars, 8) %>%
+  dplyr::select(model:mpg_h, msrp) %>%  
+  gt(rowname_col = "model") %>%
+  tab_spanner(
+    label = "Performance",
+    columns = vars(hp, hp_rpm, trq, trq_rpm, mpg_c, mpg_h)
+  ) %>% 
+  tab_spanner(
+    label = "Car Info",
+    columns = vars(year, bdy_style, trim)
+  )
+```
+
+### Add spanner delim
+
+For columns that are well formatted, `gt` can parse the delimiter and "split" the label into its component parts.
+
+```{r}
+head(gtcars, 8) %>%
+  dplyr::select(model:trim, mpg_city = mpg_c, mpg_hwy = mpg_h) %>%  
+  gt(rowname_col = "model") %>%
+  tab_spanner_delim(delim = "_")
+```
+
+## Locations
+
+`gt` usesthe `locations` argument across many functions to let you tightly customize specific components. These are considered "Helper Functions", and are further expended in the `gt` [documentation](https://gt.rstudio.com/reference/index.html#section-helper-functions).
+
+Locations is used with the various `cells_???` functions like: `cells_title`, `cells_stubhead`, `cells_column_spanners()`. 
+
+### Cell body
+
+For the `cells_body()`, it includes arguments for `columns` and `rows`, allowing you to specify specific columns or even columns + subsets of specific rows based on logicals.
+
+```{r}
+head(gtcars, 8) %>%
+  dplyr::select(model:trim, mpg_city = mpg_c, mpg_hwy = mpg_h) %>%  
+  gt(rowname_col = "model") %>% 
+  tab_style(
+    style = cell_text(color = "red"),
+    locations = cells_body(
+      columns = vars(trim),
+      rows = trim == "Base Convertible"
+      )
+  )
+```
+
+### Table title
+
+Table header/title can be affected by `cells_title`, and it can affect either the title, subtitle or both (default).
+
+```{r}
+head(gtcars, 8) %>%
+  dplyr::select(model:trim, mpg_city = mpg_c, mpg_hwy = mpg_h) %>%  
+  gt() %>% 
+  tab_header(
+    title = "These are not efficient cars",
+    subtitle = "But they are fast"
+    ) %>% 
+  tab_style(
+    style = cell_text(color = "black", weight = "bold", align = "left"),
+    locations = cells_title("title")
+  )
+```
+
+### Table stub
+
+You can affect both the stubhead and the stub rows themselves as well.
+
+```{r}
+head(gtcars, 8) %>%
+  dplyr::select(model:trim, mpg_city = mpg_c, mpg_hwy = mpg_h) %>%  
+  gt(rowname_col = "model") %>% 
+  tab_stubhead("Car Models") %>% 
+  tab_style(
+    style = list(
+      cell_fill("black"),
+      cell_text(color = "white", weight = "bold")
+      ),
+    locations = cells_stubhead()
+  ) %>% 
+  tab_style(
+    style = cell_text(color = "darkgrey", weight = "bold"),
+    locations = cells_stub()
+  )
+```
+
+### Row group
+
+Row groups can be further emphasized by changing the background or other styling.
+
+```{r}
+gtcars %>% 
+  filter(mfr %in% c("Ferrari", "Porsche")) %>% 
+  dplyr::select(mfr, model:trim, mpg_city = mpg_c, mpg_hwy = mpg_h) %>%  
+  gt(rowname_col = "model", groupname_col = "mfr") %>% 
+  tab_style(
+    style = list(
+      cell_fill("black"),
+      cell_text(color = "white", weight = "bold")
+      ),
+    locations = cells_row_groups()
+  ) %>% 
+  tab_style(
+    style = cell_text(color = "darkgrey", weight = "bold"),
+    locations = cells_stub()
+  )
+```
+
+### Group summary
+
+To affect the grouped summary rows (or grand summary rows) you can use `cells_summary()` or `cells_grand_summary()`.
+
+```{r}
+gtcars %>% 
+  dplyr::filter(mfr %in% c("Ferrari", "Porsche", "Lamborghini")) %>% 
+  dplyr::group_by(mfr) %>% 
+  dplyr::slice_head(n = 3) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(mfr, model:trim, mpg_city = mpg_c, mpg_hwy = mpg_h) %>%  
+  gt(rowname_col = "model", groupname_col = "mfr") %>% 
+  gt::summary_rows(
+    groups = TRUE, columns = vars(mpg_city, mpg_hwy),
+    fns = list(Average = ~mean(.)),
+    formatter = fmt_number, decimals = 1
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_text(color = "white", font = google_font("Fira Mono")),
+      cell_fill("black")
+    ),
+    locations = cells_summary()
+  )
+  
+```
+
+
+### Spanners and labels
+
+You can also affect the column labels or spanners above the labels. Note the use of a spanner id to make it easy to identify the specific spanner to apply the changes to.
+
+```{r}
+exibble %>%
+  dplyr::select(-fctr, -currency, -group) %>%
+  gt(rowname_col = "row") %>%
+  tab_spanner(
+    label = "dates and times",
+    id = "dt",
+    columns = vars(date, time, datetime)
+  ) %>%
+  tab_style(
+    style = cell_text(color = "darkgrey", transform = "uppercase"),
+    locations = cells_column_spanners(spanners = "dt")
+  ) %>% 
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels(columns = vars(date, time, datetime))
+  )
+```
+
+
+
+## Add notes
+
+You can also add footnotes or sourcenotes to arbitrary locations within the table. Both will "output" to the bottom of the table, but can place their respective indicators elsewhere.
+
+### Add footnote
+
+Footnotes can be added to arbitrary locations with `tab_footnote()`. Here we add a footnote specifically to the `mpg_h` column label.
+
+```{r}
+gtcars %>%
+  dplyr::select(model, year, trq, mpg_h) %>%
+  head(6) %>% 
+  gt(rowname_col = "model") %>%
+  tab_footnote(
+    locations = cells_column_labels(vars(mpg_h)),
+    footnote = "Miles per Gallon on Highway"
+  )
+```
+
+The location argument allows for other areas to be specified, and the footnote argument can also parse markdown/HTML with the `md()` and `html()` helpers.
+
+```{r}
+gtcars %>%
+  dplyr::select(model, year, trq, mpg_h) %>%
+  head(6) %>% 
+  gt(rowname_col = "model") %>%
+  tab_footnote(
+    locations = cells_stub(rows = c(2,3,6)),
+    footnote = md("Manufacturing was interruped for these cars in **2015**")
+  )
+```
+
+### Add a source note
+
+Source notes, like "data sourced from..." can be added with `tab_source_note()`, and again it can parse arbitrary HTML or md.
+
+```{r}
+source_tag <- "Data from <a href='https://www.edmunds.com'>Edmunds.com</a>"
+
+gtcars %>%
+  dplyr::select(model, year, trq, mpg_h) %>%
+  head(6) %>% 
+  gt(rowname_col = "model") %>% 
+  tab_source_note(html(source_tag))
+```
+
+## Conditional styling
+
+You can transform specific portions of the table based on conditional logic.
+
+Example conditionals include:  
+
+```r
+base:ifelse()
+dplyr::if_else()
+dplyr::case_when()
+```
+
+### Text transform
+
+You can change specific text based on a function with `text_transform()`. This is extremely powerful, but specific to only the column being transformed.
+
+```{r}
+data.frame(
+  count = c(1L, 2L, 3L, 4L, 5L),
+  weight_g = c(150.65, 149.65, 171.28, 142.58, 139.04),
+  color = c("green", "yellow", "yellow", "green", "yellow")
+) %>% 
+  gt() %>% 
+  text_transform(
+    locations = cells_body(
+      columns = vars(weight_g)),
+    fn = function(x) {
+      paste0(
+        x, " (",
+        dplyr::case_when(
+          x > 150   ~ "large",
+          x <= 150  ~ "small"),
+        ")")
+    }
+  ) 
+```
+
+### Formatting changes
+
+You can logically match to rows and apply specific styling to them such as color.
+
+```{r}
+stocks <- data.frame(
+  Symbol = c("GOOG", "FB", "AMZN", "NFLX", "TSLA"),
+  Price = c(1265.13, 187.89, 1761.33, 276.82, 328.13),
+  Change = c(4.14, 1.51, -19.45, 5.32, -12.45)
+)
+stocks %>% 
+  gt() %>% 
+  tab_style(
+    style = cell_text(color = "red", weight = "bold"),
+    locations = cells_body(
+      columns = vars(Change),
+      rows = Change < 0
+    )
+  ) %>% 
+  tab_style(
+    style = cell_text(color = "blue", weight = "bold"),
+    locations = cells_body(
+      columns = vars(Change),
+      rows = Change >= 0
+    )
+  )
+  
+```
+
+### Style the table
+
+With the `tab_style()` function we can target specific cells and apply styles to them. This is best done in conjunction with the helper functions `cell_text()`, `cell_fill()`, and `cell_borders()`.
+
+At present this function is focused on the application of styles for HTML output only (as such, other output formats will ignore all `tab_style()` calls). Using the aforementioned helper functions, here are some of the styles we can apply:
+
+* the background color of the cell (`cell_fill`(): color)  
+
+* the cell's text color, font, and size (`cell_text()`: color, font, size)  
+
+* the text style (`cell_text()`: style), enabling the use of italics or oblique text.  
+
+* the text weight (`cell_text()`: weight), allowing the use of thin to bold text (the degree of choice is greater with variable fonts)  
+
+* the alignment and indentation of text (`cell_text()`: align and indent)  
+
+* the cell borders (`cell_borders()`)  
+
+```{r}
+data.frame(
+  count = c(1L, 2L, 3L, 4L, 5L),
+  weight_g = c(150.65, 149.65, 171.28, 142.58, 139.04),
+  color = c("green", "yellow", "yellow", "green", "yellow")
+) %>% 
+  gt() %>% 
+  tab_style(
+    style = list(
+      cell_fill(color = "lightgrey"),
+      "font-variant: small-caps;"
+    ),
+    locations = cells_body(columns = vars(color))
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_text(color = "green")
+    ),
+    locations = cells_body(
+      columns = vars(color),
+      # conditional logic
+      rows = color == "green"
+    )
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_text(color = "goldenrod")
+    ),
+    locations = cells_body(
+      columns = vars(color),
+      # conditional logic
+      rows = color == "yellow"
+    )
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_borders(sides = "right", color = "black", weight = px(3))
+    ),
+    locations = cells_body(
+      # entire column
+      columns = vars(weight_g)
+    )
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_text(transform = "uppercase", weight = "bold")
+    ),
+    # different location
+    locations = cells_column_labels(everything())
+  )
+```
+
+
+## Modify Columns
+
+### Column labels
+
+The `cols_label()` function provides the flexibility to relabel one or more columns and we even have the option to use the `md()` or `html()` helper functions for rendering column labels from Markdown or using HTML.
+
+```{r}
+head(mtcars) %>% 
+  gt() %>% 
+  cols_label(
+    mpg = "Miles/Gal",
+    cyl = "Cylinders"
+  )
+```
+
+#### Relabel with markdown or HTML
+
+You can also parse markdown with `md()` or HTML with `html()` within the label string.
+
+```{r}
+head(mtcars) %>% 
+  gt() %>% 
+  cols_label(
+    mpg = md("**Miles/Gal**"),       # recognizes markdown syntax
+    cyl = html("<em>Cylinders</em>") # recognizes HTML syntax
+  )
+```
+
+### Column Alignment
+
+> The individual alignments of columns (which includes the column labels and all of their data cells) can be modified. We have the option to align text to the left, the center, and the right. 
+
+For this example we've also included all the table lines to "show" the alignment a bit better.
+
+```{r}
+countrypops %>%
+  dplyr::select(-contains("code")) %>%
+  dplyr::filter(country_name == "Mongolia") %>%
+  tail(5) %>%
+  gt() %>%
+  cols_align(
+    align = "left",
+    columns = vars(country_name)
+  ) %>% 
+  cols_align(
+    align = "center",
+    columns = vars(year)
+  ) %>% 
+  cols_align(
+    align = "right",
+    columns = vars(population)
+  ) %>% 
+  tab_options(table.width = px(300)) %>% 
+  opt_table_lines()
+```
+
+#### Optimal alignment
+
+Typically, the best practice is to use left-align for text of variable length and right-align for numeric values. The reasoning can be highlighted in the table below. We want to align numeric values on the same scale so that they can be compared on the same scale, whereas text is more easily readable left-aligned. Center-align can be used with strings or values of equal-length.
+
+Note that `fmt_number` and other `fmt_???` applied to numeric will automatically right-align, but text will default to left-align.
+
+```{r}
+gt::exibble %>% 
+  select(group, char, num, currency) %>% 
+  gt() %>% 
+  cols_align(align = "center", columns = vars(group)) %>% 
+  fmt_number(columns = vars(num)) %>% 
+  fmt_currency(columns = vars(currency))
+
+```
+
+
+### Column Width
+
+> We choose which columns get specific widths. This can be in units of pixels (easily set by use of the `px()` helper function), or, as percentages (where the `pct()` helper function is useful). 
+
+```{r}
+countrypops %>%
+  dplyr::select(-contains("code")) %>%
+  dplyr::filter(country_name == "Mongolia") %>%
+  tail(5) %>%
+  gt() %>% 
+  cols_width(
+    vars(country_name) ~ px(200),
+    vars(year) ~ px(50),
+    vars(population) ~ px(100)
+  )
+```
+
+#### Change all columns
+
+You can use the `everything()` function to affect all columns (or remaining columns).
+
+```{r}
+mtcars %>% 
+  tibble::rownames_to_column("names") %>% 
+  head(8) %>%
+  gt() %>% 
+  cols_width(
+    vars(names) ~ px(150),
+    everything() ~ px(60)
+  ) %>% 
+  opt_table_lines()
+```
+
+### Move columns
+
+You can move columns to the beginning, end, or arbitrary locations.
+
+#### To start
+
+```{r}
+countrypops %>% 
+  dplyr::select(country_name, year:population) %>% 
+  tail(8) %>% 
+  gt() %>% 
+  cols_move_to_start(vars(year))
+```
+
+#### To end
+
+```{r}
+countrypops %>% 
+  dplyr::select(country_name, year:population) %>% 
+  tail(8) %>% 
+  gt() %>% 
+  cols_move_to_end(vars(year))
+```
+
+#### Wherever you want
+
+```{r}
+countrypops %>% 
+  dplyr::select(country_name, year:population) %>% 
+  tail(8) %>% 
+  gt() %>% 
+  cols_move(
+    columns = vars(country_name),
+    after = vars(year)
+    )
+```
+
+### Hide columns
+
+You can also hide arbitrary columns, but still reference them inside `gt`.
+
+```{r}
+zim_code <- unique(countrypops$country_code_2) %>% .[length(.)]
+countrypops %>% 
+  tail(8) %>% 
+  gt() %>% 
+  cols_hide(columns = dplyr::contains("code")) %>% 
+  tab_footnote(
+    footnote = paste("The country code is", zim_code),
+    locations = cells_body(
+      columns = vars(country_name),
+      rows = country_code_2 == zim_code
+    )
+  )
+```
+
+### Merge columns
+
+Columns can be merged with `glue`-like syntax.
+
+```{r}
+sp500 %>%
+  dplyr::slice(50:55) %>%
+  dplyr::select(-volume, -adj_close) %>%
+  gt() %>%
+  cols_merge(
+    columns = vars(open, close),
+    hide_columns = vars(close),
+    pattern = "{1}&mdash;{2}"
+  ) %>%
+  cols_merge(
+    columns = vars(low, high),
+    hide_columns = vars(high),
+    pattern = "{1}&mdash;{2}"
+  ) %>%
+  cols_label(
+    open = "open/close",
+    low = "low/high"
+  )
+```
+
+
+## Table Customization
+
+You can customize table "theme" using several options, which can all be combined:
+
+### Bordered
+
+```{r}
+head(mtcars) %>% 
+  gt() %>% 
+  opt_table_lines("all")
+```
+
+### Borderless
+
+```{r}
+head(mtcars) %>% 
+  gt() %>% 
+  opt_table_lines("none")
+```
+
+### Outlined
+
+```{r}
+head(mtcars) %>% 
+  gt() %>% 
+  opt_table_outline()
+```
+
+### Striped
+
+```{r}
+head(mtcars) %>% 
+  gt() %>% 
+  opt_row_striping()
+```
+
+### Add dividers
+
+You can specify locations to add borders/dividers and control the weight/color/side of the border.
+
+```{r}
+head(mtcars) %>% 
+  gt() %>% 
+  tab_style(
+    style = cell_borders(sides = "right", color = "black", 
+                         style = "dashed", weight = px(3)),
+    locations = cells_body(
+      columns = vars(cyl)
+    )
+  ) %>% 
+  tab_style(
+    style = cell_borders(sides = "bottom", color = "black", weight = px(3)),
+    locations = cells_column_labels(everything())
+  )
+```
+
+You can also include locations outside of the cell body, ie the column labels or other locations.
+
+```{r}
+head(mtcars) %>% 
+  dplyr::select(cyl, everything()) %>% 
+  gt() %>% 
+  opt_table_lines("none") %>% 
+  opt_row_striping() %>% 
+  tab_style(
+    style = cell_borders(sides = "right", color = "black", weight = px(3)),
+    locations = cells_body(
+      columns = vars(cyl)
+    )
+  ) %>% 
+  tab_style(
+    style = cell_borders(sides = c("top", "bottom"), 
+                         color = "black", weight = px(3)),
+    locations = cells_column_labels(everything())
+  ) %>% 
+  tab_style(
+    style = cell_borders(sides = "bottom", color = "black", weight = px(3)),
+    locations = cells_body(rows = 6)
+  )
+```
+
+### Adjust fonts
+
+You can use system fonts or bring in Google fonts with `google_font()`.
+
+```{r change-font, eval = FALSE}
+# change font for entire table
+head(mtcars) %>% 
+  dplyr::select(cyl, everything()) %>% 
+  gt() %>% 
+  opt_table_font(font = google_font("Fira Mono"))
+```
+
+```{r, echo=FALSE, results ='asis'}
+# change font for entire table
+head(mtcars) %>% 
+  dplyr::select(cyl, everything()) %>% 
+  gt() %>% 
+  opt_table_font(font = google_font("Fira Mono")) %>% 
+  gt::as_raw_html()
+```
+
+#### Fonts by location
+
+Adjusting font by location can be done via `tab_style()`.
+
+```{r}
+head(mtcars) %>% 
+  dplyr::select(cyl, everything()) %>% 
+  gt() %>% 
+  # change cell body font
+  tab_style(
+    style = cell_text(
+      font = google_font("Fira Mono"), size = px(14)),
+    locations = cells_body(columns = everything())
+  ) %>% 
+  # change column labels
+  tab_style(
+    style = cell_text(
+      font = google_font("Indie Flower"), 
+      weight = "bold",
+      size = px(30)
+      ),
+    locations = cells_column_labels(everything())
+  )
+```
+
+And the changes can be made outside of just the body of the table, for example the title/header.
+
+```{r}
+countrypops %>%
+  dplyr::select(-contains("code")) %>%
+  tail(5) %>%
+  gt() %>% 
+  tab_style(
+    style = cell_text(font = google_font("Fira Mono")),
+    locations = cells_body(columns = vars(year, population))
+  ) %>% 
+  tab_style(
+    style = cell_text(font = google_font("Raleway"), weight = "bold"),
+    locations = cells_body(columns = vars(country_name))
+  ) %>% 
+  tab_style(
+    style = cell_text(
+      font = google_font("Indie Flower"), 
+      weight = "bold", 
+      align = "left",
+      size = px(40)
+      ),
+    locations = cells_title("title")
+  ) %>% 
+  tab_header("Population changes")
+```
+
+### Table options
+
+> Modify the options available in a table. These options are named by the components, the subcomponents, and the element that can adjusted.
+
+This is where the bulk of theme-changes can be done. `tab_options` has dozens of different table components that can be adjusted. The full details can be found in the [`{gt}` documentation](https://gt.rstudio.com/reference/tab_options.html). You can customize all sorts of arbitrary components based globally.
+
+```{r}
+head(mtcars) %>% 
+  gt() %>% 
+  tab_options(
+    table.background.color = "black",
+    column_labels.background.color = "grey",
+    column_labels.font.size = px(16),
+    table.font.size = px(12),
+    data_row.padding = px(4),
+    table.width = px(250)
+  )
+```
+
+## Create a theme
+
+Creating a theme can be done by passing in a `gt` object, and setting some parameters in various `gt` functions. Here we define a basic theme. 
+
+```{r}
+my_gt_theme <- function(data, ...) {
+  data %>%
+    tab_options(
+      table.background.color = "black",
+      column_labels.background.color = "grey",
+      column_labels.font.size = px(16),
+      table.font.size = px(12),
+      data_row.padding = px(4),
+      ...
+    )
+}
+```
+
+And we can then apply that theme. Note that the theme is intentionally relative garish but we can see that we turned some of the arguments into a one-liner.
+
+```{r}
+head(gtcars) %>% 
+  gt() %>% 
+  my_gt_theme(table.font.color.light = "lightgreen")
+```
+
+### Example Theme
+
+A "prettier" theme based off an ESPN table style.
+
+```{r}
+gt_theme_espn <- function(data, ...){
+  data %>% 
+    opt_all_caps()  %>%
+    opt_table_font(
+      font = list(
+        google_font("Lato"),
+        default_fonts()
+      )
+    )  %>% 
+    opt_row_striping() %>% 
+    tab_options(
+      row.striping.background_color = "#fafafa",
+      table_body.hlines.color = "#f6f7f7",
+      source_notes.font.size = 12,
+      table.font.size = 16,
+      table.width = px(700),
+      heading.align = "left",
+      heading.title.font.size = 24,
+      table.border.top.color = "transparent",
+      table.border.top.width = px(3),
+      data_row.padding = px(7),
+      ...
+    ) 
+}
+```
+
+```{r}
+head(gtcars) %>% 
+  dplyr::select(mfr:mpg_c) %>% 
+  gt() %>% 
+  gt_theme_espn()
+```
+
+## Custom CSS
+
+For more control over styling, you can add custom class names to the table and
+apply your own CSS. Note that this can require more effort than the built in `gt` functions, but also allows some things that aren't possible by the functions align (like hover highlighting!).
+
+```{r}
+ exibble %>%
+  dplyr::select(num, currency) %>%
+  gt(id = "one") %>% # need to name the table so that you can apply CSS
+  fmt_currency(
+    columns = vars(currency),
+    currency = "HKD"
+  ) %>%
+  fmt_scientific(
+    columns = vars(num)
+  ) %>%
+  opt_css(
+    css = "
+    #one .gt_table {
+      background-color: lightgrey;
+    }
+    #one .gt_row {
+      padding: 20px 30px;
+    }
+    #one tr:hover {
+    background-color: #f5f8ff;
+    }
+    #one .gt_col_heading {
+      text-align: center !important;
+    }
+    "
+  )
+```
+
+The examples here embed CSS for demonstration, but it's often better to put CSS
+in an external style sheet. You can learn more about adding custom CSS to R Markdown
+documents [here](https://bookdown.org/yihui/rmarkdown/html-document.html#custom-css),
+or to Shiny apps [here](https://shiny.rstudio.com/articles/css.html).
+
+### Embed URLs
+
+You can also use things like `htmltools` or `glue` to arbitrarily build HTML content like hyperlinks.
+
+```{r}
+ex_sites <- data.frame(
+  Address = c("https://google.com", "https://yahoo.com", "https://duckduckgo.com"),
+  Site = c("Google", "Yahoo", "DuckDuckGo")
+)
+gt(ex_sites) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(Address)),
+    fn = function(x) {
+    purrr::map(x,  ~htmltools::tags$a(href = .x, target = "_blank", .x))
+      }
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(Site)),
+    fn = function(x) {
+    purrr::map2(
+      .x = x, .y = ex_sites$Address, 
+      .f = ~glue::glue('<a href="{.y}" target="_blank">{.x}</a>'))
+      }
+  )
+```
+
+## Conditional formatting
+
+### Color scales
+
+To add color scales, you can use R's built-in
+[color utilities](https://bookdown.org/rdpeng/exdata/plotting-and-color-in-r.html#color-utilities-in-r)
+(or other color manipulation packages like [`{paletteer}`](https://github.com/EmilHvitfeldt/paletteer)):
+
+### Conditional coloring
+
+> It's possible to add color to data cells according to their values. The data_color() function colors all rows of any columns supplied. There are two ways to define how cells are colored: (1) through the use of a supplied color palette, and (2) through use of a color mapping function available from the [**{scales}**](https://scales.r-lib.org/) package. The first method colorizes cell data according to whether values are character or numeric. The second method provides more control over how cells are colored since we provide an explicit color function and thus other requirements such as bin counts, cut points, or a numeric domain.
+
+```{r}
+countrypops %>%
+  dplyr::filter(country_name == "Mongolia") %>%
+  dplyr::select(-contains("code")) %>%
+  tail(10) %>%
+  gt() %>%
+  data_color(
+    columns = vars(population),
+    colors = scales::col_numeric(
+      palette = c(
+        "white", "orange", "red"),
+      domain = NULL)
+  )
+```
+
+<br>
+
+### Multiple columns
+
+This can also be applied across multiple columns at once. Here's an example using the built in `nottem` dataset. While red-green color scales are very commonly used, they are not color-blind friendly.
+
+We can alternatively use something like red-white-blue, or purple-white-green.
+
+```{r}
+dimnames <- list(start(nottem)[1]:end(nottem)[1], month.abb)
+temps <- matrix(nottem, ncol = 12, byrow = TRUE, dimnames = dimnames) %>% 
+  data.frame() %>% 
+  tibble::rownames_to_column() %>% 
+  head(10)
+
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(month.abb),
+    colors = scales::col_numeric(
+      c("#63be7b", "#ffeb84", "#f87274"), 
+      domain = range(nottem))
+  )
+```
+
+#### "Hulk" Colors
+
+```{r}
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(month.abb),
+    colors = scales::col_numeric(
+      colorspace::diverge_hcl(n = 9, palette = "Purple-Green") %>% rev(), 
+      domain = range(nottem))
+  )
+```
+
+#### Red blue palette
+
+```{r}
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(month.abb),
+    colors = scales::col_numeric(
+      colorspace::diverge_hcl(n = 9, palette = "Blue-Red 3"), 
+      domain = range(nottem))
+  )
+```
+
+### Multiple colors
+
+Multiple calls to `data_color()` can provide different color palettes or ranges.
+
+```{r}
+gtcars %>% 
+  dplyr::filter(mfr == "Ferrari", hp < 900) %>% 
+  dplyr::select(model, hp, mpg_c, mpg_h, msrp) %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(hp),
+    colors = scales::col_numeric(
+      palette = c(
+        "white", "orange", "red"),
+      domain = c(500, 750))
+  ) %>% 
+  data_color(
+    columns = vars(mpg_c, mpg_h),
+    colors = scales::col_numeric(
+      palette = c(
+        "white", "green"),
+      domain = c(10, 25))
+  ) %>% 
+  data_color(
+    columns = vars(msrp),
+    colors = scales::col_numeric(
+      palette = c(
+        "white", "pink", "red"),
+      domain = NULL)
+  )
+```
+
+### `{paleteer}` palettes
+
+To make this process easier we can elect to use the [`{paletteer}`](https://github.com/EmilHvitfeldt/paletteer) package, which makes a wide range of palettes from various R packages readily available.
+
+```{r}
+pizzaplace %>%
+  dplyr::filter(
+    type %in% c("chicken", "supreme")) %>%
+  dplyr::group_by(type, size) %>%
+  dplyr::summarize(
+    sold = dplyr::n(),
+    income = sum(price)
+  ) %>%
+  gt(rowname_col = "size") %>%
+  data_color(
+    columns = vars(sold, income),
+    colors = scales::col_numeric(
+      palette = paletteer::paletteer_d(
+        palette = "ggsci::red_material"
+        ) %>% as.character(),
+      domain = NULL
+      )
+  )
+```
+
+### Factors
+
+Factors are typically more appropriate with qualitative palettes, and we can use `scales::col_factor()` to apply colors to the specific column of interest. Note that the color palette needs to be equal to the unique number of factors. In the example below we pass `n = 3` since we have 3 different trim types.
+
+```{r}
+gtcars %>% 
+  dplyr::filter(mfr == "Ferrari", hp < 900) %>% 
+  dplyr::select(model, hp, trim, mpg_h, msrp) %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(trim),
+    colors = scales::col_factor(
+      palette = paletteer::paletteer_d(
+        n = 3, palette = "colorblindr::OkabeIto"
+        ) %>% as.character(),
+      domain = NULL
+      )
+  )
+```
+
+
+## Parse arbitrary HTML
+
+Because `gt` supports HTML, you can optionally "create" HTML strings prior to passing them into `gt` proper.
+
+```{r}
+color_span <- function(x){paste0("<span style='color: ", x, ";'>", x, "</span>")}
+
+data.frame(
+  count = c(1L, 2L, 3L, 4L, 5L),
+  weight_g = c(150.65, 149.65, 171.28, 142.58, 139.04),
+  color = c("green", "yellow", "yellow", "green", "yellow")
+) %>% 
+  mutate(color = color_span(color)) %>% 
+  mutate(color = purrr::map(color, gt::html)) %>% 
+  gt() 
+```
+
+### Combine and stack
+
+Combine text into div containers and then "stack" the text on top of each other with alternating color.
+
+```{r}
+stack_function <- function(x){
+  
+  name <- sub(x = x, pattern = " .*$", replacement = "")
+  model <- sub(x = x, pattern = ".*? ", replacement = "")
+
+  
+  glue::glue(
+    "<div style='line-height:10px'>
+    <span style='font-weight:bold;font-variant:small-caps;font-size:14px'>
+    {name}</div>
+    <div style='line-height:12px'>
+    <span style ='font-weight:bold;color:grey;font-size:10px'>
+    {model}</span></div>"
+  )
+    }
+
+head(gtcars) %>% 
+  dplyr::select(mfr, model, year, trim, hp) %>%
+  gt() %>% 
+  cols_merge(
+    columns = vars(mfr, model)
+  ) %>% 
+  text_transform(
+    locations = cells_body(
+      columns = vars(mfr)
+    ),
+    fn = stack_function
+  ) %>% 
+  tab_options(
+    data_row.padding = px(5),
+  )
+```
+
+### Align symbol on first row only
+
+We can align text on the first row only even with a suffix (ie symbol at the end). This can be done with just `gt`, but it's a bit verbose.
+
+This example applies a percent label to the `hp_pct` column and properly maintains the decimal place alignment.
+
+```{r}
+head(gtcars) %>%
+  mutate(hp_pct = (hp/max(hp) * 100)) %>% 
+  dplyr::select(mfr, model, year, trim, hp, hp_pct) %>%
+  gt() %>%
+  # use a mono-spaced font
+  tab_style(
+    style = cell_text(font = google_font("Fira Mono")),
+    locations = cells_body(columns = vars(hp_pct))
+    ) %>% 
+  # align the column of interst to right
+  cols_align(align = "right", columns = vars(hp_pct)) %>% 
+  # round and transform the first row to percent
+  text_transform(
+    locations = cells_body(vars(hp_pct), rows = 1),
+    fn = function(x){ 
+      fmt_val <- format(as.double(x), nsmall = 1, digits = 1)
+      paste0(fmt_val, "%") %>% gt::html()}
+  ) %>% 
+  text_transform(
+    locations = cells_body(vars(hp_pct), rows = 2:6),
+    fn = function(x){ 
+      # round remaining rows, add a non-breaking space
+     fmt_val <- format(as.double(x), nsmall = 1, digits = 1)
+     lapply(fmt_val, function(x) paste0(x, '&nbsp') %>% gt::html())
+  })
+```
+
+We can do the same thing with a custom `gt` function that we'll call `fmt_symbol_first()`.
+
+```{r}
+fmt_symbol_first <- function(
+  gt_data,
+  column = NULL,        # column of interest to apply to
+  symbol = NULL,        # symbol to add, optionally
+  suffix = "",          # suffix to add, optionally
+  decimals = NULL,      # number of decimal places to round to
+  last_row_n,           # what's the last row in data?
+  symbol_first = FALSE  # symbol before or after suffix?
+) {
+  
+  # Test and error out if mandatory columns are missing
+  stopifnot("`symbol_first` argument must be a logical" = is.logical(symbol_first))
+  stopifnot("`last_row_n` argument must be specified and numeric" = is.numeric(last_row_n))
+  stopifnot("Input must be a gt table" = class(gt_data)[[1]] == "gt_tbl")
+
+  # needs to type convert to double to play nicely with decimals and rounding
+  # as it's converted to character by gt::text_transform
+  add_to_first <- function(x, suff = suffix, symb = symbol) {
+    if (!is.null(decimals)) {
+      x <- suppressWarnings(as.double(x))
+      fmt_val <- format(x = x, nsmall = decimals, digits = decimals)
+    } else {
+      fmt_val <- x
+    }
+
+    # combine the value, passed suffix, symbol -> html
+    if (isTRUE(symbol_first)) {
+      paste0(fmt_val, symb, suff) %>% gt::html()
+    } else {
+      paste0(fmt_val, suff, symb) %>% gt::html()
+    }
+  }
+
+  # repeat non-breaking space for combined length of suffix + symbol
+  # logic is based on is a NULL passed or not
+  if (!is.null(symbol) | !identical(as.character(symbol), character(0))) {
+    suffix <- ifelse(identical(as.character(suffix), character(0)), "", suffix)
+    length_nbsp <- c("&nbsp", rep("&nbsp", nchar(suffix))) %>%
+      paste0(collapse = "")
+  } else {
+    suffix <- ifelse(identical(as.character(suffix), character(0)), "", suffix)
+    length_nbsp <- rep("&nbsp", nchar(suffix)) %>%
+      paste0(collapse = "")
+  }
+
+  # affect rows OTHER than the first row
+  add_to_remainder <- function(x, length = length_nbsp) {
+    if (!is.null(decimals)) {
+      # if decimal not null, convert to double
+      x <- suppressWarnings(as.double(x))
+      # then round and format ALL to force specific decimals
+      fmt_val <- format(x = x, nsmall = decimals, digits = decimals)
+    } else {
+      fmt_val <- x
+    }
+    paste0(fmt_val, length) %>% lapply(FUN = gt::html)
+  }
+
+  # pass gt object
+  # align right to make sure the spacing is meaningful
+  gt_data %>%
+    cols_align(align = "right", columns = vars({{ column }})) %>%
+    # convert to mono-font for column of interest
+    tab_style(
+      style = cell_text(font = google_font("Fira Mono")),
+      locations = cells_body(columns = vars({{ column }}))
+    ) %>%
+    # transform first rows
+    text_transform(
+      locations = cells_body(vars({{ column }}), rows = 1),
+      fn = add_to_first
+    ) %>%
+    # transform remaining rows
+    text_transform(
+      locations = cells_body(vars({{ column }}), rows = 2:last_row_n),
+      fn = add_to_remainder
+    )
+}
+```
+
+#### Apply the custom function.
+
+We can then use the function as a one-liner, and format just that column of interest.
+
+```{r}
+head(gtcars) %>%
+  mutate(hp_pct = (hp/max(hp) * 100)) %>% 
+  dplyr::select(mfr, model, year, trim, hp, hp_pct) %>%
+  gt() %>% 
+  opt_table_lines() %>% 
+  fmt_symbol_first(column = hp_pct, decimals = 1, suffix = "%", last_row_n = 6)
+```
+
+### Sparkline plots
+
+We can embed sparkline plots with some help from the `kableExtra` package.
+
+```{r}
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(mpg_data = list(mpg), .groups = "drop") %>%
+  gt() %>%
+  text_transform(
+    locations = cells_body(columns = vars(mpg_data)),
+    fn = function(x) {
+      data_in <- purrr::pluck(., "_data", "mpg_data")
+      plot <- purrr::map(
+        data_in, ~ kableExtra::spec_plot(
+          .x, ylim = range(mtcars$mpg), 
+          same_lim = TRUE, width = 300, height = 70
+          )
+        )
+      
+      plot <- purrr::map_chr(plot, "svg_text")
+    }
+  )
+```
+
+#### Create a function
+
+We can alternatively write a function to do something similar.
+
+```{r}
+gt_plot <- function(table_data, plot_col, data_col, plot_fun, ...){
+  # save the data extract ahead of time 
+  # to be used in our anonymous function below
+  data_in = pluck(table_data, "_data", data_col)
+
+  text_transform(
+    table_data,
+    # note the use of {{}} here - this is tidy eval
+    # that allows you to indicate specific columns
+    locations = cells_body(columns = vars({{plot_col}})),
+    fn = function(x){
+      plot <- purrr::map(data_in, plot_fun, width = 300, height = 70, same_lim = FALSE, ...)
+      plot_svg <- purrr::map(plot, "svg_text")
+      purrr::map(plot_svg, gt::html)
+    }
+  )
+}
+```
+
+And then we can use that function!
+
+```{r}
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(mpg_data = list(mpg), .groups = "drop") %>% 
+  gt() %>% 
+  # note you can leave mpg_data unquoted for the tidyeval
+  # but have to quote mpg_data for the pluck
+  gt_plot(mpg_data, "mpg_data", plot_fun = kableExtra::spec_plot)
+```
+
+#### Interactive sparklines
+
+We can use the `sparkline` package to embed interactive sparklines.
+
+```{r}
+gt_spark <- function(table_data, plot_col, data_col){
+  # save the data extract ahead of time 
+  # to be used in our anonymous function below
+  data_in = purrr::pluck(table_data, "_data", data_col)
+  
+  text_transform(
+    table_data,
+    # note the use of {{}} here - this is tidy eval
+    # that allows you to indicate specific columns
+    locations = cells_body(columns = vars({{plot_col}})),
+    fn = function(x){
+      sparkline_plot <- purrr::map(
+        data_in, 
+        ~sparkline::spk_chr(values = .x, chartRangeMin = 0)
+        )
+      
+      purrr::map(sparkline_plot, gt::html)
+    }
+  )
+}
+
+```
+
+We can then apply the function to work very succinctly, referencing only the internal list-column data.
+
+```{r}
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(mpg_data = list(mpg), .groups = "drop") %>% 
+  gt() %>% 
+  # note you can leave mpg_data unquoted for the tidyeval
+  # but have to quote mpg_data for the pluck
+  gt_spark(mpg_data, "mpg_data")
+```
+
+### Tooltips
+
+Tooltips can be added with HTML tags.
+
+```{r}
+library(htmltools)
+
+#    
+# Add tooltip to column labels
+with_tooltip <- function(value, tooltip) {
+  tags$abbr(
+    style = "text-decoration: underline;
+    text-decoration-style: solid; color: blue",
+    title = tooltip,
+    value
+  ) %>% 
+    as.character()
+}
+
+mtcars %>% 
+  head() %>% 
+  tibble::rownames_to_column() %>% 
+  select(rowname, mpg:hp) %>% 
+  gt() %>% 
+   cols_label(
+    mpg = gt::html(with_tooltip("MPG", "Miles per Gallon")),
+    cyl = gt::html(with_tooltip("CYL", "Number of Cylinders")),
+    disp = gt::html(with_tooltip("DISP", "Displacement")),
+    hp = gt::html(with_tooltip("HP", "Horsepower")),
+  )
+
+```
+
+### Add icons
+
+You can add arbitrary icons with the `fontawesome` R package.
+
+```{r}
+mtcars %>% 
+  head() %>% 
+  gt() %>% 
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 4),
+    fn = function(x){gt::html(fontawesome::fa("truck-pickup", fill = "blue"))}
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 6),
+    fn = function(x){gt::html(fontawesome::fa("truck", fill = "grey"))}
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 8),
+    fn = function(x){gt::html(fontawesome::fa("truck-monster", fill = "red"))}
+  )
+```
+
+### Add rating stars
+
+You can take the icons example a step further, and assign rating stars. For this example, we're creating HTML content in the data itself, before passing it into `gt`. This example adapted from [`reactable`](https://glin.github.io/reactable/articles/cookbook/cookbook.html#rating-stars-1).
+
+```{r}
+# note you could use ANY font-awesome logo
+# https://fontawesome.com/cheatsheet
+rating_stars <- function(rating, max_rating = 5) {
+  rounded_rating <- floor(rating + 0.5)  # always round up
+  stars <- lapply(seq_len(max_rating), function(i) {
+    if (i <= rounded_rating) fontawesome::fa("star", fill= "orange") else fontawesome::fa("star", fill= "grey")
+  })
+  label <- sprintf("%s out of %s", rating, max_rating)
+  div_out <- div(title = label, "aria-label" = label, role = "img", stars)
+  
+  as.character(div_out) %>% 
+    gt::html()
+}
+
+mtcars %>% 
+  head() %>% 
+  mutate(rating = purrr::map(sample(1:5, size = 6, TRUE), rating_stars)) %>% 
+  gt()
+```
+
+
+### Tags and badges
+
+Again we can create a custom function and use `purrr::map()` to generate the HTML code before passing it into `gt`. Example adapted from [`reactable` documentation](https://glin.github.io/reactable/articles/cookbook/cookbook.html#tags-and-badges).
+
+```{r}
+add_cyl_color <- function(cyl){
+      add_color <- if (cyl == 4) {
+        "background: hsl(116, 60%, 90%); color: hsl(116, 30%, 25%);"
+      } else if (cyl == 6) {
+        "background: hsl(230, 70%, 90%); color: hsl(230, 45%, 30%);"
+      } else if (cyl == 8) {
+        "background: hsl(350, 70%, 90%); color: hsl(350, 45%, 30%);"
+      }
+      div_out <- htmltools::div(
+        style = paste(
+          "display: inline-block; padding: 2px 12px; border-radius: 15px; font-weight: 600; font-size: 12px;",
+          add_color
+          ),
+        paste(cyl, "Cylinders")
+      )
+      
+      as.character(div_out) %>% 
+        gt::html()
+}
+
+mtcars %>% 
+  head() %>% 
+  mutate(cylinder = purrr::map(cyl, add_cyl_color)) %>% 
+  gt()
+```
+
+#### Badges
+
+We can also use badges in a similar way.
+
+```{r, echo=FALSE}
+set.seed(20)
+```
+
+```{r tags}
+add_badge <- function(x){
+      add_color <- if (x == "Paid") {
+        "background: hsl(116, 60%, 90%); color: hsl(116, 30%, 25%);"
+      } else if (x == "Pending") {
+        "background: hsl(230, 70%, 90%); color: hsl(230, 45%, 30%);"
+      } else if (x == "Canceled") {
+        "background: hsl(350, 70%, 90%); color: hsl(350, 45%, 30%);"
+      }
+      div_out <- htmltools::div(
+        style = paste(
+          "display: inline-block; padding: 2px 12px; border-radius: 15px; font-weight: 600; font-size: 12px;",
+          add_color
+          ),
+        x
+      )
+      
+      as.character(div_out) %>% 
+        gt::html()
+}
+
+
+orders <- data.frame(
+  Order = 2300:2304,
+  Created = seq(as.Date("2019-04-01"), by = "day", length.out = 5),
+  Customer = sample(rownames(MASS::painters), 5),
+  Status = sample(c("Pending", "Paid", "Canceled"), 5, replace = TRUE)
+) %>% 
+  mutate(Status = purrr::map(Status, add_badge))
+
+orders %>% 
+  gt()
+```
+
+### Expandable sections
+
+You can embed expandable sections with `<details>` HTML, and we can build up some contents of the details tag with the use of `htmltools`. 
+
+```{r}
+library(htmltools)
+
+source_details <- paste0(
+  "<details>", "<summary><strong>Table Key, click to expand</strong></summary>",
+  div("cyl: Cylinders"), div("disp: Displacement"), div("hp: Horsepower"),
+  "</details"
+)
+
+head(mtcars) %>% 
+  gt() %>% 
+  tab_source_note(source_note = html(source_details))
+```
+
+
+### Bar charts
+
+There are different ways to create bar charts, but the example below is adapted from the [`reactable` documentation](https://glin.github.io/reactable/articles/cookbook/cookbook.html#bar-charts). The original source on  [CSS bars](https://css-tricks.com/making-charts-with-css/) using HTML and CSS.
+
+```{r}
+bar_chart <- function(label, height = "16px", fill = "#00bfc4", background = "white") {
+  bar <- glue::glue(
+    "<div style='background:{fill};width:{label}%;height:{height};'></div>"
+    )
+  chart <- glue::glue(
+    "<div style='flex-grow:1;margin-left:8px;background:{background};'>{bar}</div>"
+  )
+  glue::glue(
+    "<div style='display:flex;align-items:left';>{chart}</div>"
+    ) %>%
+  gt::html()
+  
+}
+
+mtcars %>% 
+  head() %>% 
+  mutate(
+    mpg_val = mpg/max(mpg) * 100,
+    mpg_plot = purrr::map(mpg_val, ~bar_chart(label = .x)),
+    mpg_plot2 = purrr::map(
+      mpg_val, 
+      ~bar_chart(label = .x, fill = "#fc5185", background = "#e1e1e1")
+      ),
+    ) %>% 
+  select(cyl, hp, disp, mpg, mpg_plot, mpg_plot2) %>% 
+  gt() %>% 
+  cols_align(align = "left", columns = vars(mpg_plot)) 
+```
+
+
+
+### Embed images
+
+The function provides a convenient way to generate an HTML fragment with an image URL. Because this function is currently HTML-based, it is only useful for HTML table output. To use this function inside of data cells, it is recommended that the text_transform() function is used. 
+
+```{r}
+r_png_url <- "https://www.r-project.org/logo/Rlogo.png"
+
+dplyr::tibble(
+    pixels = px(seq(10, 35, 5)),
+    image = seq(10, 35, 5)
+  ) %>%
+  gt() %>%
+  text_transform(
+    locations = cells_body(vars(image)),
+    fn = function(x) {
+      web_image(
+        url = r_png_url,
+        height = as.numeric(x)
+      )
+    }
+  )
+
+```
+
+
+### More images
+
+You can include multiple images by parsing the url along with `purrr::map()` or `lapply()`
+
+```{r}
+tibble::tribble(
+  ~team_abb,                                                   ~headshot_href,      ~short_name, ~qbr_total, ~qb_plays,
+       "GB",    "https://a.espncdn.com/i/headshots/nfl/players/full/8439.png",     "A. Rodgers",       84.4,       608,
+       "KC", "https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png",     "P. Mahomes",       82.9,       710,
+      "BUF", "https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png",       "J. Allen",       81.7,       729,
+      "TEN",   "https://a.espncdn.com/i/headshots/nfl/players/full/14876.png",   "R. Tannehill",       78.3,       594,
+      "MIA",    "https://a.espncdn.com/i/headshots/nfl/players/full/8664.png", "R. Fitzpatrick",       76.9,       324,
+       "NO",    "https://a.espncdn.com/i/headshots/nfl/players/full/2580.png",       "D. Brees",       74.6,       428,
+      "BAL", "https://a.espncdn.com/i/headshots/nfl/players/full/3916387.png",     "L. Jackson",       73.7,       585,
+      "SEA",   "https://a.espncdn.com/i/headshots/nfl/players/full/14881.png",      "R. Wilson",       73.5,       716,
+       "TB",    "https://a.espncdn.com/i/headshots/nfl/players/full/2330.png",       "T. Brady",       72.5,       681,
+      "CLE", "https://a.espncdn.com/i/headshots/nfl/players/full/3052587.png",    "B. Mayfield",       72.2,       597
+  ) %>% 
+  gt() %>%
+  text_transform(
+    locations = cells_body(vars(headshot_href)),
+    fn = function(x) {purrr::map(x,~ web_image(url = .x, height = 30))}
+  )
+```
+
+
+```{r, echo = FALSE, eval = FALSE}
+
+## THIS IS NOT WORKING BELOW
+
+### Background bar charts
+
+# Another way to create bar charts is to render them as background images.
+# This example creates bar images using the
+# [`linear-gradient()`](https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient())
+# CSS function, and was inspired by an example from https://rstudio.github.io/DT/010-style.html.
+
+# Render a bar chart in the background of the cell
+bar_style <- function(width = 1, fill = "#ddd", height = "75%", right = FALSE) {
+  if (right) {
+    position <- paste0(100 - width * 100, "%")
+    image <- sprintf("linear-gradient(90deg, transparent %1$s, %2$s %1$s)", position, fill)
+  } else {
+    position <- paste0(width * 100, "%")
+    image <- sprintf("linear-gradient(90deg, %1$s %2$s, transparent %2$s)", fill, position)
+  }
+  
+  height_add <- paste('100%', height)
+  
+  glue::glue(
+    "<div style='background-image:{image};background-size:{height_add}; background-repeat:no-repeat; background-position:center;'></div>"
+  ) %>% as.character() %>% 
+    gt::html()
+    
+}
+
+bar_style(width = 1)
+
+mtcars %>% 
+  head() %>% 
+  # tibble() %>% 
+  mutate(mpg_val = (mpg/max(mpg)) %>% round(digits = 2)) %>% 
+  mutate(
+    mpg_plot = purrr::map(
+      mpg_val, 
+      ~bar_style(width = .x, fill = "#a5d6f3")
+      )
+    ) %>% 
+  # mutate(
+  #   mpg_plot = purrr::map(mpg_plot, gt::html)
+  # ) %>% 
+  select(cyl, hp, disp, mpg, mpg_plot) %>% 
+  gt() %>% 
+  cols_align(align = "left", columns = vars(mpg_plot)) 
+#### TO INCLUDE?
+
+
+## Custom Rendering
+# You can customize how data is displayed using an R or JavaScript function
+# that returns custom content. R render functions support
+# [Shiny HTML tags](https://shiny.rstudio.com/articles/tag-glossary.html) (or
+# [`htmltools`](https://mastering-shiny.org/advanced-ui.html#generating-html)) and
+# [`htmlwidgets`](https://www.htmlwidgets.org/),
+# while JavaScript render functions allow for more dynamic behavior.
+# 
+# You can also render content as HTML using `colDef(html = TRUE)`. Note that all
+# raw HTML is escaped by default.
+# 
+# See [Custom Rendering](custom-rendering.html) for details on how to
+# use render functions, and the [Demo Cookbook](cookbook/cookbook.html)
+# for even more examples of custom rendering.
+```
+
+
