@@ -8,7 +8,22 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-
+<meta name="twitter:title" content="The GT cookbook"/>
+<meta name="twitter:description" content="Over 2,000 lines of the Grammar of Tables"/>
+<meta name="twitter:url" content="https://themockup.blog/static/gt-cookbook.html"/>
+<meta name="twitter:image:src" content="https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png"/>
+<meta name="twitter:image:alt" content="Example table"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:creator" content="@thomas_mock"/>
+<meta name="twitter:site" content="@thomas_mock"/>
+<meta property="og:title" content="The GT cookbook"/>
+<meta property="og:description" content="Over 2,000 lines of the Grammar of Tables"/>
+<meta property="og:url" content="https://themockup.blog/static/gt-cookbook.html"/>
+<meta property="og:image" content="https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png"/>
+<meta property="og:image:alt" content="Example table"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="article:author" content="Tom Mock"/>
 
 
 <title>Examples</title>
@@ -7892,15 +7907,15 @@ info_locales()    # View a table with info on supported locales</code></pre>
 <pre class="r"><code>dplyr::glimpse(exibble)</code></pre>
 <pre><code>## Rows: 8
 ## Columns: 9
-## $ num      [3m[38;5;246m&lt;dbl&gt;[39m[23m 1.111e-01, 2.222e+00, 3.333e+01, 4.444e+02, 5.550e+03, NA, 7.770e+05, 8.880e+06
-## $ char     [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;apricot&quot;, &quot;banana&quot;, &quot;coconut&quot;, &quot;durian&quot;, NA, &quot;fig&quot;, &quot;grapefruit&quot;, &quot;honeydew&quot;
-## $ fctr     [3m[38;5;246m&lt;fct&gt;[39m[23m one, two, three, four, five, six, seven, eight
-## $ date     [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;2015-01-15&quot;, &quot;2015-02-15&quot;, &quot;2015-03-15&quot;, &quot;2015-04-15&quot;, &quot;2015-05-15&quot;, &quot;2015-06-15&quot;,…
-## $ time     [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;13:35&quot;, &quot;14:40&quot;, &quot;15:45&quot;, &quot;16:50&quot;, &quot;17:55&quot;, NA, &quot;19:10&quot;, &quot;20:20&quot;
-## $ datetime [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;2018-01-01 02:22&quot;, &quot;2018-02-02 14:33&quot;, &quot;2018-03-03 03:44&quot;, &quot;2018-04-04 15:55&quot;, &quot;20…
-## $ currency [3m[38;5;246m&lt;dbl&gt;[39m[23m 49.950, 17.950, 1.390, 65100.000, 1325.810, 13.255, NA, 0.440
-## $ row      [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;row_1&quot;, &quot;row_2&quot;, &quot;row_3&quot;, &quot;row_4&quot;, &quot;row_5&quot;, &quot;row_6&quot;, &quot;row_7&quot;, &quot;row_8&quot;
-## $ group    [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;grp_a&quot;, &quot;grp_a&quot;, &quot;grp_a&quot;, &quot;grp_a&quot;, &quot;grp_b&quot;, &quot;grp_b&quot;, &quot;grp_b&quot;, &quot;grp_b&quot;</code></pre>
+## $ num      [3m[38;5;246m&lt;dbl&gt;[39m[23m 1.111e-01, 2.222e+00, 3.333e+01, 4.444e+02, 5.550e+03, NA, 7.770e+05, 8.880e+06
+## $ char     [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;apricot&quot;, &quot;banana&quot;, &quot;coconut&quot;, &quot;durian&quot;, NA, &quot;fig&quot;, &quot;grapefruit&quot;, &quot;honeydew&quot;
+## $ fctr     [3m[38;5;246m&lt;fct&gt;[39m[23m one, two, three, four, five, six, seven, eight
+## $ date     [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;2015-01-15&quot;, &quot;2015-02-15&quot;, &quot;2015-03-15&quot;, &quot;2015-04-15&quot;, &quot;2015-05-15&quot;, &quot;2015-06-15&quot;,…
+## $ time     [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;13:35&quot;, &quot;14:40&quot;, &quot;15:45&quot;, &quot;16:50&quot;, &quot;17:55&quot;, NA, &quot;19:10&quot;, &quot;20:20&quot;
+## $ datetime [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;2018-01-01 02:22&quot;, &quot;2018-02-02 14:33&quot;, &quot;2018-03-03 03:44&quot;, &quot;2018-04-04 15:55&quot;, &quot;20…
+## $ currency [3m[38;5;246m&lt;dbl&gt;[39m[23m 49.950, 17.950, 1.390, 65100.000, 1325.810, 13.255, NA, 0.440
+## $ row      [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;row_1&quot;, &quot;row_2&quot;, &quot;row_3&quot;, &quot;row_4&quot;, &quot;row_5&quot;, &quot;row_6&quot;, &quot;row_7&quot;, &quot;row_8&quot;
+## $ group    [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;grp_a&quot;, &quot;grp_a&quot;, &quot;grp_a&quot;, &quot;grp_a&quot;, &quot;grp_b&quot;, &quot;grp_b&quot;, &quot;grp_b&quot;, &quot;grp_b&quot;</code></pre>
 <pre class="r"><code>exibble %&gt;% 
   gt(rowname_col = &quot;row&quot;, groupname_col = &quot;group&quot;) %&gt;% 
   fmt_number(columns = vars(num)) %&gt;% 
