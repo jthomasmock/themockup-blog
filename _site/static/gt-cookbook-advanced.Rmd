@@ -89,6 +89,7 @@ This cookbook attempts to walk through many of the advanced applications for `gt
 For more introductory use cases, make sure to check out the [`{gt}` Cookbook](https://themockup.blog/static/gt-cookbook.html)
 
 Many of these examples rely on some working knowledge of:  
+
 * HTML  
 * CSS  
 * Functional Programming  
@@ -749,11 +750,11 @@ ex_function <- function(column){
     # provide the embrace around the variable name
     # and it can be parsed by tidy-eval
     group_by({{ column }}) %>% 
-    summarize(mean = mean(mpg))
+    summarize(mean = mean(mpg)) %>% 
+    ungroup()
 }
 
 ex_function(cyl)
-ex_function(am)
 ```
 
 While that example shows the usage of `{{ var }}`, you can also read a bit more in the [`rlang` docs](https://rlang.r-lib.org/reference/nse-force.html).

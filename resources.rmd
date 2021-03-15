@@ -17,6 +17,10 @@ A small package to scrape or collect NFL data from ESPN or NFL.com
 
 Over 2,000 lines of examples for the Grammar of Tables!
 
+### [`{gt}` advanced cookbook](https://themockup.blog/static/gt-cookbook-advanced.html)
+
+Even more topics, building off functions, parsing raw HTML or custom CSS!
+
 ### [Improving your `nflscrapR` graphics](https://jthomasmock.github.io/nfl_plotting_cookbook/#how_to_improve_your_nflscrapr_graphics)
 
 An in-depth guide to data visualization and techniques for play-by-play data.
