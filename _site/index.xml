@@ -4,7 +4,7 @@
     <title>The Mockup Blog</title>
     <link>https://themockup.blog</link>
     <atom:link href="https://themockup.blog/index.xml" rel="self" type="application/rss+xml"/>
-    <description>Exploring the wonderful world of R
+    <description>Tom's musings on all things R
 </description>
     <generator>Distill</generator>
     <lastBuildDate>Sun, 07 Mar 2021 00:00:00 +0000</lastBuildDate>
