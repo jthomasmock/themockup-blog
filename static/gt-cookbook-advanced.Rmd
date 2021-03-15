@@ -23,7 +23,7 @@ meta() %>%
   meta_social(
     title = "The GT cookbook - Advanced topics",
     description = "Leverage the Grammar of Tables with custom HTML, CSS and do more!",
-    url = "https://themockup.blog/static/gt-cookbook.html",
+    url = "https://themockup.blog/static/gt-cookbook-advanced.html",
     image = "https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png",
     image_alt = "Example table",
     og_type = "website",
