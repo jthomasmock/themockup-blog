@@ -1,7 +1,7 @@
 name: "the-mockup-blog"
 title: "The Mockup Blog"
 description: |
- Exploring the wonderful world of R
+ Tom's musings on all things R
 base_url: https://themockup.blog
 output_dir: "_site"
 navbar:
@@ -12,6 +12,8 @@ navbar:
       href: resources.html
     - text: "About"
       href: about.html
+    - text: "Subscribe"
+      href: subscribe.html
     - icon: fa fa-twitter
       href: https://twitter.com/thomas_mock
     - icon: fa fa-github
@@ -26,7 +28,9 @@ twitter:
   site: "@thomas_mock"
   creator: "@thomas_mock"
 output: 
-  distill::distill_article
+  distill::distill_article:
+    includes:
+      in_header: utterances.html
 theme: theme.css
 preview: static/site-preview.png
 rss:
