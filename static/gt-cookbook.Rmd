@@ -17,7 +17,24 @@ library(dplyr)
 library(reactable)
 library(htmltools)
 library(shiny)
+library(metathis)
 ```
+
+```{r, echo = FALSE}
+meta() %>%
+  meta_social(
+    title = "The GT cookbook",
+    description = "Over 2,000 lines of the Grammar of Tables",
+    url = "https://themockup.blog/static/gt-cookbook.html",
+    image = "https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png",
+    image_alt = "Chaos into tidy code",
+    og_type = "website",
+    og_author = "Tom Mock",
+    twitter_card_type = "summary",
+    twitter_creator = "@thomas_mock"
+  )
+```
+
 
 ```{css toc, echo = FALSE}
 #TOC {
@@ -2058,16 +2075,18 @@ tibble::tribble(
   )
 ```
 
+
+```{r, echo = FALSE, eval = FALSE}
+
 ## THIS IS NOT WORKING BELOW
 
 ### Background bar charts
 
-Another way to create bar charts is to render them as background images.
-This example creates bar images using the
-[`linear-gradient()`](https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient())
-CSS function, and was inspired by an example from https://rstudio.github.io/DT/010-style.html.
+# Another way to create bar charts is to render them as background images.
+# This example creates bar images using the
+# [`linear-gradient()`](https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient())
+# CSS function, and was inspired by an example from https://rstudio.github.io/DT/010-style.html.
 
-```{r}
 # Render a bar chart in the background of the cell
 bar_style <- function(width = 1, fill = "#ddd", height = "75%", right = FALSE) {
   if (right) {
@@ -2105,22 +2124,23 @@ mtcars %>%
   select(cyl, hp, disp, mpg, mpg_plot) %>% 
   gt() %>% 
   cols_align(align = "left", columns = vars(mpg_plot)) 
-```
-
 #### TO INCLUDE?
 
 
 ## Custom Rendering
-You can customize how data is displayed using an R or JavaScript function
-that returns custom content. R render functions support
-[Shiny HTML tags](https://shiny.rstudio.com/articles/tag-glossary.html) (or
-[`htmltools`](https://mastering-shiny.org/advanced-ui.html#generating-html)) and
-[`htmlwidgets`](https://www.htmlwidgets.org/),
-while JavaScript render functions allow for more dynamic behavior.
+# You can customize how data is displayed using an R or JavaScript function
+# that returns custom content. R render functions support
+# [Shiny HTML tags](https://shiny.rstudio.com/articles/tag-glossary.html) (or
+# [`htmltools`](https://mastering-shiny.org/advanced-ui.html#generating-html)) and
+# [`htmlwidgets`](https://www.htmlwidgets.org/),
+# while JavaScript render functions allow for more dynamic behavior.
+# 
+# You can also render content as HTML using `colDef(html = TRUE)`. Note that all
+# raw HTML is escaped by default.
+# 
+# See [Custom Rendering](custom-rendering.html) for details on how to
+# use render functions, and the [Demo Cookbook](cookbook/cookbook.html)
+# for even more examples of custom rendering.
+```
 
-You can also render content as HTML using `colDef(html = TRUE)`. Note that all
-raw HTML is escaped by default.
 
-See [Custom Rendering](custom-rendering.html) for details on how to
-use render functions, and the [Demo Cookbook](cookbook/cookbook.html)
-for even more examples of custom rendering.
