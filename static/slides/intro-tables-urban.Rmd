@@ -230,7 +230,6 @@ div.my-footer span {
 ```
 
 
-
 layout: true
 
 <div class="my-footer"><span>themockup.blog/static/slides/intro-tables-urban.html</span></div>
