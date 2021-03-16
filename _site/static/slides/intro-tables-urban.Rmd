@@ -1293,6 +1293,116 @@ pff_tab <- fake_df %>%
 
 ---
 
+### FiveThirtyEight (not sports)
+
+[Article Source](https://fivethirtyeight.com/features/the-ideas-that-are-reshaping-the-democratic-party-and-america/amp/)
+
+```{r, echo = FALSE, out.width="75%"}
+knitr::include_graphics("images/urban/538-screen-tab.png")
+```
+
+---
+
+### FiveThirtyEight (not sports)
+
+```{r, eval = FALSE, echo = FALSE}
+library(tidyverse)
+library(rvest)
+library(gt)
+
+raw_url <- "https://fivethirtyeight.com/features/the-ideas-that-are-reshaping-the-democratic-party-and-america/amp/"
+
+raw_html <- raw_url %>% 
+  read_html()
+
+raw_html %>% 
+  html_table()
+
+
+raw_html %>% 
+  html_node("amp-iframe") %>% 
+  html_attr("srcdoc") %>% 
+  read_html() %>% 
+  html_table() %>% 
+  .[[1]] %>% 
+  set_names(nm = c("Position", "dem_16", "all_16", "dem_20", "all_20")) %>% 
+  slice(-1) %>% 
+  gt() %>% 
+  tab_header(
+    title = md("**Democrats have embraced equality-focused positions**"),
+    subtitle = "Share of Democratic voters that support each position according to polling"
+  ) %>% 
+  cols_label(
+    dem_16 = "DEMS",
+    all_16 = "ALL",
+    dem_20 = "DEMS",
+    all_20 = "ALL"
+  ) %>% 
+  opt_all_caps() %>% 
+  cols_width(
+    vars(Position) ~ px(600),
+    everything() ~ px(50)
+  ) %>% 
+  opt_table_font(google_font("Lato")) %>% 
+  tab_spanner(
+    label = md("PRE-2016\nELECTION"),
+    columns = vars(dem_16, all_16),
+    id = "election"
+  ) %>% 
+  tab_spanner(
+    label = "2019-2020",
+    columns = vars(dem_20, all_20),
+    id = "year"
+  ) %>% 
+  tab_style(
+    style = cell_borders(sides = "bottom", weight = px(3)),
+    locations = cells_column_labels(everything())
+  ) %>% 
+  tab_style(
+    style = cell_borders(sides = "bottom", weight = px(2)),
+    locations = cells_column_spanners(c("election", "year"))
+  ) %>% 
+  tab_style(
+    style = cell_text(font = google_font("Fira Mono"), size = px(14)),
+    locations = cells_body(columns = vars(dem_16, all_16, dem_20, all_20))
+  ) %>% 
+  tab_style(
+    style = list(
+      cell_borders(sides = "left", weight = px(2)),
+      cell_fill(color = "#EEEEEE")
+    ),
+    locations = cells_body(columns = vars(dem_16, dem_20))
+  ) %>% 
+  tab_style(
+    style = cell_borders(sides = "left", weight = px(5), color = "white"),
+    locations = cells_column_spanners("year")
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "bottom", color = "lightgrey"),
+    locations = cells_body()
+  ) %>% 
+  opt_table_lines("none") %>% 
+  tab_options(
+   heading.align = "left",
+   data_row.padding = px(4),
+   source_notes.font.size = px(10)
+  ) %>% 
+  tab_source_note(
+    source_note = "“Pre-2016” refers to polling conducted before the 2016 presidential election. Most of these surveys were conducted in 2015-16, but in a few cases, the survey data is from earlier. For example, the cash reparations number is from 2002. We tried to use data from the same pollster, to reflect changes in the results that were not due to questions being phrased differently. Positions with no previous response is the result of a pollster not asking the question pre-2016. That finding suggests an issue is new to the political discourse. For example, Gallup’s non-polling on the reparations issue from 2002-19 was telling."
+  ) %>% 
+  tab_source_note(
+    source_note = "SOURCES: PEW RESEARCH CENTER, PRRI, GALLUP, YOUGOV"
+  ) %>% 
+  gtsave("static/slides/images/538-election.png")
+```
+
+
+```{r, echo = FALSE, out.width="75%", dpi=300}
+knitr::include_graphics("images/urban/538-election.png")
+```
+
+---
+
 ### Urban Institute
 
 [Source p. 10](https://www.urban.org/sites/default/files/publication/103794/2021-poverty-projections-assessing-four-american-rescue-plan-policies_0_0.pdf)
