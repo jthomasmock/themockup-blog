@@ -7,7 +7,7 @@ output:
   xaringan::moon_reader:
     includes:
       in_header:
-        
+        - 'ga_script.html'
     css: ["default", "xaringan-theme.css"]
     lib_dir: libs
     nature:
