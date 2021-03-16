@@ -4,6 +4,55 @@ description: |
   Things I've made
 ---
 
+```{r, echo=FALSE,warning=FALSE}
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(reactable)
+})
+
+data_in <- tibble::tribble(
+  ~Project, ~url, ~Type, ~Description,
+  "#TidyTuesday", "https://github.com/rfordatascience/tidytuesday/blob/master/README.md", "Event", "A weekly data project aimed at the R ecosystem",
+  "{espnscrapeR}", "https://jthomasmock.github.io/espnscrapeR/", "Package", "A small package to scrape or collect NFL data from ESPN or NFL.com",
+  "{gt} Cookbook", "https://themockup.blog/static/gt-cookbook.html", "Guide", "Over 2,000 lines of examples for the Grammar of Tables!",
+  "{gt} Advanced Cookbook", "https://themockup.blog/static/gt-cookbook-advanced.html", "Guide", "Even more {gt}, building off functions, parsing raw HTML or custom CSS!",
+  "Improving your {nflfastR} graphics", "https://jthomasmock.github.io/nfl_plotting_cookbook/", "Guide", "An in-depth guide to data visualization and techniques for play-by-play data",
+  "Intro to {tidymodels} in 15 min", "https://jthomasmock.github.io/nfl_hanic/", "Presentation", "A short presentation on using `tidymodels` to predict whether the opposing team will run or pass",
+  "Intro to {tidymodels} workshop", "https://themockup.blog/static/slides/nfl-tidymodels.html", "Presentation", "A full workshop on using `tidymodels` to predict whether the opposing team will run or pass",
+  "Intro to Tables", "https://themockup.blog/static/slides/intro-tables.html", "Presentation", "A presentation on 10 best practices for creating tables with {gt}",
+  "Intro to Tables - Urban", "https://themockup.blog/static/slides/intro-tables-urban.html", "Presentation", "A presentation on basic and advanced {gt}",
+  "100 Women of 2020 Table", "https://themockup.blog/static/100-women.html", "Example", "A #TidyTuesday submission for the BBC's 100 Women of 2020 dataset",
+  "{nflseedR} interactive table", "https://themockup.blog/static/nflseedr-reactable", "Example", "Example with code of creating a {reactable} table for {nflseedR} output"
+) 
+
+data_in %>%
+  reactable::reactable(
+    searchable = TRUE,
+    pagination = FALSE,
+    columns = list(
+      Project = colDef(
+        minWidth = 150,
+        cell = function(value, index) {
+          url_in <- data_in$url[index]
+          htmltools::a(href = url_in, value)
+        }
+      ),
+      url = colDef(show = FALSE),
+      Type = colDef(minWidth = 115),
+      Description = colDef(minWidth = 250)
+    ),
+    theme = reactableTheme(
+      borderColor = "#dfe2e5",
+      stripedColor = "#f6f8fa",
+      highlightColor = "#f0f5f9",
+      cellPadding = "8px 12px",
+      style = list(fontFamily = "-apple-system, Lato, sans-serif"),
+    )
+  )
+```
+
+```{r,echo=FALSE, eval=FALSE}
+
 ### [`#TidyTuesday`](https://github.com/rfordatascience/tidytuesday/blob/master/README.md)
 
 A weekly data project aimed at the R ecosystem.
@@ -45,3 +94,6 @@ A `#TidyTuesday` submission for the [BBC's 100 Women of 2020](https://www.bbc.co
 ### [`{nflseedR}` interactive table](https://themockup.blog/static/nflseedr-reactable)
 
 Example with code of creating a `{reactable}` table for `{nflseedR}` output
+
+```
+

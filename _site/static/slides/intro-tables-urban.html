@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Beautiful Tables in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tom Mock" />
+    <meta name="date" content="2021-03-15" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# <span style="color:#fcab27">Beautiful Tables in R</span>
+## <span style="color:#3686d3">gt and the grammar of tables</span> <br>
+### <a href = 'https://twitter.com/thomas_mock'><span style="color:#ff2b4f">Tom Mock</span></a>
+### 2021-03-15
+
+---
+
+
+
+
+
+
+
+
+layout: true
+
+&lt;div class="my-footer"&gt;&lt;span&gt;themockup.blog/static/slides/gt-tables-urban.html&lt;/span&gt;&lt;/div&gt;
+
+---
+class:inverse, center
+
+# Why do we care about tables?
+
+---
+class:inverse, center
+
+### *Why do we care about tables?*
+
+# Why do we care about graphs?  
+
+---
+class:inverse, center
+
+### *Why do we care about tables?*  
+
+### *Why do we care about graphs?*  
+
+# *Both* Graphs AND Tables *are* tools for communication
+
+
+---
+class:inverse, center
+
+### *Why do we care about tables?*
+
+### *Why do we care about graphs?*
+
+### *Both Graphs and tables are tools for communication*
+
+# Better Graphs/Tables *are* better communication
+
+---
+
+### A **grammar** of graphics
+
+* `ggplot2` is an application of the **grammar of graphics** for R  
+
+--
+
+* A default dataset and set of mappings from variables to aesthetics  
+* One or more layers of geometric objects    
+* One scale for each aesthetic mapping used  
+* A coordinate system  
+* The facet specification  
+
+---
+
+### A **grammar** of graphics
+
+--
+
+Images from John-Burn Murdoch's presentation: [**ggplot2 as a creativity engine**](https://johnburnmurdoch.github.io/slides/r-ggplot/#/)  
+
+.pull-left[
+Easy enough to [*rapidly prototype*](https://johnburnmurdoch.github.io/slides/r-ggplot/#/14) graphics at the "speed of thought"  
+&lt;img src="https://johnburnmurdoch.github.io/slides/r-ggplot/football-tide-2.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+Powerful enough for [*final "publication"*](https://johnburnmurdoch.github.io/slides/r-ggplot/#/34)  
+&lt;img src="http://blogs.ft.com/ftdata/files/2016/03/eng.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+---
+
+### A **grammar** of tables
+
+--
+
+Construct a wide variety of useful tables with a cohesive set of table parts. These include the *table header*, the *stub*, the *column labels* and *spanner column labels*, the *table body* and the *table footer*.
+
+--
+
+![](https://gt.rstudio.com/reference/figures/gt_parts_of_a_table.svg)
+---
+
+![](https://gt.rstudio.com/reference/figures/gt_workflow_diagram.svg)
+--
+.pull-left[
+Easy enough to *rapidly prototype*  
+&lt;img src="images/urban/prototype.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+Powerful enough for *final "publication"*  
+&lt;img src="https://themockup.blog/static/slides/images/qbr_win_tab.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+class:inverse, center, middle
+
+# Best practices
+
+---
+
+
+
+&lt;img src="tables/few-table-rule.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+
+
+&lt;img src="tables/few-table-ex.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### 10 Guidelines for Better Tables
+
+H/t to [Jon Schwabish](https://twitter.com/jschwabish/status/1290323581881266177?lang=en)!
+
+Adapted to `gt` in my [blogpost](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/).
+
+.pull-left[
+#### 1. Offset the Heads from the Body  
+#### 2. Use Subtle Dividers over Heavy Grids  
+#### 3. Right-Align Numbers  
+#### 4. Left-Align Text  
+#### 5. Select Appropriate Precision  
+]
+
+.pull-right[
+#### 6. Guide your Reader with Space between Rows and Columns  
+#### 7. Remove Unit Repetition  
+#### 8. Highlight Outliers  
+#### 9. Group Similar Data and Increase White Space  
+#### 10. Add Visualizations when Appropriate  
+]
+
+
+---
+
+### `#TidyTuesday` data
+
+
+```r
+library(tidyverse)
+library(gt)
+
+url_in &lt;- 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-01/key_crop_yields.csv'
+
+raw_yields &lt;- readr::read_csv(url_in)
+
+yield_data &lt;- raw_yields %&gt;% 
+  janitor::clean_names() %&gt;% 
+  rename_with(~str_remove(., "_tonnes_per_hectare")) %&gt;% 
+  select(entity:beans, -code) %&gt;% 
+  pivot_longer(cols = wheat:beans, names_to = "crop", values_to = "yield") %&gt;% 
+  rename(Country = entity)
+
+yield_data
+```
+
+```
+## # A tibble: 78,450 x 4
+##    Country      year crop      yield
+##    &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
+##  1 Afghanistan  1961 wheat     1.02 
+##  2 Afghanistan  1961 rice      1.52 
+##  3 Afghanistan  1961 maize     1.4  
+##  4 Afghanistan  1961 soybeans NA    
+##  5 Afghanistan  1961 potatoes  8.67 
+##  6 Afghanistan  1961 beans    NA    
+##  7 Afghanistan  1962 wheat     0.974
+##  8 Afghanistan  1962 rice      1.52 
+##  9 Afghanistan  1962 maize     1.4  
+## 10 Afghanistan  1962 soybeans NA    
+## # … with 78,440 more rows
+```
+
+
+---
+
+### `#TidyTuesday` data
+
+
+
+```r
+country_sel &lt;- c(
+  "China", "India", "United States", 
+  "Indonesia", "Mexico", "Pakistan"
+  )
+
+yield_data_wide &lt;- raw_yields %&gt;% 
+  janitor::clean_names() %&gt;% 
+  rename_with(
+    ~str_remove(., "_tonnes_per_hectare")
+    ) %&gt;% 
+  select(entity:beans, -code) %&gt;% 
+  pivot_longer(
+    cols = wheat:beans, 
+    names_to = "crop", 
+    values_to = "yield"
+    ) %&gt;% 
+  rename(Country = entity) %&gt;% 
+  filter(
+    crop %in% c("potatoes", "maize"), 
+    year %in% c(2014:2016),
+    Country %in% country_sel
+    ) %&gt;% 
+  pivot_wider(
+    names_from = year, 
+    values_from = yield
+    )
+```
+
+
+---
+
+### `#TidyTuesday` data
+
+
+```r
+yield_data_wide
+```
+
+```
+## # A tibble: 12 x 5
+##    Country       crop     `2014` `2015` `2016`
+##    &lt;chr&gt;         &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 China         maize      5.81   5.89   5.97
+##  2 China         potatoes  17.1   17.3   17.7 
+##  3 India         maize      2.61   2.60   2.62
+##  4 India         potatoes  22.9   23.1   20.5 
+##  5 Indonesia     maize      4.95   5.18   5.31
+##  6 Indonesia     potatoes  17.7   18.2   18.3 
+##  7 Mexico        maize      3.30   3.48   3.72
+##  8 Mexico        potatoes  27.3   27.1   27.9 
+##  9 Pakistan      maize      4.32   4.42   4.55
+## 10 Pakistan      potatoes  18.2   23.4   22.4 
+## 11 United States maize     10.7   10.6   11.7 
+## 12 United States potatoes  47.2   46.9   48.6
+```
+
+---
+class: center, middle, inverse
+
+# Easy enough to *rapidly prototype*
+
+---
+
+### Basic `gt` table
+
+
+```r
+yield_data_wide %&gt;% 
+  gt()
+```
+
+--
+
+&lt;img src="tables/basic-gt.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Add groups
+
+.pull-left[
+
+```r
+yield_data_wide %&gt;% 
+  head() %&gt;% 
+  # respects grouping from dplyr
+* group_by(Country) %&gt;%
+  gt(rowname_col = "crop") 
+```
+
+&lt;img src="tables/group-tab.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+--
+
+.pull-right[
+
+```r
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt(
+*   groupname_col = "crop",
+*   rowname_col = "Country"
+  ) 
+```
+
+&lt;img src="tables/group-tab.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+
+
+.pull-left[
+### Groups
+
+
+```r
+yield_data_wide %&gt;% 
+  mutate(crop = str_to_title(crop)) %&gt;% 
+  group_by(crop) %&gt;% 
+  gt(
+    rowname_col = "Country"
+  ) %&gt;% 
+  fmt_number(
+    columns = 2:5, # reference cols by pos
+    decimals = 2 # decrease decimal places
+    ) %&gt;% 
+* summary_rows(
+*   groups = TRUE,
+    # reference cols by name
+    columns = vars(`2014`, `2015`, `2016`), 
+    fns = list(
+      # add summary stats
+*     avg = ~mean(.),
+*     sd = ~sd(.)
+    )
+  )
+```
+
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/group-sum.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+### Add spanners
+
+Table spanners can be added quickly with `tab_spanner()` and again use either position (column number) or + `vars(name)`.
+
+.pull-left[
+
+```r
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %&gt;% 
+* tab_spanner(
+*   label = "Yield in Tonnes/Hectare",
+*   columns = 2:5
+    ) 
+```
+
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/tab-spanner.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+### Add notes and titles
+
+Footnotes can be added with `tab_footnote()`. Note that this is our first use of the `locations` argument. Locations is used with things like `cells_column_labels()` or `cells_body()`, `cells_summary()` to offer very tight control of where to place certain changes. 
+
+.pull-left[
+
+```r
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %&gt;% 
+  tab_footnote(
+    footnote = "Yield in Tonnes/Hectare", 
+*   locations = cells_column_labels(
+      columns = 1:3
+      )
+    )
+```
+
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/footnote-tab.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+### Add notes and titles
+
+Footnotes can be added with `tab_footnote()`. Note that this is our first use of the `locations` argument. Locations is used with things like `cells_column_labels()` or `cells_body()`, `cells_summary()` to offer very tight control of where to place certain changes. 
+
+.pull-left[
+
+```r
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %&gt;% 
+  tab_footnote(
+    footnote = "Yield in Tonnes/Hectare", 
+    locations = cells_column_labels(
+      columns = 1:3 # note
+      )
+    ) %&gt;% 
+  # Adding a `source_note()`
+  tab_source_note(
+*   source_note = "Data: OurWorldInData"
+    )
+```
+
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/source-note-tab.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+### Add Title/Subtitle
+
+Adding a title or subtitle with `tab_header()` and notice that I used `md()` around the title and `html()` around subtitle to adjust their appearance. 
+
+.pull-left[
+
+```r
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %&gt;%
+* tab_header(
+    title = md("**Crop Yields between 2014 and 2016**"),
+    subtitle = html("&lt;em&gt;Countries limited to Asia&lt;/em&gt;")
+  )
+```
+
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/title-tab.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+### Adjust appearance
+
+You can customize large chunks of the table appearance all at once via `tab_options()`. The full reference to ALL the options you can customize are in the [`gt` packagedown site](https://gt.rstudio.com/reference/tab_options.html).
+
+.pull-left[
+
+```r
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %&gt;%
+  tab_header(
+    title = "Crop Yields between 2014 and 2016",
+    subtitle = "Countries limited to Asia"
+  ) %&gt;% 
+* tab_options(
+    heading.subtitle.font.size = 12,
+    heading.align = "left",
+    table.border.top.color = "red",
+    column_labels.border.bottom.color = "red",
+    column_labels.border.bottom.width= px(3)
+  )
+```
+
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/theme-tab.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+### Pseudo-themes
+
+Because `gt` is built up by a series of piped examples, you can also pass along additional changes/customization as a function almost like a `ggplot2` theme!
+
+.pull-left[
+
+```r
+my_theme &lt;- function(data) {
+  tab_options(
+    data = data,
+    heading.subtitle.font.size = 12,
+    heading.align = "left",
+    table.border.top.color = "red",
+    column_labels.border.bottom.color = "red",
+    column_labels.border.bottom.width= px(3)
+  )
+}
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %&gt;%
+  tab_header(
+    title = "Crop Yields between 2014 and 2016",
+    subtitle = "Countries limited to Asia"
+  ) %&gt;% 
+* my_theme()
+```
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/theme-tab.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+### Style specific cells w/ `tab_style()`
+
+.pull-left[
+.small[
+
+
+```r
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt() %&gt;% 
+  tab_style(
+    style = list(
+      cell_text(weight = "bold")
+    ),
+    locations = cells_column_labels(everything())
+  ) %&gt;% 
+* tab_style(
+    style = list(
+*     cell_fill(color = "black", alpha = 0.2),
+*     cell_borders(
+        side = c("left", "right"), 
+        color = "black",
+        weight = px(2)
+        )
+      ),
+    locations = cells_body(
+      columns = vars(crop)
+      )
+  ) %&gt;% 
+  tab_style(
+    style = list(
+*     cell_text(color = "red", style = "italic")
+    ),
+    locations = cells_body(
+      columns = 3:5,
+*     rows = Country == "China"
+    )
+  )
+```
+
+]
+
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/tab-style.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+### Color Gradient
+
+
+.pull-left[
+
+```r
+my_pal &lt;- scales::col_numeric(
+  paletteer::paletteer_d(
+    palette = "ggsci::red_material"
+    ) %&gt;% as.character(),
+  domain = NULL
+  )
+  
+yield_data_wide %&gt;% 
+  head() %&gt;%
+  gt(
+    groupname_col = "crop",
+    rowname_col = "Country"
+  ) %&gt;% 
+* data_color(
+    columns = vars(`2014`, `2015`, `2016`),
+*   colors = my_pal
+      )
+```
+
+]
+
+--
+
+.pull-right[
+&lt;img src="tables/color-gradient.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+class:inverse, center, middle
+
+# Powerful enough for *final presentation*
+
+---
+
+### Themes
+
+Themes are really just functions with a lot of the `gt` customizations baked in.
+
+* They take raw data or `gt` objects, add styling/themes and then output the themed table  
+* They can be reusable OR apply to specific data  
+
+---
+
+### ESPN table
+
+&lt;img src="https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/espn-tab.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### ESPN theme
+
+
+
+```r
+gt_theme_espn &lt;- function(data, ...){
+  data %&gt;% 
+    opt_all_caps()  %&gt;%
+    opt_table_font(
+      font = list(
+        google_font("Lato"),
+        default_fonts()
+      )
+    )  %&gt;% 
+    opt_row_striping() %&gt;% 
+    tab_options(
+      row.striping.background_color = "#fafafa",
+      table_body.hlines.color = "#f6f7f7",
+      source_notes.font.size = 12,
+      table.font.size = 16,
+      table.width = px(700),
+      heading.align = "left",
+      heading.title.font.size = 24,
+      table.border.top.color = "transparent",
+      table.border.top.width = px(3),
+      data_row.padding = px(7),
+      ...
+    ) 
+}
+```
+
+---
+
+### ESPN applied
+
+
+
+&lt;img src="https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/espn-themed-gt.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### FiveThirtyEight theme
+
+
+```r
+gt_theme_538 &lt;- function(data,...) {
+  data %&gt;%
+  opt_all_caps()  %&gt;%
+  opt_table_font(font = list(google_font("Chivo"),default_fonts())) %&gt;%
+    tab_style(style = cell_borders(sides = "bottom", color = "transparent", weight = px(2)),
+      locations = cells_body(columns = TRUE,rows = nrow(data$`_data`)))  %&gt;% 
+  tab_options(
+    column_labels.background.color = "white",
+    table.border.top.width = px(3),
+    table.border.top.color = "transparent",
+    table.border.bottom.color = "transparent",
+    table.border.bottom.width = px(3),
+    column_labels.border.top.width = px(3),
+    column_labels.border.top.color = "transparent",
+    column_labels.border.bottom.width = px(3),
+    column_labels.border.bottom.color = "black",
+    data_row.padding = px(3),
+    source_notes.font.size = 12,
+    table.font.size = 16,
+    heading.align = "left",
+    ...
+  ) 
+}
+```
+
+
+---
+
+### FiveThirtyEight applied
+
+
+
+&lt;img src="images/urban/538.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### PFF Table
+
+
+&lt;img src="https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/pff-example.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### PFF Theme
+
+Not going to show the code, because it really only applies to this table, but you can see it on my [blog](https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables#pff).
+
+&lt;img src="https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/pff-themed-gt.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+### Urban Institute
+
+[Source p. 10](https://www.urban.org/sites/default/files/publication/103794/2021-poverty-projections-assessing-four-american-rescue-plan-policies_0_0.pdf)
+
+
+
+&lt;img src="images/urban/urban-screen.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Urban
+
+&lt;img src="images/urban/urban-tab.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+class:inverse, center, middle
+
+# Advanced Features
+
+---
+
+### Bar plot
+
+
+```r
+bar_chart &lt;- function(label, height = "16px", fill = "#00bfc4", background = "white") {
+  bar &lt;- glue::glue("&lt;div style='background:{fill};width:{label}%;height:{height};'&gt;&lt;/div&gt;")
+  chart &lt;- glue::glue("&lt;div style='flex-grow:1;margin-left:8px;background:{background};'&gt;{bar}&lt;/div&gt;")
+  glue::glue("&lt;div style='display:flex;align-items:left';&gt;{chart}&lt;/div&gt;") %&gt;%
+  gt::html()
+}
+
+head(mtcars) %&gt;% 
+  mutate(
+    mpg_val = mpg/max(mpg) * 100,
+    mpg_plot = purrr::map(mpg_val, ~bar_chart(label = .x, fill = "#1696d2")),
+    mpg_plot2 = purrr::map(mpg_val, ~bar_chart(label = .x, fill = "#fdbf11", background = "#d2d2d2")),
+    ) %&gt;% 
+  select(cyl, hp, disp, mpg, mpg_plot, mpg_plot2) %&gt;% 
+  gt() %&gt;% 
+  cols_align(align = "left", columns = vars(mpg_plot)) 
+```
+
+---
+
+### Bar plot
+
+&lt;img src="images/urban/urban-bar.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Sparklines
+
+
+```r
+gt_plot &lt;- function(table_data, column, plot_data, plot_fun, color = "#1696d2",...){
+  text_transform(
+    table_data,
+    # note the use of {{}} here - this is tidy eval
+    # that allows you to indicate specific columns
+    locations = cells_body(columns = vars({{column}})),
+    fn = function(x){
+      plot &lt;- purrr::map(
+        plot_data, plot_fun, width = 300, height = 70, same_lim = TRUE, 
+        col = color, minmax = list(pch = 18, col = "#fdbf11"), ...)
+      plot_svg &lt;- purrr::map(plot, "svg_text")
+      purrr::map(plot_svg, gt::html)
+    }
+  )
+}
+```
+
+
+```r
+mpg_list &lt;- split(mtcars$mpg, mtcars$cyl)
+
+tibble(cyl = c(4,6,8), boxplot = "") %&gt;% 
+  gt() %&gt;% 
+  gt_plot(
+    column = boxplot,  # column to create plot in 
+    plot_data = mpg_list, # external data to reference
+    plot_fun = kableExtra::spec_plot,  # which plot fun
+    ylim = range(mtcars$mpg), # range applied,
+    color = "#1696d2", # change color of line
+    cex = 5 # change size of points,
+  )
+```
+
+---
+
+### Sparklines
+
+
+```r
+library(kableExtra)
+mpg_rng &lt;- range(mtcars$mpg)
+
+tibble(cyl = c(4, 6, 8), boxplot = "", mpg_hist = "", mpg_line1 = "",
+       mpg_line2 = "", mpg_points1 = "", mpg_points2 = "", mpg_poly = ""
+) %&gt;%
+  gt() %&gt;%
+  gt_plot(column = boxplot, plot_data = mpg_list, plot_fun = spec_boxplot, lim = mpg_rng) %&gt;%
+  gt_plot(column = mpg_hist, plot_data = mpg_list, plot_fun = spec_hist, lim = mpg_rng) %&gt;%
+  gt_plot(column = mpg_line1, plot_data = mpg_list, plot_fun = spec_plot, ylim = mpg_rng) %&gt;%
+  gt_plot(column = mpg_line2, plot_data = mpg_list, plot_fun = spec_plot) %&gt;%
+  gt_plot(column = mpg_points1, plot_data = mpg_list, plot_fun = spec_plot, type = "p", ylim = mpg_rng, cex = 4) %&gt;%
+  gt_plot(column = mpg_points2, plot_data = mpg_list, plot_fun = spec_plot, type = "p", cex = 4) %&gt;%
+  gt_plot(column = mpg_poly, plot_data = mpg_list, plot_fun = spec_plot, polymin = 5, ylim = mpg_rng)
+```
+
+--
+
+&lt;img src="images/urban/urban-spark.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Heatmap
+
+
+```r
+dimnames &lt;- list(start(nottem)[1]:end(nottem)[1], month.abb)
+temps &lt;- matrix(nottem, ncol = 12, byrow = TRUE, dimnames = dimnames) %&gt;% 
+  data.frame() %&gt;% 
+  tibble::rownames_to_column() %&gt;% 
+  head(10)
+
+temps %&gt;% 
+  gt() %&gt;% 
+  data_color(
+    columns = vars(month.abb),
+    colors = scales::col_numeric(
+      c("#0a4c6a", "#73bfe2", "#cfe8f3", "#fff2cf", "#fdd870", "#fdbf11", "#ca5800"), 
+      domain = range(nottem))
+  )
+```
+
+---
+
+### Heatmap
+
+&lt;img src="images/urban/urban-heat.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Icons
+
+
+
+```r
+icon_fun &lt;- function(icon, fill, val){
+  fontawesome::fa(icon, fill = fill) %&gt;% 
+    rep(., val) %&gt;% 
+    gt::html()
+}
+
+head(mtcars) %&gt;% 
+  select(mpg:drat) %&gt;% 
+  mutate(cylinder = paste(cyl, "cyl"), .before = cyl) %&gt;% 
+  gt() %&gt;% 
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 4),
+    fn = function(x){icon_fun(icon = "truck-pickup", fill = "black", val = x)}
+  ) %&gt;% 
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 6),
+    fn = function(x){gt::html(rep(fontawesome::fa("truck", fill = "#fdbf11"), 6))}
+  ) %&gt;% 
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 8),
+    fn = function(x){icon_fun(icon = "truck-monster", fill = "#1696d2", val = x)}
+  ) %&gt;% 
+  cols_align(align = "left", columns = vars(cyl)) %&gt;% 
+  cols_width(vars(cyl)~px(170)) %&gt;% 
+  tab_source_note(
+    source_note = html("&lt;img height='30px' src='https://nchousing.org/wp-content/uploads/2017/04/logo.png' style='float: right;'&gt;&lt;/img&gt;")
+  )
+```
+
+---
+
+### Icons
+
+&lt;img src="images/urban/urban-icons.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: center, inverse, middle
+
+# When NOT to use `gt`
+
+---
+
+### Data too long
+
+
+
+.pull-left[
+
+* *MAYBE* Consider going horizontal  
+* Probably better to use interactive table ([`reactable`](https://glin.github.io/reactable/))  
+* Possibly better to use a graphic  
+
+
+]
+
+--
+
+.pull-right[
+
+Avoid the "CVS receipt"!
+
+&lt;img src="images/urban/cvs-receipt.png" width="20%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+---
+
+### Complex PDF Tables (or Word)
+
+LaTeX support in `gt` is still in progress, so while it can "just work" in PDF, HTML content is still where it shines
+
+* PDF _can_ work via `webshot`, see `gtsave("TAB-NAME.pdf")`  
+* Basic tables in PDF work *ok*, but I'd recommend `kableExtra` or `kable` for now  
+* For Word, you can copy paste RTF `gt` tables, but I still think that `flextable` wins the "Office" wars  
+* [`pagedown`](https://github.com/rstudio/pagedown) and [`pagedreport`](https://rfortherestofus.com/2021/01/announcing-pagedreport/) are very powerful for HTML -&gt; PDF
+
+
+---
+
+# Resources
+
+* 7 Different Table Guides on [TheMockUp.blog](https://themockup.blog/#category:tables)  
+
+* [10 Table Rules for `{gt}`](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/)  
+
+* ALL code for this specific presentation in written form on [my github](https://github.com/jthomasmock/radix_themockup/tree/master/static/slides/intro-tables-urban.Rmd)  
+
+* `{gt}` [documentation](https://gt.rstudio.com/)  
+
+* The `{gt}` [Cookbook](https://themockup.blog/static/gt-cookbook.html) and the [Advanced Cookbook](https://themockup.blog/static/gt-cookbook-advanced.html)  
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"selfContained": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

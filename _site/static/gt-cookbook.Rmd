@@ -8,6 +8,8 @@ output:
       smooth_scroll: false
     anchor_sections: TRUE
     syntax_highlight: tango
+    includes:
+      in_header: ga_script.html
 ---
 
 ```{r setup, include=FALSE}
