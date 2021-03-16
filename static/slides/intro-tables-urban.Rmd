@@ -5,6 +5,9 @@ author: "<a href = 'https://twitter.com/thomas_mock'><span style='color:#ff2b4f'
 date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
+    includes:
+      in_header:
+        
     css: ["default", "xaringan-theme.css"]
     lib_dir: libs
     nature:
@@ -230,7 +233,7 @@ div.my-footer span {
 
 layout: true
 
-<div class="my-footer"><span>themockup.blog/static/slides/gt-tables-urban.html</span></div>
+<div class="my-footer"><span>themockup.blog/static/slides/intro-tables-urban.html</span></div>
 
 ---
 class:inverse, center
