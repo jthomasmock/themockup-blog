@@ -1278,6 +1278,28 @@ countrypops %>%
 
 <br>
 
+### Factors
+
+Factors are typically more appropriate with qualitative palettes, and we can use `scales::col_factor()` to apply colors to the specific column of interest. Note that the color palette needs to be equal to the unique number of factors. In the example below we pass `n = 3` since we have 3 different trim types.
+
+```{r}
+gtcars %>% 
+  dplyr::filter(mfr == "Ferrari", hp < 900) %>% 
+  dplyr::select(model, hp, trim, mpg_h, msrp) %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(trim),
+    colors = scales::col_factor(
+      palette = paletteer::paletteer_d(
+        n = 3, palette = "colorblindr::OkabeIto"
+        ) %>% as.character(),
+      domain = NULL
+      )
+  )
+```
+
+<br>
+
 ### Multiple columns
 
 This can also be applied across multiple columns at once. Here's an example using the built in `nottem` dataset. While red-green color scales are very commonly used, they are not color-blind friendly.
@@ -1384,26 +1406,38 @@ pizzaplace %>%
   )
 ```
 
-### Factors
 
-Factors are typically more appropriate with qualitative palettes, and we can use `scales::col_factor()` to apply colors to the specific column of interest. Note that the color palette needs to be equal to the unique number of factors. In the example below we pass `n = 3` since we have 3 different trim types.
+### Color Palette functions
+
+While you can manually call outputs to `scales::col_numeric()`, you can also build a palette function. Note that the palette can be manually created or pulled from a metapackage like `colorspace` or `paletteer`.
 
 ```{r}
-gtcars %>% 
-  dplyr::filter(mfr == "Ferrari", hp < 900) %>% 
-  dplyr::select(model, hp, trim, mpg_h, msrp) %>% 
-  gt() %>% 
+my_color_pal <- function(x) {
+  scales::col_numeric(
+    palette = paletteer::paletteer_d(
+      palette = "ggsci::red_material"
+    ) %>% as.character(),
+    domain = NULL
+  )(x)
+}
+
+pizzaplace %>%
+  dplyr::filter(
+    type %in% c("chicken", "supreme")) %>%
+  dplyr::group_by(type, size) %>%
+  dplyr::summarize(
+    sold = dplyr::n(),
+    income = sum(price), .groups = "drop"
+  ) %>%
+  gt(rowname_col = "size") %>%
   data_color(
-    columns = vars(trim),
-    colors = scales::col_factor(
-      palette = paletteer::paletteer_d(
-        n = 3, palette = "colorblindr::OkabeIto"
-        ) %>% as.character(),
-      domain = NULL
-      )
+    columns = vars(sold, income),
+    colors = my_color_pal
   )
 ```
 
-
-
+<br>
+<br>
+<br>
+<br>
 

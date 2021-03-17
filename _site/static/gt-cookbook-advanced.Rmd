@@ -415,7 +415,7 @@ We can alternatively write a function to do something similar.
 gt_plot <- function(table_data, plot_col, data_col, plot_fun, ...){
   # save the data extract ahead of time 
   # to be used in our anonymous function below
-  data_in = pluck(table_data, "_data", data_col)
+  data_in = purrr::pluck(table_data, "_data", data_col)
 
   text_transform(
     table_data,
@@ -945,6 +945,273 @@ head(gtcars) %>%
   gt_theme_538() %>% 
   as_raw_html()
 ```
+
+## Tidy eval
+
+Now, I want to preface this by saying that the entire `tidyeval` framework used in `gt` is currently under active development to be more closely aligned with the `tidyverse`. You'll note the relatively legacy use of `vars()` inside `gt`.
+
+Most of this is only required for creating your own functions, although there are some sharp edges around specifying columns in `vars()`.
+
+For some nice reading about `tidyeval` beyond the scope of just `gt`, see:  
+
+- [Advanced R - book](https://adv-r.hadley.nz/metaprogramming.html)  
+- [Tidyeval - book](https://tidyeval.tidyverse.org/)  
+
+To start off, let's revisit an example from the cookbook. First we'll prep the data.
+
+```{r}
+dimnames <- list(start(nottem)[1]:end(nottem)[1], month.abb)
+temps <- matrix(nottem, ncol = 12, byrow = TRUE, dimnames = dimnames) %>% 
+  data.frame() %>% 
+  tibble::rownames_to_column() %>% 
+  head(10)
+
+temps %>% 
+  tibble()
+```
+
+<br>
+<br>
+
+We'll also define our "Hulk palette" as a function.
+
+```{r}
+hulk_pal <- function(x){
+  scales::col_numeric(
+      colorspace::diverge_hcl(n = 9, palette = "Purple-Green") %>% rev(), 
+      domain = range(nottem)
+      )(x)
+}
+```
+
+This function supplies a number or a vector of numbers to generate colors.
+
+```{r}
+# January is cold
+temps$Jan %>% hulk_pal() %>%  scales::show_col()
+```
+
+```{r}
+# June is warm
+temps$Jun %>% hulk_pal() %>%  scales::show_col()
+```
+
+
+### Sequence of columns
+
+You may typically use something like `Jan:Dec`, but this won't work in `vars()`. This throws an error `Error: Can't convert a call to a string`. However we can accomplish similar things through other techniques.
+
+```{r,eval = FALSE}
+temps %>% 
+  gt() %>% 
+  data_color(
+    # note use of month.abb
+    columns = vars(Jan:Dec),
+    colors = hulk_pal
+  )
+
+#> Error: Can't convert a call to a string
+```
+
+### Raw strings
+
+You can pass raw strings into `vars()`. Since our names of the columns are month abbreviation, we can take advantage of the built in `month.abb` string.
+
+```{r}
+month.abb
+```
+
+
+<br>
+<br>
+
+We can compare the code for the below, note the use of `month.abb` on the left or ALL the column names on the right.
+
+:::: {style="display: flex;"}
+
+::: {}
+
+```{r}
+temps %>% 
+  gt() %>% 
+  data_color(
+    # note use of month.abb
+    columns = vars(month.abb),
+    colors = hulk_pal
+  )
+```
+
+:::
+
+::: {}
+
+```{r}
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(
+      Jan, Feb, Mar, Apr, May, Jun, 
+      Jul, Aug, Sep, Oct, Nov, Dec
+      ),
+    colors = hulk_pal
+  )
+```
+
+:::
+
+::::
+
+### Numbered
+
+Now you can skip using `vars()` and the named column and just supply the column number.
+
+```{r}
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = 2:13,
+    colors = hulk_pal
+  )
+```
+
+
+### Names
+
+You can subset the names of the column but must assign it to an object to use it inside `vars()`.
+
+```{r}
+cols_affect <- names(temps)[2:13]
+
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(cols_affect),
+    colors = hulk_pal
+  )
+```
+
+### Strings
+
+You can pass raw strings `vars()` and separate them by commas.
+
+```{r}
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = vars("Jan", "Feb"),
+    colors = hulk_pal
+  )
+```
+
+#### Strings + `c()`
+
+IF you use a `c()` you need to use the `!!!` operator. More details at [Advanced R](https://adv-r.hadley.nz/quasiquotation.html).
+
+```{r}
+
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(!!!c("Jan", "Feb")),
+    colors = hulk_pal
+  )
+```
+
+### Functions
+
+Functions require some special subsets of `tidyeval`. There are multiple ways to approach this with the current implementation of `tidyeval`, although this will hopefully become even more robust over time as the `gt` team continues to develop the package.
+
+### Pass the dots
+
+For representing multiple columns at once, you can just "pass the dots" into the function. More details about the [dots](https://tidyeval.tidyverse.org/multiple.html#unquote-multiple-arguments).
+
+```{r}
+color_columns <- function(data_in, ..., palette = hulk_pal) {
+  data_in %>%
+    gt() %>%
+    data_color(
+      columns = vars(...),
+      colors = palette
+    )
+}
+
+color_columns(temps, Jan, Feb, Mar, Apr, May, Jun)
+```
+
+#### Wrapper
+
+Similarly, this could just be a wrapper around `data_color` alone, rather than the full `gt` pipeline.
+
+```{r}
+data_color_cols <- function(gt_data, ..., palette = hulk_pal) {
+  gt_data %>%
+    data_color(
+      columns = vars(...),
+      colors = palette
+    )
+}
+
+temps %>% 
+  gt() %>% 
+  data_color_cols(Jan, Feb, Mar, Apr, May, Jun)
+```
+
+### Function + Strings
+
+If you'd like to avoid using `...` or would prefer strings, you can pass raw strings `vars()` and use `!!!` to parse the vector of strings.
+
+```{r}
+data_color_cols <- function(gt_data, columns, palette = hulk_pal) {
+
+  gt_data %>%
+    data_color(
+      columns = vars(!!!columns),
+      colors = palette
+    )
+}
+
+temps %>% 
+  gt() %>% 
+  data_color_cols(columns = c("Jan", "Feb", "Mar"))
+```
+
+### Embrace
+
+The embracing operator `{{ }}` can be used for single columns.
+
+```{r}
+color_column <- function(data_in, column, palette = hulk_pal) {
+
+  data_in %>%
+    gt() %>%
+    data_color(
+      columns = vars({{column}}),
+      colors = palette
+    )
+}
+
+color_columns(temps, Jun)
+```
+
+#### Wrapper
+
+Similarly, this could just be a wrapper around `data_color` alone, rather than the full `gt` pipeline.
+
+```{r}
+data_color_col <- function(gt_data, column, palette = hulk_pal) {
+
+  gt_data %>%
+    data_color(
+      columns = vars({{column}}),
+      colors = palette
+    )
+}
+
+temps %>% 
+  gt() %>% 
+  data_color_col(column = Jun)
+```
+
 
 
 ```{r, echo = FALSE, eval = FALSE}
