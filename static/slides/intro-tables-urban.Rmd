@@ -20,7 +20,7 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, tibble.max_extra_cols = 6, tibble.width = 60)
-knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 700)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center")
 library(tidyverse)
 library(gt)
 library(kableExtra)
@@ -961,7 +961,7 @@ Themes are really just functions with a lot of the `gt` customizations baked in.
 
 ### ESPN table
 
-```{r, echo = FALSE, out.width="75%"}
+```{r, echo = FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/espn-tab.png")
 ```
 
@@ -1028,8 +1028,9 @@ espn_qbr %>%
   tab_source_note(md("**Data:** ESPN<br>**Table:** @thomas_mock"))
 ```
 
-```{r,echo=FALSE, out.width="70%"}
+```{r,echo=FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/espn-themed-gt.png")
+# ,out.width="70%"
 ```
 
 ---
@@ -1067,7 +1068,7 @@ gt_theme_538 <- function(data,...) {
 
 ### FiveThirtyEight applied
 
-```{r, echo = FALSE,eval = FALSE, out.width="75%"}
+```{r, echo = FALSE,eval = FALSE, fig.retina=2, out.width="75%"}
 tab_538 <- espn_qbr %>% 
   mutate(name = paste0(
     "<span style='font-size:16px; color:royalblue;'>",
@@ -1088,7 +1089,7 @@ tab_538 <- espn_qbr %>%
   tab_source_note(md("**Data:** ESPN<br>**Table:** @thomas_mock"))
 ```
 
-```{r, echo = FALSE, out.width="75%"}
+```{r, echo = FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/538.png")
 ```
 
@@ -1097,7 +1098,7 @@ knitr::include_graphics("images/urban/538.png")
 ### PFF Table
 
 
-```{r, echo=FALSE, out.width="75%"}
+```{r, echo=FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/pff-example.png")
 ```
 
@@ -1107,7 +1108,7 @@ knitr::include_graphics("https://themockup.blog/posts/2020-09-26-functions-and-t
 
 Not going to show the code, because it really only applies to this table, but you can see it on my [blog](https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables#pff).
 
-```{r, echo=FALSE, out.width="70%"}
+```{r, echo=FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/pff-themed-gt.png")
 ```
 
@@ -1297,7 +1298,7 @@ pff_tab <- fake_df %>%
 
 [Article Source](https://fivethirtyeight.com/features/the-ideas-that-are-reshaping-the-democratic-party-and-america/amp/)
 
-```{r, echo = FALSE, out.width="75%"}
+```{r, echo = FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/538-screen-tab.png")
 ```
 
@@ -1305,7 +1306,7 @@ knitr::include_graphics("images/urban/538-screen-tab.png")
 
 ### FiveThirtyEight (not sports)
 
-```{r, eval = FALSE, echo = FALSE}
+```{r, eval = FALSE, echo = FALSE, fig.retina=2, out.width="75%"}
 library(tidyverse)
 library(rvest)
 library(gt)
@@ -1397,7 +1398,7 @@ raw_html %>%
 ```
 
 
-```{r, echo = FALSE, out.width="75%", dpi=300}
+```{r, echo = FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/538-election.png")
 ```
 
@@ -1485,7 +1486,7 @@ insurance benefits and SNAP policies enacted in December 2020.")
 # urban_gt %>% gtsave("urban-tab.png")
 ```
 
-```{r, echo = FALSE, out.width="75%"}
+```{r, echo = FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/urban-screen.png")
 ```
 
@@ -1494,7 +1495,7 @@ knitr::include_graphics("images/urban/urban-screen.png")
 
 ### Urban
 
-```{r, echo = FALSE, out.width="75%"}
+```{r, echo = FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/urban-tab.png")
 ```
 
@@ -1530,7 +1531,7 @@ head(mtcars) %>%
 
 ### Bar plot
 
-```{r, echo = FALSE, out.width="75%"}
+```{r, echo = FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/urban-bar.png")
 ```
 
@@ -1595,7 +1596,7 @@ tibble(cyl = c(4, 6, 8), boxplot = "", mpg_hist = "", mpg_line1 = "",
 
 --
 
-```{r, echo = FALSE, out.width="70%"}
+```{r, echo = FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/urban-spark.png")
 ```
 
@@ -1625,7 +1626,7 @@ temps %>%
 
 ### Heatmap
 
-```{r, echo=FALSE, out.width="75%"}
+```{r, echo=FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/urban-heat.png")
 ```
 
@@ -1668,7 +1669,7 @@ head(mtcars) %>%
 
 ### Icons
 
-```{r, echo=FALSE, out.width="75%"}
+```{r, echo=FALSE, fig.retina=2, out.width="75%"}
 knitr::include_graphics("images/urban/urban-icons.png")
 ```
 
