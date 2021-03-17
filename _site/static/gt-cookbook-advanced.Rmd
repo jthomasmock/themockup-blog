@@ -999,13 +999,13 @@ temps$Jun %>% hulk_pal() %>%  scales::show_col()
 
 ### Sequence of columns
 
-You may typically use something like `Jan:Dec`, but this won't work in `vars()`. This throws an error `Error: Can't convert a call to a string`. However we can accomplish similar things through other techniques.
+You may typically use something like `Jan:Dec` to indicate the columns from Jan TO Dec, but this won't work in `vars()`. This throws an error `Error: Can't convert a call to a string`. However we can accomplish similar things through other techniques.
 
 ```{r,eval = FALSE}
 temps %>% 
   gt() %>% 
   data_color(
-    # note use of month.abb
+    # note use of sequence
     columns = vars(Jan:Dec),
     colors = hulk_pal
   )
@@ -1021,15 +1021,7 @@ You can pass raw strings into `vars()`. Since our names of the columns are month
 month.abb
 ```
 
-
-<br>
-<br>
-
-We can compare the code for the below, note the use of `month.abb` on the left or ALL the column names on the right.
-
-:::: {style="display: flex;"}
-
-::: {}
+We can compare the code for the below, note the use of `month.abb` first or manually naming ALL the column names second.
 
 ```{r}
 temps %>% 
@@ -1041,9 +1033,8 @@ temps %>%
   )
 ```
 
-:::
-
-::: {}
+<br>
+<br>
 
 ```{r}
 temps %>% 
@@ -1057,13 +1048,9 @@ temps %>%
   )
 ```
 
-:::
-
-::::
-
 ### Numbered
 
-Now you can skip using `vars()` and the named column and just supply the column number.
+Now you can skip using `vars()` and the named column and just supply the column number. This is a great usecase if you have a lot of columns that need to be used and want a low-effort way of indicating.
 
 ```{r}
 temps %>% 
@@ -1077,7 +1064,7 @@ temps %>%
 
 ### Names
 
-You can subset the names of the column but must assign it to an object to use it inside `vars()`.
+You can subset the names of the column but without using `tidyeval` must assign it to an object to use it inside `vars()`.
 
 ```{r}
 cols_affect <- names(temps)[2:13]
@@ -1090,9 +1077,22 @@ temps %>%
   )
 ```
 
+#### Names + `!!!`
+
+If you use `tidyeval`'s bang-bang-bang operator (`!!!`), then you can parse the R code inside the `vars()` call.
+
+```{r}
+temps %>% 
+  gt() %>% 
+  data_color(
+    columns = vars(!!!names(temps)[2:13]),
+    colors = hulk_pal
+  )
+```
+
 ### Strings
 
-You can pass raw strings `vars()` and separate them by commas.
+You can pass raw strings to `vars()` and separate them by commas.
 
 ```{r}
 temps %>% 
