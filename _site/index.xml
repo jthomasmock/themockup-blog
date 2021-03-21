@@ -7,7 +7,20 @@
     <description>Tom's musings on all things R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 07 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Including and meta tagging extra content in a distill blog</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2021-03-21-including-and-meta-tagging-extra-content-in-a-distill-blog</link>
+      <description>Collect and organize all your content, and then customize how it appears on social media.</description>
+      <category>meta</category>
+      <category>distill</category>
+      <category>blog</category>
+      <category>rmarkdown</category>
+      <guid>https://themockup.blog/posts/2021-03-21-including-and-meta-tagging-extra-content-in-a-distill-blog</guid>
+      <pubDate>Sun, 21 Mar 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2021-03-21-including-and-meta-tagging-extra-content-in-a-distill-blog/preview.png" medium="image" type="image/png" width="640" height="387"/>
+    </item>
     <item>
       <title>Creating a custom gt function for aligning first-row text and testing it with testthat</title>
       <dc:creator>Thomas Mock</dc:creator>
