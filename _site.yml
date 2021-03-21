@@ -23,6 +23,7 @@ navbar:
 collections:
   posts:
     share: [twitter, linkedin]
+    subscribe: _buymeacoffee.html
 google_analytics: "UA-166026965-1"
 twitter:
   site: "@thomas_mock"
