@@ -84,9 +84,9 @@ Again, you could just provide the raw URL links as hyperlinks to the various pie
 
 ## Tagging
 
-Now that we have tackled how to include various pieces of content. While having them sublinked on your blog generally makes them available to folks trying to access the content on the web, it's also a good idea to add "tags" to them so that they are organically discoverable via search engines. The other benefit is that tags can make your links display summary cards or other rich content on social media sites.
+Having various pieces of content sublinked on your blog generally makes them available to folks trying to access the content on the web. However, it's also a good idea to add "tags" to them so that they are organically discoverable via search engines. The other benefit is that tags can make your links display summary cards or other rich content on social media sites.
 
-Adding social cards/previews to one-off pieces of content and sub-pages of your blog can help a lot with engagement^[ In some cases, 2-3x more views/clicks per https://www.socialsongbird.com/2020/01/how-to-create-clickable-posts-on-social.html] as well as help describe the linked content without having to embed ALL of the description into the body of the Tweet/LinkedIn post. Ultimately it's also more rewarding as rather than a bare link or a preview card without an image, you can explicitly decide what you want the preview to show!
+Adding social cards/previews to one-off pieces of content and sub-pages of your blog can help a lot with engagement^[ In some cases, 2-3x more views/clicks per https://www.socialsongbird.com/2020/01/how-to-create-clickable-posts-on-social.html]. It also has the benefit of helping describe the linked content without having to embed ALL of the description into the body of the Tweet/LinkedIn post. Ultimately it's also more rewarding as rather than a bare link or a preview card without an image, you can explicitly decide what you want the preview to show!
 
 ### Blogposts
 
@@ -205,6 +205,8 @@ meta() %>%
   )
 ```
 
+And the HTML output
+
 ```
 #> <meta name="viewport" content="width=device-width, initial-scale=1, orientation=auto"/>
 #> <meta name="description" content="This book will teach you how to do data science with R..."/>
@@ -259,7 +261,7 @@ meta() %>%
   write_meta("meta.html")
 ``` 
 
-That will generally solve most problems for including social tags for RMarkdown.
+That will generally solve most problems for including social tags in RMarkdown.
 
 ## Optimal image sizes
 
