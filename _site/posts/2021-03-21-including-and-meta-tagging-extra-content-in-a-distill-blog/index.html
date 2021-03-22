@@ -128,7 +128,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","preview","twitter","categories","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Including and meta tagging extra content in a distill blog"]},{"type":"character","attributes":{},"value":["Collect and organize all your content, and then customize how it appears on social media."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Mock"]},{"type":"character","attributes":{},"value":["https://twitter.com/thomas_mock"]}]}]},{"type":"character","attributes":{},"value":["03-21-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["preview.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["site","creator"]}},"value":[{"type":"character","attributes":{},"value":["@thomas_mock"]},{"type":"character","attributes":{},"value":["@thomas_mock"]}]},{"type":"character","attributes":{},"value":["meta","distill","blog","rmarkdown"]},{"type":"character","attributes":{},"value":["https://themockup.blog/posts/2021-03-21-including-and-meta-tagging-extra-content-in-a-distill-blog/"]},{"type":"character","attributes":{},"value":["https://themockup.blog/posts/2021-03-21-including-and-meta-tagging-extra-content-in-a-distill-blog/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","preview","twitter","categories","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Including and meta tagging extra content in a distill blog"]},{"type":"character","attributes":{},"value":["Collect and organize all your content, and then customize how it appears on social media."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Mock"]},{"type":"character","attributes":{},"value":["https://twitter.com/thomas_mock"]}]}]},{"type":"character","attributes":{},"value":["03-21-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[4]}]}]},{"type":"character","attributes":{},"value":["preview.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["site","creator"]}},"value":[{"type":"character","attributes":{},"value":["@thomas_mock"]},{"type":"character","attributes":{},"value":["@thomas_mock"]}]},{"type":"character","attributes":{},"value":["meta","distill","blog","rmarkdown"]},{"type":"character","attributes":{},"value":["https://themockup.blog/posts/2021-03-21-including-and-meta-tagging-extra-content-in-a-distill-blog/"]},{"type":"character","attributes":{},"value":["https://themockup.blog/posts/2021-03-21-including-and-meta-tagging-extra-content-in-a-distill-blog/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2474,25 +2474,66 @@ gtag('config', 'UA-166026965-1');
 </div>
 
 <div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#including-alternate-content">Including alternate content</a>
+<ul>
+<li><a href="#resources-pane">Resources pane</a></li>
+</ul></li>
+<li><a href="#tagging">Tagging</a>
+<ul>
+<li><a href="#blogposts">Blogposts</a></li>
+<li><a href="#distill-home-page"><code>{distill}</code> home page</a></li>
+<li><a href="#extra-content">Extra content</a></li>
+<li><a href="#meta-tags"><code>&lt;meta&gt;</code> Tags</a></li>
+<li><a href="#writing-meta-tags">Writing <code>&lt;meta&gt;</code> tags</a></li>
+<li><a href="#metathis-options"><code>{metathis}</code> options</a></li>
+</ul></li>
+<li><a href="#optimal-image-sizes">Optimal image sizes</a></li>
+<li><a href="#confirm-tags">Confirm tags</a></li>
+</ul>
+</nav>
+</div>
+<p><img src="preview.png" /></p>
 <p>Including “extra” content in your blog is very useful for collecting all of your content beyond just blogposts. For example, I have a <a href="https://themockup.blog/resources.html">Resources page</a> that sublinks to other things I’ve created or wanted to share at a specific URL.</p>
 <aside>
-<p>Preview photo by <a href="https://unsplash.com/@jessedo81?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">jesse orrico</a> on <a href="/s/photos/organize?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+<p>Header photo by <a href="https://unsplash.com/@jessedo81?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">jesse orrico</a> on <a href="/s/photos/organize?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
 </aside>
 <figure>
 <img src="resources-page.png" alt="Image of themockup.blog/resources page" /><figcaption aria-hidden="true">Image of themockup.blog/resources page</figcaption>
 </figure>
 <p>These extra pieces of content include <code>{xaringan}</code> slides, books, or one-off RMarkdown “sites” that don’t really fit into a blogpost.</p>
-<p>My approach is to store these extra pages into a new folder called <code>/static/</code> in my blog project directory. I do this to generally keep my top-level directory a bit cleaner, and to separate them out from the core blog.</p>
+<p>My approach is to store these extra pages into a new folder called <code>/static/</code> in my blog project directory. I do this to generally keep my top-level directory a bit cleaner, and to separate them out from the core blog. Note that lastly, you do not <em>need</em> to put everything in <code>/static</code> if you don’t want to, and you can keep everything at the top-level directory which would serve up content at <code>site-name.com/content-name.html</code>.</p>
 <h2 id="including-alternate-content">Including alternate content</h2>
 <p>As long as you are using <code>{distill}</code> v 1.2 or later and <code>{rmarkdown}</code> v 2.7 or later, you can include <a href="https://rstudio.github.io/distill/website.html#alternate-formats">alternate RMarkdown-generated content</a> within your <code>{distill}</code> blog!</p>
-<p>These alternate-format pages are rebuilt and included in the <code>_site</code> directory whenever you run <code>rmarkdown::render_site()</code> or build one of the top-level site pages (ie <code>index.Rmd</code>, <code>about.Rmd</code>, etc).</p>
-<p>So for my example, my <code>static</code> pages get written to <code>_site/static/FILE-NAME.HTML</code>, and will show up on my blog at <code>themockup.blog/static/FILE-NAME.HTML</code>, for example my cookbook is linked at <code>https://themockup.blog/static/gt-cookbook.html</code></p>
-<p>That’s easy enough, and now you can include basically any piece of arbitrary content you create via RMarkdown, all collected underneath the main url of your blog/site!</p>
+<p>Alternate format in this case really just means any other RMarkdown format <em>besides</em> <code>{distill}</code>.</p>
+<p>Now while you can knit files locally and see the output, it will not be moved to your <code>_site</code> directory and served up on your website until you rebuild the site.</p>
+<p>These alternate-format pages are rebuilt and included in the <code>_site</code> directory whenever you run <code>rmarkdown::render_site()</code> OR build one of the top-level site pages (ie <code>index.Rmd</code>, <code>about.Rmd</code>, etc).</p>
+<p>So for my example, my <code>static</code> pages get written to:<br />
+<code>_site/static/FILE-NAME.HTML</code></p>
+<p>and will show up on my blog at:<br />
+<code>themockup.blog/static/FILE-NAME.HTML</code></p>
+<p>For example my <code>{gt}</code> cookbook is linked at:</p>
+<p><code>https://themockup.blog/static/gt-cookbook.html</code></p>
+<p>That’s easy enough, and now you can include basically any piece of arbitrary content you create via RMarkdown, all collected underneath the main URL of your blog/site!</p>
+<h3 id="resources-pane">Resources pane</h3>
+<p>Since I’m on <code>{distill}</code>, to provide links for everything I want to add another “tab” to my site that shows all the various extra content. I add the below code to my navbar in my <code>_site.yaml</code> file to add a new tab.</p>
+<pre><code>navbar:
+  right:
+    - text: &quot;Home&quot;
+      href: index.html
+    - text: &quot;Resources&quot;
+      href: resources.html
+    - text: &quot;About&quot;</code></pre>
+<p>The resources page itself can be super lightweight and just link out to the files, but I decided to use a <code>{reactable}</code> table that references all of the content so it is searchable and sortable. This page is generated by my <code>resources.Rmd</code> file.</p>
+<p>Again, you could just provide the raw URL links as hyperlinks to the various pieces of content, it’s “just another page” so feel free to do whatever you want!</p>
 <h2 id="tagging">Tagging</h2>
-<p>While having them sublinked on my blog generally makes them available to folks trying to access the content, it’s also a good idea to add “tags” to them so that they are organically discoverable via search engines.</p>
-<p>Adding social cards/previews to one-off pieces of content and sub-pages of your blog can help a lot with engagement<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, as well as help describe the linked content without having to embed ALL of the text into the body of the Tweet/LinkedIn post. Ultimately it’s also more rewarding as rather than a bare link or a preview card without an image, you can explicitly decide what you want the preview to show!</p>
+<p>Now that we have tackled how to include various pieces of content. While having them sublinked on your blog generally makes them available to folks trying to access the content on the web, it’s also a good idea to add “tags” to them so that they are organically discoverable via search engines. The other benefit is that tags can make your links display summary cards or other rich content on social media sites.</p>
+<p>Adding social cards/previews to one-off pieces of content and sub-pages of your blog can help a lot with engagement<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> as well as help describe the linked content without having to embed ALL of the description into the body of the Tweet/LinkedIn post. Ultimately it’s also more rewarding as rather than a bare link or a preview card without an image, you can explicitly decide what you want the preview to show!</p>
 <h3 id="blogposts">Blogposts</h3>
-<p>Now for most blogposts in <code>{distill}</code> you are able to get social preview cards “for free” in that they can just be added via some <a href="https://rstudio.github.io/distill/metadata.html#twitter-card">extra lines in the YAML header</a>.</p>
+<p>Now for most blogposts in <code>{distill}</code> you are able to get social preview cards “for free” in that they can just be added via some <a href="https://rstudio.github.io/distill/metadata.html#twitter-card">extra lines in the YAML header</a>. The <code>preview</code> argument turns into the preview image on the index page of your blog and in the meta tags. The title and description also get written into meta tags to be reused by social.</p>
 <pre><code>---
 title: &quot;JavaScript &amp; D3&quot;
 description: Enhance communication with interactive visualizations 
@@ -2502,11 +2543,37 @@ twitter:
   site: &quot;@rstudio&quot;
   creator: &quot;@fly_upside_down&quot;
 ---</code></pre>
+<h3 id="distill-home-page"><code>{distill}</code> home page</h3>
 <p>However, notably the preview image option is missing from the MAIN page of your <code>{distill}</code> blog.</p>
 <p>You can use the strategies outlined below with <code>{metathis}</code> or <code>&lt;meta&gt;</code> tags to create a nice tag/meta details for your <code>{distill}</code> homepage as well.</p>
+<p>While I’ll be covering more details about <code>{metathis}</code> below, here is what my <code>index.Rmd</code> looks like that attaches <code>&lt;meta&gt;</code> tags via <code>{metathis}</code></p>
+<pre><code>---
+title: &quot;Posts&quot;
+site: distill::distill_website
+listing: posts
+---
+
+{r, include=FALSE, results=&#39;asis&#39;}
+library(metathis)
+
+meta() %&gt;%
+  meta_social(
+    title = &quot;The MockUp Blog&quot;,
+    description = &quot;Tom&#39;s musings on all things R&quot;,
+    url = &quot;https://themockup.blog/&quot;,
+    image = &quot;https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/logo-plot.png&quot;,
+    image_alt = &quot;Chaos into tidy code&quot;,
+    og_type = &quot;website&quot;,
+    og_author = &quot;Tom Mock&quot;,
+    twitter_card_type = &quot;summary&quot;,
+    twitter_creator = &quot;@thomas_mock&quot;
+  )
+</code></pre>
+<aside>
 <p>Others have written about social card/meta tags for <a href="https://bookdown.org/yihui/blogdown/"><code>{blogdown}</code></a>, with examples from <a href="https://alison.rbind.io/post/2019-02-19-hugo-archetypes/">Alison Hill</a>, <a href="https://xvrdm.github.io/2017/10/23/socialize-your-blogdown/">Xavier A</a>, <a href="https://sharleenw.rbind.io/2020/09/02/how-to-remake-a-blogdown-blog-from-scratch/">Sharleen W.</a>, and <a href="http://lenkiefer.com/2017/10/23/sharing-is-caring/">Len Kiefer</a>.</p>
+</aside>
 <h3 id="extra-content">Extra content</h3>
-<p>Those options work great for blogposts, but again I also have quite a few extra pieces of content, like my <a href="https://themockup.blog/static/gt-cookbook.html"><code>{gt}</code> cookbooks</a>, <a href="https://themockup.blog/static/slides/intro-tables-urban.html"><code>{xaringan}</code> slide decks</a>, or example <a href="https://themockup.blog/static/100-women.html">interactive tables</a>.</p>
+<p>Those built-in options work great for blogposts, but again I also have quite a few extra pieces of content, like my <a href="https://themockup.blog/static/gt-cookbook.html"><code>{gt}</code> cookbooks</a>, <a href="https://themockup.blog/static/slides/intro-tables-urban.html"><code>{xaringan}</code> slide decks</a>, or example <a href="https://themockup.blog/static/100-women.html">interactive tables</a>.</p>
 <p>For these non-blog pages, they are essentially just bare RMarkdown sites. As such, often I need to manually add the <code>&lt;meta&gt;</code> tags that tell the various social pages “what to do” with the page as far as previews.</p>
 <h3 id="meta-tags"><code>&lt;meta&gt;</code> Tags</h3>
 <p><code>&lt;meta&gt;</code> tags are useful for search engine optimization (aka discoverability) of your content, for sharing on social media like LinkedIn or Twitter, or even messaging platforms like Slack, and generally helpful for accessibility. Garrick Aden-Buie recommended the Guide to <code>&lt;meta&gt;</code> and <code>&lt;head&gt;</code> details from <a href="https://github.com/joshbuchea/HEAD">Josh Buchea</a>. That sublinks to LOTS of great detail for specific social pages.</p>
@@ -2520,14 +2587,14 @@ twitter:
 <p>Furthermore, per the <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML#other_types_of_metadata">Mozilla blog</a>:</p>
 <blockquote>
 <p>As you travel around the web, you’ll find other types of metadata, too. A lot of the features you’ll see on websites are proprietary creations, designed to provide certain sites (such as social networking sites) with specific pieces of information they can use.</p>
-<p>For example, Open Graph Data is a metadata protocol that Facebook invented to provide richer metadata for websites. Twitter also has its own similar proprietary metadata called Twitter Cards, which has a similar effect when the site’s URL is displayed on twitter.com</p>
+<p>For example, Open Graph Data is a metadata protocol that Facebook invented to provide richer metadata for websites. Twitter also has its own similar proprietary metadata called Twitter Cards, which has a similar effect when the site’s URL is displayed on Twitter.com</p>
 </blockquote>
 <h3 id="writing-meta-tags">Writing <code>&lt;meta&gt;</code> tags</h3>
-<p>You can write <code>&lt;meta&gt;</code> tags by hand, and they aren’t <em>overly</em> complicated, as seen in the <a href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image">Twitter Documentation</a></p>
+<p>You can always write <code>&lt;meta&gt;</code> tags by hand, and they aren’t <em>overly</em> complicated, as seen in the <a href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image">Twitter Documentation</a>:</p>
 <pre><code>&lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt;
 &lt;meta name=&quot;twitter:site&quot; content=&quot;@nytimes&quot;&gt;
 &lt;meta name=&quot;twitter:creator&quot; content=&quot;@SarahMaslinNir&quot;&gt;
-&lt;meta name=&quot;twitter:title&quot; content=&quot;Parade of Fans for Houston’s Funeral&quot;&gt;
+&lt;meta name=&quot;twitter:title&quot; content=&quot;Parade of Fans for Houston&quot;&gt;
 &lt;meta name=&quot;twitter:description&quot; content=&quot;NEWARK - The guest list and parade of limousines with celebrities emerging from them seemed more suited to a red carpet event in Hollywood or New York than than a gritty stretch of Sussex Avenue near the former site of the James M. Baxter Terrace public housing project here.&quot;&gt;
 &lt;meta name=&quot;twitter:image&quot; content=&quot;http://graphics8.nytimes.com/images/2012/02/19/us/19whitney-span/19whitney-span-articleLarge.jpg&quot;&gt;</code></pre>
 <p>However, thanks to <a href="https://github.com/gadenbuie">Garrick Aden-Buie</a>, you can save yourself a lot of effort and just use the <a href="https://pkg.garrickadenbuie.com/metathis/"><code>{metathis}</code> package</a>, which provides R functions to generate <code>&lt;meta&gt;</code> tags.</p>
@@ -2597,7 +2664,7 @@ twitter:
 <p>That will generally solve most problems for including social tags for RMarkdown.</p>
 <h2 id="optimal-image-sizes">Optimal image sizes</h2>
 <p>Each of the social sites have “optimal” sizes/ratios of the images, and <a href="https://blog.hootsuite.com/social-media-image-sizes-guide/">Hootsuite</a> has a meta-guide of social media image sizing.</p>
-<p>The short summary is keep your images relatively small in file size, as it’ll cost less in bandwidth and is presented relatively small anyway. Twitter specifically will crop your images to a square for basic preview cards.</p>
+<p>The short summary is, keep your image file size relatively small, as it’ll cost less in bandwidth and is presented relatively small anyway on social. Twitter specifically will crop your images to a square for basic preview cards.</p>
 <h2 id="confirm-tags">Confirm tags</h2>
 <p>You can “check” to make sure your tags worked by using tools like:</p>
 <ul>
@@ -2607,7 +2674,7 @@ twitter:
 </li>
 <li>More generally, just doing a test post to your social feed</li>
 </ul>
-<p>Note that if you website is too large, you can’t always get the social “crawlers” to parse the page and return a preview. It’s a good idea to keep your image sizes relatively low, and generally not include TOO much content in a single page.</p>
+<p>Note that if your website is too large, you can’t always get the social “crawlers” to parse the page and return a preview. It’s a good idea to keep your image sizes relatively low, and generally not include TOO much content in a single page.</p>
 <p>Now rather than getting a blank preview card, you can get nice previews!</p>
 <figure>
 <img src="twitter-preview.png" alt="Twitter Preview" /><figcaption aria-hidden="true">Twitter Preview</figcaption>
@@ -2616,11 +2683,11 @@ twitter:
 <img src="linkedin-preview.png" alt="LinkedIn Preview" /><figcaption aria-hidden="true">LinkedIn Preview</figcaption>
 </figure>
 <p>So go on and create your content, share it widely, and enjoy better previews/urls!</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1" role="doc-endnote"><p> In some cases, 2-3x more clicks per <a href="https://www.socialsongbird.com/2020/01/how-to-create-clickable-posts-on-social.html" class="uri">https://www.socialsongbird.com/2020/01/how-to-create-clickable-posts-on-social.html</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1" role="doc-endnote"><p> In some cases, 2-3x more views/clicks per <a href="https://www.socialsongbird.com/2020/01/how-to-create-clickable-posts-on-social.html" class="uri">https://www.socialsongbird.com/2020/01/how-to-create-clickable-posts-on-social.html</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 <!--radix_placeholder_article_footer-->
