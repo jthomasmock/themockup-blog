@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-![While data analysis in R can seem intimidating, we will explore how to use it effectively and clearly!](https://i.imgur.com/o6k6Rne.jpg)
+![While data analysis in R can seem intimidating, we will explore how to use it effectively and clearly!](https://cdn.pixabay.com/photo/2018/02/07/22/54/gas-storage-3138241_960_720.jpg)
 
 ## Introduction
 After a great discussion started by Jesse Maegan (@kiersi) on Twitter, I decided to post a workthrough of some (fake) experimental treatment data. These data correspond to a new (fake) research drug called AD-x37, a theoretical drug that has been shown to have beneficial outcomes on cognitive decline in mouse models of Alzheimer’s disease. In the current experiment we will be statistically testing whether the drug was effective in reducing cognitive impairment in dementia patients. See the data [HERE](https://github.com/jthomasmock/tidy-stats-in-R/blob/master/ad_treatment.xlsx "Data for Tidy Stats").
