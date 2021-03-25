@@ -630,15 +630,15 @@ rating_stars <- function(rating, max_rating = 5) {
     if (i <= rounded_rating) fontawesome::fa("star", fill= "orange") else fontawesome::fa("star", fill= "grey")
   })
   label <- sprintf("%s out of %s", rating, max_rating)
-  div_out <- div(title = label, "aria-label" = label, role = "img", stars)
+  div_out <- htmltools::div(title = label, "aria-label" = label, role = "img", stars)
   
   as.character(div_out) %>% 
     gt::html()
 }
 
 mtcars %>% 
-  head() %>% 
-  mutate(rating = purrr::map(sample(1:5, size = 6, TRUE), rating_stars)) %>% 
+  slice(1:5) %>% 
+  mutate(rating = purrr::map(sample(1:5, size = 5, TRUE), rating_stars)) %>% 
   gt()
 ```
 
@@ -779,8 +779,8 @@ The function provides a convenient way to generate an HTML fragment with an imag
 r_png_url <- "https://www.r-project.org/logo/Rlogo.png"
 
 dplyr::tibble(
-    pixels = px(seq(10, 35, 5)),
-    image = seq(10, 35, 5)
+    pixels = px(seq(10, 20, 5)),
+    image = seq(10, 20, 5)
   ) %>%
   gt() %>%
   text_transform(
@@ -802,18 +802,17 @@ You can include multiple images by parsing the url along with `purrr::map()` or 
 
 ```{r}
 tibble::tribble(
-  ~team_abb,                                                   ~headshot_href,      ~short_name, ~qbr_total, ~qb_plays,
-       "GB",    "https://a.espncdn.com/i/headshots/nfl/players/full/8439.png",     "A. Rodgers",       84.4,       608,
-       "KC", "https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png",     "P. Mahomes",       82.9,       710,
-      "BUF", "https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png",       "J. Allen",       81.7,       729,
-      "TEN",   "https://a.espncdn.com/i/headshots/nfl/players/full/14876.png",   "R. Tannehill",       78.3,       594,
-      "MIA",    "https://a.espncdn.com/i/headshots/nfl/players/full/8664.png", "R. Fitzpatrick",       76.9,       324,
-       "NO",    "https://a.espncdn.com/i/headshots/nfl/players/full/2580.png",       "D. Brees",       74.6,       428,
-      "BAL", "https://a.espncdn.com/i/headshots/nfl/players/full/3916387.png",     "L. Jackson",       73.7,       585,
-      "SEA",   "https://a.espncdn.com/i/headshots/nfl/players/full/14881.png",      "R. Wilson",       73.5,       716,
-       "TB",    "https://a.espncdn.com/i/headshots/nfl/players/full/2330.png",       "T. Brady",       72.5,       681,
-      "CLE", "https://a.espncdn.com/i/headshots/nfl/players/full/3052587.png",    "B. Mayfield",       72.2,       597
+  ~team_abb, ~headshot_href,      ~short_name, ~qbr_total, ~qb_plays,
+       "GB",    "8439.png",     "A. Rodgers",       84.4,       608,
+       "KC", "3139477.png",     "P. Mahomes",       82.9,       710,
+      "BUF", "3918298.png",       "J. Allen",       81.7,       729,
+      "TEN",   "14876.png",   "R. Tannehill",       78.3,       594
   ) %>% 
+  mutate(
+    headshot_href = paste0(
+      "https://a.espncdn.com/i/headshots/nfl/players/full/", headshot_href
+      )
+    ) %>% 
   gt() %>%
   text_transform(
     locations = cells_body(vars(headshot_href)),
