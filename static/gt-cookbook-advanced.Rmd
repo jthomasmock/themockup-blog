@@ -252,6 +252,47 @@ head(mtcars) %>%
   tab_source_note(attach_excel)
 ```
 
+<br>
+
+You can continue and go one step farther by adding custom styling CSS to the table to affect the button style.
+
+
+```{r, warning=FALSE, message=FALSE}
+attach_excel <- mtcars %>%
+  download_this(
+    output_name = "mtcars",
+    output_extension = ".xlsx", # Excel file type
+    button_label = "Download Excel",
+    class = "buttonExcel"
+  )
+
+head(mtcars) %>%
+  gt() %>%
+  opt_css(
+    css = "
+    .buttonExcel{
+    font-size: 12px;
+    color: #fff;
+    background-color: black;
+    border-color: black;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 4px;
+    }
+    
+    .buttonExcel:hover,
+    .buttonExcel:active,
+    .buttonExcel:focus,
+    .buttonExcel.active {
+    background: grey;
+    color: #ffffff;
+    border-color: grey;
+    }
+    "
+  ) %>% 
+  tab_source_note(attach_excel)
+```
+
 ### Combine and stack
 
 Combine text into div containers and then "stack" the text on top of each other with alternating color.
