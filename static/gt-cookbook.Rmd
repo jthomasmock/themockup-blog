@@ -115,6 +115,21 @@ gtcars %>%
   gt_preview()
 ```
 
+## Save output
+
+While the vast majority of the time you will simply execute the code inside RMarkdown or Shiny and get your beautiful table back, you can explicilty save the output to various different formats.
+
+`gtsave()` is the function, and it takes a `gt` table object and a filename.
+
+> The `gtsave()` function makes it easy to save a gt table to a file. The function guesses the file type by the extension provided in the output filename, producing either an HTML, PDF, PNG, LaTeX, or RTF file.
+
+The most traditional format is HTML, which can be embedded into an existing website (ie Wordpress or a CMS), but the other formats (PDF, LaTex, RTF, PNG) have other use cases.
+
+PDF can be combined with other PDF formats, LaTeX can be placed into an existing doc, RTF can be copied into Word, Excel, or Powerpoint, and PNG can be used to post images of tables to social media like Twitter.
+
+### Raw output
+
+There are also functions for `as_raw_html()` or `as_rtf()` which allow you to get the raw output in the active R session. These are useful but seldom actually used unless for specific reasons. Again, in most examples you will simply call the `gt` code in your RMarkdown or Shiny app.
 
 ## Grouping and Summary Rows
 

@@ -214,6 +214,44 @@ head(mtcars) %>%
   tab_source_note(html(html_csv))
 ```
 
+<br>
+
+You can make this process a bit easier with the `{downloadthis}` R package. It supports csv, Excel and even .rds files! It also takes care of the "download button", and supports Bootstrap button styles. H/t to Kyle Cuilla for the suggestion and Jonathan Regenstein for the ask of how to do this.
+
+```{r, warning = FALSE, message = FALSE}
+library(downloadthis)
+
+head(mtcars) %>%
+  gt() %>%
+  tab_source_note(
+    mtcars %>%
+      download_this(
+        output_name = "mtcars",
+        output_extension = ".csv", # CSV output
+        button_label = "Download csv",
+        button_type = "default",
+      )
+  )
+```
+
+<br>
+
+You can specify the file/output extension, and the button type to alter the appearance. Note that the code works inline as seen above, or defined in an external object as seen below.
+
+```{r, warning=FALSE, message=FALSE}
+attach_excel <- mtcars %>%
+  download_this(
+    output_name = "mtcars",
+    output_extension = ".xlsx", # Excel file type
+    button_label = "Download Excel",
+    button_type = "primary", # change button type
+  )
+
+head(mtcars) %>%
+  gt() %>%
+  tab_source_note(attach_excel)
+```
+
 ### Combine and stack
 
 Combine text into div containers and then "stack" the text on top of each other with alternating color.
