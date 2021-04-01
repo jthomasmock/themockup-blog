@@ -7,7 +7,20 @@
     <description>Tom's musings on all things R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 21 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 01 Apr 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Three years of TidyTuesday</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2021-04-01-three-years-of-tidytuesday</link>
+      <description>The future holds a deeper focus on inclusivity.</description>
+      <category>meta</category>
+      <category>data visualization</category>
+      <category>TidyTuesday</category>
+      <category>ggplot2</category>
+      <guid>https://themockup.blog/posts/2021-04-01-three-years-of-tidytuesday</guid>
+      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2021-04-01-three-years-of-tidytuesday/preview.png" medium="image" type="image/png" width="3750" height="3750"/>
+    </item>
     <item>
       <title>Including and meta tagging extra content in a distill blog</title>
       <dc:creator>Thomas Mock</dc:creator>
