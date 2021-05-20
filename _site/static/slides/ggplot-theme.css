@@ -1,0 +1,198 @@
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans:300,300i,400,400i,500,500i,700,700i|IBM+Plex+Mono:400,500);
+@import url(//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css);
+
+body {
+  font-family: 'Fira Sans','Droid Serif', 'Palatino Linotype', 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', serif;
+}
+
+a, a > code {
+  color: #88398a;
+  text-decoration: none;
+}
+
+strong {
+  color: #fcab27;
+}
+
+em {
+  color: #3686d3;
+  font-style: normal;
+  font-weight: bold;
+}
+
+del {
+  color: #E5E5E5;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.remark-code {
+  font-family: 'IBM Plex Mono', 'Lucida Console', Monaco, monospace;
+  font-size: 70%;
+}
+
+.remark-inline-code {
+  font-family: 'Fira Sans', 'Lucida Console', Monaco, monospace;
+  font-weight: 400;
+  font-size: 100%;
+}
+
+.remark-code-line-highlighted {
+  background-color: #CEE9FF;
+  font-weight: 500;
+}
+
+.large { font-size: 130% }
+.medium { font-size: 115% }
+.small { font-size: 70% }
+
+.remark-slide-content {
+  color: #6e6e6e;
+  font-weight: 300;
+  font-weight: 300;
+  padding: 1em 2em 1em 2em
+}
+
+h1 {
+  color: #3686d3;
+  font-weight: 500;
+}
+
+h2 {
+  font-weight: 500;
+}
+
+.remark-slide-number {
+  font-size: 20px;
+}
+
+.title-slide .remark-slide-number {
+  display: none;
+}
+
+.inverse.title-slide {
+  background-size: cover;
+  color: #708090;
+}
+
+.inverse.title-slide h1  {
+  color: #fcab27;
+  font-size: 72px;
+  text-shadow: none;
+  text-align: left;
+  vertical-align: bottom;
+}
+
+.inverse.title-slide h2  {
+  color: #fcab27;
+  text-shadow: none;
+  font-size: 48px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.inverse.title-slide h3  {
+  color: #fcab27;
+  text-shadow: none;
+  font-size: 36px;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.inverse.title-slide h4  {
+  color: #fcab27;
+  text-shadow: none;
+  font-size: 24px;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.inverse {
+  background-size: cover;
+  background-color: #43464b;
+  color: #fcab27;
+  font-weight: bold;
+  text-shadow: none;
+}
+
+.inverse-ns {
+  background-size: cover;
+  background-color: #fcab27;
+  color: #fcab27;
+  text-shadow: none;
+  font-weight: bold;
+}
+
+.takeaways {
+  padding-top: 80px;
+}
+
+.inverse h1, .inverse h2, .inverse h3  {
+  color: #fcab27;
+  font-weight: 500;
+}
+
+
+.inverse del {
+  color: #fcab27;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* extra css */
+
+.tiny {
+  font-size: 50%;
+}
+.small {
+  font-size: 70%;
+}
+
+.medium {
+  font-size: 80%;
+}
+
+.small pre .remark-code {
+  font-size: 75%;
+}
+.small .remark-code {
+  font-size: 75%;
+}
+.tiny .remark-code {
+  font-size: 50%;
+}
+.tiny pre .remark-code {
+  font-size: 50%;
+}
+.medium .remark-code {
+  font-size: 90%;
+}
+
+.medium pre .remark-code {
+  font-size: 90%;
+}
+
+
+/* footer */
+
+div.my-footer {
+    background-color: white;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 20px;
+    width: 100%;
+}
+
+div.my-footer span {
+    font-size: 12pt;
+    color: black;
+    position: absolute;
+    left: 15px;
+    bottom: 2px;
+}

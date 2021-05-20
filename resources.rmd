@@ -22,7 +22,8 @@ data_in <- tibble::tribble(
   "Intro to Tables", "https://themockup.blog/static/slides/intro-tables.html", "Presentation", "A presentation on 10 best practices for creating tables with {gt}",
   "Intro to Tables - Urban", "https://themockup.blog/static/slides/intro-tables-urban.html", "Presentation", "A presentation on basic and advanced {gt}",
   "100 Women of 2020 Table", "https://themockup.blog/static/100-women.html", "Example", "A #TidyTuesday submission for the BBC's 100 Women of 2020 dataset",
-  "{nflseedR} interactive table", "https://themockup.blog/static/nflseedr-reactable", "Example", "Example with code of creating a {reactable} table for {nflseedR} output"
+  "{nflseedR} interactive table", "https://themockup.blog/static/nflseedr-reactable", "Example", "Example with code of creating a {reactable} table for {nflseedR} output",
+  "Intro to {ggplot2} themes", "https://themockup.blog/static/slides/intro-plot.html", "Presentation", "A deep dive into {ggplot2} themes and making beautiful graphics in R"
 ) 
 
 data_in %>%
