@@ -462,7 +462,7 @@ stand_density <- nfl_stand %>%
 ### Same data, different story
 
 ```{r, echo = FALSE, out.height=500}
-knitr::include_graphics("dens-plot.png", dpi = NA)
+knitr::include_graphics("images/dens-plot.png", dpi = NA)
 ```
 
 ```{r, echo = FALSE, eval = FALSE}
@@ -514,7 +514,7 @@ stand_density +
 ### Same data, different story
 
 ```{r, echo = FALSE, out.height=500}
-knitr::include_graphics("dens-plot2.png", dpi = NA)
+knitr::include_graphics("images/dens-plot2.png", dpi = NA)
 ```
 
 

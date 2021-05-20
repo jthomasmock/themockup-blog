@@ -1,0 +1,225 @@
+conf,season,team_id,team_location,team_name,team_abb,team_full,team_logo,seed,wins,losses,win_pct,g_behind,ties,pts_for,pts_against,pts_diff,streak,div_ties,record,home_wins,home_losses,away_wins,away_losses,conf_wins,conf_losses,div_wins,div_losses
+AFC,2014,17,New England,Patriots,NE,New England Patriots,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.png,1,12,4,0.75,0,0,468,313,155,-1,0,12-4,7,1,5,3,9,3,4,2
+AFC,2014,7,Denver,Broncos,DEN,Denver Broncos,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/den.png,2,12,4,0.75,0,0,482,354,128,1,0,12-4,8,0,4,4,10,2,6,0
+AFC,2014,23,Pittsburgh,Steelers,PIT,Pittsburgh Steelers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/pit.png,3,11,5,0.6875,1,0,436,368,68,4,0,11-5,6,2,5,3,9,3,4,2
+AFC,2014,11,Indianapolis,Colts,IND,Indianapolis Colts,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ind.png,4,11,5,0.6875,1,0,458,369,89,1,0,11-5,6,2,5,3,9,3,6,0
+AFC,2014,4,Cincinnati,Bengals,CIN,Cincinnati Bengals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cin.png,5,10,5,0.65625,1.5,1,365,344,21,-1,0,10-5-1,5,2,5,3,7,5,3,3
+AFC,2014,33,Baltimore,Ravens,BAL,Baltimore Ravens,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png,6,10,6,0.625,2,0,409,302,107,1,0,10-6,6,2,4,4,6,6,3,3
+AFC,2014,12,Kansas City,Chiefs,KC,Kansas City Chiefs,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png,7,9,7,0.5625,3,0,353,281,72,1,0,9-7,6,2,3,5,7,5,3,3
+AFC,2014,34,Houston,Texans,HOU,Houston Texans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/hou.png,8,9,7,0.5625,3,0,372,307,65,2,0,9-7,5,3,4,4,8,4,4,2
+AFC,2014,24,San Diego,Chargers,SD,San Diego Chargers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sd.png,9,9,7,0.5625,3,0,348,348,0,-1,0,9-7,5,3,4,4,6,6,2,4
+AFC,2014,2,Buffalo,Bills,BUF,Buffalo Bills,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png,10,9,7,0.5625,3,0,343,289,54,1,0,9-7,5,3,4,4,5,7,4,2
+AFC,2014,15,Miami,Dolphins,MIA,Miami Dolphins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/mia.png,11,8,8,0.5,4,0,388,373,15,-1,0,8-8,4,4,4,4,6,6,3,3
+AFC,2014,5,Cleveland,Browns,CLE,Cleveland Browns,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cle.png,12,7,9,0.4375,5,0,299,337,-38,-5,0,7-9,4,4,3,5,4,8,2,4
+AFC,2014,20,New York,Jets,NYJ,New York Jets,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyj.png,13,4,12,0.25,8,0,283,401,-118,1,0,4-12,2,6,2,6,4,8,1,5
+AFC,2014,30,Jacksonville,Jaguars,JAX,Jacksonville Jaguars,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/jax.png,14,3,13,0.1875,9,0,249,412,-163,-1,0,3-13,3,5,0,8,2,10,1,5
+AFC,2014,13,Oakland,Raiders,OAK,Oakland Raiders,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/oak.png,15,3,13,0.1875,9,0,253,452,-199,-1,0,3-13,3,5,0,8,2,10,1,5
+AFC,2014,10,Tennessee,Titans,TEN,Tennessee Titans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ten.png,16,2,14,0.125,10,0,254,438,-184,-10,0,2-14,1,7,1,7,2,10,1,5
+NFC,2014,6,Dallas,Cowboys,DAL,Dallas Cowboys,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/dal.png,1,12,4,0.75,0,0,467,352,115,4,0,12-4,4,4,8,0,8,4,4,2
+NFC,2014,26,Seattle,Seahawks,SEA,Seattle Seahawks,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png,2,12,4,0.75,0,0,394,254,140,6,0,12-4,7,1,5,3,10,2,5,1
+NFC,2014,9,Green Bay,Packers,GB,Green Bay Packers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/gb.png,3,12,4,0.75,0,0,486,348,138,2,0,12-4,8,0,4,4,9,3,5,1
+NFC,2014,22,Arizona,Cardinals,ARI,Arizona Cardinals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ari.png,4,11,5,0.6875,1,0,310,299,11,-2,0,11-5,7,1,4,4,8,4,3,3
+NFC,2014,8,Detroit,Lions,DET,Detroit Lions,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/det.png,5,11,5,0.6875,1,0,321,282,39,-1,0,11-5,7,1,4,4,9,3,5,1
+NFC,2014,21,Philadelphia,Eagles,PHI,Philadelphia Eagles,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/phi.png,6,10,6,0.625,2,0,474,400,74,1,0,10-6,6,2,4,4,6,6,4,2
+NFC,2014,25,San Francisco,49ers,SF,San Francisco 49ers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sf.png,7,8,8,0.5,4,0,306,340,-34,1,0,8-8,4,4,4,4,7,5,2,4
+NFC,2014,29,Carolina,Panthers,CAR,Carolina Panthers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/car.png,8,7,8,0.46875,4.5,1,339,374,-35,4,0,7-8-1,4,4,3,4,6,6,4,2
+NFC,2014,18,New Orleans,Saints,NO,New Orleans Saints,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png,9,7,9,0.4375,5,0,401,424,-23,1,0,7-9,3,5,4,4,6,6,3,3
+NFC,2014,16,Minnesota,Vikings,MIN,Minnesota Vikings,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/min.png,10,7,9,0.4375,5,0,325,343,-18,1,0,7-9,5,3,2,6,6,6,1,5
+NFC,2014,19,New York,Giants,NYG,New York Giants,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png,11,6,10,0.375,6,0,380,400,-20,-1,0,6-10,3,5,3,5,4,8,2,4
+NFC,2014,1,Atlanta,Falcons,ATL,Atlanta Falcons,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/atl.png,12,6,10,0.375,6,0,381,417,-36,-1,0,6-10,3,5,3,5,6,6,5,1
+NFC,2014,14,St. Louis,Rams,STL,St. Louis Rams,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/stl.png,13,6,10,0.375,6,0,324,354,-30,-3,0,6-10,3,5,3,5,4,8,2,4
+NFC,2014,3,Chicago,Bears,CHI,Chicago Bears,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png,14,5,11,0.3125,7,0,319,442,-123,-5,0,5-11,2,6,3,5,4,8,1,5
+NFC,2014,28,Washington,Redskins,WSH,Washington Redskins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/wsh.png,15,4,12,0.25,8,0,301,438,-137,-1,0,4-12,3,5,1,7,2,10,2,4
+NFC,2014,27,Tampa Bay,Buccaneers,TB,Tampa Bay Buccaneers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/tb.png,16,2,14,0.125,10,0,277,410,-133,-6,0,2-14,0,8,2,6,1,11,0,6
+AFC,2015,4,Cincinnati,Bengals,CIN,Cincinnati Bengals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cin.png,1,12,4,0.75,0,0,419,279,140,1,0,12-4,6,2,6,2,9,3,5,1
+AFC,2015,7,Denver,Broncos,DEN,Denver Broncos,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/den.png,2,12,4,0.75,0,0,355,296,59,2,0,12-4,6,2,6,2,8,4,4,2
+AFC,2015,17,New England,Patriots,NE,New England Patriots,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.png,3,12,4,0.75,0,0,465,315,150,-2,0,12-4,7,1,5,3,9,3,4,2
+AFC,2015,12,Kansas City,Chiefs,KC,Kansas City Chiefs,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png,4,11,5,0.6875,1,0,405,287,118,10,0,11-5,6,2,5,3,10,2,5,1
+AFC,2015,23,Pittsburgh,Steelers,PIT,Pittsburgh Steelers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/pit.png,5,10,6,0.625,2,0,423,319,104,1,0,10-6,6,2,4,4,7,5,3,3
+AFC,2015,20,New York,Jets,NYJ,New York Jets,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyj.png,6,10,6,0.625,2,0,387,314,73,-1,0,10-6,6,2,4,4,7,5,3,3
+AFC,2015,34,Houston,Texans,HOU,Houston Texans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/hou.png,7,9,7,0.5625,3,0,339,313,26,3,0,9-7,5,3,4,4,7,5,5,1
+AFC,2015,2,Buffalo,Bills,BUF,Buffalo Bills,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png,8,8,8,0.5,4,0,379,359,20,2,0,8-8,5,3,3,5,7,5,4,2
+AFC,2015,11,Indianapolis,Colts,IND,Indianapolis Colts,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ind.png,9,8,8,0.5,4,0,333,408,-75,2,0,8-8,4,4,4,4,6,6,4,2
+AFC,2015,13,Oakland,Raiders,OAK,Oakland Raiders,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/oak.png,10,7,9,0.4375,5,0,359,399,-40,-1,0,7-9,3,5,4,4,7,5,3,3
+AFC,2015,15,Miami,Dolphins,MIA,Miami Dolphins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/mia.png,11,6,10,0.375,6,0,310,389,-79,1,0,6-10,3,5,3,5,4,8,1,5
+AFC,2015,30,Jacksonville,Jaguars,JAX,Jacksonville Jaguars,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/jax.png,12,5,11,0.3125,7,0,376,448,-72,-3,0,5-11,4,4,1,7,5,7,2,4
+AFC,2015,33,Baltimore,Ravens,BAL,Baltimore Ravens,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png,13,5,11,0.3125,7,0,328,401,-73,-1,0,5-11,3,5,2,6,4,8,3,3
+AFC,2015,24,San Diego,Chargers,SD,San Diego Chargers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sd.png,14,4,12,0.25,8,0,320,398,-78,-2,0,4-12,3,5,1,7,3,9,0,6
+AFC,2015,5,Cleveland,Browns,CLE,Cleveland Browns,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cle.png,15,3,13,0.1875,9,0,278,432,-154,-3,0,3-13,2,6,1,7,2,10,1,5
+AFC,2015,10,Tennessee,Titans,TEN,Tennessee Titans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ten.png,16,3,13,0.1875,9,0,299,423,-124,-4,0,3-13,1,7,2,6,1,11,1,5
+NFC,2015,29,Carolina,Panthers,CAR,Carolina Panthers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/car.png,1,15,1,0.9375,0,0,500,308,192,1,0,15-1,8,0,7,1,11,1,5,1
+NFC,2015,22,Arizona,Cardinals,ARI,Arizona Cardinals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ari.png,2,13,3,0.8125,2,0,489,313,176,-1,0,13-3,6,2,7,1,10,2,4,2
+NFC,2015,16,Minnesota,Vikings,MIN,Minnesota Vikings,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/min.png,3,11,5,0.6875,4,0,365,302,63,3,0,11-5,6,2,5,3,8,4,5,1
+NFC,2015,9,Green Bay,Packers,GB,Green Bay Packers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/gb.png,4,10,6,0.625,5,0,368,323,45,-2,0,10-6,5,3,5,3,7,5,3,3
+NFC,2015,26,Seattle,Seahawks,SEA,Seattle Seahawks,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png,5,10,6,0.625,5,0,423,277,146,1,0,10-6,5,3,5,3,7,5,3,3
+NFC,2015,28,Washington,Redskins,WSH,Washington Redskins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/wsh.png,6,9,7,0.5625,6,0,388,379,9,4,0,9-7,6,2,3,5,8,4,4,2
+NFC,2015,1,Atlanta,Falcons,ATL,Atlanta Falcons,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/atl.png,7,8,8,0.5,7,0,339,345,-6,-1,0,8-8,4,4,4,4,5,7,1,5
+NFC,2015,14,St. Louis,Rams,STL,St. Louis Rams,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/stl.png,8,7,9,0.4375,8,0,280,330,-50,-1,0,7-9,5,3,2,6,6,6,4,2
+NFC,2015,8,Detroit,Lions,DET,Detroit Lions,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/det.png,9,7,9,0.4375,8,0,358,400,-42,3,0,7-9,4,4,3,5,6,6,3,3
+NFC,2015,21,Philadelphia,Eagles,PHI,Philadelphia Eagles,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/phi.png,10,7,9,0.4375,8,0,377,430,-53,1,0,7-9,3,5,4,4,4,8,3,3
+NFC,2015,18,New Orleans,Saints,NO,New Orleans Saints,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png,11,7,9,0.4375,8,0,408,476,-68,2,0,7-9,4,4,3,5,5,7,3,3
+NFC,2015,19,New York,Giants,NYG,New York Giants,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png,12,6,10,0.375,9,0,420,442,-22,-3,0,6-10,3,5,3,5,4,8,2,4
+NFC,2015,3,Chicago,Bears,CHI,Chicago Bears,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png,13,6,10,0.375,9,0,335,397,-62,-1,0,6-10,1,7,5,3,3,9,1,5
+NFC,2015,27,Tampa Bay,Buccaneers,TB,Tampa Bay Buccaneers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/tb.png,14,6,10,0.375,9,0,342,417,-75,-4,0,6-10,3,5,3,5,5,7,3,3
+NFC,2015,25,San Francisco,49ers,SF,San Francisco 49ers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sf.png,15,5,11,0.3125,10,0,238,387,-149,1,0,5-11,4,4,1,7,4,8,1,5
+NFC,2015,6,Dallas,Cowboys,DAL,Dallas Cowboys,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/dal.png,16,4,12,0.25,11,0,275,374,-99,-4,0,4-12,1,7,3,5,3,9,3,3
+AFC,2016,17,New England,Patriots,NE,New England Patriots,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.png,1,14,2,0.875,0,0,441,250,191,7,0,14-2,6,2,8,0,11,1,5,1
+AFC,2016,13,Oakland,Raiders,OAK,Oakland Raiders,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/oak.png,2,12,4,0.75,2,0,416,385,31,-1,0,12-4,6,2,6,2,9,3,3,3
+AFC,2016,12,Kansas City,Chiefs,KC,Kansas City Chiefs,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png,3,12,4,0.75,2,0,389,311,78,2,0,12-4,6,2,6,2,9,3,6,0
+AFC,2016,23,Pittsburgh,Steelers,PIT,Pittsburgh Steelers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/pit.png,4,11,5,0.6875,3,0,399,327,72,7,0,11-5,6,2,5,3,9,3,5,1
+AFC,2016,15,Miami,Dolphins,MIA,Miami Dolphins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/mia.png,5,10,6,0.625,4,0,363,380,-17,-1,0,10-6,6,2,4,4,7,5,4,2
+AFC,2016,34,Houston,Texans,HOU,Houston Texans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/hou.png,6,9,7,0.5625,5,0,279,328,-49,-1,0,9-7,7,1,2,6,7,5,5,1
+AFC,2016,10,Tennessee,Titans,TEN,Tennessee Titans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ten.png,7,9,7,0.5625,5,0,381,378,3,1,0,9-7,5,3,4,4,6,6,2,4
+AFC,2016,7,Denver,Broncos,DEN,Denver Broncos,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/den.png,8,9,7,0.5625,5,0,333,297,36,1,0,9-7,5,3,4,4,6,6,2,4
+AFC,2016,33,Baltimore,Ravens,BAL,Baltimore Ravens,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png,9,8,8,0.5,6,0,343,321,22,-2,0,8-8,6,2,2,6,7,5,4,2
+AFC,2016,11,Indianapolis,Colts,IND,Indianapolis Colts,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ind.png,10,8,8,0.5,6,0,411,392,19,1,0,8-8,4,4,4,4,5,7,3,3
+AFC,2016,2,Buffalo,Bills,BUF,Buffalo Bills,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png,11,7,9,0.4375,7,0,399,378,21,-2,0,7-9,4,4,3,5,4,8,1,5
+AFC,2016,4,Cincinnati,Bengals,CIN,Cincinnati Bengals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cin.png,12,6,9,0.40625,7.5,1,325,315,10,1,0,6-9-1,4,3,2,6,5,7,3,3
+AFC,2016,20,New York,Jets,NYJ,New York Jets,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyj.png,13,5,11,0.3125,9,0,275,409,-134,1,0,5-11,2,6,3,5,4,8,2,4
+AFC,2016,24,San Diego,Chargers,SD,San Diego Chargers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sd.png,14,5,11,0.3125,9,0,410,423,-13,-5,0,5-11,3,5,2,6,4,8,1,5
+AFC,2016,30,Jacksonville,Jaguars,JAX,Jacksonville Jaguars,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/jax.png,15,3,13,0.1875,11,0,318,400,-82,-1,0,3-13,2,6,1,7,2,10,2,4
+AFC,2016,5,Cleveland,Browns,CLE,Cleveland Browns,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cle.png,16,1,15,0.0625,13,0,264,452,-188,-1,0,1-15,1,7,0,8,1,11,0,6
+NFC,2016,6,Dallas,Cowboys,DAL,Dallas Cowboys,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/dal.png,1,13,3,0.8125,0,0,421,306,115,-1,0,13-3,7,1,6,2,9,3,3,3
+NFC,2016,19,New York,Giants,NYG,New York Giants,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png,2,11,5,0.6875,2,0,310,284,26,1,0,11-5,7,1,4,4,8,4,4,2
+NFC,2016,1,Atlanta,Falcons,ATL,Atlanta Falcons,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/atl.png,3,11,5,0.6875,2,0,540,406,134,4,0,11-5,5,3,6,2,9,3,5,1
+NFC,2016,26,Seattle,Seahawks,SEA,Seattle Seahawks,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png,4,10,5,0.65625,2.5,1,354,292,62,1,1,10-5-1,7,1,3,4,6,5,3,2
+NFC,2016,9,Green Bay,Packers,GB,Green Bay Packers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/gb.png,5,10,6,0.625,3,0,432,388,44,6,0,10-6,6,2,4,4,8,4,5,1
+NFC,2016,8,Detroit,Lions,DET,Detroit Lions,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/det.png,6,9,7,0.5625,4,0,346,358,-12,-3,0,9-7,6,2,3,5,7,5,3,3
+NFC,2016,27,Tampa Bay,Buccaneers,TB,Tampa Bay Buccaneers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/tb.png,7,9,7,0.5625,4,0,354,369,-15,1,0,9-7,4,4,5,3,7,5,4,2
+NFC,2016,28,Washington,Redskins,WSH,Washington Redskins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/wsh.png,8,8,7,0.53125,4.5,1,396,383,13,-1,0,8-7-1,4,4,4,3,6,6,3,3
+NFC,2016,16,Minnesota,Vikings,MIN,Minnesota Vikings,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/min.png,9,8,8,0.5,5,0,327,307,20,1,0,8-8,5,3,3,5,5,7,2,4
+NFC,2016,22,Arizona,Cardinals,ARI,Arizona Cardinals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ari.png,10,7,8,0.46875,5.5,1,418,362,56,2,1,7-8-1,4,3,3,5,6,5,4,1
+NFC,2016,18,New Orleans,Saints,NO,New Orleans Saints,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png,11,7,9,0.4375,6,0,469,454,15,-1,0,7-9,4,4,3,5,6,6,2,4
+NFC,2016,21,Philadelphia,Eagles,PHI,Philadelphia Eagles,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/phi.png,12,7,9,0.4375,6,0,367,331,36,2,0,7-9,6,2,1,7,5,7,2,4
+NFC,2016,29,Carolina,Panthers,CAR,Carolina Panthers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/car.png,13,6,10,0.375,7,0,369,402,-33,-2,0,6-10,4,4,2,6,5,7,1,5
+NFC,2016,14,Los Angeles,Rams,LAR,Los Angeles Rams,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lar.png,14,4,12,0.25,9,0,224,394,-170,-7,0,4-12,1,7,3,5,3,9,2,4
+NFC,2016,3,Chicago,Bears,CHI,Chicago Bears,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png,15,3,13,0.1875,10,0,279,399,-120,-4,0,3-13,3,5,0,8,3,9,2,4
+NFC,2016,25,San Francisco,49ers,SF,San Francisco 49ers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sf.png,16,2,14,0.125,11,0,309,480,-171,-1,0,2-14,1,7,1,7,2,10,2,4
+AFC,2017,17,New England,Patriots,NE,New England Patriots,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.png,1,13,3,0.8125,0,0,458,296,162,3,0,13-3,6,2,7,1,10,2,5,1
+AFC,2017,23,Pittsburgh,Steelers,PIT,Pittsburgh Steelers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/pit.png,2,13,3,0.8125,0,0,406,308,98,2,0,13-3,6,2,7,1,10,2,6,0
+AFC,2017,30,Jacksonville,Jaguars,JAX,Jacksonville Jaguars,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/jax.png,3,10,6,0.625,3,0,417,268,149,-2,0,10-6,6,2,4,4,9,3,4,2
+AFC,2017,12,Kansas City,Chiefs,KC,Kansas City Chiefs,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png,4,10,6,0.625,3,0,415,339,76,4,0,10-6,6,2,4,4,8,4,5,1
+AFC,2017,10,Tennessee,Titans,TEN,Tennessee Titans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ten.png,5,9,7,0.5625,4,0,334,356,-22,1,0,9-7,6,2,3,5,8,4,5,1
+AFC,2017,2,Buffalo,Bills,BUF,Buffalo Bills,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png,6,9,7,0.5625,4,0,302,359,-57,1,0,9-7,6,2,3,5,7,5,3,3
+AFC,2017,33,Baltimore,Ravens,BAL,Baltimore Ravens,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png,7,9,7,0.5625,4,0,395,303,92,-1,0,9-7,5,3,4,4,7,5,3,3
+AFC,2017,24,Los Angeles,Chargers,LAC,Los Angeles Chargers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lac.png,8,9,7,0.5625,4,0,355,272,83,2,0,9-7,5,3,4,4,6,6,3,3
+AFC,2017,4,Cincinnati,Bengals,CIN,Cincinnati Bengals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cin.png,9,7,9,0.4375,6,0,290,349,-59,2,0,7-9,4,4,3,5,6,6,3,3
+AFC,2017,13,Oakland,Raiders,OAK,Oakland Raiders,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/oak.png,10,6,10,0.375,7,0,301,373,-72,-4,0,6-10,4,4,2,6,5,7,2,4
+AFC,2017,15,Miami,Dolphins,MIA,Miami Dolphins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/mia.png,11,6,10,0.375,7,0,281,393,-112,-3,0,6-10,4,4,2,6,5,7,2,4
+AFC,2017,7,Denver,Broncos,DEN,Denver Broncos,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/den.png,12,5,11,0.3125,8,0,289,382,-93,-2,0,5-11,4,4,1,7,4,8,2,4
+AFC,2017,20,New York,Jets,NYJ,New York Jets,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyj.png,13,5,11,0.3125,8,0,298,382,-84,-4,0,5-11,4,4,1,7,5,7,2,4
+AFC,2017,11,Indianapolis,Colts,IND,Indianapolis Colts,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ind.png,14,4,12,0.25,9,0,263,404,-141,1,0,4-12,3,5,1,7,3,9,2,4
+AFC,2017,34,Houston,Texans,HOU,Houston Texans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/hou.png,15,4,12,0.25,9,0,338,436,-98,-6,0,4-12,3,5,1,7,3,9,1,5
+AFC,2017,5,Cleveland,Browns,CLE,Cleveland Browns,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cle.png,16,0,16,0,13,0,234,410,-176,-16,0,0-16,0,8,0,8,0,12,0,6
+NFC,2017,21,Philadelphia,Eagles,PHI,Philadelphia Eagles,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/phi.png,1,13,3,0.8125,0,0,457,295,162,-1,0,13-3,7,1,6,2,10,2,5,1
+NFC,2017,16,Minnesota,Vikings,MIN,Minnesota Vikings,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/min.png,2,13,3,0.8125,0,0,382,252,130,3,0,13-3,7,1,6,2,10,2,5,1
+NFC,2017,14,Los Angeles,Rams,LAR,Los Angeles Rams,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lar.png,3,11,5,0.6875,2,0,478,329,149,-1,0,11-5,4,4,7,1,7,5,4,2
+NFC,2017,18,New Orleans,Saints,NO,New Orleans Saints,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png,4,11,5,0.6875,2,0,448,326,122,-1,0,11-5,7,1,4,4,8,4,4,2
+NFC,2017,29,Carolina,Panthers,CAR,Carolina Panthers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/car.png,5,11,5,0.6875,2,0,363,327,36,-1,0,11-5,6,2,5,3,7,5,3,3
+NFC,2017,1,Atlanta,Falcons,ATL,Atlanta Falcons,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/atl.png,6,10,6,0.625,3,0,353,315,38,1,0,10-6,5,3,5,3,9,3,4,2
+NFC,2017,8,Detroit,Lions,DET,Detroit Lions,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/det.png,7,9,7,0.5625,4,0,410,376,34,1,0,9-7,4,4,5,3,8,4,5,1
+NFC,2017,26,Seattle,Seahawks,SEA,Seattle Seahawks,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png,8,9,7,0.5625,4,0,366,332,34,-1,0,9-7,4,4,5,3,7,5,4,2
+NFC,2017,6,Dallas,Cowboys,DAL,Dallas Cowboys,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/dal.png,9,9,7,0.5625,4,0,354,332,22,1,0,9-7,3,5,6,2,7,5,5,1
+NFC,2017,22,Arizona,Cardinals,ARI,Arizona Cardinals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ari.png,10,8,8,0.5,5,0,295,361,-66,2,0,8-8,5,3,3,5,5,7,3,3
+NFC,2017,9,Green Bay,Packers,GB,Green Bay Packers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/gb.png,11,7,9,0.4375,6,0,320,384,-64,-3,0,7-9,4,4,3,5,5,7,2,4
+NFC,2017,28,Washington,Redskins,WSH,Washington Redskins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/wsh.png,12,7,9,0.4375,6,0,342,388,-46,-1,0,7-9,5,3,2,6,5,7,1,5
+NFC,2017,25,San Francisco,49ers,SF,San Francisco 49ers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sf.png,13,6,10,0.375,7,0,331,383,-52,5,0,6-10,3,5,3,5,3,9,1,5
+NFC,2017,27,Tampa Bay,Buccaneers,TB,Tampa Bay Buccaneers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/tb.png,14,5,11,0.3125,8,0,335,382,-47,1,0,5-11,4,4,1,7,3,9,1,5
+NFC,2017,3,Chicago,Bears,CHI,Chicago Bears,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png,15,5,11,0.3125,8,0,264,320,-56,-1,0,5-11,3,5,2,6,1,11,0,6
+NFC,2017,19,New York,Giants,NYG,New York Giants,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png,16,3,13,0.1875,10,0,246,388,-142,1,0,3-13,2,6,1,7,1,11,1,5
+AFC,2018,24,Los Angeles,Chargers,LAC,Los Angeles Chargers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lac.png,1,12,4,0.75,0,0,428,329,99,1,0,12-4,5,3,7,1,9,3,4,2
+AFC,2018,12,Kansas City,Chiefs,KC,Kansas City Chiefs,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png,2,12,4,0.75,0,0,565,421,144,1,0,12-4,7,1,5,3,10,2,5,1
+AFC,2018,34,Houston,Texans,HOU,Houston Texans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/hou.png,3,11,5,0.6875,1,0,402,316,86,1,0,11-5,6,2,5,3,9,3,4,2
+AFC,2018,17,New England,Patriots,NE,New England Patriots,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.png,4,11,5,0.6875,1,0,436,325,111,2,0,11-5,8,0,3,5,8,4,5,1
+AFC,2018,33,Baltimore,Ravens,BAL,Baltimore Ravens,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png,5,10,6,0.625,2,0,389,287,102,3,0,10-6,6,2,4,4,8,4,3,3
+AFC,2018,11,Indianapolis,Colts,IND,Indianapolis Colts,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ind.png,6,10,6,0.625,2,0,433,344,89,4,0,10-6,6,2,4,4,7,5,4,2
+AFC,2018,23,Pittsburgh,Steelers,PIT,Pittsburgh Steelers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/pit.png,7,9,6,0.59375,2.5,1,428,360,68,1,1,9-6-1,5,3,4,3,6,5,4,1
+AFC,2018,10,Tennessee,Titans,TEN,Tennessee Titans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ten.png,8,9,7,0.5625,3,0,310,303,7,-1,0,9-7,6,2,3,5,5,7,3,3
+AFC,2018,5,Cleveland,Browns,CLE,Cleveland Browns,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cle.png,9,7,8,0.46875,4.5,1,359,392,-33,-1,1,7-8-1,5,2,2,6,5,6,3,2
+AFC,2018,15,Miami,Dolphins,MIA,Miami Dolphins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/mia.png,10,7,9,0.4375,5,0,319,433,-114,-3,0,7-9,6,2,1,7,6,6,4,2
+AFC,2018,7,Denver,Broncos,DEN,Denver Broncos,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/den.png,11,6,10,0.375,6,0,329,349,-20,-4,0,6-10,3,5,3,5,4,8,2,4
+AFC,2018,4,Cincinnati,Bengals,CIN,Cincinnati Bengals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cin.png,12,6,10,0.375,6,0,368,455,-87,-2,0,6-10,4,4,2,6,4,8,1,5
+AFC,2018,2,Buffalo,Bills,BUF,Buffalo Bills,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png,13,6,10,0.375,6,0,269,374,-105,1,0,6-10,4,4,2,6,4,8,2,4
+AFC,2018,30,Jacksonville,Jaguars,JAX,Jacksonville Jaguars,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/jax.png,14,5,11,0.3125,7,0,245,316,-71,-1,0,5-11,3,5,2,6,4,8,1,5
+AFC,2018,20,New York,Jets,NYJ,New York Jets,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyj.png,15,4,12,0.25,8,0,333,441,-108,-3,0,4-12,2,6,2,6,3,9,1,5
+AFC,2018,13,Oakland,Raiders,OAK,Oakland Raiders,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/oak.png,16,4,12,0.25,8,0,290,467,-177,-1,0,4-12,3,5,1,7,3,9,1,5
+NFC,2018,18,New Orleans,Saints,NO,New Orleans Saints,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png,1,13,3,0.8125,0,0,504,353,151,-1,0,13-3,6,2,7,1,9,3,4,2
+NFC,2018,14,Los Angeles,Rams,LAR,Los Angeles Rams,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lar.png,2,13,3,0.8125,0,0,527,384,143,2,0,13-3,7,1,6,2,9,3,6,0
+NFC,2018,3,Chicago,Bears,CHI,Chicago Bears,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png,3,12,4,0.75,1,0,421,283,138,4,0,12-4,7,1,5,3,10,2,5,1
+NFC,2018,6,Dallas,Cowboys,DAL,Dallas Cowboys,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/dal.png,4,10,6,0.625,3,0,339,324,15,2,0,10-6,7,1,3,5,9,3,5,1
+NFC,2018,26,Seattle,Seahawks,SEA,Seattle Seahawks,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png,5,10,6,0.625,3,0,428,347,81,2,0,10-6,6,2,4,4,8,4,3,3
+NFC,2018,21,Philadelphia,Eagles,PHI,Philadelphia Eagles,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/phi.png,6,9,7,0.5625,4,0,367,348,19,3,0,9-7,5,3,4,4,6,6,4,2
+NFC,2018,16,Minnesota,Vikings,MIN,Minnesota Vikings,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/min.png,7,8,7,0.53125,4.5,1,360,341,19,-1,1,8-7-1,5,3,3,4,6,5,3,2
+NFC,2018,1,Atlanta,Falcons,ATL,Atlanta Falcons,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/atl.png,8,7,9,0.4375,6,0,414,423,-9,3,0,7-9,4,4,3,5,7,5,4,2
+NFC,2018,28,Washington,Redskins,WSH,Washington Redskins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/wsh.png,9,7,9,0.4375,6,0,281,359,-78,-2,0,7-9,3,5,4,4,6,6,2,4
+NFC,2018,29,Carolina,Panthers,CAR,Carolina Panthers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/car.png,10,7,9,0.4375,6,0,376,382,-6,1,0,7-9,5,3,2,6,5,7,2,4
+NFC,2018,9,Green Bay,Packers,GB,Green Bay Packers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/gb.png,11,6,9,0.40625,6.5,1,376,400,-24,-1,1,6-9-1,5,2,1,7,3,8,1,4
+NFC,2018,8,Detroit,Lions,DET,Detroit Lions,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/det.png,12,6,10,0.375,7,0,324,360,-36,1,0,6-10,3,5,3,5,4,8,2,4
+NFC,2018,19,New York,Giants,NYG,New York Giants,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png,13,5,11,0.3125,8,0,369,412,-43,-3,0,5-11,2,6,3,5,4,8,1,5
+NFC,2018,27,Tampa Bay,Buccaneers,TB,Tampa Bay Buccaneers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/tb.png,14,5,11,0.3125,8,0,396,464,-68,-4,0,5-11,4,4,1,7,4,8,2,4
+NFC,2018,25,San Francisco,49ers,SF,San Francisco 49ers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sf.png,15,4,12,0.25,9,0,342,435,-93,-2,0,4-12,4,4,0,8,2,10,1,5
+NFC,2018,22,Arizona,Cardinals,ARI,Arizona Cardinals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ari.png,16,3,13,0.1875,10,0,225,425,-200,-4,0,3-13,1,7,2,6,3,9,2,4
+AFC,2019,33,Baltimore,Ravens,BAL,Baltimore Ravens,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png,1,14,2,0.875,0,0,531,282,249,12,0,14-2,7,1,7,1,10,2,5,1
+AFC,2019,17,New England,Patriots,NE,New England Patriots,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.png,2,12,4,0.75,2,0,420,225,195,-1,0,12-4,6,2,6,2,8,4,5,1
+AFC,2019,12,Kansas City,Chiefs,KC,Kansas City Chiefs,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png,3,12,4,0.75,2,0,451,308,143,6,0,12-4,5,3,7,1,9,3,6,0
+AFC,2019,34,Houston,Texans,HOU,Houston Texans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/hou.png,4,10,6,0.625,4,0,378,385,-7,-1,0,10-6,5,3,5,3,8,4,4,2
+AFC,2019,2,Buffalo,Bills,BUF,Buffalo Bills,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png,5,10,6,0.625,4,0,314,259,55,-2,0,10-6,4,4,6,2,7,5,3,3
+AFC,2019,10,Tennessee,Titans,TEN,Tennessee Titans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ten.png,6,9,7,0.5625,5,0,402,331,71,1,0,9-7,4,4,5,3,7,5,3,3
+AFC,2019,23,Pittsburgh,Steelers,PIT,Pittsburgh Steelers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/pit.png,7,8,8,0.5,6,0,289,303,-14,-3,0,8-8,5,3,3,5,6,6,3,3
+AFC,2019,7,Denver,Broncos,DEN,Denver Broncos,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/den.png,8,7,9,0.4375,7,0,282,316,-34,2,0,7-9,5,3,2,6,6,6,3,3
+AFC,2019,13,Oakland,Raiders,OAK,Oakland Raiders,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/oak.png,9,7,9,0.4375,7,0,313,419,-106,-1,0,7-9,5,3,2,6,5,7,3,3
+AFC,2019,11,Indianapolis,Colts,IND,Indianapolis Colts,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ind.png,10,7,9,0.4375,7,0,361,373,-12,-1,0,7-9,5,3,2,6,5,7,3,3
+AFC,2019,20,New York,Jets,NYJ,New York Jets,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyj.png,11,7,9,0.4375,7,0,276,359,-83,2,0,7-9,5,3,2,6,4,8,2,4
+AFC,2019,30,Jacksonville,Jaguars,JAX,Jacksonville Jaguars,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/jax.png,12,6,10,0.375,8,0,300,397,-97,1,0,6-10,3,5,3,5,6,6,2,4
+AFC,2019,5,Cleveland,Browns,CLE,Cleveland Browns,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cle.png,13,6,10,0.375,8,0,335,393,-58,-3,0,6-10,4,4,2,6,6,6,3,3
+AFC,2019,24,Los Angeles,Chargers,LAC,Los Angeles Chargers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lac.png,14,5,11,0.3125,9,0,337,345,-8,-3,0,5-11,2,6,3,5,3,9,0,6
+AFC,2019,15,Miami,Dolphins,MIA,Miami Dolphins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/mia.png,15,5,11,0.3125,9,0,306,494,-188,2,0,5-11,3,5,2,6,4,8,2,4
+AFC,2019,4,Cincinnati,Bengals,CIN,Cincinnati Bengals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cin.png,16,2,14,0.125,12,0,279,420,-141,1,0,2-14,2,6,0,8,2,10,1,5
+NFC,2019,18,New Orleans,Saints,NO,New Orleans Saints,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png,1,13,3,0.8125,0,0,458,341,117,3,0,13-3,6,2,7,1,9,3,5,1
+NFC,2019,25,San Francisco,49ers,SF,San Francisco 49ers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sf.png,2,13,3,0.8125,0,0,479,310,169,2,0,13-3,6,2,7,1,10,2,5,1
+NFC,2019,9,Green Bay,Packers,GB,Green Bay Packers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/gb.png,3,13,3,0.8125,0,0,376,313,63,5,0,13-3,7,1,6,2,10,2,6,0
+NFC,2019,26,Seattle,Seahawks,SEA,Seattle Seahawks,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png,4,11,5,0.6875,2,0,405,398,7,-2,0,11-5,4,4,7,1,8,4,3,3
+NFC,2019,16,Minnesota,Vikings,MIN,Minnesota Vikings,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/min.png,5,10,6,0.625,3,0,407,303,104,-2,0,10-6,6,2,4,4,7,5,2,4
+NFC,2019,21,Philadelphia,Eagles,PHI,Philadelphia Eagles,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/phi.png,6,9,7,0.5625,4,0,385,354,31,4,0,9-7,5,3,4,4,7,5,5,1
+NFC,2019,14,Los Angeles,Rams,LAR,Los Angeles Rams,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lar.png,7,9,7,0.5625,4,0,394,364,30,1,0,9-7,5,3,4,4,7,5,3,3
+NFC,2019,3,Chicago,Bears,CHI,Chicago Bears,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png,8,8,8,0.5,5,0,280,298,-18,1,0,8-8,4,4,4,4,7,5,4,2
+NFC,2019,6,Dallas,Cowboys,DAL,Dallas Cowboys,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/dal.png,9,8,8,0.5,5,0,434,321,113,1,0,8-8,5,3,3,5,7,5,5,1
+NFC,2019,1,Atlanta,Falcons,ATL,Atlanta Falcons,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/atl.png,10,7,9,0.4375,6,0,381,399,-18,4,0,7-9,3,5,4,4,6,6,4,2
+NFC,2019,27,Tampa Bay,Buccaneers,TB,Tampa Bay Buccaneers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/tb.png,11,7,9,0.4375,6,0,458,449,9,-2,0,7-9,2,6,5,3,5,7,2,4
+NFC,2019,22,Arizona,Cardinals,ARI,Arizona Cardinals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ari.png,12,5,10,0.34375,7.5,1,361,442,-81,-1,0,5-10-1,2,5,3,5,3,8,1,5
+NFC,2019,29,Carolina,Panthers,CAR,Carolina Panthers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/car.png,13,5,11,0.3125,8,0,340,470,-130,-8,0,5-11,2,6,3,5,2,10,1,5
+NFC,2019,19,New York,Giants,NYG,New York Giants,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png,14,4,12,0.25,9,0,341,451,-110,-1,0,4-12,2,6,2,6,3,9,2,4
+NFC,2019,8,Detroit,Lions,DET,Detroit Lions,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/det.png,15,3,12,0.21875,9.5,1,341,423,-82,-9,0,3-12-1,2,6,1,6,2,9,0,6
+NFC,2019,28,Washington,NA,WSH,Washington,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/wsh.png,16,3,13,0.1875,10,0,266,435,-169,-4,0,3-13,1,7,2,6,2,10,0,6
+AFC,2020,12,Kansas City,Chiefs,KC,Kansas City Chiefs,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/kc.png,1,14,2,0.875,0,0,473,362,111,-1,0,14-2,6,2,8,0,10,2,4,2
+AFC,2020,2,Buffalo,Bills,BUF,Buffalo Bills,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/buf.png,2,13,3,0.8125,1,0,501,375,126,6,0,13-3,7,1,6,2,10,2,6,0
+AFC,2020,23,Pittsburgh,Steelers,PIT,Pittsburgh Steelers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/pit.png,3,12,4,0.75,2,0,416,312,104,-1,0,12-4,7,1,5,3,9,3,4,2
+AFC,2020,10,Tennessee,Titans,TEN,Tennessee Titans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ten.png,4,11,5,0.6875,3,0,491,439,52,1,0,11-5,5,3,6,2,8,4,5,1
+AFC,2020,33,Baltimore,Ravens,BAL,Baltimore Ravens,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/bal.png,5,11,5,0.6875,3,0,468,303,165,5,0,11-5,5,3,6,2,7,5,4,2
+AFC,2020,5,Cleveland,Browns,CLE,Cleveland Browns,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cle.png,6,11,5,0.6875,3,0,408,419,-11,1,0,11-5,6,2,5,3,7,5,3,3
+AFC,2020,11,Indianapolis,Colts,IND,Indianapolis Colts,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ind.png,7,11,5,0.6875,3,0,451,362,89,1,0,11-5,6,2,5,3,7,5,4,2
+AFC,2020,15,Miami,Dolphins,MIA,Miami Dolphins,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/mia.png,8,10,6,0.625,4,0,404,338,66,-1,0,10-6,5,3,5,3,7,5,3,3
+AFC,2020,13,Las Vegas,Raiders,LV,Las Vegas Raiders,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lv.png,9,8,8,0.5,6,0,434,478,-44,1,0,8-8,2,6,6,2,6,6,4,2
+AFC,2020,17,New England,Patriots,NE,New England Patriots,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.png,10,7,9,0.4375,7,0,326,353,-27,1,0,7-9,5,3,2,6,6,6,3,3
+AFC,2020,24,Los Angeles,Chargers,LAC,Los Angeles Chargers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lac.png,11,7,9,0.4375,7,0,384,426,-42,4,0,7-9,4,4,3,5,6,6,3,3
+AFC,2020,7,Denver,Broncos,DEN,Denver Broncos,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/den.png,12,5,11,0.3125,9,0,323,446,-123,-3,0,5-11,2,6,3,5,4,8,1,5
+AFC,2020,4,Cincinnati,Bengals,CIN,Cincinnati Bengals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/cin.png,13,4,11,0.28125,9.5,1,311,424,-113,-1,0,4-11-1,3,5,1,6,4,8,1,5
+AFC,2020,34,Houston,Texans,HOU,Houston Texans,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/hou.png,14,4,12,0.25,10,0,384,464,-80,-5,0,4-12,2,6,2,6,3,9,2,4
+AFC,2020,20,New York,Jets,NYJ,New York Jets,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyj.png,15,2,14,0.125,12,0,243,457,-214,-1,0,2-14,1,7,1,7,1,11,0,6
+AFC,2020,30,Jacksonville,Jaguars,JAX,Jacksonville Jaguars,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/jax.png,16,1,15,0.0625,13,0,306,492,-186,-15,0,1-15,1,7,0,8,1,11,1,5
+NFC,2020,9,Green Bay,Packers,GB,Green Bay Packers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/gb.png,1,13,3,0.8125,0,0,509,369,140,6,0,13-3,7,1,6,2,10,2,5,1
+NFC,2020,18,New Orleans,Saints,NO,New Orleans Saints,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/no.png,2,12,4,0.75,1,0,482,337,145,2,0,12-4,6,2,6,2,10,2,6,0
+NFC,2020,26,Seattle,Seahawks,SEA,Seattle Seahawks,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sea.png,3,12,4,0.75,1,0,459,371,88,4,0,12-4,7,1,5,3,9,3,4,2
+NFC,2020,27,Tampa Bay,Buccaneers,TB,Tampa Bay Buccaneers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/tb.png,4,11,5,0.6875,2,0,492,355,137,4,0,11-5,5,3,6,2,8,4,4,2
+NFC,2020,14,Los Angeles,Rams,LAR,Los Angeles Rams,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/lar.png,5,10,6,0.625,3,0,372,296,76,1,0,10-6,6,2,4,4,9,3,3,3
+NFC,2020,3,Chicago,Bears,CHI,Chicago Bears,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/chi.png,6,8,8,0.5,5,0,372,370,2,-1,0,8-8,3,5,5,3,6,6,2,4
+NFC,2020,22,Arizona,Cardinals,ARI,Arizona Cardinals,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ari.png,7,8,8,0.5,5,0,410,367,43,-2,0,8-8,4,4,4,4,6,6,2,4
+NFC,2020,28,Washington,NA,WSH,Washington,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/wsh.png,8,7,9,0.4375,6,0,335,329,6,1,0,7-9,3,5,4,4,5,7,4,2
+NFC,2020,16,Minnesota,Vikings,MIN,Minnesota Vikings,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/min.png,9,7,9,0.4375,6,0,430,475,-45,1,0,7-9,3,5,4,4,5,7,4,2
+NFC,2020,25,San Francisco,49ers,SF,San Francisco 49ers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/sf.png,10,6,10,0.375,7,0,376,390,-14,-1,0,6-10,1,7,5,3,4,8,3,3
+NFC,2020,19,New York,Giants,NYG,New York Giants,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/nyg.png,11,6,10,0.375,7,0,280,357,-77,1,0,6-10,3,5,3,5,5,7,4,2
+NFC,2020,6,Dallas,Cowboys,DAL,Dallas Cowboys,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/dal.png,12,6,10,0.375,7,0,395,473,-78,-1,0,6-10,4,4,2,6,5,7,2,4
+NFC,2020,29,Carolina,Panthers,CAR,Carolina Panthers,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/car.png,13,5,11,0.3125,8,0,350,402,-52,-1,0,5-11,2,6,3,5,4,8,1,5
+NFC,2020,8,Detroit,Lions,DET,Detroit Lions,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/det.png,14,5,11,0.3125,8,0,377,519,-142,-4,0,5-11,1,7,4,4,4,8,1,5
+NFC,2020,21,Philadelphia,Eagles,PHI,Philadelphia Eagles,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/phi.png,15,4,11,0.28125,8.5,1,334,418,-84,-3,0,4-11-1,3,4,1,7,4,8,2,4
+NFC,2020,1,Atlanta,Falcons,ATL,Atlanta Falcons,https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/atl.png,16,4,12,0.25,9,0,396,414,-18,-5,0,4-12,2,6,2,6,2,10,1,5

@@ -1,40 +1,39 @@
----
-title: "<span style='color:#fcab27'>Beautiful graphics in `ggplot2`</span>"
-author: "<a href = 'https://twitter.com/thomas_mock'><span style='color:#ff2b4f'>Tom Mock</span></a>"
-date: "`r Sys.Date()`"
-output:
-  xaringan::moon_reader:
-    css: ["default", "ggplot-theme.css"]
-    lib_dir: libs
-    nature:
-      beforeInit: "https://platform.twitter.com/widgets.js"
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
-      selfContained: true
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Beautiful graphics in ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tom Mock" />
+    <meta name="date" content="2021-05-20" />
+    <script src="libs/header-attrs-2.8/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="ggplot-theme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# <span style="color:#fcab27">Beautiful graphics in <code>ggplot2</code></span>
+### <a href = 'https://twitter.com/thomas_mock'><span style="color:#ff2b4f">Tom Mock</span></a>
+### 2021-05-20
+
 ---
 
-```{css, echo = FALSE}
+
+&lt;style type="text/css"&gt;
 .large { font-size: 150% }
-```
+&lt;/style&gt;
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.dim = c(6, 4), fig.retina = 2)
 
-library(tidyverse)
-library(espnscrapeR)
-library(ggthemes)
-library(rvest)
-```
 
 ### Why `ggplot2`?
 
 Per [John Burn Murdoch of the FT](https://johnburnmurdoch.github.io/slides/r-ggplot/#/35):
 
-> `ggplot2` is awesome because:
-> - It takes minimal time and effort to audition multiple different ideas for a graphic, and to iterate on them
-> - It gets people thinking in the continuous visual encoding space, rather than the discrete chart-type space
+&gt; `ggplot2` is awesome because:
+&gt; - It takes minimal time and effort to audition multiple different ideas for a graphic, and to iterate on them
+&gt; - It gets people thinking in the continuous visual encoding space, rather than the discrete chart-type space
 
 ### Breaking that down
 
@@ -51,9 +50,7 @@ Images from John-Burn Murdoch's presentation: [**ggplot2 as a creativity engine*
 
 .pull-left[
 Easy enough to [*rapidly prototype*](https://johnburnmurdoch.github.io/slides/r-ggplot/#/14) graphics at the "speed of thought"  
-```{r, echo = FALSE}
-knitr::include_graphics("https://johnburnmurdoch.github.io/slides/r-ggplot/football-tide-2.png")
-```
+![](https://johnburnmurdoch.github.io/slides/r-ggplot/football-tide-2.png)&lt;!-- --&gt;
 
 ]
 
@@ -61,9 +58,7 @@ knitr::include_graphics("https://johnburnmurdoch.github.io/slides/r-ggplot/footb
 
 .pull-right[
 Powerful enough for [*final "publication"*](https://johnburnmurdoch.github.io/slides/r-ggplot/#/34)  
-```{r, echo = FALSE, out.width = "75%"}
-knitr::include_graphics("http://blogs.ft.com/ftdata/files/2016/03/eng.png")
-```
+&lt;img src="http://blogs.ft.com/ftdata/files/2016/03/eng.png" width="75%" /&gt;
 
 
 ]
@@ -87,67 +82,97 @@ class: inverse, middle, center
 
 A few datasets to start us off
 
-```{r, message=FALSE}
-diff_df <- readr::read_csv("https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/diff_df.csv")
-combo_pass <- readr::read_csv("https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/combo_pass.csv")
+
+```r
+diff_df &lt;- readr::read_csv("https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/diff_df.csv")
+combo_pass &lt;- readr::read_csv("https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/combo_pass.csv")
 ```
 
-```{r}
+
+```r
 glimpse(diff_df)
+```
+
+```
+## Rows: 224
+## Columns: 7
+## $ year         &lt;dbl&gt; 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 201…
+## $ conf         &lt;chr&gt; "AFC", "AFC", "AFC", "AFC", "AFC", "AFC", "AFC", "AFC", "…
+## $ team_name    &lt;chr&gt; "Patriots", "Broncos", "Steelers", "Colts", "Bengals", "R…
+## $ abb_name     &lt;chr&gt; "NE", "DEN", "PIT", "IND", "CIN", "BAL", "KC", "HOU", "SD…
+## $ logos        &lt;chr&gt; "https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/ne.…
+## $ win_percent  &lt;dbl&gt; 0.75000, 0.75000, 0.68750, 0.68750, 0.65625, 0.62500, 0.5…
+## $ differential &lt;dbl&gt; 155, 128, 68, 89, 21, 107, 72, 65, 0, 54, 15, -38, -118, …
 ```
 
 ---
 
 ### Back to basics
 
-```{r}
-basic_plot <- ggplot(diff_df, aes(x = differential, y = win_percent)) +
+
+```r
+basic_plot &lt;- ggplot(diff_df, aes(x = differential, y = win_percent)) +
   geom_point()
 
 basic_plot
 ```
 
+&lt;img src="intro-plot_files/figure-html/unnamed-chunk-6-1.png" width="432" /&gt;
+
 ---
 
 ### Built in themes
 
-```{r}
+
+```r
 basic_plot + 
   theme_minimal()
 ```
 
+&lt;img src="intro-plot_files/figure-html/unnamed-chunk-7-1.png" width="432" /&gt;
+
 ---
 
 ### Built in themes
 
-```{r}
+
+```r
 basic_plot +
   theme_bw()
 ```
 
+&lt;img src="intro-plot_files/figure-html/unnamed-chunk-8-1.png" width="432" /&gt;
+
 ---
 
 ### `ggthemes` themes
 
-```{r}
+
+```r
 basic_plot +
   ggthemes::theme_fivethirtyeight()
 ```
 
+&lt;img src="intro-plot_files/figure-html/unnamed-chunk-9-1.png" width="432" /&gt;
+
 ---
 
 ### `ggthemes` themes
 
-```{r}
+
+```r
 basic_plot +
   ggthemes::theme_economist()
 ```
+
+&lt;img src="intro-plot_files/figure-html/unnamed-chunk-10-1.png" width="432" /&gt;
 
 ---
 
 ### Manual theme
 
-```{r}
+
+```r
 basic_plot +
   theme(
     panel.grid.major = element_line(color = "red"),
@@ -156,6 +181,8 @@ basic_plot +
     panel.background = element_rect(fill = "blue")
   )
 ```
+
+&lt;img src="intro-plot_files/figure-html/unnamed-chunk-11-1.png" width="432" /&gt;
 
 ---
 
@@ -185,7 +212,7 @@ class: inverse, middle, center
 
 ### ["Steal like an artist"](https://austinkleon.com/steal/)
 
-> Your job is to collect good ideas. The more good ideas you collect, the more you can choose from to be influenced by.
+&gt; Your job is to collect good ideas. The more good ideas you collect, the more you can choose from to be influenced by.
 
 .pull-left[
 * [FiveThirtyEight](https://fivethirtyeight.com/features/the-56-best-and-weirdest-charts-we-made-in-2019/)  
@@ -227,9 +254,7 @@ I love FiveThirtyEight's graphics and tables, as such we'll try to recreate some
 
 ### FiveThirtyEight
 
-```{r, echo=FALSE, out.width="75%"}
-knitr::include_graphics("https://fivethirtyeight.com/wp-content/uploads/2019/04/roeder-jeopary-folo-2.png")
-```
+&lt;img src="https://fivethirtyeight.com/wp-content/uploads/2019/04/roeder-jeopary-folo-2.png" width="75%" /&gt;
 
 ---
 
@@ -250,8 +275,9 @@ knitr::include_graphics("https://fivethirtyeight.com/wp-content/uploads/2019/04/
 
 ### Create your own theme
 
-```{r}
-theme_538 <- function(base_size = 12, base_family = "Chivo") {
+
+```r
+theme_538 &lt;- function(base_size = 12, base_family = "Chivo") {
   
   theme_grey(base_size = base_size, base_family = base_family) %+replace%
     theme(
@@ -285,17 +311,17 @@ theme_538 <- function(base_size = 12, base_family = "Chivo") {
 
 # A dataviz journey
 
-```{r, eval = FALSE}
-nfl_stand <- 2014:2020 %>% 
+
+```r
+nfl_stand &lt;- 2014:2020 %&gt;% 
   map_dfr(espnscrapeR::get_nfl_standings)
 ```
 
-```{r, echo = FALSE, message=FALSE}
-nfl_stand <- read_csv("nfl-stand.csv")
-```
 
-```{r}
-nfl_stand_plot <- nfl_stand %>% 
+
+
+```r
+nfl_stand_plot &lt;- nfl_stand %&gt;% 
   ggplot(aes(x = pts_diff, y = win_pct)) +
   geom_point() +
   geom_smooth(method = "lm")
@@ -303,43 +329,77 @@ nfl_stand_plot <- nfl_stand %>%
 nfl_stand_plot
 ```
 
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+&lt;img src="intro-plot_files/figure-html/unnamed-chunk-16-1.png" width="432" /&gt;
+
 
 ---
 
 ### Color by playoffs
 
-```{r}
-nfl_stand_prep <- nfl_stand %>% 
+
+```r
+nfl_stand_prep &lt;- nfl_stand %&gt;% 
   mutate(
     color = case_when(
-      season < 2020 & seed <= 6 ~ "blue",
-      season == 2020 & seed <= 7 ~ "blue",
+      season &lt; 2020 &amp; seed &lt;= 6 ~ "blue",
+      season == 2020 &amp; seed &lt;= 7 ~ "blue",
       TRUE ~  "red"
     )
   )
 ```
 
-```{r}
+
+```r
 nfl_stand_prep
+```
+
+```
+## # A tibble: 224 x 29
+##    conf  season team_id team_location team_name team_abb team_full  team_logo   
+##    &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;       
+##  1 AFC     2014      17 New England   Patriots  NE       New Engla… https://a.e…
+##  2 AFC     2014       7 Denver        Broncos   DEN      Denver Br… https://a.e…
+##  3 AFC     2014      23 Pittsburgh    Steelers  PIT      Pittsburg… https://a.e…
+##  4 AFC     2014      11 Indianapolis  Colts     IND      Indianapo… https://a.e…
+##  5 AFC     2014       4 Cincinnati    Bengals   CIN      Cincinnat… https://a.e…
+##  6 AFC     2014      33 Baltimore     Ravens    BAL      Baltimore… https://a.e…
+##  7 AFC     2014      12 Kansas City   Chiefs    KC       Kansas Ci… https://a.e…
+##  8 AFC     2014      34 Houston       Texans    HOU      Houston T… https://a.e…
+##  9 AFC     2014      24 San Diego     Chargers  SD       San Diego… https://a.e…
+## 10 AFC     2014       2 Buffalo       Bills     BUF      Buffalo B… https://a.e…
+## # … with 214 more rows, and 21 more variables: seed &lt;dbl&gt;, wins &lt;dbl&gt;,
+## #   losses &lt;dbl&gt;, win_pct &lt;dbl&gt;, g_behind &lt;dbl&gt;, ties &lt;dbl&gt;, pts_for &lt;dbl&gt;,
+## #   pts_against &lt;dbl&gt;, pts_diff &lt;dbl&gt;, streak &lt;dbl&gt;, div_ties &lt;dbl&gt;,
+## #   record &lt;chr&gt;, home_wins &lt;dbl&gt;, home_losses &lt;dbl&gt;, away_wins &lt;dbl&gt;,
+## #   away_losses &lt;dbl&gt;, conf_wins &lt;dbl&gt;, conf_losses &lt;dbl&gt;, div_wins &lt;dbl&gt;,
+## #   div_losses &lt;dbl&gt;, color &lt;chr&gt;
 ```
 
 ---
 
 ### Color by playoffs
 
-```{r}
-nfl_stand_prep %>% 
+
+```r
+nfl_stand_prep %&gt;% 
   ggplot(aes(x = pts_diff, y = win_pct)) +
   geom_vline(xintercept = 0, size = 0.75, color = "#737373") +
   geom_point(aes(color = I(color)))
 ```
 
+&lt;img src="intro-plot_files/figure-html/unnamed-chunk-19-1.png" width="432" /&gt;
+
 ---
 
 ### Add text
 
-```{r textPlot, eval = FALSE}
-nfl_stand_prep %>% 
+
+```r
+nfl_stand_prep %&gt;% 
   ggplot(aes(x = pts_diff, y = win_pct)) +
   geom_vline(xintercept = 0, size = 0.75, color = "#737373") +
   geom_point(
@@ -356,8 +416,7 @@ nfl_stand_prep %>%
 
 ### Add text
 
-```{r textPlot, eval = TRUE, echo=FALSE}
-```
+&lt;img src="intro-plot_files/figure-html/textPlot-1.png" width="432" /&gt;
 
 
 ---
@@ -366,21 +425,22 @@ nfl_stand_prep %>%
 
 First create a helper dataset, we'll use it for annotations later.
 
-```{r}
+
+```r
 library(ggtext)
 
 # create a tiny dataset
-playoff_label_scatter <- tibble(
+playoff_label_scatter &lt;- tibble(
   differential = c(25,-70), y = c(0.3, 0.8), 
-  label = c("Missed<br>Playoffs", "Made<br>Playoffs"),
+  label = c("Missed&lt;br&gt;Playoffs", "Made&lt;br&gt;Playoffs"),
   color = c("#D50A0A", "#013369")
 )
 
-nfl_stand_refine <- nfl_stand %>% 
+nfl_stand_refine &lt;- nfl_stand %&gt;% 
   mutate(
     color = case_when(
-      season < 2020 & seed <= 6 ~ "#013369",
-      season == 2020 & seed <= 7 ~ "#013369",
+      season &lt; 2020 &amp; seed &lt;= 6 ~ "#013369",
+      season == 2020 &amp; seed &lt;= 7 ~ "#013369",
       TRUE ~  "#D50A0A"
     )
   )
@@ -390,8 +450,9 @@ nfl_stand_refine <- nfl_stand %>%
 
 ### Refine labels
 
-```{r refineLabels, eval = FALSE}
-playoff_diff_plot <- nfl_stand_refine %>% 
+
+```r
+playoff_diff_plot &lt;- nfl_stand_refine %&gt;% 
   ggplot(aes(x = pts_diff, y = win_pct)) +
   geom_vline(xintercept = 0, size = 0.75, color = "#737373") +
   geom_hline(yintercept = 0, size = 0.75, color = "#737373") +
@@ -422,35 +483,34 @@ playoff_diff_plot <- nfl_stand_refine %>%
 
 playoff_diff_plot
 
-# plot_play <- playoff_diff_plot +
+# plot_play &lt;- playoff_diff_plot +
 #   ggthemes::theme_fivethirtyeight() 
 # ggsave(filename = "ex-plot.png", plot = plot_play, dpi = "retina", height = 6, width = 9.7)
-
 ```
 
 ---
 
 ### Refine labels
 
-```{r refineLabels, echo = FALSE, eval=TRUE, fig.dim = c(12, 8)}
-```
+&lt;img src="intro-plot_files/figure-html/refineLabels-1.png" width="864" /&gt;
 
 
 ---
 
 ### Same data, different story
 
-```{r}
+
+```r
 library(ggridges)
 
-stand_density <- nfl_stand %>% 
+stand_density &lt;- nfl_stand %&gt;% 
   mutate(
     color = case_when(
-      season < 2020 & seed <= 6 ~ "#013369",
-      season == 2020 & seed <= 7 ~ "#013369",
+      season &lt; 2020 &amp; seed &lt;= 6 ~ "#013369",
+      season == 2020 &amp; seed &lt;= 7 ~ "#013369",
       TRUE ~  "#D50A0A"
     )
-  ) %>% 
+  ) %&gt;% 
   ggplot(aes(x = pts_diff, y = factor(season), color = I(color), fill = I(color))) +
   geom_vline(xintercept = 0.5, size = 0.75, color = "#737373") +
   geom_density_ridges(alpha = 0.8, scale = 0.9) +
@@ -461,29 +521,20 @@ stand_density <- nfl_stand %>%
 
 ### Same data, different story
 
-```{r, echo = FALSE, out.height=500}
-knitr::include_graphics("images/dens-plot.png", dpi = NA)
-```
+&lt;img src="images/dens-plot.png" height="500" /&gt;
 
-```{r, echo = FALSE, eval = FALSE}
-ggsave(
-  "dens-plot2.png",
-  plot = last_plot(),
-  height = 11,
-  width = 8,
-  dpi = "retina"
-)
-```
+
 
 ---
 
 ### Same data, different story
 
-```{r sdds2, eval = FALSE}
+
+```r
 # create a small dataset for the custom annotations
-playoff_label_ridge <- tibble(
+playoff_label_ridge &lt;- tibble(
   y = c(7.55, 7.55), differential = c(-250,175),
-  label = c("Missed<br>Playoffs", "Made<br>Playoffs"),
+  label = c("Missed&lt;br&gt;Playoffs", "Made&lt;br&gt;Playoffs"),
   color = c("#D50A0A", "#013369")
 )
 
@@ -506,16 +557,13 @@ stand_density +
     subtitle = "Data through week 15 of the 2020 NFL Season",
     caption = "Plot: @thomas_mock | Data: ESPN"
     )
-
 ```
 
 ---
 
 ### Same data, different story
 
-```{r, echo = FALSE, out.height=500}
-knitr::include_graphics("images/dens-plot2.png", dpi = NA)
-```
+&lt;img src="images/dens-plot2.png" height="500" /&gt;
 
 
 
@@ -523,12 +571,13 @@ knitr::include_graphics("images/dens-plot2.png", dpi = NA)
 
 ### Same data, yet another story
 
-```{r standPlot, eval = FALSE}
-stand_df <- nfl_stand %>% 
+
+```r
+stand_df &lt;- nfl_stand %&gt;% 
   filter(season == 2020)
 
-stand_df %>% 
-  filter(seed <= 12 & season == 2020) %>% 
+stand_df %&gt;% 
+  filter(seed &lt;= 12 &amp; season == 2020) %&gt;% 
   ggplot(aes(x = tidytext::reorder_within(team_abb, seed, conf), y = pts_diff)) +
   geom_col() + 
   tidytext::scale_x_reordered() +
@@ -541,21 +590,21 @@ stand_df %>%
 
 ### Same data, yet another story
 
-```{r standPlot, eval = TRUE, echo=FALSE, fig.dim=c(12,8)}
-```
+&lt;img src="intro-plot_files/figure-html/standPlot-1.png" width="864" /&gt;
 
 
 ---
 
 ### More context
 
-```{r}
+
+```r
 # Small label dataset
-playoff_label <- tibble(
+playoff_label &lt;- tibble(
   seed = c(9, 2),
   pts_diff = c(30, 145),
   conf = c("AFC", "AFC"),
-  label = c("Outside<br>looking in", "Playoff<br>teams"),
+  label = c("Outside&lt;br&gt;looking in", "Playoff&lt;br&gt;teams"),
   color = c("#D50A0A", "#013369")
 )
 ```
@@ -564,12 +613,13 @@ playoff_label <- tibble(
 
 ### More context
 
-```{r moreContext, eval = FALSE}
-stand_df %>%
-  filter(seed <= 12) %>%
+
+```r
+stand_df %&gt;%
+  filter(seed &lt;= 12) %&gt;%
   ggplot(aes(x = as.factor(seed), y = pts_diff)) +
   geom_col(
-    aes(fill = if_else(seed <= 7, "#013369", "#D50A0A")),
+    aes(fill = if_else(seed &lt;= 7, "#013369", "#D50A0A")),
     width = 0.8
   ) +
   ggtext::geom_richtext(
@@ -602,8 +652,7 @@ stand_df %>%
 
 ### More context
 
-```{r moreContext, eval = TRUE, echo = FALSE,fig.dim=c(12,8)}
-```
+&lt;img src="intro-plot_files/figure-html/moreContext-1.png" width="864" /&gt;
 
 
 ---
@@ -623,32 +672,33 @@ class: inverse, center, middle
 
 ### Data for recreation
 
-```{r}
-raw_url <- "https://www.pro-football-reference.com/years/2020/opp.htm"
 
-raw_html <- read_html(raw_url)
+```r
+raw_url &lt;- "https://www.pro-football-reference.com/years/2020/opp.htm"
 
-raw_table <- raw_html %>% 
-  html_table(fill = TRUE) %>% 
-  .[[2]] %>% 
-  janitor::clean_names() %>% 
+raw_html &lt;- read_html(raw_url)
+
+raw_table &lt;- raw_html %&gt;% 
+  html_table(fill = TRUE) %&gt;% 
+  .[[2]] %&gt;% 
+  janitor::clean_names() %&gt;% 
   tibble()
 
-pressure_df <- raw_table %>% 
-  select(tm, blitz_pct = bltz_percent, press_pct = prss_percent) %>% 
+pressure_df &lt;- raw_table %&gt;% 
+  select(tm, blitz_pct = bltz_percent, press_pct = prss_percent) %&gt;% 
   mutate(across(c(blitz_pct, press_pct), parse_number))
 
-pass_def_raw <- raw_html %>% 
-  html_node("#all_passing") %>% 
-  html_nodes(xpath = "comment()") %>% 
-  html_text() %>% 
-  read_html() %>% 
-  html_node("table") %>% 
-  html_table() %>% 
-  janitor::clean_names() %>% 
+pass_def_raw &lt;- raw_html %&gt;% 
+  html_node("#all_passing") %&gt;% 
+  html_nodes(xpath = "comment()") %&gt;% 
+  html_text() %&gt;% 
+  read_html() %&gt;% 
+  html_node("table") %&gt;% 
+  html_table() %&gt;% 
+  janitor::clean_names() %&gt;% 
   tibble()
 
-pass_def_df <- pass_def_raw %>% 
+pass_def_df &lt;- pass_def_raw %&gt;% 
   select(tm, pass_att = att, int, pass_def = pd, sack = sk, ypa = y_a, anypa = any_a)
 ```
 
@@ -656,15 +706,29 @@ pass_def_df <- pass_def_raw %>%
 
 ### Peek at the data
 
-```{r}
 
-combo_pass <- left_join(
+```r
+combo_pass &lt;- left_join(
   pressure_df, pass_def_df,
   by = "tm"
 )
 
-combo_pass %>% 
+combo_pass %&gt;% 
   glimpse()
+```
+
+```
+## Rows: 32
+## Columns: 9
+## $ tm        &lt;chr&gt; "Atlanta Falcons", "Buffalo Bills", "Carolina Panthers", "Ch…
+## $ blitz_pct &lt;dbl&gt; 32.9, 35.8, 24.0, 21.4, 31.1, 21.3, 17.1, 39.4, 22.8, 27.9, …
+## $ press_pct &lt;dbl&gt; 23.6, 22.2, 22.4, 22.4, 19.0, 21.9, 23.3, 25.9, 22.8, 26.2, …
+## $ pass_att  &lt;dbl&gt; 625, 573, 585, 547, 541, 585, 562, 570, 513, 567, 557, 536, …
+## $ int       &lt;dbl&gt; 12, 15, 7, 10, 11, 11, 15, 11, 10, 10, 7, 11, 3, 12, 16, 18,…
+## $ pass_def  &lt;dbl&gt; 51, 76, 58, 71, 80, 74, 78, 57, 46, 64, 51, 74, 50, 60, 64, …
+## $ sack      &lt;dbl&gt; 29, 38, 29, 35, 17, 38, 40, 48, 31, 42, 24, 41, 34, 18, 32, …
+## $ ypa       &lt;dbl&gt; 7.9, 6.9, 6.9, 7.2, 7.3, 7.2, 7.3, 6.9, 7.4, 7.2, 8.5, 7.1, …
+## $ anypa     &lt;dbl&gt; 7.4, 5.7, 6.6, 6.6, 7.2, 6.6, 6.1, 5.9, 7.1, 6.2, 8.6, 6.1, …
 ```
 
 ---
@@ -673,8 +737,9 @@ combo_pass %>%
 
 A theme alone only gets you so far.
 
-```{r quickPlot1, eval = FALSE}
-combo_pass %>% 
+
+```r
+combo_pass %&gt;% 
   ggplot(aes(x = blitz_pct, y = press_pct)) +
   geom_point() +
   labs(
@@ -689,8 +754,7 @@ combo_pass %>%
 
 ### Quick plot
 
-```{r quickPlot1, eval = TRUE, echo=FALSE, fig.dim=c(9,7)}
-```
+&lt;img src="intro-plot_files/figure-html/quickPlot1-1.png" width="648" /&gt;
 
 
 ---
@@ -699,21 +763,22 @@ combo_pass %>%
 
 Prep the data, assign a color.
 
-```{r}
-colt_df <- combo_pass %>% 
+
+```r
+colt_df &lt;- combo_pass %&gt;% 
   mutate(
     color = if_else(tm == "Indianapolis Colts", "#359fda", "#91c390"),
     fill = colorspace::lighten(color, amount = 0.3)
-    ) %>% 
-  rowwise() %>% 
+    ) %&gt;% 
+  rowwise() %&gt;% 
   mutate(
     att_def = sum(int, pass_def, sack),
     cov_rate = att_def/pass_att*100
-    ) %>% 
-  ungroup() %>% 
+    ) %&gt;% 
+  ungroup() %&gt;% 
   arrange(desc(cov_rate))
 
-label_df_cov <- tibble(
+label_df_cov &lt;- tibble(
   label = c("Colts", "Everyone else"),
   color = c("#359fda", "#91c390"),
   fill = colorspace::lighten(color, amount = 0.3),
@@ -726,8 +791,9 @@ label_df_cov <- tibble(
 
 ### Color and Text
 
-```{r colorText1, eval = FALSE}
-colt_df %>%
+
+```r
+colt_df %&gt;%
   ggplot(aes(x = blitz_pct, y = cov_rate, color = color, fill = fill)) +
   geom_point(size = 5, pch = 21) +
   scale_color_identity(aesthetics = c("fill", "color")) +
@@ -750,16 +816,16 @@ colt_df %>%
 
 ### Color and Text
 
-```{r colorText1, eval = TRUE, echo=FALSE, fig.dim=c(9,7)}
-```
+&lt;img src="intro-plot_files/figure-html/colorText1-1.png" width="648" /&gt;
 
 
 ---
 
 ### Color and Text, Labeled
 
-```{r, colorLabeled, eval = FALSE}
-colt_df %>%
+
+```r
+colt_df %&gt;%
   ggplot(aes(x = blitz_pct, y = cov_rate, color = color, fill = fill)) +
   geom_point(size = 5, pch = 21) +
   scale_color_identity(aesthetics = c("fill", "color")) +
@@ -791,8 +857,7 @@ colt_df %>%
 
 ### Color and Text, Labeled
 
-```{r, colorLabeled, eval = TRUE, echo = FALSE, fig.dim=c(9,7)}
-```
+&lt;img src="intro-plot_files/figure-html/colorLabeled-1.png" width="648" /&gt;
 
 ---
 
@@ -836,3 +901,128 @@ colt_df %>%
 * [`ggplot2` reference](https://ggplot2.tidyverse.org/)  
 
 * [R Package Development](https://r-pkgs.org/)  
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"selfContained": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
