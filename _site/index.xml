@@ -7,7 +7,19 @@
     <description>Tom's musings on all things R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 01 Apr 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 28 Jul 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Reminder to test with a reprex</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2021-07-28-reminder-to-test-with-a-reprex</link>
+      <description>"It's basically the rubber duck in disguise" - Jenny Bryan.</description>
+      <category>meta</category>
+      <category>reprex</category>
+      <category>tidyverse</category>
+      <guid>https://themockup.blog/posts/2021-07-28-reminder-to-test-with-a-reprex</guid>
+      <pubDate>Wed, 28 Jul 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2021-07-28-reminder-to-test-with-a-reprex/preview.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Three years of TidyTuesday</title>
       <dc:creator>Thomas Mock</dc:creator>
