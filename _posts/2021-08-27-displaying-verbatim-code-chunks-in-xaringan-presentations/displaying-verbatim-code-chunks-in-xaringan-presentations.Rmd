@@ -1,0 +1,404 @@
+---
+title: "Displaying verbatim code chunks in RMarkdown and Xaringan presentations"
+description: |
+  Because the best way to teach RMarkdown is with RMarkdown.
+author:
+  - name: Thomas Mock
+    url: https://twitter.com/thomas_mock
+date: 08-27-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_depth: 4
+preview: preview.png
+twitter:
+  site: "@thomas_mock"
+  creator: "@thomas_mock"
+categories:
+  - meta
+  - xaringan
+  - rmarkdown
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+xaringanExtra::use_panelset()
+```
+
+This will be a short article, but I wanted to note it for my own future use and hopefully a discoverable resource if folks get stuck trying to do the same thing!
+
+I recently gave a presentation on Advanced RMarkdown use, and part of what I was displaying in my RMarkdown generated `{xaringan}` slides was literal RMarkdown code chunks. These verbatim code chunks are very useful and in some cases *necessary* to accurately convey a teaching example.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/WkF7nqEYF1E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+Notably, while these verbatim code chunks are extremely useful some difficulty can arise as you're essentially nesting R and RMarkdown code/logic _inside_ a RMarkdown document. In order to "tell" RMarkdown to ignore the code and simply print it out verbatim you need to use a few different techniques.
+
+You can create "verbatim" code chunks in RMarkdown. The [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html) covers both inline and code chunk verbatim.
+
+## Verbatim Code Chunks
+
+To create verbatim code chunks you'll need to wrap the three backticks of the code chunk with _four_ backticks on either side. You _also_ need to invalidate the code chunk by adding a blank `r knitr::inline_expr(" ''")` to the _end_ of the existing code chunk (ie immediately after the `{r}`.
+
+So for example I can wrap my code in 5x backticks to create the below:
+
+`````
+
+````
+```{r}`r ''`
+library(dplyr)
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg))
+```
+
+````
+
+`````
+
+That rendered inside RMarkdown outputs:
+
+````
+```{r}`r ''`
+library(dplyr)
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg))
+```
+
+````
+
+However you may notice that there's no grey `code` background for the code chunk. To format it, we can also add the code type to the end of the 4x backticks for formatting purposes. I have a panelset of each of the code types appended to the 4x backticks below. If you want to maintain code-syntax highlighting I'd recommend using `c` but if you just want a grey-background code chunk you can use `r`.
+
+A note here is that my blog is written in `{distill}`, so what you see here is not identical to `{xaringan}` which is built on `remark.js`. As such, I've included the `{distill}` output below, and after that another embedded version of a minimal `{xaringan}` presentation.
+
+### `{distill}` output
+
+<!-- begin panelset -->
+
+::: {.l-body}
+::: {.panelset}
+
+::: {.panel}
+### Blank {.panel-name}
+
+Add nothing to end of 4x backticks
+
+`````
+
+````
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+
+````
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+:::
+
+<!-- end panel1 -->
+
+::: {.panel}
+### `r` {.panel-name}
+
+Add the letter `r` to end of 4x backticks
+
+`````
+
+````r
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````r
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+:::
+
+<!-- end panel2 -->
+
+::: {.panel}
+### `fortan` {.panel-name}
+
+Add `fortran` to the end of the 4x backticks
+
+`````
+
+````fortran
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+
+````fortran
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+:::
+
+<!-- end panel3 -->
+
+::: {.panel}
+### `markdown` {.panel-name}
+
+Add `markdown` or `md` to the end of the 4x backticks
+
+`````
+
+````markdown
+````
+
+`````
+
+Which returns code formatted like the below:
+
+````markdown
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+:::
+
+<!-- end panel4 -->
+
+::: {.panel}
+### `c` {.panel-name}
+
+Add the letter `c` to the end of the 4x backticks
+
+`````
+
+````c
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````c
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+:::
+
+<!-- end panel5 -->
+
+::: {.panel}
+### `haskell` {.panel-name}
+
+Add `haskell` to the end of the 4x backticks
+
+`````
+
+````haskell
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````haskell
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+:::
+
+<!-- end panel6 -->
+
+::: {.panel}
+### `python` {.panel-name}
+
+Add `python` to the end of the 4x backticks
+
+`````
+
+````python
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````python
+```{python}`r ''`
+# load library and data
+import pandas as pd
+import statsmodels.api as sm
+
+mtcars = sm.datasets.get_rdataset("mtcars", "datasets", cache=True).data
+
+# Execute code
+(mtcars
+  .groupby(['cyl'])
+  .agg(['count', 'mean']))
+```
+
+````
+
+:::
+
+<!-- end panel7 -->
+
+:::
+:::
+
+<!-- end panelset -->
+
+
+### Xaringan output
+
+```{r, echo = FALSE}
+knitr::include_url("https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/xaringan-ex.html")
+```
+
+
+---
+
+## Add more complexity
+
+Now you can also embed essentially entire RMarkdown documents, including inline code. For inline code such as `'r 1 + 1'`, you'll need to use one more technique - also outlined in the [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html#show-a-verbatim-inline-expression).
+
+For `r knitr::inline_expr('1+1')` you'll need to also use `knitr::inline_expr('1+1')` which will convert  it to the expected output of `r knitr::inline_expr('1+1')`.
+
+A meta example from the RMarkdown Cookbook:
+
+```md
+This will show a verbatim inline R expression
+`r knitr::inline_expr('knitr::inline_expr("1+1")')` `` in the output.
+```
+
+We can use a full example below.
+
+### Penguin Example
+
+
+Here's YAML + code chunks + inline R expression, all in one code block!
+
+
+````c
+---
+title: "Penguins"
+date: 2020-08-11
+output: html_document
+params:
+  species: Adelie
+---
+```{r setup, include = FALSE}`r ''`
+library(tidyverse)
+library(palmerpenguins)
+smaller <- penguins %>% 
+  filter(species == params$species, 
+         !is.na(body_mass_g))
+```
+We have data about `r knitr::inline_expr("nrow(penguins)")`  penguins.  Only 
+`r knitr::inline_expr("nrow(penguins) - nrow(smaller)")` are classified as
+`r knitr::inline_expr("params$species")`. The distribution of the 
+`r knitr::inline_expr("params$species")` penguins are shown below:
+
+```{r, echo = FALSE}`r ''`
+smaller %>% 
+  ggplot(aes(body_mass_g)) + 
+  geom_histogram(binwidth = 100)
+```
+````
+
+### Generate inline code
+
+To generate the verbatim inline code we actually used:
+
+```md
+We have data about `r knitr::inline_expr('knitr::inline_expr("nrow(penguins)")')` penguins.  Only 
+`r knitr::inline_expr('knitr::inline_expr("nrow(penguins) - nrow(smaller)")')` are classified as
+`r knitr::inline_expr('knitr::inline_expr("params$species")')`. The distribution of the 
+`r knitr::inline_expr('knitr::inline_expr("params$species")')` penguins are shown below:
+```
+
+Which generated the code below:
+
+````c
+
+We have data about `r knitr::inline_expr("nrow(penguins)")`  penguins.  Only 
+`r knitr::inline_expr("nrow(penguins) - nrow(smaller)")` are classified as
+`r knitr::inline_expr("params$species")`. The distribution of the 
+`r knitr::inline_expr("params$species")` penguins are shown below:
+
+````
+
+Make sure to keep track of your back ticks as the code can stop looking like _"real"_ code after staring at for a while.

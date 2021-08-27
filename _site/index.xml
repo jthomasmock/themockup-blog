@@ -7,7 +7,19 @@
     <description>Tom's musings on all things R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 28 Jul 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Aug 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Displaying verbatim code chunks in RMarkdown and Xaringan presentations</title>
+      <dc:creator>Thomas Mock</dc:creator>
+      <link>https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations</link>
+      <description>Because the best way to teach RMarkdown is with RMarkdown.</description>
+      <category>meta</category>
+      <category>xaringan</category>
+      <category>rmarkdown</category>
+      <guid>https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations</guid>
+      <pubDate>Fri, 27 Aug 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/preview.png" medium="image" type="image/png" width="1408" height="1019"/>
+    </item>
     <item>
       <title>Reminder to test with a reprex</title>
       <dc:creator>Thomas Mock</dc:creator>

@@ -1,0 +1,247 @@
+---
+output:
+  xaringan::moon_reader:
+    nature:
+      self_contained: true
+      highlightStyle: github
+      highlightLines: true
+---
+
+```{r,eval = TRUE, echo = FALSE}
+xaringanExtra::use_panelset()
+```
+
+
+<!-- begin panelset -->
+
+.panelset[
+.panel[.panel-name[Blank]
+
+Add nothing to end of 4x backticks
+
+`````
+
+````
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+
+````
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+]
+
+<!-- end panel1 -->
+
+.panel[.panel-name[`r`]
+
+Add the letter `r` to end of 4x backticks
+
+`````
+
+````r
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````r
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+]
+
+<!-- end panel2 -->
+
+.panel[.panel-name[`fortran`]
+
+Add `fortran` to the end of the 4x backticks
+
+`````
+
+````fortran
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+
+````fortran
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+]
+
+<!-- end panel3 -->
+
+.panel[.panel-name[`markdown`]
+
+Add `markdown` or `md` to the end of the 4x backticks
+
+`````
+
+````markdown
+````
+
+`````
+
+Which returns code formatted like the below:
+
+````markdown
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+]
+
+<!-- end panel4 -->
+
+.panel[.panel-name[`c`]
+
+Add the letter `c` to the end of the 4x backticks
+
+`````
+
+````c
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````c
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+]
+
+<!-- end panel5 -->
+
+.panel[.panel-name[`haskell`]
+
+Add `haskell` to the end of the 4x backticks
+
+`````
+
+````haskell
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````haskell
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+]
+
+<!-- end panel6 -->
+
+.panel[.panel-name[`python`]
+
+Add `python` to the end of the 4x backticks
+
+`````
+
+````python
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````python
+```{python}`r ''`
+# load library and data
+import pandas as pd
+import statsmodels.api as sm
+
+mtcars = sm.datasets.get_rdataset("mtcars", "datasets", cache=True).data
+
+# Execute code
+(mtcars
+  .groupby(['cyl'])
+  .agg(['count', 'mean']))
+```
+
+````
+
+]
+
+<!-- end panel7 -->
+
+]
+
+<!-- end panelset -->
