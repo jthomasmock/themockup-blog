@@ -37,11 +37,17 @@ I recently gave a presentation on Advanced RMarkdown use, and part of what I was
 
 Notably, while these verbatim code chunks are extremely useful some difficulty can arise as you're essentially nesting R and RMarkdown code/logic _inside_ a RMarkdown document. In order to "tell" RMarkdown to ignore the code and simply print it out verbatim you need to use a few different techniques.
 
-You can create "verbatim" code chunks in RMarkdown. The [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html) covers both inline and code chunk verbatim.
+More details can be found in the [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html).
 
 ## Verbatim Code Chunks
 
-To create verbatim code chunks you'll need to wrap the three backticks of the code chunk with _four_ backticks on either side. You _also_ need to invalidate the code chunk by adding a blank `r knitr::inline_expr(" ''")` to the _end_ of the existing code chunk (ie immediately after the `{r}` like `{r}1`r''`).
+The primary problem here is we need to "tell" RMarkdown not to parse the RMarkdown code chunk as _real_ code. So we need to account for the 3x backticks that make up an R code chunk as seen below.
+
+```{r, echo = FALSE}
+cat("```{r, echo = TRUE}
+...code_goes_here...
+```")
+```
 
 ### `cat()` to the rescue
 
@@ -66,21 +72,27 @@ cat(output_code)
 
 To return unevaluated verbatim code chunks code you need N + 1 of the max backticks, so for RMarkdown chunks that have 3x backticks, you need to wrap it in 4x backticks on either side of the code.
 
-As a code example I can wrap my code in 5x backticks to create the below which displays 4x backticks around the 3x backticks:
+You _also_ need to invalidate the code chunk by adding a blank `r knitr::inline_expr("''")` to the _end_ of the existing code chunk (ie immediately after the `{r}` like so:
 
-`````
+```{r, echo = FALSE}
+cat("```{r}`r''`
+...code_goes_here...
+```")
+```
 
-````
+As a code example I can wrap my code in 4x backticks around the 3x backticks, also note the invalidated `r` expression after the `{r}`.
+
+```{r, echo = FALSE}
+
+code_out <- "````
 ```{r}`r ''`
 library(dplyr)
 mtcars %>% 
   group_by(cyl) %>% 
   summarize(n = n(), mean = mean(mpg))
+```\n````"
+cat(code_out)
 ```
-
-````
-
-`````
 
 That rendered inside RMarkdown outputs:
 
@@ -362,12 +374,13 @@ To display inline code like `r knitr::inline_expr('1+1')` you'll need to use `kn
 
 A meta example from the RMarkdown Cookbook:
 
-```md
-This will show a verbatim inline R expression
-`r knitr::inline_expr('knitr::inline_expr("1+1")')` `` in the output.
+```{r}
+code = 'This will show a verbatim inline R expression `r knitr::inline_expr(\'knitr::inline_expr("1+1")\')` in the output.'
+
+cat(code)
 ```
 
-Which outputs:
+Which if used as code outputs:
 
 ```md
 This will show a verbatim inline R expression
