@@ -31,7 +31,7 @@ This will be a short article, but I wanted to note it for my own future use and 
 
 I recently gave a presentation on Advanced RMarkdown use, and part of what I was displaying in my RMarkdown generated `{xaringan}` slides was literal RMarkdown code chunks. These verbatim code chunks are very useful and in some cases *necessary* to accurately convey a teaching example.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/WkF7nqEYF1E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="400" src="https://www.youtube.com/embed/WkF7nqEYF1E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 
@@ -41,9 +41,32 @@ You can create "verbatim" code chunks in RMarkdown. The [RMarkdown Cookbook](htt
 
 ## Verbatim Code Chunks
 
-To create verbatim code chunks you'll need to wrap the three backticks of the code chunk with _four_ backticks on either side. You _also_ need to invalidate the code chunk by adding a blank `r knitr::inline_expr(" ''")` to the _end_ of the existing code chunk (ie immediately after the `{r}`.
+To create verbatim code chunks you'll need to wrap the three backticks of the code chunk with _four_ backticks on either side. You _also_ need to invalidate the code chunk by adding a blank `r knitr::inline_expr(" ''")` to the _end_ of the existing code chunk (ie immediately after the `{r}` like `{r}1`r''`).
 
-So for example I can wrap my code in 5x backticks to create the below:
+### `cat()` to the rescue
+
+You can use `cat()` to output specific code chunks verbatim as raw text. This can be very fast, but requires you to write code by hand in text.
+
+```{r echo = TRUE, comment = NA}
+
+output_code <-
+"````
+```{r, eval=TRUE}`r ''`
+library(dplyr)
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg))
+```\n````"
+
+cat(output_code)
+```
+
+
+### We need more backticks captain!
+
+To return unevaluated verbatim code chunks code you need N + 1 of the max backticks, so for RMarkdown chunks that have 3x backticks, you need to wrap it in 4x backticks on either side of the code.
+
+As a code example I can wrap my code in 5x backticks to create the below which displays 4x backticks around the 3x backticks:
 
 `````
 
@@ -71,9 +94,9 @@ mtcars %>%
 
 ````
 
-However you may notice that there's no grey `code` background for the code chunk. To format it, we can also add the code type to the end of the 4x backticks for formatting purposes. I have a panelset of each of the code types appended to the 4x backticks below. If you want to maintain code-syntax highlighting I'd recommend using `c` but if you just want a grey-background code chunk you can use `r`.
+However you may notice that there's no grey `code` background for the code chunk. To format it, we can also add the code type to the end of the 4x backticks for formatting purposes. I have a panelset of some of the various code types appended to the 4x backticks below. This affects some highlighting of specific functions/strings/etc in the code as well.
 
-A note here is that my blog is written in `{distill}`, so what you see here is not identical to `{xaringan}` which is built on `remark.js`. As such, I've included the `{distill}` output below, and after that another embedded version of a minimal `{xaringan}` presentation.
+A note here is that my blog is written in `{distill}`, so what you see here is not identical to `{xaringan}` which is built on `remark.js`. As such, I've included the `{distill}` output below, and after that another embedded version of a minimal `{xaringan}` presentation. In `{xaringan}` there is also the `highlightStyle` argument in the YAML which allows for a lot of customization of the code chunk/code/comments colors. The various options for this argument are at the bottom of the [`remark.js` wiki](https://github.com/gnab/remark/wiki/Configuration).
 
 ### `{distill}` output
 
@@ -335,7 +358,7 @@ knitr::include_url("https://themockup.blog/posts/2021-08-27-displaying-verbatim-
 
 Now you can also embed essentially entire RMarkdown documents, including inline code. For inline code such as `'r 1 + 1'`, you'll need to use one more technique - also outlined in the [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html#show-a-verbatim-inline-expression).
 
-For `r knitr::inline_expr('1+1')` you'll need to also use `knitr::inline_expr('1+1')` which will convert  it to the expected output of `r knitr::inline_expr('1+1')`.
+To display inline code like `r knitr::inline_expr('1+1')` you'll need to use `knitr::inline_expr('1+1')` which will convert the raw expression to the expected inline output of `r knitr::inline_expr('1+1')` before it's evaluated by RMarkdown.
 
 A meta example from the RMarkdown Cookbook:
 
@@ -344,40 +367,14 @@ This will show a verbatim inline R expression
 `r knitr::inline_expr('knitr::inline_expr("1+1")')` `` in the output.
 ```
 
+Which outputs:
+
+```md
+This will show a verbatim inline R expression
+`r knitr::inline_expr('knitr::inline_expr("1+1")')` in the output.
+```
+
 We can use a full example below.
-
-### Penguin Example
-
-
-Here's YAML + code chunks + inline R expression, all in one code block!
-
-
-````c
----
-title: "Penguins"
-date: 2020-08-11
-output: html_document
-params:
-  species: Adelie
----
-```{r setup, include = FALSE}`r ''`
-library(tidyverse)
-library(palmerpenguins)
-smaller <- penguins %>% 
-  filter(species == params$species, 
-         !is.na(body_mass_g))
-```
-We have data about `r knitr::inline_expr("nrow(penguins)")`  penguins.  Only 
-`r knitr::inline_expr("nrow(penguins) - nrow(smaller)")` are classified as
-`r knitr::inline_expr("params$species")`. The distribution of the 
-`r knitr::inline_expr("params$species")` penguins are shown below:
-
-```{r, echo = FALSE}`r ''`
-smaller %>% 
-  ggplot(aes(body_mass_g)) + 
-  geom_histogram(binwidth = 100)
-```
-````
 
 ### Generate inline code
 
@@ -392,7 +389,7 @@ We have data about `r knitr::inline_expr('knitr::inline_expr("nrow(penguins)")')
 
 Which generated the code below:
 
-````c
+````md
 
 We have data about `r knitr::inline_expr("nrow(penguins)")`  penguins.  Only 
 `r knitr::inline_expr("nrow(penguins) - nrow(smaller)")` are classified as
@@ -401,4 +398,49 @@ We have data about `r knitr::inline_expr("nrow(penguins)")`  penguins.  Only
 
 ````
 
-Make sure to keep track of your back ticks as the code can stop looking like _"real"_ code after staring at for a while.
+### All together now
+
+Here's YAML + code chunks + inline R expression, all in one code block!
+
+
+````md
+---
+title: "Penguins"
+date: 2020-08-11
+output: html_document
+params:
+  species: Adelie
+---
+```{r setup, include = FALSE}`r ''`
+library(tidyverse)
+library(palmerpenguins)
+smaller <- penguins %>% 
+  filter(species == params$species, 
+         !is.na(body_mass_g))
+```
+We have data about `r knitr::inline_expr("nrow(penguins)")` penguins.  Only 
+`r knitr::inline_expr("nrow(penguins) - nrow(smaller)")` are classified as
+`r knitr::inline_expr("params$species")`. The distribution of the 
+`r knitr::inline_expr("params$species")` penguins are shown below:
+
+```{r, echo = FALSE}`r ''`
+smaller %>% 
+  ggplot(aes(body_mass_g)) + 
+  geom_histogram(binwidth = 100)
+```
+````
+
+<aside>
+
+Make sure to keep track of your back ticks as the code can stop looking like _"real"_ code after staring at for a while. I highly recommend checking yourself as you go, because if you miss a backtick it can be quite tricky to "find the needle in the haystack"...
+
+</aside>
+
+Just for fun, I've included a [link to the source code](https://gist.github.com/jthomasmock/771853602d5b15662a36eca237e2113d) for the above embedded RMarkdown so you can explore it.
+
+I also highly recommend exploring the [source code of the RMarkdown Cookbook](https://github.com/yihui/rmarkdown-cookbook/blob/master/05-formatting.Rmd) to figure out how they did all of their inline embedding.
+
+```{r, echo = FALSE, layout = "l-page"}
+knitr::include_url("https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html#", height = "800px")
+```
+
