@@ -127,15 +127,15 @@ tibble(
   Example = glue::glue("https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/few{c(1:5)}.png")
   ) %>% 
     gt() %>% 
-  fmt_markdown(vars(Relationship)) %>% 
+  fmt_markdown(c(Relationship)) %>% 
   cols_width(
-    vars(`Primary Function`) ~ px(150),
+    c(`Primary Function`) ~ px(150),
     2 ~ px(150),
-    vars(Relationship) ~ 300,
+    c(Relationship) ~ 300,
     4 ~ 300
   ) %>% 
   text_transform(
-    locations = cells_body(vars(Example)),
+    locations = cells_body(c(Example)),
     fn = function(x){
       web_image(
         url = x,
@@ -302,7 +302,7 @@ yield_data_wide %>%
   summary_rows( #<<
     groups = TRUE, #<<
     # reference cols by name
-    columns = vars(`2014`, `2015`, `2016`), 
+    columns = c(`2014`, `2015`, `2016`), 
     fns = list(
       # add summary stats
       avg = ~mean(.),  #<<
@@ -327,7 +327,7 @@ knitr::include_graphics("tables/group-sum.png")
 
 ### Add spanners
 
-Table spanners can be added quickly with `tab_spanner()` and again use either position (column number) or + `vars(name)`.
+Table spanners can be added quickly with `tab_spanner()` and again use either position (column number) or with `tidyeval` by name.
 
 .pull-left[
 ```{r, eval = FALSE}
@@ -563,7 +563,7 @@ yield_data_wide %>%
         )
       ),
     locations = cells_body(
-      columns = vars(crop)
+      columns = crop
       )
   ) %>% 
   tab_style(
@@ -612,7 +612,7 @@ yield_data_wide %>%
     rowname_col = "Country"
   ) %>% 
   data_color(
-    columns = vars(`2014`, `2015`, `2016`),
+    columns = c(`2014`, `2015`, `2016`),
     colors = my_pal
       )
 ```
@@ -677,7 +677,7 @@ knitr::include_graphics("tables/hot-potato.png")
 ```{r rule1-poor}
 potato_tb <- potato_data %>% 
   gt() %>% 
-  cols_hide(vars(crop)) %>% 
+  cols_hide(c(crop)) %>% 
   opt_table_lines(extent = "none") %>% 
   fmt_number(
     columns = 3:6,
@@ -834,10 +834,10 @@ rule2_tab2 <- rule2_data %>%
     ),
     locations = list(
       cells_body(
-        columns = vars(avg_07_11, avg_12_16)
+        columns = c(avg_07_11, avg_12_16)
         ),
       cells_column_labels(
-        columns = vars(avg_07_11, avg_12_16)
+        columns = c(avg_07_11, avg_12_16)
       )
       )
   ) %>%
@@ -986,7 +986,7 @@ rule3_data_addendum %>%
   gt() %>% 
   gt::cols_align(
     align = "center",
-    columns = vars(`Top Crop`, Crop)
+    columns = c(`Top Crop`, Crop)
   )
 ```
 ]
@@ -1011,7 +1011,7 @@ rule3_data_addendum %>%
   gt() %>% 
   gt::cols_align(
     align = "center",
-    columns = vars(`Top Crop`)
+    columns = c(`Top Crop`)
   )
 ```
 
@@ -1051,10 +1051,10 @@ tab_font_fct <- function(data, font, column){
     ),
     locations = list(
       cells_column_labels(
-        vars({{column}})
+        c({{column}})
         ),
       cells_body(
-        vars({{column}})
+        c({{column}})
       )
   )
   )
@@ -1189,11 +1189,11 @@ rule5_tab <- yield_data %>%
   mutate(few = yield, right = yield) %>% 
   gt() %>% 
   fmt_number(
-    columns = vars(few),
+    columns = c(few),
     decimals = 0
   ) %>% 
   fmt_number(
-    columns = vars(right),
+    columns = c(right),
     decimals = 1
   ) %>% 
   cols_label(
@@ -1274,7 +1274,7 @@ rule6_tb <- rule6_data %>%
       rows = Country == "Average"
     )
   ) %>% 
-  cols_width(vars(Country) ~ px(125),
+  cols_width(c(Country) ~ px(125),
              2:4 ~ px(75)) %>% 
   basic_theme()
 ```
@@ -1283,7 +1283,7 @@ rule6_tb <- rule6_data %>%
 .panel[.panel-name[Code H]
 ```{r, eval = FALSE}
 rule6_tb %>% 
-  cols_width(vars(Country) ~ px(125),
+  cols_width(c(Country) ~ px(125),
              2:4 ~ px(55)) %>% 
   tab_options(data_row.padding = px(10),
               table_body.hlines.color = "lightgrey") 
@@ -1300,29 +1300,27 @@ rule6_tb %>%
 .panel[.panel-name[Remove]
 ```{r unit-repeat, eval = FALSE}
 rule6_tb %>% 
-  fmt_percent(
-    columns = 2:4,
-    scale_values = FALSE
-  ) 
+  fmt_currency(
+    columns = 2:4
+  )
 ```
 
 ```{r, echo = FALSE, out.width="45%"}
-knitr::include_graphics("tables/tab6-pct.png")
+knitr::include_graphics("tables/tab6-dollar.png")
 ```
 ]
 
 .panel[.panel-name[Left]
 ```{r,eval = FALSE}
 rule6_tb %>% 
-  fmt_percent(
+  fmt_currency(
     columns = 2:4,
-    rows = 1,
-    scale_values = FALSE,
-    placement = "left"
+    rows = 1
   )
 ```
+
 ```{r, echo = FALSE, out.width = "45%"}
-knitr::include_graphics("tables/tab6-left.png")
+knitr::include_graphics("tables/tab6-dollar-1.png")
 ```
 
 
@@ -1332,16 +1330,16 @@ knitr::include_graphics("tables/tab6-left.png")
 ```{r add-percent-sign, eval = FALSE}
 rule6_tb %>% 
   cols_label(
-    `2014` = "2014 (%)",
-    `2015` = "2015 (%)",
-    `2016` = "2016 (%)"
+    `2014` = "2014 ($)",
+    `2015` = "2015 ($)",
+    `2016` = "2016 ($)"
   ) %>% 
   cols_width(
     2:4 ~ px(100)
   )
 ```
 ```{r, echo = FALSE, out.width = "45%"}
-knitr::include_graphics("tables/tab6-label.png")
+knitr::include_graphics("tables/tab6-label-dollar.png")
 ```
 
 ]
@@ -1350,12 +1348,12 @@ knitr::include_graphics("tables/tab6-label.png")
 ```{r, eval = FALSE}
 rule6_tb %>% 
   tab_spanner(
-    label = md("**% Yield of Total**"),
+    label = md("**Value of Yield ($)**"),
     columns = 2:4
-  )
+  ) 
 ```
 ```{r, echo = FALSE, out.width="45%"}
-knitr::include_graphics("tables/tab6-spanner.png")
+knitr::include_graphics("tables/tab6-dollar-yield.png")
 ```
 
 ]
@@ -1364,12 +1362,12 @@ knitr::include_graphics("tables/tab6-spanner.png")
 ```{r, eval = FALSE}
 rule6_tb %>% 
   tab_footnote(
-    footnote = md("**% Yield of Total**"),
+    footnote = md("**Value of Yield ($)**"),
     locations = cells_column_labels(2:4)
   )
 ```
 ```{r, echo = FALSE, out.width = "45%"}
-knitr::include_graphics("tables/tab6-footnote.png")
+knitr::include_graphics("tables/tab6-dollar-yield-ft.png")
 ```
 
 ]
@@ -1422,7 +1420,7 @@ rule8_tb <- rule8_data %>%
     locations = cells_column_labels(everything())
   ) %>% 
   basic_theme() %>% 
-  cols_width(vars(Country) ~ px(125),
+  cols_width(c(Country) ~ px(125),
              2:last_col() ~ px(75))
 ```
 ]
@@ -1546,15 +1544,15 @@ rule9_data <- yield_data %>%
 rule9_bad <- rule9_data %>% 
   gt() %>% 
   fmt_number(
-    columns = vars(`2015`, `2016`, pct_change)
+    columns = c(`2015`, `2016`, pct_change)
   ) %>% 
   tab_spanner(
-    columns = vars(`2015`, `2016`),
+    columns = c(`2015`, `2016`),
     label = md("**Yield in<br>Tonnes/Hectare**")
     ) %>%  
   cols_width(
-    vars(crop) ~ px(125),
-    vars(`2015`, `2016`, pct_change) ~ 100
+    c(crop) ~ px(125),
+    c(`2015`, `2016`, pct_change) ~ 100
   ) 
 ```
 
@@ -1589,7 +1587,7 @@ rule9_grp <- rule9_data %>%
     pct_change = md("Percent<br>Change")
   ) %>% 
   fmt_number(
-    columns = vars(`2015`, `2016`, pct_change)
+    columns = c(`2015`, `2016`, pct_change)
   ) %>% 
   tab_style(
     style = cell_text(color = "black", weight = "bold"),
@@ -1599,12 +1597,12 @@ rule9_grp <- rule9_data %>%
     )
   ) %>% 
   tab_spanner(
-    columns = vars(`2015`, `2016`),
+    columns = c(`2015`, `2016`),
     label = md("**Yield in Tonnes/Hectare**")
     ) %>%  
   cols_width(
-    vars(crop) ~ px(125),
-    vars(`2015`, `2016`, pct_change) ~ 100
+    c(crop) ~ px(125),
+    c(`2015`, `2016`, pct_change) ~ 100
   ) %>% 
   basic_theme()
 ```
@@ -1639,14 +1637,14 @@ rule9_dup <- rule9_data %>%
     crop = "Crop",
     pct_change = md("Percent<br>Change")
   ) %>% 
-  tab_spanner(columns = vars(`2015`, `2016`),
+  tab_spanner(columns = c(`2015`, `2016`),
               label = md("**Yield in Tonnes/Hectare**")) %>% 
   fmt_number(
-    columns = vars(`2015`, `2016`, pct_change)
+    columns = c(`2015`, `2016`, pct_change)
   ) %>% 
   text_transform(
     locations = cells_body(
-      columns = vars(Country),
+      columns = c(Country),
       rows = crop != "Potatoes"
     ),
     fn = function(x){
@@ -1661,8 +1659,8 @@ rule9_dup <- rule9_data %>%
     )
   ) %>% 
   cols_width(
-    vars(Country, crop) ~ px(125),
-    vars(`2015`, `2016`, pct_change) ~ 100
+    c(Country, crop) ~ px(125),
+    c(`2015`, `2016`, pct_change) ~ 100
   ) %>% 
   basic_theme()
 ```
@@ -1858,8 +1856,8 @@ bar_yields <- yield_data %>%
 rule10_bar <- bar_yields %>% 
   gt() %>% 
   cols_width(
-    vars(bar_chart) ~ px(110),
-    vars(mean, `2013`, `2017`) ~ px(90)
+    c(bar_chart) ~ px(110),
+    c(mean, `2013`, `2017`) ~ px(90)
     ) %>% 
   cols_label(
     mean = md("Average<br>2013-17"),
@@ -1871,7 +1869,7 @@ rule10_bar <- bar_yields %>%
   ) %>% 
   cols_align(
     align = "left",
-    columns = vars(bar_chart)
+    columns = c(bar_chart)
   ) %>% 
   fmt_number(2:4) %>% 
   tab_style(
@@ -2010,7 +2008,7 @@ rule10_pct <- rule10_wide %>%
       cell_text(color = "red")
     ),
     locations = cells_body(
-      columns = vars(pct_change),
+      columns = c(pct_change),
       rows = pct_change <= 0
     )
   ) %>% 
@@ -2019,7 +2017,7 @@ rule10_pct <- rule10_wide %>%
       cell_text(color = "blue")
     ),
     locations = cells_body(
-      columns = vars(pct_change),
+      columns = c(pct_change),
       rows = pct_change > 0
     )
   ) %>% 

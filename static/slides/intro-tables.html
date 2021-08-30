@@ -4,7 +4,7 @@
     <title>Beautiful Tables in R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Tom Mock" />
-    <meta name="date" content="2020-10-27" />
+    <meta name="date" content="2021-08-30" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
@@ -18,12 +18,9 @@ class: center, middle, inverse, title-slide
 # <span style="color:#fcab27">Beautiful Tables in R</span>
 ## <span style="color:#3686d3">gt and the grammar of tables</span> <br>
 ### <a href = 'https://twitter.com/thomas_mock'><span style="color:#ff2b4f">Tom Mock</span></a>
-### 2020-10-27
+### 2021-08-30
 
 ---
-
-
-
 
 
 
@@ -31,84 +28,11 @@ class: center, middle, inverse, title-slide
 
 layout: true
 
-&lt;div class="my-footer"&gt;&lt;span&gt;themockup.blog/static/slides/intro-tables.html&lt;/span&gt;&lt;/div&gt;
-
----
-class:inverse, center
-
-# Why do we care about tables?
-
----
-class:inverse, center
-
-### *Why do we care about tables?*
-
-# Why do we care about graphs?  
-
----
-class:inverse, center
-
-### *Why do we care about tables?*  
-
-### *Why do we care about graphs?*  
-
-# *Both* Graphs AND Tables *are* tools for communication
-
-
----
-class:inverse, center
-
-### *Why do we care about tables?*
-
-### *Why do we care about graphs?*
-
-### *Both Graphs and tables are tools for communication*
-
-# Better Graphs/Tables *are* better communication
+&lt;div class="my-footer"&gt;&lt;span&gt;cmsac-tidymodels.netlify.app/&lt;/span&gt;&lt;/div&gt;
 
 ---
 
-### A **grammar** of graphics
-
-* `ggplot2` is an application of the **grammar of graphics** for R  
-
---
-
-* A default dataset and set of mappings from variables to aesthetics  
-* One or more layers of geometric objects    
-* One scale for each aesthetic mapping used  
-* A coordinate system  
-* The facet specification  
-
----
-
-### A **grammar** of graphics
-
---
-
-Images from John-Burn Murdoch's presentation: [**ggplot2 as a creativity engine**](https://johnburnmurdoch.github.io/slides/r-ggplot/#/)  
-
-.pull-left[
-Easy enough to [*rapidly prototype*](https://johnburnmurdoch.github.io/slides/r-ggplot/#/14) graphics at the "speed of thought"  
-&lt;img src="https://johnburnmurdoch.github.io/slides/r-ggplot/football-tide-2.png" width="75%" style="display: block; margin: auto;" /&gt;
-
-]
-
---
-
-.pull-right[
-Powerful enough for [*final "publication"*](https://johnburnmurdoch.github.io/slides/r-ggplot/#/34)  
-&lt;img src="http://blogs.ft.com/ftdata/files/2016/03/eng.png" width="75%" style="display: block; margin: auto;" /&gt;
-
-
-]
-
-
----
-
-### A **grammar** of tables
-
---
+### Tables with R
 
 Construct a wide variety of useful tables with a cohesive set of table parts. These include the *table header*, the *stub*, the *column labels* and *spanner column labels*, the *table body* and the *table footer*.
 
@@ -120,7 +44,19 @@ Construct a wide variety of useful tables with a cohesive set of table parts. Th
 ![](https://gt.rstudio.com/reference/figures/gt_workflow_diagram.svg)
 --
 .pull-left[
-Easy enough to *rapidly prototype*  
+
+```r
+mtcars %&gt;% 
+  select(cyl:wt) %&gt;% 
+  head() %&gt;% 
+  gt() 
+```
+
+]
+
+--
+
+.pull-right[
 <table style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; display: table; border-collapse: collapse; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;">
   
   <thead style="border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
@@ -133,60 +69,40 @@ Easy enough to *rapidly prototype*
     </tr>
   </thead>
   <tbody style="border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
-    <tr>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">6</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">160</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">110</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.90</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">2.620</td>
-    </tr>
-    <tr>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">6</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">160</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">110</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.90</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">2.875</td>
-    </tr>
-    <tr>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">4</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">108</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">93</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.85</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">2.320</td>
-    </tr>
-    <tr>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">6</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">258</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">110</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.08</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.215</td>
-    </tr>
-    <tr>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">8</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">360</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">175</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.15</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.440</td>
-    </tr>
-    <tr>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">6</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">225</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">105</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">2.76</td>
-      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.460</td>
-    </tr>
+    <tr><td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">6</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">160</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">110</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.90</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">2.620</td></tr>
+    <tr><td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">6</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">160</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">110</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.90</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">2.875</td></tr>
+    <tr><td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">4</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">108</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">93</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.85</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">2.320</td></tr>
+    <tr><td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">6</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">258</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">110</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.08</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.215</td></tr>
+    <tr><td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">8</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">360</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">175</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.15</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.440</td></tr>
+    <tr><td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">6</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">225</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">105</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">2.76</td>
+<td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;">3.460</td></tr>
   </tbody>
   
   
 </table>
-
-]
-
---
-
-.pull-right[
-Powerful enough for *final "publication"*  
-&lt;img src="https://themockup.blog/static/slides/images/qbr_win_tab.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -230,7 +146,7 @@ yield_data
 ```
 
 ```
-## # A tibble: 78,450 x 4
+## # A tibble: 78,450 × 4
 ##    Country      year crop      yield
 ##    &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
 ##  1 Afghanistan  1961 wheat     1.02 
@@ -293,7 +209,7 @@ yield_data_wide
 ```
 
 ```
-## # A tibble: 12 x 5
+## # A tibble: 12 × 5
 ##    Country       crop     `2014` `2015` `2016`
 ##    &lt;chr&gt;         &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
 ##  1 China         maize      5.81   5.89   5.97
@@ -385,7 +301,7 @@ yield_data_wide %&gt;%
 * summary_rows(
 *   groups = TRUE,
     # reference cols by name
-    columns = vars(`2014`, `2015`, `2016`), 
+    columns = c(`2014`, `2015`, `2016`), 
     fns = list(
       # add summary stats
 *     avg = ~mean(.),
@@ -407,7 +323,7 @@ yield_data_wide %&gt;%
 
 ### Add spanners
 
-Table spanners can be added quickly with `tab_spanner()` and again use either position (column number) or + `vars(name)`.
+Table spanners can be added quickly with `tab_spanner()` and again use either position (column number) or with `tidyeval` by name.
 
 .pull-left[
 
@@ -517,7 +433,7 @@ yield_data_wide %&gt;%
     groupname_col = "crop",
     rowname_col = "Country"
   ) %&gt;%
-* tab_header(
+  tab_header(
     title = md("**Crop Yields between 2014 and 2016**"),
     subtitle = html("&lt;em&gt;Countries limited to Asia&lt;/em&gt;")
   )
@@ -598,7 +514,7 @@ yield_data_wide %&gt;%
     title = "Crop Yields between 2014 and 2016",
     subtitle = "Countries limited to Asia"
   ) %&gt;% 
-* my_theme()
+  my_theme()
 ```
 ]
 
@@ -627,26 +543,26 @@ yield_data_wide %&gt;%
     ),
     locations = cells_column_labels(everything())
   ) %&gt;% 
-* tab_style(
+  tab_style(
     style = list(
-*     cell_fill(color = "black", alpha = 0.2),
-*     cell_borders(
+      cell_fill(color = "black", alpha = 0.2),
+      cell_borders(
         side = c("left", "right"), 
         color = "black",
         weight = px(2)
         )
       ),
     locations = cells_body(
-      columns = vars(crop)
+      columns = crop
       )
   ) %&gt;% 
   tab_style(
     style = list(
-*     cell_text(color = "red", style = "italic")
+      cell_text(color = "red", style = "italic")
     ),
     locations = cells_body(
       columns = 3:5,
-*     rows = Country == "China"
+      rows = Country == "China"
     )
   )
 ```
@@ -683,9 +599,9 @@ yield_data_wide %&gt;%
     groupname_col = "crop",
     rowname_col = "Country"
   ) %&gt;% 
-* data_color(
-    columns = vars(`2014`, `2015`, `2016`),
-*   colors = my_pal
+  data_color(
+    columns = c(`2014`, `2015`, `2016`),
+    colors = my_pal
       )
 ```
 
@@ -725,7 +641,7 @@ potato_data
 ```
 
 ```
-## # A tibble: 6 x 6
+## # A tibble: 6 × 6
 ##   Country       crop     `2013` `2014` `2015` `2016`
 ##   &lt;chr&gt;         &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 China         potatoes   17.1   17.1   17.3   17.7
@@ -757,7 +673,7 @@ potato_data
 ```r
 potato_tb &lt;- potato_data %&gt;% 
   gt() %&gt;% 
-  cols_hide(vars(crop)) %&gt;% 
+  cols_hide(c(crop)) %&gt;% 
   opt_table_lines(extent = "none") %&gt;% 
   fmt_number(
     columns = 3:6,
@@ -912,10 +828,10 @@ rule2_tab2 &lt;- rule2_data %&gt;%
     ),
     locations = list(
       cells_body(
-        columns = vars(avg_07_11, avg_12_16)
+        columns = c(avg_07_11, avg_12_16)
         ),
       cells_column_labels(
-        columns = vars(avg_07_11, avg_12_16)
+        columns = c(avg_07_11, avg_12_16)
       )
       )
   ) %&gt;%
@@ -1062,7 +978,7 @@ rule3_data_addendum %&gt;%
   gt() %&gt;% 
   gt::cols_align(
     align = "center",
-    columns = vars(`Top Crop`, Crop)
+    columns = c(`Top Crop`, Crop)
   )
 ```
 ]
@@ -1088,7 +1004,7 @@ rule3_data_addendum %&gt;%
   gt() %&gt;% 
   gt::cols_align(
     align = "center",
-    columns = vars(`Top Crop`)
+    columns = c(`Top Crop`)
   )
 ```
 
@@ -1125,10 +1041,10 @@ tab_font_fct &lt;- function(data, font, column){
     ),
     locations = list(
       cells_column_labels(
-        vars({{column}})
+        c({{column}})
         ),
       cells_body(
-        vars({{column}})
+        c({{column}})
       )
   )
   )
@@ -1263,11 +1179,11 @@ rule5_tab &lt;- yield_data %&gt;%
   mutate(few = yield, right = yield) %&gt;% 
   gt() %&gt;% 
   fmt_number(
-    columns = vars(few),
+    columns = c(few),
     decimals = 0
   ) %&gt;% 
   fmt_number(
-    columns = vars(right),
+    columns = c(right),
     decimals = 1
   ) %&gt;% 
   cols_label(
@@ -1346,7 +1262,7 @@ rule6_tb &lt;- rule6_data %&gt;%
       rows = Country == "Average"
     )
   ) %&gt;% 
-  cols_width(vars(Country) ~ px(125),
+  cols_width(c(Country) ~ px(125),
              2:4 ~ px(75)) %&gt;% 
   basic_theme()
 ```
@@ -1356,7 +1272,7 @@ rule6_tb &lt;- rule6_data %&gt;%
 
 ```r
 rule6_tb %&gt;% 
-  cols_width(vars(Country) ~ px(125),
+  cols_width(c(Country) ~ px(125),
              2:4 ~ px(55)) %&gt;% 
   tab_options(data_row.padding = px(10),
               table_body.hlines.color = "lightgrey") 
@@ -1374,27 +1290,25 @@ rule6_tb %&gt;%
 
 ```r
 rule6_tb %&gt;% 
-  fmt_percent(
-    columns = 2:4,
-    scale_values = FALSE
-  ) 
+  fmt_currency(
+    columns = 2:4
+  )
 ```
 
-&lt;img src="tables/tab6-pct.png" width="45%" style="display: block; margin: auto;" /&gt;
+&lt;img src="tables/tab6-dollar.png" width="45%" style="display: block; margin: auto;" /&gt;
 ]
 
 .panel[.panel-name[Left]
 
 ```r
 rule6_tb %&gt;% 
-  fmt_percent(
+  fmt_currency(
     columns = 2:4,
-    rows = 1,
-    scale_values = FALSE,
-    placement = "left"
+    rows = 1
   )
 ```
-&lt;img src="tables/tab6-left.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="tables/tab6-dollar-1.png" width="45%" style="display: block; margin: auto;" /&gt;
 
 
 ]
@@ -1404,15 +1318,15 @@ rule6_tb %&gt;%
 ```r
 rule6_tb %&gt;% 
   cols_label(
-    `2014` = "2014 (%)",
-    `2015` = "2015 (%)",
-    `2016` = "2016 (%)"
+    `2014` = "2014 ($)",
+    `2015` = "2015 ($)",
+    `2016` = "2016 ($)"
   ) %&gt;% 
   cols_width(
     2:4 ~ px(100)
   )
 ```
-&lt;img src="tables/tab6-label.png" width="45%" style="display: block; margin: auto;" /&gt;
+&lt;img src="tables/tab6-label-dollar.png" width="45%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -1421,11 +1335,11 @@ rule6_tb %&gt;%
 ```r
 rule6_tb %&gt;% 
   tab_spanner(
-    label = md("**% Yield of Total**"),
+    label = md("**Value of Yield ($)**"),
     columns = 2:4
-  )
+  ) 
 ```
-&lt;img src="tables/tab6-spanner.png" width="45%" style="display: block; margin: auto;" /&gt;
+&lt;img src="tables/tab6-dollar-yield.png" width="45%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -1434,11 +1348,11 @@ rule6_tb %&gt;%
 ```r
 rule6_tb %&gt;% 
   tab_footnote(
-    footnote = md("**% Yield of Total**"),
+    footnote = md("**Value of Yield ($)**"),
     locations = cells_column_labels(2:4)
   )
 ```
-&lt;img src="tables/tab6-footnote.png" width="45%" style="display: block; margin: auto;" /&gt;
+&lt;img src="tables/tab6-dollar-yield-ft.png" width="45%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -1490,7 +1404,7 @@ rule8_tb &lt;- rule8_data %&gt;%
     locations = cells_column_labels(everything())
   ) %&gt;% 
   basic_theme() %&gt;% 
-  cols_width(vars(Country) ~ px(125),
+  cols_width(c(Country) ~ px(125),
              2:last_col() ~ px(75))
 ```
 ]
@@ -1628,15 +1542,15 @@ rule9_data &lt;- yield_data %&gt;%
 rule9_bad &lt;- rule9_data %&gt;% 
   gt() %&gt;% 
   fmt_number(
-    columns = vars(`2015`, `2016`, pct_change)
+    columns = c(`2015`, `2016`, pct_change)
   ) %&gt;% 
   tab_spanner(
-    columns = vars(`2015`, `2016`),
+    columns = c(`2015`, `2016`),
     label = md("**Yield in&lt;br&gt;Tonnes/Hectare**")
     ) %&gt;%  
   cols_width(
-    vars(crop) ~ px(125),
-    vars(`2015`, `2016`, pct_change) ~ 100
+    c(crop) ~ px(125),
+    c(`2015`, `2016`, pct_change) ~ 100
   ) 
 ```
 
@@ -1670,7 +1584,7 @@ rule9_grp &lt;- rule9_data %&gt;%
     pct_change = md("Percent&lt;br&gt;Change")
   ) %&gt;% 
   fmt_number(
-    columns = vars(`2015`, `2016`, pct_change)
+    columns = c(`2015`, `2016`, pct_change)
   ) %&gt;% 
   tab_style(
     style = cell_text(color = "black", weight = "bold"),
@@ -1680,12 +1594,12 @@ rule9_grp &lt;- rule9_data %&gt;%
     )
   ) %&gt;% 
   tab_spanner(
-    columns = vars(`2015`, `2016`),
+    columns = c(`2015`, `2016`),
     label = md("**Yield in Tonnes/Hectare**")
     ) %&gt;%  
   cols_width(
-    vars(crop) ~ px(125),
-    vars(`2015`, `2016`, pct_change) ~ 100
+    c(crop) ~ px(125),
+    c(`2015`, `2016`, pct_change) ~ 100
   ) %&gt;% 
   basic_theme()
 ```
@@ -1718,14 +1632,14 @@ rule9_dup &lt;- rule9_data %&gt;%
     crop = "Crop",
     pct_change = md("Percent&lt;br&gt;Change")
   ) %&gt;% 
-  tab_spanner(columns = vars(`2015`, `2016`),
+  tab_spanner(columns = c(`2015`, `2016`),
               label = md("**Yield in Tonnes/Hectare**")) %&gt;% 
   fmt_number(
-    columns = vars(`2015`, `2016`, pct_change)
+    columns = c(`2015`, `2016`, pct_change)
   ) %&gt;% 
   text_transform(
     locations = cells_body(
-      columns = vars(Country),
+      columns = c(Country),
       rows = crop != "Potatoes"
     ),
     fn = function(x){
@@ -1740,8 +1654,8 @@ rule9_dup &lt;- rule9_data %&gt;%
     )
   ) %&gt;% 
   cols_width(
-    vars(Country, crop) ~ px(125),
-    vars(`2015`, `2016`, pct_change) ~ 100
+    c(Country, crop) ~ px(125),
+    c(`2015`, `2016`, pct_change) ~ 100
   ) %&gt;% 
   basic_theme()
 ```
@@ -1783,7 +1697,7 @@ rule10_data
 ```
 
 ```
-## # A tibble: 9 x 4
+## # A tibble: 9 × 4
 ##   Country     crop     `2013` `2017`
 ##   &lt;chr&gt;       &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;
 ## 1 Brazil      potatoes   27.8   30.9
@@ -1952,8 +1866,8 @@ bar_yields &lt;- yield_data %&gt;%
 rule10_bar &lt;- bar_yields %&gt;% 
   gt() %&gt;% 
   cols_width(
-    vars(bar_chart) ~ px(110),
-    vars(mean, `2013`, `2017`) ~ px(90)
+    c(bar_chart) ~ px(110),
+    c(mean, `2013`, `2017`) ~ px(90)
     ) %&gt;% 
   cols_label(
     mean = md("Average&lt;br&gt;2013-17"),
@@ -1965,7 +1879,7 @@ rule10_bar &lt;- bar_yields %&gt;%
   ) %&gt;% 
   cols_align(
     align = "left",
-    columns = vars(bar_chart)
+    columns = c(bar_chart)
   ) %&gt;% 
   fmt_number(2:4) %&gt;% 
   tab_style(
@@ -2104,7 +2018,7 @@ rule10_pct &lt;- rule10_wide %&gt;%
       cell_text(color = "red")
     ),
     locations = cells_body(
-      columns = vars(pct_change),
+      columns = c(pct_change),
       rows = pct_change &lt;= 0
     )
   ) %&gt;% 
@@ -2113,7 +2027,7 @@ rule10_pct &lt;- rule10_wide %&gt;%
       cell_text(color = "blue")
     ),
     locations = cells_body(
-      columns = vars(pct_change),
+      columns = c(pct_change),
       rows = pct_change &gt; 0
     )
   ) %&gt;% 
@@ -2157,15 +2071,6 @@ rule10_pct &lt;- rule10_wide %&gt;%
 #### 9. Group Similar Data and Increase White Space  
 #### 10. Add Visualizations when Appropriate  
 ]
-
----
-
-# Resources
-
-* 7 Different Table Guides on [TheMockUp.blog](https://themockup.blog/#category:tables)  
-* ALL code for this specific presentation in written form in [this post](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/)  
-* `gt` [documentation](https://gt.rstudio.com/)  
-* Stephen Few's *Show Me the Numbers* book - excellent resource on tables/graphs  
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
