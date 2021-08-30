@@ -29,7 +29,7 @@ xaringanExtra::use_panelset()
 
 layout: true
 
-<div class="my-footer"><span>cmsac-tidymodels.netlify.app/</span></div>
+<div class="my-footer"><span>https://themockup.blog/static/slides/intro-tables.html</span></div>
 
 ---
 
