@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="It’s turtles all the way down…">
+<title>The MockUp - Easily parsing JSON in R with jsonlite and purrr</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="../../site_libs/jsoneditor-5.25.6/jsoneditor.min.css" rel="stylesheet">
+<script src="../../site_libs/jsoneditor-5.25.6/jsoneditor.min.js"></script><script src="../../site_libs/jsonedit-binding-3.0.0/jsonedit.js"></script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Easily parsing JSON in R with jsonlite and purrr">
+<meta property="og:description" content="It's turtles all the way down...
+">
+<meta property="og:image" content="https://themockup.blog//posts/2020-05-22-parsing-json-in-r-with-jsonlite/preview.jpg">
+<meta property="og:site-name" content="The MockUp">
+<meta name="twitter:title" content="The MockUp - Easily parsing JSON in R with jsonlite and purrr">
+<meta name="twitter:description" content="It's turtles all the way down...
+">
+<meta name="twitter:image" content="https://themockup.blog//posts/2020-05-22-parsing-json-in-r-with-jsonlite/preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-fa fa-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Easily parsing JSON in R with jsonlite and purrr</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">NFL</div>
+                <div class="quarto-category">tidyverse</div>
+                <div class="quarto-category">JSON</div>
+                <div class="quarto-category">web scraping</div>
+                <div class="quarto-category">API</div>
+                <div class="quarto-category">purrr</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>It’s turtles all the way down…</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">05-22-2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#dont-bury-the-lede" id="toc-dont-bury-the-lede" class="nav-link active" data-scroll-target="#dont-bury-the-lede">Don’t bury the lede</a>
+  <ul class="collapse">
+<li><a href="#rstudio-viewer" id="toc-rstudio-viewer" class="nav-link" data-scroll-target="#rstudio-viewer">RStudio Viewer</a></li>
+  <li><a href="#listviewer" id="toc-listviewer" class="nav-link" data-scroll-target="#listviewer"><code>listviewer</code></a></li>
+  <li><a href="#the-code" id="toc-the-code" class="nav-link" data-scroll-target="#the-code">The code</a></li>
+  </ul>
+</li>
+  <li><a href="#its-turtles-all-the-way-down" id="toc-its-turtles-all-the-way-down" class="nav-link" data-scroll-target="#its-turtles-all-the-way-down"><span>It’s Turtles all the way down</span></a></li>
+  <li><a href="#raw-data-and-libraries" id="toc-raw-data-and-libraries" class="nav-link" data-scroll-target="#raw-data-and-libraries">Raw Data and Libraries</a></li>
+  <li>
+<a href="#viewing-json" id="toc-viewing-json" class="nav-link" data-scroll-target="#viewing-json">Viewing JSON</a>
+  <ul class="collapse">
+<li><a href="#level-1" id="toc-level-1" class="nav-link" data-scroll-target="#level-1">Level 1</a></li>
+  <li><a href="#level-2" id="toc-level-2" class="nav-link" data-scroll-target="#level-2">Level 2</a></li>
+  <li>
+<a href="#get-at-the-list" id="toc-get-at-the-list" class="nav-link" data-scroll-target="#get-at-the-list">Get at the list</a>
+  <ul class="collapse">
+<li><a href="#access-the-dataframe" id="toc-access-the-dataframe" class="nav-link" data-scroll-target="#access-the-dataframe">Access the dataframe</a></li>
+  <li><a href="#access-the-lists" id="toc-access-the-lists" class="nav-link" data-scroll-target="#access-the-lists">Access the lists</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li>
+<a href="#enter-purrr" id="toc-enter-purrr" class="nav-link" data-scroll-target="#enter-purrr">Enter <code>purrr</code></a>
+  <ul class="collapse">
+<li><a href="#purrrpluck" id="toc-purrrpluck" class="nav-link" data-scroll-target="#purrrpluck"><code>purrr::pluck()</code></a></li>
+  <li>
+<a href="#purrrmap" id="toc-purrrmap" class="nav-link" data-scroll-target="#purrrmap"><code>purrr::map</code></a>
+  <ul class="collapse">
+<li><a href="#define-a-function" id="toc-define-a-function" class="nav-link" data-scroll-target="#define-a-function">Define a function</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li><a href="#put-it-all-together" id="toc-put-it-all-together" class="nav-link" data-scroll-target="#put-it-all-together">Put it all together</a></li>
+  <li><a href="#one-more-example" id="toc-one-more-example" class="nav-link" data-scroll-target="#one-more-example">One more example</a></li>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">TLDR</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="preview.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">It’s turtles all the way down, source: https://en.wikipedia.org/wiki/Turtles_all_the_way_down</figcaption><p></p>
+</figure>
+</div>
+<section id="dont-bury-the-lede" class="level1 page-columns page-full"><h1>Don’t bury the lede</h1>
+<p>While many R programmers are comfortable with lists, vectors, dataframes, tibbles - <code>JSON</code> has long been a source of pain and/or fear for many.</p>
+<p>Because this is going to be a bit of a journey, I don’t want to bury the lede. I’ve got the final code below, which is just a few lines, and a major helper package for examining nested lists such as JSON. Most of this post is about some approaches to exploring <code>JSON</code> outputs and deeply nested lists. Additionally the <code>tidyverse</code> team even has an article on various approaches to “rectangling” nested data/<code>JSON</code> <a href="https://tidyr.tidyverse.org/articles/rectangle.html">here</a>.</p>
+<p>We’re using another NFL example this week, namely we are collecting data from ESPN’s Quarterback Rating (QBR) API endpoint. The output website that this API feeds is available <a href="https://www.espn.com/nfl/qbr/_/season/2019/seasontype/2">here</a> and the API endpoint itself is available <a href="https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/qbr?region=us&amp;lang=en&amp;qbrType=seasons&amp;seasontype=2&amp;isqualified=true&amp;sort=schedAdjQBR%3Adesc&amp;season=2019">here</a>.</p>
+<section id="rstudio-viewer" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="rstudio-viewer">RStudio Viewer</h2>
+<blockquote class="twitter-tweet blockquote">
+<p lang="en" dir="ltr">
+The RStudio viewer is also super useful for navigating, once you have the data in R
+</p>
+— Hadley Wickham (<span class="citation" data-cites="hadleywickham">@hadleywickham</span>) <a href="https://twitter.com/hadleywickham/status/1264907162884726785?ref_src=twsrc%5Etfw">May 25, 2020</a>
+</blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p>Additionally, the RStudio IDE itself has a lovely way of parsing through <code>JSON</code> files, including the ability to output the code to access specific parts of <code>JSON</code> objects!</p>
+<p>First - open the <code>raw_json</code> with the RStudio viewer.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/View.html">View</a></span><span class="op">(</span><span class="va">raw_json</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="rstudio-json.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">You get a list-viewer type experience with RStudio itself, and it still has search!</figcaption><p></p>
+</figure>
+</div>
+<p>Once it is open you can search for specific object names or navigate similarly to <code>listviewer</code>.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="rstudio-json-opened.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">We can see our same <code>athlete</code> object as a list!</figcaption><p></p>
+</figure>
+</div>
+<p>Once you search and find something of interest (for example <code>athletes</code> object), you can click on the scroll to open it as a temp object in the viewer, or just click the table-arrow button to copy the code to access this level of the object to the console.</p>
+</section><section id="listviewer" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="listviewer"><code>listviewer</code></h2>
+<p>Secondly, the <code>listviewer</code> package is also fantastic! It lets you explore <code>JSON</code> interactively in a similar way to the RStudio Viewer. We can use this to interactively explore the data before we start coding away.</p>
+<p>Because we’re looking at the 2019 season, I know that Lamar Jackson is the top QB in the dataset, and we can guess at some of the other columns by going to the actual <a href="https://www.espn.com/nfl/qbr/_/season/2019/seasontype/2">webpage this API is building</a>. From that we can assume there are columns for player name, team name, QBR, PAA, PLAYS, etc.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="website_ss.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Example of the website</figcaption><p></p>
+</figure>
+</div>
+<p>I’ll let you do this interactively because that’s how’d you use in RStudio, and try searching for:<br>
+- Lamar Jackson – important for finding the QB names<br>
+- 83 – this one is important as a data point</p>
+<p>In the interactive <code>jsonedit()</code> viewer below:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># interactive list or JSON viewer</span>
+<span class="co"># note that you can change the view to raw JSON or the more </span>
+<span class="co"># interactive `View` option</span>
+<span class="fu">listviewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/listviewer/man/jsonedit.html">jsonedit</a></span><span class="op">(</span><span class="va">raw_json</span>, height <span class="op">=</span> <span class="st">"800px"</span>, mode <span class="op">=</span> <span class="st">"view"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-d0bae68bba5d17785574" style="width:672px;height:800px;" class="jsonedit html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d0bae68bba5d17785574">{"x":{"data":{"pagination":{"count":30,"limit":50,"page":1,"pages":1,"first":"http://site.api.espn.com:80/apis/fitt/v3/sports/football/nfl/qbr?isqualified=true&lang=en&qbrtype=seasons&region=us&season=2019&seasontype=2&sort=schedAdjQBR%3Adesc&limit=50","last":"http://site.api.espn.com:80/apis/fitt/v3/sports/football/nfl/qbr?isqualified=true&lang=en&qbrtype=seasons&region=us&season=2019&seasontype=2&sort=schedAdjQBR%3Adesc&limit=50&page=1"},"athletes":[{"athlete":{"id":"3916387","uid":"s:20~l:28~a:3916387","guid":"7d76fbb11c5ed9f4954fcad43f720ae2","type":"football","firstName":"Lamar","lastName":"Jackson","displayName":"Lamar Jackson","shortName":"L. Jackson","debutYear":2018,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3916387/lamar-jackson","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3916387/lamar-jackson","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3916387/lamar-jackson","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3916387/lamar-jackson","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3916387/lamar-jackson","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3916387/lamar-jackson","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3916387/lamar-jackson","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3916387.png","alt":"Lamar Jackson"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":25,"teamName":"Ravens","teamShortName":"BAL","teams":[{"name":"Ravens","abbreviation":"BAL"}],"slug":"lamar-jackson","teamId":"33","teamUId":"s:20~l:28~t:33"},"categories":[{"name":"general","displayName":"General ","totals":["83.0","66.7","613","103.7","55.0","39.1","0.0","2.2","82.3","-7.4"],"ranks":["1","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3139477","uid":"s:20~l:28~a:3139477","guid":"37d87523280a9d4a0adb22cfc6d3619c","type":"football","firstName":"Patrick","lastName":"Mahomes","displayName":"Patrick Mahomes","shortName":"P. Mahomes","debutYear":2017,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3139477/patrick-mahomes","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3139477/patrick-mahomes","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3139477/patrick-mahomes","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3139477/patrick-mahomes","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3139477/patrick-mahomes","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3139477/patrick-mahomes","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3139477/patrick-mahomes","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png","alt":"Patrick Mahomes"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":26,"teamName":"Chiefs","teamShortName":"KC","teams":[{"name":"Chiefs","abbreviation":"KC"}],"slug":"patrick-mahomes","teamId":"12","teamUId":"s:20~l:28~t:12"},"categories":[{"name":"general","displayName":"General ","totals":["77.7","55.8","585","97.3","71.6","14.3","0.0","5.0","79.4","-6.5"],"ranks":["2","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"2580","uid":"s:20~l:28~a:2580","guid":"a3d4f4473aef111aee5c4909a8e70a7c","type":"football","firstName":"Drew","lastName":"Brees","displayName":"Drew Brees","shortName":"D. Brees","debutYear":2001,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2580/drew-brees","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/2580/drew-brees","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/2580/drew-brees","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/2580/drew-brees","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/2580/drew-brees","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/2580/drew-brees","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2580/drew-brees","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/2580.png","alt":"Drew Brees"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"2","name":"Inactive","type":"inactive","abbreviation":"Inactive"},"age":43,"teamName":"Saints","teamShortName":"NO","teams":[{"name":"Saints","abbreviation":"NO"}],"slug":"drew-brees","teamId":"18","teamUId":"s:20~l:28~t:18"},"categories":[{"name":"general","displayName":"General ","totals":["73.3","33.7","419","62.6","53.1","1.6","0.0","1.9","75.7","-6.0"],"ranks":["3","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"2577417","uid":"s:20~l:28~a:2577417","guid":"5f09781b6b0b7325049ba91e60d794e6","type":"football","firstName":"Dak","lastName":"Prescott","displayName":"Dak Prescott","shortName":"D. Prescott","debutYear":2016,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2577417/dak-prescott","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/2577417/dak-prescott","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/2577417/dak-prescott","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/2577417/dak-prescott","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/2577417/dak-prescott","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/2577417/dak-prescott","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2577417/dak-prescott","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/2577417.png","alt":"Dak Prescott"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":28,"teamName":"Cowboys","teamShortName":"DAL","teams":[{"name":"Cowboys","abbreviation":"DAL"}],"slug":"dak-prescott","teamId":"6","teamUId":"s:20~l:28~t:6"},"categories":[{"name":"general","displayName":"General ","totals":["71.9","48.1","690","93.1","70.7","10.0","0.0","2.6","72.8","-9.7"],"ranks":["4","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"14881","uid":"s:20~l:28~a:14881","guid":"f0610946ceb69a993bcccf110b2078b5","type":"football","firstName":"Russell","lastName":"Wilson","displayName":"Russell Wilson","shortName":"R. Wilson","debutYear":2012,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/14881/russell-wilson","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/14881/russell-wilson","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/14881/russell-wilson","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/14881/russell-wilson","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/14881/russell-wilson","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/14881/russell-wilson","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/14881/russell-wilson","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/14881.png","alt":"Russell Wilson"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":33,"teamName":"Seahawks","teamShortName":"SEA","teams":[{"name":"Seahawks","abbreviation":"SEA"}],"slug":"russell-wilson","teamId":"26","teamUId":"s:20~l:28~t:26"},"categories":[{"name":"general","displayName":"General ","totals":["71.5","43.0","674","90.9","58.3","10.6","0.0","1.5","71.2","-20.6"],"ranks":["5","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"12483","uid":"s:20~l:28~a:12483","guid":"20c41c33a33f6dc27e1f0771e39ce49a","type":"football","firstName":"Matthew","lastName":"Stafford","displayName":"Matthew Stafford","shortName":"M. Stafford","debutYear":2009,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/12483/matthew-stafford","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/12483/matthew-stafford","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/12483/matthew-stafford","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/12483/matthew-stafford","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/12483/matthew-stafford","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/12483/matthew-stafford","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/12483/matthew-stafford","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/12483.png","alt":"Matthew Stafford"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":34,"teamName":"Lions","teamShortName":"DET","teams":[{"name":"Lions","abbreviation":"DET"}],"slug":"matthew-stafford","teamId":"8","teamUId":"s:20~l:28~t:8"},"categories":[{"name":"general","displayName":"General ","totals":["71.3","27.0","353","56.1","44.5","1.6","0.0","1.9","74.7","-8.0"],"ranks":["6","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3122840","uid":"s:20~l:28~a:3122840","guid":"b6ec8e9e3d85a1de9d0a5a51621a9c20","type":"football","firstName":"Deshaun","lastName":"Watson","displayName":"Deshaun Watson","shortName":"D. Watson","debutYear":2017,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3122840/deshaun-watson","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3122840/deshaun-watson","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3122840/deshaun-watson","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3122840/deshaun-watson","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3122840/deshaun-watson","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3122840/deshaun-watson","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3122840/deshaun-watson","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3122840.png","alt":"Deshaun Watson"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":26,"teamName":"Texans","teamShortName":"HOU","teams":[{"name":"Texans","abbreviation":"HOU"}],"slug":"deshaun-watson","teamId":"34","teamUId":"s:20~l:28~t:34"},"categories":[{"name":"general","displayName":"General ","totals":["70.5","42.3","662","91.6","52.0","19.8","0.0","1.4","71.2","-18.5"],"ranks":["7","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"8664","uid":"s:20~l:28~a:8664","guid":"5dab6f81c90caeb6e2c3a4ab46ec447b","type":"football","firstName":"Ryan","lastName":"Fitzpatrick","displayName":"Ryan Fitzpatrick","shortName":"R. Fitzpatrick","debutYear":2005,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/8664/ryan-fitzpatrick","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/8664/ryan-fitzpatrick","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/8664/ryan-fitzpatrick","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/8664/ryan-fitzpatrick","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/8664/ryan-fitzpatrick","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/8664/ryan-fitzpatrick","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/8664/ryan-fitzpatrick","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/8664.png","alt":"Ryan Fitzpatrick"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"9","name":"Free Agent","type":"free-agent","abbreviation":"FA"},"age":39,"teamName":"Dolphins","teamShortName":"MIA","teams":[{"name":"Dolphins","abbreviation":"MIA"}],"slug":"ryan-fitzpatrick","teamId":"15","teamUId":"s:20~l:28~t:15"},"categories":[{"name":"general","displayName":"General ","totals":["68.3","30.2","620","70.7","47.6","6.3","0.0","3.7","66.6","-13.1"],"ranks":["8","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"14876","uid":"s:20~l:28~a:14876","guid":"2d6af5dcb3d3e2d4cf7227d4a8eb93cd","type":"football","firstName":"Ryan","lastName":"Tannehill","displayName":"Ryan Tannehill","shortName":"R. Tannehill","debutYear":2012,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/14876/ryan-tannehill","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/14876/ryan-tannehill","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/14876/ryan-tannehill","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/14876/ryan-tannehill","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/14876/ryan-tannehill","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/14876/ryan-tannehill","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/14876/ryan-tannehill","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/14876.png","alt":"Ryan Tannehill"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":33,"teamName":"Titans","teamShortName":"TEN","teams":[{"name":"Titans","abbreviation":"TEN"}],"slug":"ryan-tannehill","teamId":"10","teamUId":"s:20~l:28~t:10"},"categories":[{"name":"general","displayName":"General ","totals":["64.2","19.0","374","45.8","18.1","11.7","0.0","2.3","67.2","-13.7"],"ranks":["9","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"16757","uid":"s:20~l:28~a:16757","guid":"50d25930fd5f311dd93213e5ab467ff7","type":"football","firstName":"Derek","lastName":"Carr","displayName":"Derek Carr","shortName":"D. Carr","debutYear":2014,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/16757/derek-carr","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/16757/derek-carr","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/16757/derek-carr","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/16757/derek-carr","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/16757/derek-carr","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/16757/derek-carr","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/16757/derek-carr","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/16757.png","alt":"Derek Carr"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":31,"teamName":"Raiders","teamShortName":"OAK","teams":[{"name":"Raiders","abbreviation":"OAK"}],"slug":"derek-carr","teamId":"13","teamUId":"s:20~l:28~t:13"},"categories":[{"name":"general","displayName":"General ","totals":["64.1","27.3","598","70.3","54.2","2.7","0.0","1.1","65.6","-12.3"],"ranks":["10","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"2573079","uid":"s:20~l:28~a:2573079","guid":"ed28fa2c63a18258b6b0618e79d3e363","type":"football","firstName":"Carson","lastName":"Wentz","displayName":"Carson Wentz","shortName":"C. Wentz","debutYear":2016,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2573079/carson-wentz","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/2573079/carson-wentz","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/2573079/carson-wentz","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/2573079/carson-wentz","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/2573079/carson-wentz","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/2573079/carson-wentz","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2573079/carson-wentz","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/2573079.png","alt":"Carson Wentz"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":29,"teamName":"Eagles","teamShortName":"PHI","teams":[{"name":"Eagles","abbreviation":"PHI"}],"slug":"carson-wentz","teamId":"21","teamUId":"s:20~l:28~t:21"},"categories":[{"name":"general","displayName":"General ","totals":["62.8","32.2","745","90.5","61.5","7.7","0.0","5.8","64.8","-15.5"],"ranks":["11","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"16760","uid":"s:20~l:28~a:16760","guid":"1d58c0548e0e1f6e726702ec9679f43f","type":"football","firstName":"Jimmy","lastName":"Garoppolo","displayName":"Jimmy Garoppolo","shortName":"J. Garoppolo","debutYear":2014,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/16760/jimmy-garoppolo","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/16760/jimmy-garoppolo","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/16760/jimmy-garoppolo","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/16760/jimmy-garoppolo","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/16760/jimmy-garoppolo","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/16760/jimmy-garoppolo","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/16760/jimmy-garoppolo","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/16760.png","alt":"Jimmy Garoppolo"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":30,"teamName":"49ers","teamShortName":"SF","teams":[{"name":"49ers","abbreviation":"SF"}],"slug":"jimmy-garoppolo","teamId":"25","teamUId":"s:20~l:28~t:25"},"categories":[{"name":"general","displayName":"General ","totals":["60.8","20.8","593","69.3","48.5","-0.2","0.0","5.0","62.1","-15.9"],"ranks":["12","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"14880","uid":"s:20~l:28~a:14880","guid":"53bec012c2edbc7ca8d5438611f9faa1","type":"football","firstName":"Kirk","lastName":"Cousins","displayName":"Kirk Cousins","shortName":"K. Cousins","debutYear":2012,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/14880/kirk-cousins","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/14880/kirk-cousins","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/14880/kirk-cousins","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/14880/kirk-cousins","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/14880/kirk-cousins","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/14880/kirk-cousins","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/14880/kirk-cousins","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/14880.png","alt":"Kirk Cousins"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":33,"teamName":"Vikings","teamShortName":"MIN","teams":[{"name":"Vikings","abbreviation":"MIN"}],"slug":"kirk-cousins","teamId":"16","teamUId":"s:20~l:28~t:16"},"categories":[{"name":"general","displayName":"General ","totals":["60.4","18.1","537","59.0","44.6","-1.6","0.0","5.1","61.7","-10.9"],"ranks":["13","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"11237","uid":"s:20~l:28~a:11237","guid":"c79f38c2a37e5dfcdd3da91f4811b2cd","type":"football","firstName":"Matt","lastName":"Ryan","displayName":"Matt Ryan","shortName":"M. Ryan","debutYear":2008,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/11237/matt-ryan","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/11237/matt-ryan","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/11237/matt-ryan","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/11237/matt-ryan","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/11237/matt-ryan","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/11237/matt-ryan","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/11237/matt-ryan","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/11237.png","alt":"Matt Ryan"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":36,"teamName":"Falcons","teamShortName":"ATL","teams":[{"name":"Falcons","abbreviation":"ATL"}],"slug":"matt-ryan","teamId":"1","teamUId":"s:20~l:28~t:1"},"categories":[{"name":"general","displayName":"General ","totals":["59.6","22.3","748","75.1","45.4","5.4","0.0","5.7","60.4","-18.6"],"ranks":["14","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3917315","uid":"s:20~l:28~a:3917315","guid":"9bef707dd33f266b302081900d735915","type":"football","firstName":"Kyler","lastName":"Murray","displayName":"Kyler Murray","shortName":"K. Murray","debutYear":2019,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3917315/kyler-murray","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3917315/kyler-murray","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3917315/kyler-murray","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3917315/kyler-murray","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3917315/kyler-murray","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3917315/kyler-murray","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3917315/kyler-murray","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3917315.png","alt":"Kyler Murray"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":24,"teamName":"Cardinals","teamShortName":"ARI","teams":[{"name":"Cardinals","abbreviation":"ARI"}],"slug":"kyler-murray","teamId":"22","teamUId":"s:20~l:28~t:22"},"categories":[{"name":"general","displayName":"General ","totals":["57.7","16.2","709","71.6","37.3","13.4","0.0","3.0","58.0","-17.8"],"ranks":["15","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"2969939","uid":"s:20~l:28~a:2969939","guid":"57af2581cec9d5a32afe7a719925f78b","type":"football","firstName":"Jameis","lastName":"Winston","displayName":"Jameis Winston","shortName":"J. Winston","debutYear":2015,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2969939/jameis-winston","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/2969939/jameis-winston","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/2969939/jameis-winston","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/2969939/jameis-winston","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/2969939/jameis-winston","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/2969939/jameis-winston","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2969939/jameis-winston","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/2969939.png","alt":"Jameis Winston"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":28,"teamName":"Buccaneers","teamShortName":"TB","teams":[{"name":"Buccaneers","abbreviation":"TB"}],"slug":"jameis-winston","teamId":"27","teamUId":"s:20~l:28~t:27"},"categories":[{"name":"general","displayName":"General ","totals":["55.7","20.1","772","78.4","48.7","9.0","0.0","2.6","59.1","-18.3"],"ranks":["16","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"2330","uid":"s:20~l:28~a:2330","guid":"be3c0e305a1e8174091da41bf4e2d51e","type":"football","firstName":"Tom","lastName":"Brady","displayName":"Tom Brady","shortName":"T. Brady","debutYear":2000,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2330/tom-brady","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/2330/tom-brady","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/2330/tom-brady","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/2330/tom-brady","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/2330/tom-brady","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/2330/tom-brady","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2330/tom-brady","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/2330.png","alt":"Tom Brady"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":44,"teamName":"Patriots","teamShortName":"NE","teams":[{"name":"Patriots","abbreviation":"NE"}],"slug":"tom-brady","teamId":"17","teamUId":"s:20~l:28~t:17"},"categories":[{"name":"general","displayName":"General ","totals":["55.7","8.9","691","61.0","40.0","4.5","0.0","5.4","54.5","-11.0"],"ranks":["17","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3917792","uid":"s:20~l:28~a:3917792","guid":"5ad1bcc257bcbb72bcd00cdd0d945444","type":"football","firstName":"Daniel","lastName":"Jones","displayName":"Daniel Jones","shortName":"D. Jones","debutYear":2019,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3917792/daniel-jones","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3917792/daniel-jones","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3917792/daniel-jones","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3917792/daniel-jones","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3917792/daniel-jones","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3917792/daniel-jones","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3917792/daniel-jones","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3917792.png","alt":"Daniel Jones"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":24,"teamName":"Giants","teamShortName":"NYG","teams":[{"name":"Giants","abbreviation":"NYG"}],"slug":"daniel-jones","teamId":"19","teamUId":"s:20~l:28~t:19"},"categories":[{"name":"general","displayName":"General ","totals":["55.7","11.5","577","55.1","22.2","11.6","0.0","4.0","57.0","-17.4"],"ranks":["18","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3052587","uid":"s:20~l:28~a:3052587","guid":"5bb4376ad089e3e4e49a44f1d709a012","type":"football","firstName":"Baker","lastName":"Mayfield","displayName":"Baker Mayfield","shortName":"B. Mayfield","debutYear":2018,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3052587/baker-mayfield","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3052587/baker-mayfield","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3052587/baker-mayfield","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3052587/baker-mayfield","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3052587/baker-mayfield","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3052587/baker-mayfield","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3052587/baker-mayfield","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3052587.png","alt":"Baker Mayfield"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":27,"teamName":"Browns","teamShortName":"CLE","teams":[{"name":"Browns","abbreviation":"CLE"}],"slug":"baker-mayfield","teamId":"5","teamUId":"s:20~l:28~t:5"},"categories":[{"name":"general","displayName":"General ","totals":["54.4","2.3","664","54.4","22.4","9.5","0.0","5.0","51.2","-17.6"],"ranks":["19","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"8439","uid":"s:20~l:28~a:8439","guid":"5fbab03e281655abae1083b132803d9e","type":"football","firstName":"Aaron","lastName":"Rodgers","displayName":"Aaron Rodgers","shortName":"A. Rodgers","debutYear":2005,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/8439/aaron-rodgers","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/8439/aaron-rodgers","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/8439/aaron-rodgers","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/8439/aaron-rodgers","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/8439/aaron-rodgers","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/8439/aaron-rodgers","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/8439/aaron-rodgers","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/8439.png","alt":"Aaron Rodgers"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":38,"teamName":"Packers","teamShortName":"GB","teams":[{"name":"Packers","abbreviation":"GB"}],"slug":"aaron-rodgers","teamId":"9","teamUId":"s:20~l:28~t:9"},"categories":[{"name":"general","displayName":"General ","totals":["52.5","10.9","691","66.4","39.7","9.3","0.0","1.1","55.6","-16.4"],"ranks":["20","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"2578570","uid":"s:20~l:28~a:2578570","guid":"efcb42e50bef62d1b58bdbc17fde2479","type":"football","firstName":"Jacoby","lastName":"Brissett","displayName":"Jacoby Brissett","shortName":"J. Brissett","debutYear":2016,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2578570/jacoby-brissett","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/2578570/jacoby-brissett","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/2578570/jacoby-brissett","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/2578570/jacoby-brissett","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/2578570/jacoby-brissett","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/2578570/jacoby-brissett","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/2578570/jacoby-brissett","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/2578570.png","alt":"Jacoby Brissett"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":29,"teamName":"Colts","teamShortName":"IND","teams":[{"name":"Colts","abbreviation":"IND"}],"slug":"jacoby-brissett","teamId":"11","teamUId":"s:20~l:28~t:11"},"categories":[{"name":"general","displayName":"General ","totals":["52.1","6.6","564","52.2","27.9","6.7","0.0","6.4","54.1","-11.2"],"ranks":["21","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3046779","uid":"s:20~l:28~a:3046779","guid":"987f4f39ed6f591557ebec7dc356171c","type":"football","firstName":"Jared","lastName":"Goff","displayName":"Jared Goff","shortName":"J. Goff","debutYear":2016,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3046779/jared-goff","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3046779/jared-goff","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3046779/jared-goff","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3046779/jared-goff","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3046779/jared-goff","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3046779/jared-goff","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3046779/jared-goff","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3046779.png","alt":"Jared Goff"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":27,"teamName":"Rams","teamShortName":"LAR","teams":[{"name":"Rams","abbreviation":"LAR"}],"slug":"jared-goff","teamId":"14","teamUId":"s:20~l:28~t:14"},"categories":[{"name":"general","displayName":"General ","totals":["50.6","0.5","734","57.5","54.4","-7.3","0.0","1.6","50.2","-8.8"],"ranks":["22","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"5529","uid":"s:20~l:28~a:5529","guid":"a7d4c3f14297af471b05c8fa86cc815e","type":"football","firstName":"Philip","lastName":"Rivers","displayName":"Philip Rivers","shortName":"P. Rivers","debutYear":2004,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/5529/philip-rivers","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/5529/philip-rivers","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/5529/philip-rivers","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/5529/philip-rivers","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/5529/philip-rivers","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/5529/philip-rivers","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/5529/philip-rivers","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/5529.png","alt":"Philip Rivers"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"2","name":"Inactive","type":"inactive","abbreviation":"Inactive"},"age":40,"teamName":"Chargers","teamShortName":"LAC","teams":[{"name":"Chargers","abbreviation":"LAC"}],"slug":"philip-rivers","teamId":"24","teamUId":"s:20~l:28~t:24"},"categories":[{"name":"general","displayName":"General ","totals":["50.5","1.5","691","57.1","39.7","-3.4","0.0","4.1","50.8","-16.7"],"ranks":["23","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3918298","uid":"s:20~l:28~a:3918298","guid":"853f876854bd6a4fcb1063d6df1e7742","type":"football","firstName":"Josh","lastName":"Allen","displayName":"Josh Allen","shortName":"J. Allen","debutYear":2018,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3918298/josh-allen","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3918298/josh-allen","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3918298/josh-allen","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3918298/josh-allen","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3918298/josh-allen","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3918298/josh-allen","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3918298/josh-allen","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png","alt":"Josh Allen"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":25,"teamName":"Bills","teamShortName":"BUF","teams":[{"name":"Bills","abbreviation":"BUF"}],"slug":"josh-allen","teamId":"2","teamUId":"s:20~l:28~t:2"},"categories":[{"name":"general","displayName":"General ","totals":["49.4","-3.8","639","51.4","21.1","10.4","0.0","2.6","47.9","-17.4"],"ranks":["24","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3912547","uid":"s:20~l:28~a:3912547","guid":"938f19a1ef9b618c2365d55291e0fcc6","type":"football","firstName":"Sam","lastName":"Darnold","displayName":"Sam Darnold","shortName":"S. Darnold","debutYear":2018,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3912547/sam-darnold","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3912547/sam-darnold","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3912547/sam-darnold","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3912547/sam-darnold","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3912547/sam-darnold","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3912547/sam-darnold","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3912547/sam-darnold","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3912547.png","alt":"Sam Darnold"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":24,"teamName":"Jets","teamShortName":"NYJ","teams":[{"name":"Jets","abbreviation":"NYJ"}],"slug":"sam-darnold","teamId":"20","teamUId":"s:20~l:28~t:20"},"categories":[{"name":"general","displayName":"General ","totals":["45.6","-9.7","525","31.6","17.4","-3.0","0.0","3.6","43.5","-13.7"],"ranks":["25","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"4038524","uid":"s:20~l:28~a:4038524","guid":"a64e025b8608fd26e1f8df83133d7a59","type":"football","firstName":"Gardner","lastName":"Minshew","displayName":"Gardner Minshew","shortName":"G. Minshew","debutYear":2019,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/4038524/gardner-minshew","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/4038524/gardner-minshew","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/4038524/gardner-minshew","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/4038524/gardner-minshew","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/4038524/gardner-minshew","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/4038524/gardner-minshew","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/4038524/gardner-minshew","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/4038524.png","alt":"Gardner Minshew"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":26,"teamName":"Jaguars","teamShortName":"JAX","teams":[{"name":"Jaguars","abbreviation":"JAX"}],"slug":"gardner-minshew","teamId":"30","teamUId":"s:20~l:28~t:30"},"categories":[{"name":"general","displayName":"General ","totals":["44.6","-4.7","600","41.8","21.5","5.4","0.0","1.4","47.2","-13.5"],"ranks":["26","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"14012","uid":"s:20~l:28~a:14012","guid":"10080fc5c043a458e54d428c18555089","type":"football","firstName":"Andy","lastName":"Dalton","displayName":"Andy Dalton","shortName":"A. Dalton","debutYear":2011,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/14012/andy-dalton","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/14012/andy-dalton","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/14012/andy-dalton","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/14012/andy-dalton","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/14012/andy-dalton","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/14012/andy-dalton","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/14012/andy-dalton","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/14012.png","alt":"Andy Dalton"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":34,"teamName":"Bengals","teamShortName":"CIN","teams":[{"name":"Bengals","abbreviation":"CIN"}],"slug":"andy-dalton","teamId":"4","teamUId":"s:20~l:28~t:4"},"categories":[{"name":"general","displayName":"General ","totals":["42.1","-20.1","632","30.3","12.8","1.6","0.0","3.0","38.9","-12.9"],"ranks":["27","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3039707","uid":"s:20~l:28~a:3039707","guid":"bcf9133c2510f4530f0bc68c1a5d0af7","type":"football","firstName":"Mitch","lastName":"Trubisky","displayName":"Mitch Trubisky","shortName":"M. Trubisky","debutYear":2017,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3039707/mitch-trubisky","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3039707/mitch-trubisky","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3039707/mitch-trubisky","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3039707/mitch-trubisky","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3039707/mitch-trubisky","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3039707/mitch-trubisky","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3039707/mitch-trubisky","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3039707.png","alt":"Mitch Trubisky"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":27,"teamName":"Bears","teamShortName":"CHI","teams":[{"name":"Bears","abbreviation":"CHI"}],"slug":"mitch-trubisky","teamId":"3","teamUId":"s:20~l:28~t:3"},"categories":[{"name":"general","displayName":"General ","totals":["41.5","-13.5","644","39.8","17.7","1.7","0.0","3.9","42.6","-16.5"],"ranks":["28","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3115293","uid":"s:20~l:28~a:3115293","guid":"5ce7c1f8b2be23104d44ad43e67c8175","type":"football","firstName":"Kyle","lastName":"Allen","displayName":"Kyle Allen","shortName":"K. Allen","debutYear":2018,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3115293/kyle-allen","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3115293/kyle-allen","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3115293/kyle-allen","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3115293/kyle-allen","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3115293/kyle-allen","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3115293/kyle-allen","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3115293/kyle-allen","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3115293.png","alt":"Kyle Allen"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":26,"teamName":"Panthers","teamShortName":"CAR","teams":[{"name":"Panthers","abbreviation":"CAR"}],"slug":"kyle-allen","teamId":"29","teamUId":"s:20~l:28~t:29"},"categories":[{"name":"general","displayName":"General ","totals":["38.3","-17.4","588","28.0","5.3","0.7","0.0","2.1","39.7","-19.9"],"ranks":["29","-","-","-","-","-","-","-","-","-"]}]},{"athlete":{"id":"3116407","uid":"s:20~l:28~a:3116407","guid":"779f3cff73ebdcb6132748a95fa9d491","type":"football","firstName":"Mason","lastName":"Rudolph","displayName":"Mason Rudolph","shortName":"M. Rudolph","debutYear":2018,"links":[{"language":"en-US","rel":["playercard","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3116407/mason-rudolph","text":"Player Card","shortText":"Player Card","isExternal":false,"isPremium":false},{"language":"en-US","rel":["stats","desktop","athlete"],"href":"http://www.espn.com/nfl/player/stats/_/id/3116407/mason-rudolph","text":"Stats","shortText":"Stats","isExternal":false,"isPremium":false},{"language":"en-US","rel":["splits","desktop","athlete"],"href":"http://www.espn.com/nfl/player/splits/_/id/3116407/mason-rudolph","text":"Splits","shortText":"Splits","isExternal":false,"isPremium":false},{"language":"en-US","rel":["gamelog","desktop","athlete"],"href":"http://www.espn.com/nfl/player/gamelog/_/id/3116407/mason-rudolph","text":"Game Log","shortText":"Game Log","isExternal":false,"isPremium":false},{"language":"en-US","rel":["news","desktop","athlete"],"href":"http://www.espn.com/nfl/player/news/_/id/3116407/mason-rudolph","text":"News","shortText":"News","isExternal":false,"isPremium":false},{"language":"en-US","rel":["bio","desktop","athlete"],"href":"http://www.espn.com/nfl/player/bio/_/id/3116407/mason-rudolph","text":"Bio","shortText":"Bio","isExternal":false,"isPremium":false},{"language":"en-US","rel":["overview","desktop","athlete"],"href":"http://www.espn.com/nfl/player/_/id/3116407/mason-rudolph","text":"Overview","shortText":"Overview","isExternal":false,"isPremium":false}],"headshot":{"href":"https://a.espncdn.com/i/headshots/nfl/players/full/3116407.png","alt":"Mason Rudolph"},"position":{"id":"8","name":"Quarterback","displayName":"Quarterback","abbreviation":"QB","leaf":true,"parent":{"leaf":false},"slug":"quarterback"},"status":{"id":"1","name":"Active","type":"active","abbreviation":"Active"},"age":26,"teamName":"Steelers","teamShortName":"PIT","teams":[{"name":"Steelers","abbreviation":"PIT"}],"slug":"mason-rudolph","teamId":"23","teamUId":"s:20~l:28~t:23"},"categories":[{"name":"general","displayName":"General ","totals":["36.2","-12.9","336","16.9","7.2","-1.3","0.0","3.2","36.8","-7.8"],"ranks":["30","-","-","-","-","-","-","-","-","-"]}]}],"currentSeason":{"year":2021,"displayName":"2021","startDate":"2021-07-17T07:00:00.000+0000","endDate":"2022-02-16T07:59:00.000+0000","type":{"id":"4","type":4,"name":"Off Season","startDate":"2022-02-16T08:00:00.000+0000","endDate":"2022-08-01T06:59:00.000+0000","week":{"number":1,"startDate":"2022-02-16T08:00:00.000+0000","endDate":"2022-08-01T06:59:00.000+0000","text":"Week 1"}}},"requestedSeason":{"year":2019,"displayName":"2019","startDate":"2019-07-31T07:00:00.000+0000","endDate":"2020-02-06T07:59:00.000+0000","type":{"id":"2","type":2,"name":"Regular Season","startDate":"2019-09-05T07:00:00.000+0000","endDate":"2020-01-01T07:59:00.000+0000","week":{}}},"glossary":[{"abbreviation":"EXP","displayName":"EXP SACK"},{"abbreviation":"PA","displayName":"Points Added"},{"abbreviation":"PAS","displayName":"Pass"},{"abbreviation":"PEN","displayName":"PENALTY"},{"abbreviation":"QBP","displayName":"QB PLAYS"},{"abbreviation":"QBR","displayName":"RAW QBR"},{"abbreviation":"RUN","displayName":"RUN"},{"abbreviation":"SAC","displayName":"SACK"},{"abbreviation":"TOT","displayName":"TOTAL EPA"},{"abbreviation":"TQBR","displayName":"TOTAL QBR"}],"categories":[{"name":"general","displayName":"General ","labels":["TQBR","PA","QBP","TOT","PAS","RUN","EXP","PEN","QBR","SAC"],"names":["schedAdjQBR","qbpaa","actionPlays","cwepaTotal","cwepaPassesCondensed","cwepaRuns","cwepaSacked","cwepaPenalties","qbr","cwepaSackedCondensed"],"displayNames":["TOTAL QBR","Points Added","QB PLAYS","TOTAL EPA","Pass","RUN","EXP SACK","PENALTY","RAW QBR","SACK"],"descriptions":["Adjusted Total Quarterback Rating, which values the quarterback on all play types on a 0-100 scale adjusted for the strength of opposing defenses faced.","Number of points contributed by a quarterback, accounting for QBR and how much he plays, above the level of an average quarterback.","Plays on which the QB has a non-zero expected points contribution. Includes most plays that are not handoffs.","Total expected points added with low leverage plays, according to ESPN Win Probability model, down-weighted.","Expected points added on pass attempts with low leverage plays down-weighted.","Clutch-weighted expected points added through rushes","Clutch-weighted expected points added (lost) from sacks (not fumbles that may occur because of sacks).","Expected points added on penalties with low leverage plays down-weighted.","Raw Total Quarterback Rating, which values quarterback on all play types on a 0-100 scale (not adjusted for opposing defenses faced)","Expected points added on sacks with low leverage plays down-weighted."]}],"currentValues":{"qbrType":"seasons","sport":"football","league":"nfl","season":2019,"seasontype":2,"week":[],"conference":9,"isQualified":true,"limit":50,"page":1,"lang":"en","sort":{"stat":"schedAdjQBR","direction":"desc"},"region":"us"}},"options":{"mode":"view","modes":["code","form","text","tree","view"]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Now as you’re searching notice that it provides the depth/level you’re in. The only awkward part is like JavaScript it indexes from 0… so as usual note that <code>index == 0</code> is <code>index == 1</code> in R. The <code>listviewer</code> author does have a little helper function in this <a href="http://timelyportfolio.github.io/listviewer/reference/number_unnamed.html">regard</a>.</p>
+<p>For example:</p>
+<p>If you search for <code>83</code> and click on the <code>83</code> cell, you’ll get the following location:</p>
+<p><code>object &gt; athletes &gt; 0 &gt; categories &gt; 0 &gt; totals &gt; 0</code></p>
+<p>which is equivalent to the following in R:</p>
+<p><code>raw_json$athletes[[1]]$categories[[1]]$totals[[1]][[1]]</code></p>
+<p>The <code>listviewer</code> strategy can allow you to explore interactively, while the code below is more of moving through the <code>JSON</code> object in R.</p>
+<p>Let’s get into the code itself to extract and work with the <code>JSON</code> data.</p>
+</section><section id="the-code" class="level2"><h2 class="anchored" data-anchor-id="the-code">The code</h2>
+<p>This utilizes <code>purrr</code> to get at the various components, but I’ll also show how to do this with mostly base R.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://arxiv.org/abs/1403.2805">jsonlite</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span>
+
+<span class="co"># link to the API output as a JSON file</span>
+<span class="va">url_json</span> <span class="op">&lt;-</span> <span class="st">"https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/qbr?region=us&amp;lang=en&amp;qbrType=seasons&amp;seasontype=2&amp;isqualified=true&amp;sort=schedAdjQBR%3Adesc&amp;season=2019"</span>
+
+<span class="co"># get the raw json into R</span>
+<span class="va">raw_json</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span><span class="va">url_json</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># get names of the QBR categories</span>
+<span class="va">category_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="va">raw_json</span>, <span class="st">"categories"</span>, <span class="fl">1</span>, <span class="st">"labels"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span><span class="op">(</span><span class="op">)</span>
+
+
+<span class="co"># create the dataframe and tidy it up</span>
+<span class="va">ex_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="va">raw_json</span>, <span class="st">"athletes"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://tibble.tidyverse.org/reference/enframe.html">enframe</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_wider</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_wider</a></span><span class="op">(</span><span class="va">athlete</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">displayName</span>, <span class="va">teamName</span><span class="op">:</span><span class="va">teamShortName</span>, <span class="va">headshot</span>, <span class="va">categories</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">hoist</a></span><span class="op">(</span><span class="va">categories</span>, 
+    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"totals"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>, <span class="op">~</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/set_names.html">set_names</a></span><span class="op">(</span><span class="va">.x</span>, nm <span class="op">=</span> <span class="va">category_names</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">categories</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_wider</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>headshot <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="va">headshot</span>, <span class="st">"href"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">ex_output</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30
+Columns: 13
+$ displayName   &lt;chr&gt; "Lamar Jackson", "Patrick Mahomes", "Drew Brees", "Dak P…
+$ teamName      &lt;chr&gt; "Ravens", "Chiefs", "Saints", "Cowboys", "Seahawks", "Li…
+$ teamShortName &lt;chr&gt; "BAL", "KC", "NO", "DAL", "SEA", "DET", "HOU", "MIA", "T…
+$ tqbr          &lt;chr&gt; "83.0", "77.7", "73.3", "71.9", "71.5", "71.3", "70.5", …
+$ pa            &lt;chr&gt; "66.7", "55.8", "33.7", "48.1", "43.0", "27.0", "42.3", …
+$ qbp           &lt;chr&gt; "613", "585", "419", "690", "674", "353", "662", "620", …
+$ tot           &lt;chr&gt; "103.7", "97.3", "62.6", "93.1", "90.9", "56.1", "91.6",…
+$ pas           &lt;chr&gt; "55.0", "71.6", "53.1", "70.7", "58.3", "44.5", "52.0", …
+$ run           &lt;chr&gt; "39.1", "14.3", "1.6", "10.0", "10.6", "1.6", "19.8", "6…
+$ exp           &lt;chr&gt; "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "0.0", …
+$ pen           &lt;chr&gt; "2.2", "5.0", "1.9", "2.6", "1.5", "1.9", "1.4", "3.7", …
+$ qbr           &lt;chr&gt; "82.3", "79.4", "75.7", "72.8", "71.2", "74.7", "71.2", …
+$ sac           &lt;chr&gt; "-7.4", "-6.5", "-6.0", "-9.7", "-20.6", "-8.0", "-18.5"…</code></pre>
+</div>
+</div>
+<p>Now that you have explored the raw data via <code>jsonedit</code> and you see where we are going with this, we can actually try playing around with it in R.</p>
+</section></section><section id="its-turtles-all-the-way-down" class="level1"><h1><a href="https://en.wikipedia.org/wiki/Turtles_all_the_way_down">It’s Turtles all the way down</a></h1>
+<p>At it’s heart <code>JSON</code> is essentially nested lists of lists of strings, vectors, or other objects - it’s really just lists full of other objects all the way down.</p>
+<p>While there are many reasons WHY <code>JSON</code> is actually a great format for things like… surprise JavaScript! It isn’t the easiest to work with in R for interactive coding as the trusty old dataframe/tibble.</p>
+<p>My goal today is to show you a few techniques from <code>tidyr</code> that can make quick work of most cleanly structured <code>JSON</code>, although there are weird examples out in the wild of <code>JSON</code> formats that are not as straightforward.</p>
+</section><section id="raw-data-and-libraries" class="level1"><h1>Raw Data and Libraries</h1>
+<p>Today we need the <code>tidyverse</code> and <a href="https://github.com/jeroen/jsonlite/"><code>jsonlite</code></a> packages. We can read in the <code>JSON</code> via <code><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">jsonlite::fromJSON()</a></code> on the raw url string. Huge shoutout to ROpenSci, Jeroen Oooms, Duncan Temple Lang, and Lloyd Hilaiel for this package! A basic vignette can be found <a href="https://cran.r-project.org/web/packages/jsonlite/vignettes/json-aaquickstart.html">here</a>.</p>
+<p>First off note that I’m using <code><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON()</a></code> which has <code>simplifyVector = TRUE</code> - this means some lists will automatically get converted to data.frames, matrices, etc. I’ll be using <code><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON()</a></code> for my example today.</p>
+<p>After reviewing this post, Hadley Wickham mentioned that he often prefers <code><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">jsonlite::read_json()</a></code> as it doesn’t do this conversion and leaves everything as a list. His approach is at the end of this blogpost.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://arxiv.org/abs/1403.2805">jsonlite</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span>
+
+<span class="va">url_json</span> <span class="op">&lt;-</span> <span class="st">"https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/qbr?region=us&amp;lang=en&amp;qbrType=seasons&amp;seasontype=2&amp;isqualified=true&amp;sort=schedAdjQBR%3Adesc&amp;season=2019"</span>
+
+<span class="va">raw_json</span> <span class="op">&lt;-</span> <span class="va">url_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="viewing-json" class="level1 page-columns page-full"><h1>Viewing JSON</h1>
+<p>I highly recommend that you DON’T blindy call <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> on <code>JSON</code> objects - you’ll get several pages of <code>stuff</code> output to your console.</p>
+<aside>
+Feel free to try it, as an example exercise, but you’ve been warned. 👀
+</aside><p>I will almost always default to starting with a tool like <code><a href="https://rdrr.io/pkg/listviewer/man/jsonedit.html">listviewer::jsonedit()</a></code> that you get a feel for what the structure looks like. Alternatively, you can use of the examples below to work your way through <code>JSON</code> files more programatically in just R.</p>
+<p>Per my friend <a href="https://twitter.com/JosiahParry/status/1262369767236796417?s=20">Josiah Parry</a>, <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> has a <code>max.level</code> argument - this is very helpful for <code>JSON</code> as it lets you slowly expand the depth of what you’re looking at!</p>
+<section id="level-1" class="level2"><h2 class="anchored" data-anchor-id="level-1">Level 1</h2>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">raw_json</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 7
+ $ pagination     :List of 6
+ $ athletes       :List of 30
+ $ currentSeason  :List of 5
+ $ requestedSeason:List of 5
+ $ glossary       :List of 10
+ $ categories     :List of 1
+ $ currentValues  :List of 13</code></pre>
+</div>
+</div>
+<p>We can see that the <code>JSON</code> file at depth 1 has info about the pages returned, athletes in our dataset, what season it is, glossary of terms, categories, and current values.</p>
+<p>However some of those lists are actually reporting as lists of lists and lists of dataframes, so let’s try one level deeper.</p>
+</section><section id="level-2" class="level2"><h2 class="anchored" data-anchor-id="level-2">Level 2</h2>
+<p>Now we can see that pagination is just character strings of length 1 after two levels, however athletes has: two objects, a dataframe called <code>athlete</code> with 30 rows, and a list called <code>categories</code> is a list of length 30 (which aligns with the length of the athlete dataframe).</p>
+<p>This is probably the most interesting data to us, as we’re looking for about 30-32 QBs from this API endpoint. Now, how do we actually get at these list objects?</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">raw_json</span>, max.level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 7
+ $ pagination     :List of 6
+  ..$ count: int 30
+  ..$ limit: int 50
+  ..$ page : int 1
+  ..$ pages: int 1
+  ..$ first: chr "http://site.api.espn.com:80/apis/fitt/v3/sports/football/nfl/qbr?isqualified=true&amp;lang=en&amp;qbrtype=seasons&amp;regio"| __truncated__
+  ..$ last : chr "http://site.api.espn.com:80/apis/fitt/v3/sports/football/nfl/qbr?isqualified=true&amp;lang=en&amp;qbrtype=seasons&amp;regio"| __truncated__
+ $ athletes       :List of 30
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+ $ currentSeason  :List of 5
+  ..$ year       : int 2021
+  ..$ displayName: chr "2021"
+  ..$ startDate  : chr "2021-07-17T07:00:00.000+0000"
+  ..$ endDate    : chr "2022-02-16T07:59:00.000+0000"
+  ..$ type       :List of 6
+ $ requestedSeason:List of 5
+  ..$ year       : int 2019
+  ..$ displayName: chr "2019"
+  ..$ startDate  : chr "2019-07-31T07:00:00.000+0000"
+  ..$ endDate    : chr "2020-02-06T07:59:00.000+0000"
+  ..$ type       :List of 6
+ $ glossary       :List of 10
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+  ..$ :List of 2
+ $ categories     :List of 1
+  ..$ :List of 6
+ $ currentValues  :List of 13
+  ..$ qbrType    : chr "seasons"
+  ..$ sport      : chr "football"
+  ..$ league     : chr "nfl"
+  ..$ season     : int 2019
+  ..$ seasontype : int 2
+  ..$ week       : NULL
+  ..$ conference : int 9
+  ..$ isQualified: logi TRUE
+  ..$ limit      : int 50
+  ..$ page       : int 1
+  ..$ lang       : chr "en"
+  ..$ sort       :List of 2
+  ..$ region     : chr "us"</code></pre>
+</div>
+</div>
+</section><section id="get-at-the-list" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="get-at-the-list">Get at the list</h2>
+<p>Because the <code>JSON</code> file is parsed into R as nested lists, we can access various parts of it through base R with either the <code>$</code> or with <code>[[</code> + name. Full details around subsetting lists and vectors are available in <a href="https://adv-r.hadley.nz/subsetting.html">Advanced R</a>.</p>
+<p>Let’s try these out by trying to access:<br>
+- <code>raw_json</code> to <code>athletes</code> (<code>raw_json[["athletes"]]</code>) - Looking at it’s structure, again using the <code>max.level</code> argument to prevent extra printing.</p>
+<p>I’d like to note that I’ll be switching back and forth a bit between <code>$</code> and <code>[[</code> subsetting, as both accomplish the same thing, where <code>$</code> is faster to type, but <code>[[</code> is a bit more strict. Also to access by numerical position, you HAVE to use <code>[[</code>.</p>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="aside">Again, full details around subsetting lists and vectors are available in <a href="https://adv-r.hadley.nz/subsetting.html">Advanced R</a>. This is definitely worth reading for edge cases, pitfalls, and lots of nice examples that go beyond the scope of this blog post.</span></div></div>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">raw_json</span><span class="op">$</span><span class="va">athletes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 30
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2</code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># this does the same thing!</span>
+<span class="va">raw_json</span><span class="op">[[</span><span class="st">"athletes"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 30
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2
+ $ :List of 2</code></pre>
+</div>
+</div>
+<section id="access-the-dataframe" class="level3"><h3 class="anchored" data-anchor-id="access-the-dataframe">Access the dataframe</h3>
+<p>We can get to the raw values for a specific player by going one list deeper and we now see an output of <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> that looks pretty close to a dataframe!</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># json -&gt; list --&gt; named elements of a list </span>
+<span class="va">raw_json</span><span class="op">$</span><span class="va">athletes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">athlete</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 20
+ $ id           : chr "3916387"
+ $ uid          : chr "s:20~l:28~a:3916387"
+ $ guid         : chr "7d76fbb11c5ed9f4954fcad43f720ae2"
+ $ type         : chr "football"
+ $ firstName    : chr "Lamar"
+ $ lastName     : chr "Jackson"
+ $ displayName  : chr "Lamar Jackson"
+ $ shortName    : chr "L. Jackson"
+ $ debutYear    : int 2018
+ $ links        :List of 7
+ $ headshot     :List of 2
+ $ position     :List of 7
+ $ status       :List of 4
+ $ age          : int 25
+ $ teamName     : chr "Ravens"
+ $ teamShortName: chr "BAL"
+ $ teams        :List of 1
+ $ slug         : chr "lamar-jackson"
+ $ teamId       : chr "33"
+ $ teamUId      : chr "s:20~l:28~t:33"</code></pre>
+</div>
+</div>
+<p>Now there’s still some sticky situations here, namely that some of the future columns are still lists. We’ll deal with that a little bit later.</p>
+</section><section id="access-the-lists" class="level3"><h3 class="anchored" data-anchor-id="access-the-lists">Access the lists</h3>
+<p>We can change our 3rd call to <code>categories</code> instead of <code>athlete</code> to check out the other object with the player values. We see that we can get at the raw values for each of the categories here. Note that the code <code>raw_json$athletes[[1]]</code> is only giving us 1 of the 30 total players. Changing the <code>[[1]]</code> to <code>[[2]]</code> or <code>[[3]]</code> would give us the 2nd/3rd players in the list respectively.</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># json -&gt; list --&gt; vector of player values</span>
+<span class="va">raw_json</span><span class="op">$</span><span class="va">athletes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">categories</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">totals</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "83.0"  "66.7"  "613"   "103.7" "55.0"  "39.1"  "0.0"   "2.2"   "82.3" 
+[10] "-7.4" </code></pre>
+</div>
+</div>
+<p>We could check out the other items in categories like so, but we see that the name/display elements are not very helpful at length of 1. I’m much more interested in the totals and ranks columns as they have length 10.</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># json -&gt; list -&gt; dataframe -&gt; dataframe w/ list columns!</span>
+<span class="va">raw_json</span><span class="op">$</span><span class="va">athletes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">categories</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 4
+ $ name       : chr "general"
+ $ displayName: chr "General "
+ $ totals     :List of 10
+ $ ranks      :List of 10</code></pre>
+</div>
+</div>
+<p>So let’s check out the 3rd list and what is in it. Now if you’re like me, this is starting to feel a bit hairy! We’re 7 levels deep into one object and this is just 1 output of a total of 30!</p>
+<p>Stick with me for one more example and then we’ll get into <code>purrr</code>!</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">raw_json</span><span class="op">$</span><span class="va">athletes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">categories</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "83.0"  "66.7"  "613"   "103.7" "55.0"  "39.1"  "0.0"   "2.2"   "82.3" 
+[10] "-7.4" </code></pre>
+</div>
+</div>
+<p>So we know:<br>
+- The QB names and teams (<code>raw_json$athletes[[ROW_NUMBER]]$athlete</code>)<br>
+- Their stats are in a different part of the <code>JSON</code> file (<code>aw_json$athletes[[ROW_NUMBER]]$categories</code>)</p>
+<p>If you wanted to you could combine the <code>athlete</code> dataframe with their stats with a <code>for loop</code>. There are additional way of optimizing this (potentially convert to matrix and then to data.frame), but I just want to show that it’s possible and fairly readable! An example with <code>lapply</code> is below as well. Note that since we’re not pre-allocating our data.frame, this is likely the slowest method. It’s ok for our 30 iteration example, but is likely not the best strategy for large <code>JSON</code> files.</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">length_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">raw_json</span><span class="op">[[</span><span class="st">"athletes"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+
+<span class="va">pbp_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">category_names</span> <span class="op">&lt;-</span> <span class="va">raw_json</span><span class="op">[[</span><span class="st">"categories"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"labels"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">var_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"displayName"</span>, <span class="st">"teamName"</span>, <span class="st">"teamShortName"</span><span class="op">)</span>
+
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">length_df</span><span class="op">)</span><span class="op">{</span>
+  
+  <span class="va">athlete_vec</span> <span class="op">&lt;-</span> <span class="va">raw_json</span><span class="op">[[</span><span class="st">"athletes"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"athlete"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">var_select</span><span class="op">]</span>
+  
+  <span class="co"># grab each QBs stats and convert to a vector of type double</span>
+  <span class="va">raw_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/double.html">as.double</a></span><span class="op">(</span><span class="va">raw_json</span><span class="op">[[</span><span class="st">"athletes"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"categories"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"totals"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+  
+  <span class="co"># split each stat into it's own list with the proper name</span>
+  <span class="va">split_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">raw_vec</span>, <span class="va">category_names</span><span class="op">)</span>
+  
+  <span class="va">combine_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">athlete_vec</span>, <span class="va">split_vec</span><span class="op">)</span>
+  
+  <span class="co"># convert the list into a dataframe </span>
+  <span class="va">pbp_df_loop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind.data.frame</a></span><span class="op">(</span><span class="va">combine_vec</span><span class="op">)</span>
+  
+  <span class="co"># combine the 30 QB's stats into the empty data.frame</span>
+  <span class="va">pbp_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">pbp_out</span>, <span class="va">pbp_df_loop</span><span class="op">)</span>
+<span class="op">}</span>
+
+
+<span class="co"># take a peek at the result!</span>
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">pbp_out</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30
+Columns: 13
+$ displayName   &lt;chr&gt; "Lamar Jackson", "Patrick Mahomes", "Drew Brees", "Dak P…
+$ teamName      &lt;chr&gt; "Ravens", "Chiefs", "Saints", "Cowboys", "Seahawks", "Li…
+$ teamShortName &lt;chr&gt; "BAL", "KC", "NO", "DAL", "SEA", "DET", "HOU", "MIA", "T…
+$ EXP           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ PA            &lt;dbl&gt; 66.7, 55.8, 33.7, 48.1, 43.0, 27.0, 42.3, 30.2, 19.0, 27…
+$ PAS           &lt;dbl&gt; 55.0, 71.6, 53.1, 70.7, 58.3, 44.5, 52.0, 47.6, 18.1, 54…
+$ PEN           &lt;dbl&gt; 2.2, 5.0, 1.9, 2.6, 1.5, 1.9, 1.4, 3.7, 2.3, 1.1, 5.8, 5…
+$ QBP           &lt;dbl&gt; 613, 585, 419, 690, 674, 353, 662, 620, 374, 598, 745, 5…
+$ QBR           &lt;dbl&gt; 82.3, 79.4, 75.7, 72.8, 71.2, 74.7, 71.2, 66.6, 67.2, 65…
+$ RUN           &lt;dbl&gt; 39.1, 14.3, 1.6, 10.0, 10.6, 1.6, 19.8, 6.3, 11.7, 2.7, …
+$ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -13.7…
+$ TOT           &lt;dbl&gt; 103.7, 97.3, 62.6, 93.1, 90.9, 56.1, 91.6, 70.7, 45.8, 7…
+$ TQBR          &lt;dbl&gt; 83.0, 77.7, 73.3, 71.9, 71.5, 71.3, 70.5, 68.3, 64.2, 64…</code></pre>
+</div>
+</div>
+<p>Let’s try this again, but with a function and iterating that function with <code>lapply</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">var_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"displayName"</span>, <span class="st">"teamName"</span>, <span class="st">"teamShortName"</span><span class="op">)</span>
+<span class="co"># how many rows?</span>
+<span class="va">length_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">raw_json</span><span class="op">[[</span><span class="st">"athletes"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+
+<span class="co"># category names again</span>
+<span class="va">category_names</span> <span class="op">&lt;-</span> <span class="va">raw_json</span><span class="op">[[</span><span class="st">"categories"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"labels"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># create a function to apply</span>
+<span class="va">qbr_stat_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">qb_num</span><span class="op">)</span><span class="op">{</span>
+  
+  <span class="co"># get each QB name/team</span>
+  <span class="va">athlete_vec</span> <span class="op">&lt;-</span> <span class="va">raw_json</span><span class="op">[[</span><span class="st">"athletes"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="va">qb_num</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"athlete"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">var_select</span><span class="op">]</span>
+  
+  <span class="co"># grab each QBs stats and convert to a vector of type double</span>
+  <span class="va">raw_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/double.html">as.double</a></span><span class="op">(</span><span class="va">raw_json</span><span class="op">[[</span><span class="st">"athletes"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="va">qb_num</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"categories"</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"totals"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+  
+  <span class="co"># split each stat into it's own list with the proper name</span>
+  <span class="va">split_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">raw_vec</span>, <span class="va">category_names</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="op">)</span>
+  
+  <span class="co"># return the lists</span>
+  <span class="va">combine_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">athlete_vec</span>, <span class="va">split_vec</span><span class="op">)</span>
+  
+  <span class="va">combine_vec</span>
+<span class="op">}</span>
+
+<span class="co"># use apply to generate list of lists</span>
+<span class="va">list_qbr_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">length_df</span>, <span class="va">qbr_stat_fun</span><span class="op">)</span>
+
+<span class="co"># Combine the lists into a dataframe</span>
+<span class="va">list_pbp_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind.data.frame"</span>, <span class="va">list_qbr_stats</span><span class="op">)</span>
+
+<span class="co"># check it out</span>
+<span class="va">list_pbp_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30
+Columns: 13
+$ displayName   &lt;chr&gt; "Lamar Jackson", "Patrick Mahomes", "Drew Brees", "Dak P…
+$ teamName      &lt;chr&gt; "Ravens", "Chiefs", "Saints", "Cowboys", "Seahawks", "Li…
+$ teamShortName &lt;chr&gt; "BAL", "KC", "NO", "DAL", "SEA", "DET", "HOU", "MIA", "T…
+$ TQBR          &lt;dbl&gt; 83.0, 77.7, 73.3, 71.9, 71.5, 71.3, 70.5, 68.3, 64.2, 64…
+$ TOT           &lt;dbl&gt; 103.7, 97.3, 62.6, 93.1, 90.9, 56.1, 91.6, 70.7, 45.8, 7…
+$ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -13.7…
+$ RUN           &lt;dbl&gt; 39.1, 14.3, 1.6, 10.0, 10.6, 1.6, 19.8, 6.3, 11.7, 2.7, …
+$ QBR           &lt;dbl&gt; 82.3, 79.4, 75.7, 72.8, 71.2, 74.7, 71.2, 66.6, 67.2, 65…
+$ QBP           &lt;dbl&gt; 613, 585, 419, 690, 674, 353, 662, 620, 374, 598, 745, 5…
+$ PEN           &lt;dbl&gt; 2.2, 5.0, 1.9, 2.6, 1.5, 1.9, 1.4, 3.7, 2.3, 1.1, 5.8, 5…
+$ PAS           &lt;dbl&gt; 55.0, 71.6, 53.1, 70.7, 58.3, 44.5, 52.0, 47.6, 18.1, 54…
+$ PA            &lt;dbl&gt; 66.7, 55.8, 33.7, 48.1, 43.0, 27.0, 42.3, 30.2, 19.0, 27…
+$ EXP           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…</code></pre>
+</div>
+</div>
+<p>Now, I typically don’t suggest using a <code>for loop</code> as per <a href="https://adv-r.hadley.nz/control-flow.html#loops">Advanced R</a> this approach can be prone to some common pitfalls which can lead to performance deficits or side effects. Similarily, the <code>apply</code> family of functions are very powerful but for <a href="https://jennybc.github.io/purrr-tutorial/bk01_base-functions.html">some folks</a> they find that it doesn’t quite fit with their mental model or is inconsistent in the expected output.</p>
+<p>As an alternative to loops and/or <code>apply</code>, we can use <code>purrr</code>, AND <code>purrr</code> can also help us a lot with actually parsing through the <code>JSON</code> itself! I also think that other <code>tidyverse</code> tools like <code>tidyr</code> for <code>unnest_wider</code> and <code>unpack</code>/<code>hoist</code> are useful here as alternative strategies!</p>
+</section></section></section><section id="enter-purrr" class="level1"><h1>Enter <code>purrr</code>
+</h1>
+<p><code>purrr</code> is usually thought of for using functional programming as alternatives to <code>for loops</code> and for the concept of “Iteration without repetition”. Overviews of <code>purrr</code> are covered a bit deeper in <a href="https://r4ds.had.co.nz/iteration.html">R4DS</a> and in one of my previous <a href="https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/">blog posts</a>.</p>
+<section id="purrrpluck" class="level2"><h2 class="anchored" data-anchor-id="purrrpluck"><code>purrr::pluck()</code></h2>
+<p>The first function from <code>purrr</code> we’ll use is <code>pluck</code>, which provides a consistent and generalized form of <code>[[</code>. This allows you to quickly move through lists and nested lists.</p>
+<p>Let’s get back to our QB data with <code>pluck</code>! There are still a lot of elements we don’t need, but we’ll get rid of those when we put all the data together.</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">raw_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="co"># equivalent to raw_json[["athletes"]][[1]][["athlete"]]</span>
+  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="st">"athletes"</span>, <span class="fl">1</span>,  <span class="st">"athlete"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 20
+ $ id           : chr "3916387"
+ $ uid          : chr "s:20~l:28~a:3916387"
+ $ guid         : chr "7d76fbb11c5ed9f4954fcad43f720ae2"
+ $ type         : chr "football"
+ $ firstName    : chr "Lamar"
+ $ lastName     : chr "Jackson"
+ $ displayName  : chr "Lamar Jackson"
+ $ shortName    : chr "L. Jackson"
+ $ debutYear    : int 2018
+ $ links        :List of 7
+ $ headshot     :List of 2
+ $ position     :List of 7
+ $ status       :List of 4
+ $ age          : int 25
+ $ teamName     : chr "Ravens"
+ $ teamShortName: chr "BAL"
+ $ teams        :List of 1
+ $ slug         : chr "lamar-jackson"
+ $ teamId       : chr "33"
+ $ teamUId      : chr "s:20~l:28~t:33"</code></pre>
+</div>
+</div>
+<p>What about that pesky headshot column that reports as a list of lists? We can just add an additional depth argument with <code>"headshot"</code> and see that it gives us a URL to the QB’s photo and a repeat of the QB’s name. We’ll use this a bit later to get the URL only.</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">raw_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="co"># equivalent to raw_json[["athletes"]][[1]][["athlete"]][["headshot"]]</span>
+  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="st">"athletes"</span>, <span class="fl">1</span>, <span class="st">"athlete"</span>, <span class="st">"headshot"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$href
+[1] "https://a.espncdn.com/i/headshots/nfl/players/full/3916387.png"
+
+$alt
+[1] "Lamar Jackson"</code></pre>
+</div>
+</div>
+</section><section id="purrrmap" class="level2"><h2 class="anchored" data-anchor-id="purrrmap"><code>purrr::map</code></h2>
+<p>So <code>pluck</code> allows us to quickly get to the data of interest, but what about replacing our <code>for loop</code> to get at the vectors for each of the QB’s individual stats? <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> can help us accomplish this!</p>
+<section id="define-a-function" class="level3"><h3 class="anchored" data-anchor-id="define-a-function">Define a function</h3>
+<p>Again, <code>purrr</code> is used for functional programming, so we need to define a function to iterate with. We’ll define this as <code>get_qbr_data()</code> and test it out! It gets us a nicely extracted named numeric vector. The names are useful as when we go to <code><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_wider()</a></code> the dataset it will automatically assign the column names for us.</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># get names of the QBR categories with pluck</span>
+<span class="va">category_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="va">raw_json</span>, <span class="st">"categories"</span>, <span class="fl">1</span>, <span class="st">"labels"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">category_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "TQBR" "PA"   "QBP"  "TOT"  "PAS"  "RUN"  "EXP"  "PEN"  "QBR"  "SAC" </code></pre>
+</div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Get the QBR stats by each player (row_n = row number of player in the df)</span>
+<span class="va">get_qbr_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">row_n</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">player_stats</span> <span class="op">&lt;-</span> <span class="va">raw_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="st">"athletes"</span>, <span class="va">row_n</span>, <span class="st">"categories"</span>, <span class="fl">1</span>, <span class="st">"totals"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="co"># assign names from category</span>
+    <span class="fu"><a href="https://purrr.tidyverse.org/reference/set_names.html">set_names</a></span><span class="op">(</span>nm <span class="op">=</span> <span class="va">category_names</span><span class="op">)</span>
+  
+  <span class="va">player_nm</span> <span class="op">&lt;-</span> <span class="va">raw_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="st">"athletes"</span>, <span class="va">row_n</span>, <span class="st">"athlete"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://purrr.tidyverse.org/reference/keep.html">keep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"displayName"</span>, <span class="st">"teamName"</span>, <span class="st">"teamShortName"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span>
+  
+  <span class="va">headshot</span> <span class="op">&lt;-</span> <span class="va">raw_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="st">"athletes"</span>, <span class="va">row_n</span>, <span class="st">"athlete"</span>, <span class="st">"headshot"</span>, <span class="st">"href"</span><span class="op">)</span>
+  
+  <span class="co">#output named list</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">player_nm</span>, headshot <span class="op">=</span> <span class="va">headshot</span>, <span class="va">player_stats</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="co"># test the function</span>
+<span class="fu">get_qbr_data</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$displayName
+[1] "Lamar Jackson"
+
+$teamName
+[1] "Ravens"
+
+$teamShortName
+[1] "BAL"
+
+$headshot
+[1] "https://a.espncdn.com/i/headshots/nfl/players/full/3916387.png"
+
+$TQBR
+[1] "83.0"
+
+$PA
+[1] "66.7"
+
+$QBP
+[1] "613"
+
+$TOT
+[1] "103.7"
+
+$PAS
+[1] "55.0"
+
+$RUN
+[1] "39.1"
+
+$EXP
+[1] "0.0"
+
+$PEN
+[1] "2.2"
+
+$QBR
+[1] "82.3"
+
+$SAC
+[1] "-7.4"</code></pre>
+</div>
+</div>
+<p>Note, while this looks like a 1x10 dataframe, it’s still just a vector with name attributes.</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># What type?</span>
+<span class="fu">get_qbr_data</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 14
+ $ displayName  : chr "Lamar Jackson"
+ $ teamName     : chr "Ravens"
+ $ teamShortName: chr "BAL"
+ $ headshot     : chr "https://a.espncdn.com/i/headshots/nfl/players/full/3916387.png"
+ $ TQBR         : chr "83.0"
+ $ PA           : chr "66.7"
+ $ QBP          : chr "613"
+ $ TOT          : chr "103.7"
+ $ PAS          : chr "55.0"
+ $ RUN          : chr "39.1"
+ $ EXP          : chr "0.0"
+ $ PEN          : chr "2.2"
+ $ QBR          : chr "82.3"
+ $ SAC          : chr "-7.4"</code></pre>
+</div>
+</div>
+</section></section></section><section id="put-it-all-together" class="level1"><h1>Put it all together</h1>
+<p>We can use our defined function, <code><a href="https://purrr.tidyverse.org/reference/pluck.html">purrr::pluck()</a></code> and <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map</a></code> to build our final dataframe!</p>
+<p>Let’s start by extracting the core dataframe with player name, team name, and the headshot url!</p>
+<p>We can use our <code>get_qbr_data()</code> to do just that and grab the stats from the <code>categories</code>/<code>totals</code> portion of the JSON along with the QB metadata from the <code>athletes</code> portion.</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qbr_df</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">raw_json</span><span class="op">$</span><span class="va">athletes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span><span class="op">(</span><span class="va">get_qbr_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="va">TQBR</span><span class="op">:</span><span class="va">SAC</span>, <span class="va">as.double</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">qbr_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30
+Columns: 14
+$ displayName   &lt;chr&gt; "Lamar Jackson", "Patrick Mahomes", "Drew Brees", "Dak P…
+$ teamName      &lt;chr&gt; "Ravens", "Chiefs", "Saints", "Cowboys", "Seahawks", "Li…
+$ teamShortName &lt;chr&gt; "BAL", "KC", "NO", "DAL", "SEA", "DET", "HOU", "MIA", "T…
+$ headshot      &lt;chr&gt; "https://a.espncdn.com/i/headshots/nfl/players/full/3916…
+$ TQBR          &lt;dbl&gt; 83.0, 77.7, 73.3, 71.9, 71.5, 71.3, 70.5, 68.3, 64.2, 64…
+$ PA            &lt;dbl&gt; 66.7, 55.8, 33.7, 48.1, 43.0, 27.0, 42.3, 30.2, 19.0, 27…
+$ QBP           &lt;dbl&gt; 613, 585, 419, 690, 674, 353, 662, 620, 374, 598, 745, 5…
+$ TOT           &lt;dbl&gt; 103.7, 97.3, 62.6, 93.1, 90.9, 56.1, 91.6, 70.7, 45.8, 7…
+$ PAS           &lt;dbl&gt; 55.0, 71.6, 53.1, 70.7, 58.3, 44.5, 52.0, 47.6, 18.1, 54…
+$ RUN           &lt;dbl&gt; 39.1, 14.3, 1.6, 10.0, 10.6, 1.6, 19.8, 6.3, 11.7, 2.7, …
+$ EXP           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ PEN           &lt;dbl&gt; 2.2, 5.0, 1.9, 2.6, 1.5, 1.9, 1.4, 3.7, 2.3, 1.1, 5.8, 5…
+$ QBR           &lt;dbl&gt; 82.3, 79.4, 75.7, 72.8, 71.2, 74.7, 71.2, 66.6, 67.2, 65…
+$ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -13.7…</code></pre>
+</div>
+</div>
+<p>So that’s it! A few different approaches to get to the same result, some of the ways to interact with nested JSON, and doing it all with either mostly base or <code>tidyverse</code>. So the next time you interact with JSON, I hope you feel better equipped to work with it!</p>
+</section><section id="one-more-example" class="level1"><h1>One more example</h1>
+<p>If you are using a recent version of <code>tidyr</code> (&gt;= 1.1) - check out Hadley’s approach to this!</p>
+<p>Note that he is using <code><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">jsonlite::read_json()</a></code> rather than <code>fromJSON</code>, this doesn’t simplify and keeps everything as it’s natural list-state. With <code><a href="https://tidyr.tidyverse.org/reference/nest.html">tidyr::unnest()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/hoist.html">tidyr::hoist()</a></code> this is easy to work with!</p>
+<p>Don’t forget to check out the <a href="https://tidyr.tidyverse.org/articles/rectangle.html">rectangling guide</a> from the <code>tidyverse</code> team.</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://arxiv.org/abs/1403.2805">jsonlite</a></span><span class="op">)</span>
+
+<span class="co"># link to the API output as a JSON file</span>
+<span class="va">url_json</span> <span class="op">&lt;-</span> <span class="st">"https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/qbr?region=us&amp;lang=en&amp;qbrType=seasons&amp;seasontype=2&amp;isqualified=true&amp;sort=schedAdjQBR%3Adesc&amp;season=2019"</span>
+
+<span class="co"># get the raw json into R</span>
+<span class="va">raw_json_list</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">read_json</a></span><span class="op">(</span><span class="va">url_json</span><span class="op">)</span>
+
+<span class="co"># get names of the QBR categories</span>
+<span class="va">category_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="va">raw_json_list</span>, <span class="st">"categories"</span>, <span class="fl">1</span>, <span class="st">"labels"</span><span class="op">)</span>
+
+<span class="co"># create tibble out of athlete objects</span>
+<span class="va">athletes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>athlete <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="va">raw_json_list</span>, <span class="st">"athletes"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">qbr_hadley</span> <span class="op">&lt;-</span> <span class="va">athletes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_wider</a></span><span class="op">(</span><span class="va">athlete</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">hoist</a></span><span class="op">(</span><span class="va">athlete</span>, <span class="st">"displayName"</span>, <span class="st">"teamName"</span>, <span class="st">"teamShortName"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_longer</a></span><span class="op">(</span><span class="va">categories</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">hoist</a></span><span class="op">(</span><span class="va">categories</span>, <span class="st">"totals"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>totals <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">totals</span>, <span class="va">as.double</span><span class="op">)</span>,
+         totals <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">totals</span>, <span class="va">set_names</span>, <span class="va">category_names</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_wider</a></span><span class="op">(</span><span class="va">totals</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">hoist</a></span><span class="op">(</span><span class="va">athlete</span>, headshot <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"headshot"</span>, <span class="st">"href"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">athlete</span>, <span class="op">-</span><span class="va">categories</span><span class="op">)</span>
+
+<span class="co"># Is it the same as my version?</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">qbr_df</span>, <span class="va">qbr_hadley</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section><section id="tldr" class="level1"><h1>TLDR</h1>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://arxiv.org/abs/1403.2805">jsonlite</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr.r-lib.org/">httr</a></span><span class="op">)</span>
+
+<span class="co"># link to the API output as a JSON file</span>
+<span class="va">url_json</span> <span class="op">&lt;-</span> <span class="st">"https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/qbr?region=us&amp;lang=en&amp;qbrType=seasons&amp;seasontype=2&amp;isqualified=true&amp;sort=schedAdjQBR%3Adesc&amp;season=2019"</span>
+
+<span class="co"># get the raw json into R</span>
+<span class="va">raw_json</span> <span class="op">&lt;-</span> <span class="va">url_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># get names of the QBR categories</span>
+<span class="va">category_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="va">raw_json</span>, <span class="st">"categories"</span>,<span class="fl">1</span>, <span class="st">"labels"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Get the QBR stats by each player (row_n = player)</span>
+<span class="va">get_qbr_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">row_n</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">player_stats</span> <span class="op">&lt;-</span> <span class="va">raw_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="st">"athletes"</span>, <span class="va">row_n</span>, <span class="st">"categories"</span>, <span class="fl">1</span>, <span class="st">"totals"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="co"># assign names from category</span>
+    <span class="fu"><a href="https://purrr.tidyverse.org/reference/set_names.html">set_names</a></span><span class="op">(</span>nm <span class="op">=</span> <span class="va">category_names</span><span class="op">)</span>
+  
+  <span class="va">player_nm</span> <span class="op">&lt;-</span> <span class="va">raw_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="st">"athletes"</span>, <span class="va">row_n</span>, <span class="st">"athlete"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://purrr.tidyverse.org/reference/keep.html">keep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"displayName"</span>, <span class="st">"teamName"</span>, <span class="st">"teamShortName"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span>
+  
+  <span class="va">headshot</span> <span class="op">&lt;-</span> <span class="va">raw_json</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html">pluck</a></span><span class="op">(</span><span class="st">"athletes"</span>, <span class="va">row_n</span>, <span class="st">"athlete"</span>, <span class="st">"headshot"</span>, <span class="st">"href"</span><span class="op">)</span>
+  
+  <span class="co">#output named list</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">player_nm</span>, headshot <span class="op">=</span> <span class="va">headshot</span>, <span class="va">player_stats</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="co"># create the dataframe and tidy it up</span>
+<span class="va">qbr_df</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">raw_json</span><span class="op">$</span><span class="va">athletes</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span><span class="op">(</span><span class="va">get_qbr_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="va">TQBR</span><span class="op">:</span><span class="va">SAC</span>, <span class="va">as.double</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">qbr_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt_preview.html">gt_preview</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/text_transform.html">text_transform</a></span><span class="op">(</span><span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/cells_body.html">cells_body</a></span><span class="op">(</span><span class="va">headshot</span><span class="op">)</span>, <span class="fu">gt</span><span class="fu">::</span><span class="va"><a href="https://gt.rstudio.com/reference/web_image.html">web_image</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="solvpoyjfc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#solvpoyjfc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#solvpoyjfc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#solvpoyjfc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#solvpoyjfc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#solvpoyjfc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#solvpoyjfc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#solvpoyjfc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#solvpoyjfc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#solvpoyjfc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#solvpoyjfc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#solvpoyjfc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#solvpoyjfc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#solvpoyjfc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#solvpoyjfc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#solvpoyjfc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#solvpoyjfc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#solvpoyjfc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#solvpoyjfc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#solvpoyjfc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#solvpoyjfc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#solvpoyjfc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#solvpoyjfc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#solvpoyjfc .gt_left {
+  text-align: left;
+}
+
+#solvpoyjfc .gt_center {
+  text-align: center;
+}
+
+#solvpoyjfc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#solvpoyjfc .gt_font_normal {
+  font-weight: normal;
+}
+
+#solvpoyjfc .gt_font_bold {
+  font-weight: bold;
+}
+
+#solvpoyjfc .gt_font_italic {
+  font-style: italic;
+}
+
+#solvpoyjfc .gt_super {
+  font-size: 65%;
+}
+
+#solvpoyjfc .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#solvpoyjfc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#solvpoyjfc .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#solvpoyjfc .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#solvpoyjfc .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+<thead class="gt_col_headings"><tr>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">displayName</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">teamName</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">teamShortName</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">headshot</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">TQBR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">PA</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">QBP</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">TOT</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">PAS</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">RUN</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">EXP</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">PEN</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">QBR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">SAC</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td class="gt_row gt_right gt_stub" style="font-family: Courier;">1</td>
+<td class="gt_row gt_left">Lamar Jackson</td>
+<td class="gt_row gt_left">Ravens</td>
+<td class="gt_row gt_left">BAL</td>
+<td class="gt_row gt_left"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3916387.png" style="height:30px;"></td>
+<td class="gt_row gt_right">83.0</td>
+<td class="gt_row gt_right">66.7</td>
+<td class="gt_row gt_right">613</td>
+<td class="gt_row gt_right">103.7</td>
+<td class="gt_row gt_right">55.0</td>
+<td class="gt_row gt_right">39.1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">2.2</td>
+<td class="gt_row gt_right">82.3</td>
+<td class="gt_row gt_right">-7.4</td>
+</tr>
+<tr>
+<td class="gt_row gt_right gt_stub" style="font-family: Courier;">2</td>
+<td class="gt_row gt_left">Patrick Mahomes</td>
+<td class="gt_row gt_left">Chiefs</td>
+<td class="gt_row gt_left">KC</td>
+<td class="gt_row gt_left"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png" style="height:30px;"></td>
+<td class="gt_row gt_right">77.7</td>
+<td class="gt_row gt_right">55.8</td>
+<td class="gt_row gt_right">585</td>
+<td class="gt_row gt_right">97.3</td>
+<td class="gt_row gt_right">71.6</td>
+<td class="gt_row gt_right">14.3</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">5.0</td>
+<td class="gt_row gt_right">79.4</td>
+<td class="gt_row gt_right">-6.5</td>
+</tr>
+<tr>
+<td class="gt_row gt_right gt_stub" style="font-family: Courier;">3</td>
+<td class="gt_row gt_left">Drew Brees</td>
+<td class="gt_row gt_left">Saints</td>
+<td class="gt_row gt_left">NO</td>
+<td class="gt_row gt_left"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/2580.png" style="height:30px;"></td>
+<td class="gt_row gt_right">73.3</td>
+<td class="gt_row gt_right">33.7</td>
+<td class="gt_row gt_right">419</td>
+<td class="gt_row gt_right">62.6</td>
+<td class="gt_row gt_right">53.1</td>
+<td class="gt_row gt_right">1.6</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1.9</td>
+<td class="gt_row gt_right">75.7</td>
+<td class="gt_row gt_right">-6.0</td>
+</tr>
+<tr>
+<td class="gt_row gt_right gt_stub" style="font-family: Courier;">4</td>
+<td class="gt_row gt_left">Dak Prescott</td>
+<td class="gt_row gt_left">Cowboys</td>
+<td class="gt_row gt_left">DAL</td>
+<td class="gt_row gt_left"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/2577417.png" style="height:30px;"></td>
+<td class="gt_row gt_right">71.9</td>
+<td class="gt_row gt_right">48.1</td>
+<td class="gt_row gt_right">690</td>
+<td class="gt_row gt_right">93.1</td>
+<td class="gt_row gt_right">70.7</td>
+<td class="gt_row gt_right">10.0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">2.6</td>
+<td class="gt_row gt_right">72.8</td>
+<td class="gt_row gt_right">-9.7</td>
+</tr>
+<tr>
+<td class="gt_row gt_right gt_stub" style="font-family: Courier;">5</td>
+<td class="gt_row gt_left">Russell Wilson</td>
+<td class="gt_row gt_left">Seahawks</td>
+<td class="gt_row gt_left">SEA</td>
+<td class="gt_row gt_left"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/14881.png" style="height:30px;"></td>
+<td class="gt_row gt_right">71.5</td>
+<td class="gt_row gt_right">43.0</td>
+<td class="gt_row gt_right">674</td>
+<td class="gt_row gt_right">90.9</td>
+<td class="gt_row gt_right">58.3</td>
+<td class="gt_row gt_right">10.6</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1.5</td>
+<td class="gt_row gt_right">71.2</td>
+<td class="gt_row gt_right">-20.6</td>
+</tr>
+<tr>
+<td class="gt_row gt_right gt_stub" style="font-family: Courier; font-size: x-small; background-color: #E4E4E4;">6..29</td>
+<td class="gt_row gt_left" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_left" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_left" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_left" style="background-color: #E4E4E4;"><img src="" style="height:30px;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+<td class="gt_row gt_right" style="background-color: #E4E4E4;"></td>
+</tr>
+<tr>
+<td class="gt_row gt_right gt_stub" style="font-family: Courier;">30</td>
+<td class="gt_row gt_left">Mason Rudolph</td>
+<td class="gt_row gt_left">Steelers</td>
+<td class="gt_row gt_left">PIT</td>
+<td class="gt_row gt_left"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3116407.png" style="height:30px;"></td>
+<td class="gt_row gt_right">36.2</td>
+<td class="gt_row gt_right">-12.9</td>
+<td class="gt_row gt_right">336</td>
+<td class="gt_row gt_right">16.9</td>
+<td class="gt_row gt_right">7.2</td>
+<td class="gt_row gt_right">-1.3</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">3.2</td>
+<td class="gt_row gt_right">36.8</td>
+<td class="gt_row gt_right">-7.8</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.1.1 (2021-08-10)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-25
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ dplyr       * 1.0.8   2022-02-08 [1] CRAN (R 4.1.1)
+ forcats     * 0.5.1   2021-01-27 [1] CRAN (R 4.1.1)
+ ggplot2     * 3.3.5   2021-06-25 [1] CRAN (R 4.1.1)
+ httr        * 1.4.2   2020-07-20 [1] CRAN (R 4.1.0)
+ jsonlite    * 1.8.0   2022-02-22 [1] CRAN (R 4.1.1)
+ purrr       * 0.3.4   2020-04-17 [1] CRAN (R 4.1.0)
+ readr       * 2.0.2   2021-09-27 [1] CRAN (R 4.1.1)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.1.1)
+ stringr     * 1.4.0   2019-02-10 [1] CRAN (R 4.1.1)
+ tibble      * 3.1.6   2021-11-07 [1] CRAN (R 4.1.1)
+ tidyr       * 1.2.0   2022-02-01 [1] CRAN (R 4.1.1)
+ tidyverse   * 1.3.1   2021-04-15 [1] CRAN (R 4.1.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/mockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

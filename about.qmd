@@ -1,0 +1,44 @@
+---
+title: "Tom Mock"
+description: |
+  Be humble, hungry and kind. 
+  Be so good they can't ignore you.
+image: profile.jpeg
+about:
+  template: trestles
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/thomasmock
+    - icon: github
+      text: Github
+      href: https://github.com/jthomasmock
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="thomasmock" data-color="#5F7FFF" data-emoji=""  data-font="Lato" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
+
+<br>
+
+# Education
+
+* Bachelor's degree from Southwestern University (where I thought I wanted to be a Physical Therapist).
+* Master's degree from Florida Atlantic University (where I realized I actually really liked data and making graphs)
+* Doctorate from UNT Health Science Center (where I realized I really didn't like academia, but still really liked data, graphs, and now R)
+
+## Current State
+
+I fell in love with R and data science through my graduate research, using R and RStudio to wrangle, analyze, model, and visualize my data. I became passionate about growing the R community, and founded [`#TidyTuesday`](https://github.com/rfordatascience/tidytuesday/blob/master/README.md) to help newcomers and seasoned vets improve their `Tidyverse` skills.
+
+I am the Customer Enablement Lead at RStudio, helping our customers be as successful as possible with RStudio software in their environment.
+
+In my home town of San Antonio, my wife and I run on the local trails, play with our Boston Terrier “Howard”,<img align="right" width="95" alt="A pixel art image of my dog howard - he's a black and white Boston Terrier" src="howard.png">  spend lots of time with our local families, grill/smoke plenty of meat, and are always on the lookout for great new food, especially churros. 
+
+## Contact
+
+You should definitely just tweet `@` me [`@thomas_mock`](https://twitter.com/thomas_mock).

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="Collect and organize all your content, and then customize how it appears on social media.">
+<title>The MockUp - Including and meta tagging extra content in a distill blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Including and meta tagging extra content in a distill blog">
+<meta property="og:description" content="Collect and organize all your content, and then customize how it appears on social media.
+">
+<meta property="og:image" content="https://themockup.blog//posts/2021-03-21-meta-tagging-distill/preview.png">
+<meta property="og:site-name" content="The MockUp">
+<meta property="og:image:height" content="387">
+<meta property="og:image:width" content="640">
+<meta name="twitter:title" content="The MockUp - Including and meta tagging extra content in a distill blog">
+<meta name="twitter:description" content="Collect and organize all your content, and then customize how it appears on social media.
+">
+<meta name="twitter:image" content="https://themockup.blog//posts/2021-03-21-meta-tagging-distill/preview.png">
+<meta name="twitter:image-height" content="387">
+<meta name="twitter:image-width" content="640">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-fa fa-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Including and meta tagging extra content in a distill blog</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">meta</div>
+                <div class="quarto-category">distill</div>
+                <div class="quarto-category">blog</div>
+                <div class="quarto-category">rmarkdown</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>Collect and organize all your content, and then customize how it appears on social media.</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">03-21-2021</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#including-alternate-content" id="toc-including-alternate-content" class="nav-link active" data-scroll-target="#including-alternate-content">Including alternate content</a>
+  <ul class="collapse">
+<li><a href="#resources-pane" id="toc-resources-pane" class="nav-link" data-scroll-target="#resources-pane">Resources pane</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#tagging" id="toc-tagging" class="nav-link" data-scroll-target="#tagging">Tagging</a>
+  <ul class="collapse">
+<li><a href="#blogposts" id="toc-blogposts" class="nav-link" data-scroll-target="#blogposts">Blogposts</a></li>
+  <li><a href="#distill-home-page" id="toc-distill-home-page" class="nav-link" data-scroll-target="#distill-home-page"><code>{distill}</code> home page</a></li>
+  <li><a href="#extra-content" id="toc-extra-content" class="nav-link" data-scroll-target="#extra-content">Extra content</a></li>
+  <li><a href="#meta-tags" id="toc-meta-tags" class="nav-link" data-scroll-target="#meta-tags"><code>&lt;meta&gt;</code> Tags</a></li>
+  <li><a href="#writing-meta-tags" id="toc-writing-meta-tags" class="nav-link" data-scroll-target="#writing-meta-tags">Writing <code>&lt;meta&gt;</code> tags</a></li>
+  <li><a href="#metathis-options" id="toc-metathis-options" class="nav-link" data-scroll-target="#metathis-options"><code>{metathis}</code> options</a></li>
+  </ul>
+</li>
+  <li><a href="#optimal-image-sizes" id="toc-optimal-image-sizes" class="nav-link" data-scroll-target="#optimal-image-sizes">Optimal image sizes</a></li>
+  <li><a href="#confirm-tags" id="toc-confirm-tags" class="nav-link" data-scroll-target="#confirm-tags">Confirm tags</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><p><img src="preview.png" class="img-fluid"></p>
+<p>Including “extra” content in your blog is very useful for collecting all of your content beyond just blogposts. For example, I have a <a href="https://themockup.blog/resources.html">Resources page</a> that sublinks to other things I’ve created or wanted to share at a specific URL.</p>
+<div class="aside">
+<p>Header photo by <a href="https://unsplash.com/@jessedo81?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">jesse orrico</a> on <a href="../../s/photos/organize?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>
+</div>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="resources-page.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Image of themockup.blog/resources page</figcaption><p></p>
+</figure>
+</div>
+<p>These extra pieces of content include <a href="https://github.com/yihui/xaringan">xaringan</a> slides, books, or one-off RMarkdown “sites” that don’t really fit into a blogpost.</p>
+<p>My approach is to store these extra pages into a new folder called <code>/static/</code> in my blog project directory. I do this to generally keep my top-level directory a bit cleaner, and to separate them out from the core blog. Note that lastly, you do not <em>need</em> to put everything in <code>/static</code> if you don’t want to, and you can keep everything at the top-level directory which would serve up content at <code>site-name.com/content-name.html</code>.</p>
+<section id="including-alternate-content" class="level2"><h2 class="anchored" data-anchor-id="including-alternate-content">Including alternate content</h2>
+<p>As long as you are using <a href="https://github.com/rstudio/distill">distill</a> v 1.2 or later and <a href="https://github.com/rstudio/rmarkdown">rmarkdown</a> v 2.7 or later, you can include <a href="https://rstudio.github.io/distill/website.html#alternate-formats">alternate RMarkdown-generated content</a> within your <a href="https://github.com/rstudio/distill">distill</a> blog!</p>
+<p>Alternate format in this case really just means any other RMarkdown format <em>besides</em> <a href="https://github.com/rstudio/distill">distill</a>.</p>
+<p>Now while you can knit files locally and see the output, it will not be moved to your <code>_site</code> directory and served up on your website until you rebuild the site.</p>
+<p>These alternate-format pages are rebuilt and included in the <code>_site</code> directory whenever you run <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render_site.html">rmarkdown::render_site()</a></code> OR build one of the top-level site pages (ie <code>index.Rmd</code>, <code>about.Rmd</code>, etc).</p>
+<p>So for my example, my <code>static</code> pages get written to:<br><code>_site/static/FILE-NAME.HTML</code></p>
+<p>and will show up on my blog at:<br><code>themockup.blog/static/FILE-NAME.HTML</code></p>
+<p>For example my <a href="https://gt.rstudio.com/">gt</a> cookbook is linked at:</p>
+<p><code>https://themockup.blog/static/gt-cookbook.html</code></p>
+<p>That’s easy enough, and now you can include basically any piece of arbitrary content you create via RMarkdown, all collected underneath the main URL of your blog/site!</p>
+<section id="resources-pane" class="level3"><h3 class="anchored" data-anchor-id="resources-pane">Resources pane</h3>
+<p>Since I’m on <a href="https://github.com/rstudio/distill">distill</a>, to provide links for everything I want to add another “tab” to my site that shows all the various extra content. I add the below code to my navbar in my <code>_site.yaml</code> file to add a new tab.</p>
+<pre><code>navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "Resources"
+      href: resources.html
+    - text: "About"</code></pre>
+<p>The resources page itself can be super lightweight and just link out to the files, but I decided to use a <a href="https://glin.github.io/reactable/">reactable</a> table that references all of the content so it is searchable and sortable. This page is generated by my <code>resources.Rmd</code> file.</p>
+<p>Again, you could just provide the raw URL links as hyperlinks to the various pieces of content, it’s “just another page” so feel free to do whatever you want!</p>
+</section></section><section id="tagging" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="tagging">Tagging</h2>
+<p>Having various pieces of content sublinked on your blog generally makes them available to folks trying to access the content on the web. However, it’s also a good idea to add “tags” to them so that they are organically discoverable via search engines. The other benefit is that tags can make your links display summary cards or other rich content on social media sites.</p>
+<div class="page-columns page-full"><p>Adding social cards/previews to one-off pieces of content and sub-pages of your blog can help a lot with engagement<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. It also has the benefit of helping describe the linked content without having to embed ALL of the description into the body of the Tweet/LinkedIn post. Ultimately it’s also more rewarding as rather than a bare link or a preview card without an image, you can explicitly decide what you want the preview to show!</p><div class="no-row-height column-margin column-container"><li id="fn1" role="doc-endnote"><p><sup>1</sup>&nbsp; In some cases, 2-3x more views/clicks per https://www.socialsongbird.com/2020/01/how-to-create-clickable-posts-on-social.html</p></li></div></div>
+<section id="blogposts" class="level3"><h3 class="anchored" data-anchor-id="blogposts">Blogposts</h3>
+<p>Now for most blogposts in <a href="https://github.com/rstudio/distill">distill</a> you are able to get social preview cards “for free” in that they can just be added via some <a href="https://rstudio.github.io/distill/metadata.html#twitter-card">extra lines in the YAML header</a>. The <code>preview</code> argument turns into the preview image on the index page of your blog and in the meta tags. The title and description also get written into meta tags to be reused by social.</p>
+<pre><code>---
+title: "JavaScript &amp; D3"
+description: Enhance communication with interactive visualizations 
+base_url: https://rstudio.github.io/distill
+preview: images/javascript-d3-preview.png
+twitter:
+  site: "@rstudio"
+  creator: "@fly_upside_down"
+---</code></pre>
+</section><section id="distill-home-page" class="level3"><h3 class="anchored" data-anchor-id="distill-home-page">
+<code>{distill}</code> home page</h3>
+<p>However, notably the preview image option is missing from the MAIN page of your <a href="https://github.com/rstudio/distill">distill</a> blog.</p>
+<p>You can use the strategies outlined below with <a href="https://pkg.garrickadenbuie.com/metathis/">metathis</a> or <code>&lt;meta&gt;</code> tags to create a nice tag/meta details for your <a href="https://github.com/rstudio/distill">distill</a> homepage as well.</p>
+<p>While I’ll be covering more details about <a href="https://pkg.garrickadenbuie.com/metathis/">metathis</a> below, here is what my <code>index.Rmd</code> looks like that attaches <code>&lt;meta&gt;</code> tags via <a href="https://pkg.garrickadenbuie.com/metathis/">metathis</a></p>
+<pre><code>---
+title: "Posts"
+site: distill::distill_website
+listing: posts
+---
+
+{r, include=FALSE, results='asis'}
+library(metathis)
+
+meta() %&gt;%
+  meta_social(
+    title = "The MockUp Blog",
+    description = "Tom's musings on all things R",
+    url = "https://themockup.blog/",
+    image = "https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/logo-plot.png",
+    image_alt = "Chaos into tidy code",
+    og_type = "website",
+    og_author = "Tom Mock",
+    twitter_card_type = "summary",
+    twitter_creator = "@thomas_mock"
+  )
+</code></pre>
+<div class="aside">
+<p>Others have written about social card/meta tags for <a href="https://bookdown.org/yihui/blogdown/"><code>{blogdown}</code></a>, with examples from <a href="https://alison.rbind.io/post/2019-02-19-hugo-archetypes/">Alison Hill</a>, <a href="https://xvrdm.github.io/2017/10/23/socialize-your-blogdown/">Xavier A</a>, <a href="https://sharleenw.rbind.io/2020/09/02/how-to-remake-a-blogdown-blog-from-scratch/">Sharleen W.</a>, and <a href="http://lenkiefer.com/2017/10/23/sharing-is-caring/">Len Kiefer</a>.</p>
+</div>
+</section><section id="extra-content" class="level3"><h3 class="anchored" data-anchor-id="extra-content">Extra content</h3>
+<p>Those built-in options work great for blogposts, but again I also have quite a few extra pieces of content, like my <a href="https://themockup.blog/static/gt-cookbook.html"><code>{gt}</code> cookbooks</a>, <a href="https://themockup.blog/static/slides/intro-tables-urban.html"><code>{xaringan}</code> slide decks</a>, or example <a href="https://themockup.blog/static/100-women.html">interactive tables</a>.</p>
+<p>For these non-blog pages, they are essentially just bare RMarkdown sites. As such, often I need to manually add the <code>&lt;meta&gt;</code> tags that tell the various social pages “what to do” with the page as far as previews.</p>
+</section><section id="meta-tags" class="level3"><h3 class="anchored" data-anchor-id="meta-tags">
+<code>&lt;meta&gt;</code> Tags</h3>
+<p><code>&lt;meta&gt;</code> tags are useful for search engine optimization (aka discoverability) of your content, for sharing on social media like LinkedIn or Twitter, or even messaging platforms like Slack, and generally helpful for accessibility. Garrick Aden-Buie recommended the Guide to <code>&lt;meta&gt;</code> and <code>&lt;head&gt;</code> details from <a href="https://github.com/joshbuchea/HEAD">Josh Buchea</a>. That sublinks to LOTS of great detail for specific social pages.</p>
+<p>Per <a href="https://www.w3schools.com/tags/tag_meta.asp">w3chools.com</a>:</p>
+<blockquote class="blockquote">
+<p>The <code>&lt;meta&gt;</code> tag defines metadata about an HTML document. Metadata is data (information) about data.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Metadata is used by browsers (how to display content or reload page), search engines (keywords), and other web services.</p>
+</blockquote>
+<p>Furthermore, per the <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML#other_types_of_metadata">Mozilla blog</a>:</p>
+<blockquote class="blockquote">
+<p>As you travel around the web, you’ll find other types of metadata, too. A lot of the features you’ll see on websites are proprietary creations, designed to provide certain sites (such as social networking sites) with specific pieces of information they can use.</p>
+<p>For example, Open Graph Data is a metadata protocol that Facebook invented to provide richer metadata for websites. Twitter also has its own similar proprietary metadata called Twitter Cards, which has a similar effect when the site’s URL is displayed on Twitter.com</p>
+</blockquote>
+</section><section id="writing-meta-tags" class="level3"><h3 class="anchored" data-anchor-id="writing-meta-tags">Writing <code>&lt;meta&gt;</code> tags</h3>
+<p>You can always write <code>&lt;meta&gt;</code> tags by hand, and they aren’t <em>overly</em> complicated, as seen in the <a href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image">Twitter Documentation</a>:</p>
+<pre><code>&lt;meta name="twitter:card" content="summary_large_image"&gt;
+&lt;meta name="twitter:site" content="@nytimes"&gt;
+&lt;meta name="twitter:creator" content="@SarahMaslinNir"&gt;
+&lt;meta name="twitter:title" content="Parade of Fans for Houston"&gt;
+&lt;meta name="twitter:description" content="NEWARK - The guest list and parade of limousines with celebrities emerging from them seemed more suited to a red carpet event in Hollywood or New York than than a gritty stretch of Sussex Avenue near the former site of the James M. Baxter Terrace public housing project here."&gt;
+&lt;meta name="twitter:image" content="http://graphics8.nytimes.com/images/2012/02/19/us/19whitney-span/19whitney-span-articleLarge.jpg"&gt;</code></pre>
+<p>However, thanks to <a href="https://github.com/gadenbuie">Garrick Aden-Buie</a>, you can save yourself a lot of effort and just use the <a href="https://pkg.garrickadenbuie.com/metathis/"><code>{metathis}</code> package</a>, which provides R functions to generate <code>&lt;meta&gt;</code> tags.</p>
+<p>From the documentation, here’s an example of what a meta-tag generation looks like for the R4DS textbook.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://pkg.garrickadenbuie.com/metathis/">metathis</a></span><span class="op">)</span>
+
+<span class="fu"><a href="https://pkg.garrickadenbuie.com/metathis/reference/meta.html">meta</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://pkg.garrickadenbuie.com/metathis/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://pkg.garrickadenbuie.com/metathis/reference/meta_general.html">meta_description</a></span><span class="op">(</span>
+    <span class="st">"This book will teach you how to do data science with R..."</span>
+  <span class="op">)</span> <span class="op"><a href="https://pkg.garrickadenbuie.com/metathis/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://pkg.garrickadenbuie.com/metathis/reference/meta_name.html">meta_name</a></span><span class="op">(</span><span class="st">"github-repo"</span> <span class="op">=</span> <span class="st">"hadley/r4ds"</span><span class="op">)</span> <span class="op"><a href="https://pkg.garrickadenbuie.com/metathis/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://pkg.garrickadenbuie.com/metathis/reference/meta_viewport.html">meta_viewport</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://pkg.garrickadenbuie.com/metathis/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://pkg.garrickadenbuie.com/metathis/reference/meta_social.html">meta_social</a></span><span class="op">(</span>
+    title <span class="op">=</span> <span class="st">"R for Data Science"</span>,
+    url <span class="op">=</span> <span class="st">"https://r4ds.had.co.nz"</span>,
+    image <span class="op">=</span> <span class="st">"https://r4ds.had.co.nz/cover.png"</span>,
+    image_alt <span class="op">=</span> <span class="st">"The cover of the R4DS book"</span>,
+    og_type <span class="op">=</span> <span class="st">"book"</span>,
+    og_author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Garrett Grolemund"</span>, <span class="st">"Hadley Wickham"</span><span class="op">)</span>,
+    twitter_card_type <span class="op">=</span> <span class="st">"summary"</span>,
+    twitter_creator <span class="op">=</span> <span class="st">"@hadley"</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And the HTML output</p>
+<pre><code>#&gt; &lt;meta name="viewport" content="width=device-width, initial-scale=1, orientation=auto"/&gt;
+#&gt; &lt;meta name="description" content="This book will teach you how to do data science with R..."/&gt;
+#&gt; &lt;meta name="github-repo" content="hadley/r4ds"/&gt;
+#&gt; &lt;meta name="twitter:title" content="R for Data Science"/&gt;
+#&gt; &lt;meta name="twitter:description" content="This book will teach you how to do data science with R..."/&gt;
+#&gt; &lt;meta name="twitter:url" content="https://r4ds.had.co.nz"/&gt;
+#&gt; &lt;meta name="twitter:image:src" content="https://r4ds.had.co.nz/cover.png"/&gt;
+#&gt; &lt;meta name="twitter:image:alt" content="The cover of the R4DS book"/&gt;
+#&gt; &lt;meta name="twitter:card" content="summary"/&gt;
+#&gt; &lt;meta name="twitter:creator" content="@hadley"/&gt;
+#&gt; &lt;meta name="twitter:site" content="@hadley"/&gt;
+#&gt; &lt;meta property="og:title" content="R for Data Science"/&gt;
+#&gt; &lt;meta property="og:description" content="This book will teach you how to do data science with R..."/&gt;
+#&gt; &lt;meta property="og:url" content="https://r4ds.had.co.nz"/&gt;
+#&gt; &lt;meta property="og:image" content="https://r4ds.had.co.nz/cover.png"/&gt;
+#&gt; &lt;meta property="og:image:alt" content="The cover of the R4DS book"/&gt;
+#&gt; &lt;meta property="og:type" content="book"/&gt;
+#&gt; &lt;meta property="og:locale" content="en_US"/&gt;
+#&gt; &lt;meta property="article:author" content="Garrett Grolemund"/&gt;
+#&gt; &lt;meta property="article:author" content="Hadley Wickham"/&gt;</code></pre>
+<p>I prefer this to writing it all by hand, as it’s less error prone than me typing it out manually!</p>
+</section><section id="metathis-options" class="level3"><h3 class="anchored" data-anchor-id="metathis-options">
+<code>{metathis}</code> options</h3>
+<p>An aside that tripped me up is that the preview image needs to be linked as a URL, so you won’t be able to just link to a local file, but rather the site or GitHub URL for that specific image.</p>
+<p>Generally you can just write a RMarkdown chunk with <code>echo=FALSE</code> as you’d expect and put the <a href="https://pkg.garrickadenbuie.com/metathis/">metathis</a> code in it.</p>
+<pre><code>meta() %&gt;% 
+  meta_description("My awesome presentation")</code></pre>
+<p>However, for some pieces of content you in RMarkdown there are already <code>&lt;meta&gt;</code> tags that are generated, or they need to explicitly need to be added into the header of the HTML file.</p>
+<p>In that cases where the basic approach is not working, I recommend following Garrick’s <a href="https://pkg.garrickadenbuie.com/metathis/"><code>{metathis}</code> advice</a> from the readme.</p>
+<p>Option 1:</p>
+<blockquote class="blockquote">
+<p>Using <a href="https://pkg.garrickadenbuie.com/metathis/reference/include_meta.html"><code>metathis::include_meta()</code></a> to explicitly declare the <code>&lt;meta&gt;</code> tags as an HTML dependency</p>
+</blockquote>
+<p>Option 2 (if all else fails):</p>
+<blockquote class="blockquote">
+<p>In other packages or situations, you can use <code><a href="https://pkg.garrickadenbuie.com/metathis/reference/include_meta.html">include_meta()</a></code> to explicitly declare the meta tags as an html dependency or use write_meta() to save the <code>&lt;meta&gt;</code> tags to an <code>.html</code> file that can be included via <code>includes: in_header</code> in the YAML of the RMarkdown doc. (In <code>blogdown</code>, consult your blogdown/hugo theme for the correct inclusion method.)</p>
+</blockquote>
+<pre><code>meta() %&gt;% 
+  meta_description("A fantastic blog post") %&gt;% 
+  write_meta("meta.html")</code></pre>
+<p>That will generally solve most problems for including social tags in RMarkdown.</p>
+</section></section><section id="optimal-image-sizes" class="level2"><h2 class="anchored" data-anchor-id="optimal-image-sizes">Optimal image sizes</h2>
+<p>Each of the social sites have “optimal” sizes/ratios of the images, and <a href="https://blog.hootsuite.com/social-media-image-sizes-guide/">Hootsuite</a> has a meta-guide of social media image sizing.</p>
+<p>The short summary is, keep your image file size relatively small, as it’ll cost less in bandwidth and is presented relatively small anyway on social. Twitter specifically will crop your images to a square for basic preview cards.</p>
+</section><section id="confirm-tags" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="confirm-tags">Confirm tags</h2>
+<p>You can “check” to make sure your tags worked by using tools like:</p>
+<ul>
+<li>
+<a href="https://cards-dev.twitter.com/validator?">Twitter’s Card Validator</a><br>
+</li>
+<li>
+<a href="https://www.linkedin.com/post-inspector/inspect/">LinkedIn’s Post Inspector</a><br>
+</li>
+<li>More generally, just doing a test post to your social feed</li>
+</ul>
+<p>Note that if your website is too large, you can’t always get the social “crawlers” to parse the page and return a preview. It’s a good idea to keep your image sizes relatively low, and generally not include TOO much content in a single page.</p>
+<p>Now rather than getting a blank preview card, you can get nice previews!</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="twitter-preview.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Twitter Preview</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="linkedin-preview.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">LinkedIn Preview</figcaption><p></p>
+</figure>
+</div>
+<p>So go on and create your content, share it widely, and enjoy better previews/urls!</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.1.1 (2021-08-10)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-25
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.1.1)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/mockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

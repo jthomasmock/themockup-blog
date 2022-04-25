@@ -1,0 +1,43 @@
+---
+listing:
+  contents: posts
+  feed: true
+  sort-ui: true
+  sort: 
+    - "date desc"
+    - "title desc"
+  type: "grid"
+  fields: [image, date, title, description, reading-time]
+  categories: true
+  date-format: "YYYY-MM-DD"
+  page-size: 9
+page-layout: full
+title-block-banner: false
+---
+
+Want to support my blog? <a href="https://www.buymeacoffee.com/thomasmock" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" height="30"></a>
+
+
+```{r write-redirects}
+#| echo: false
+# list names of post folders, 
+# adapted from Dr. Danielle Navarro,
+# a legit Data Witch
+# https://blog.djnavarro.net/porting-to-quarto/#netlify-redirects
+
+posts <- list.dirs(
+  path = here::here("posts"),
+  full.names = FALSE,
+  recursive = FALSE
+)
+
+# extract the slugs
+slugs <- stringr::str_remove(posts, "\\d{4}-\\d{2}-\\d{2}-(?!\\d)")
+
+# lines to insert to a netlify _redirect file
+redirects <- paste0("/", slugs, " ", "/posts/", posts)
+
+# write the _redirect file
+writeLines(redirects, here::here("_site", "_redirects"))
+```
+

@@ -1,0 +1,18 @@
+{
+  "hash": "4985e9c714a5de285e835aba4601dae5",
+  "result": {
+    "markdown": "---\ntitle: \"Resources\"\ntoc: false\nlisting:\n  - id: \"resources\"\n    sort-ui: false\n    filter-ui: true\n    categories: false\n    type: table\n    page-size: 10\n    fields: [title, description]\n    \n    contents: \n      - \".qmd\"\n      - \"*.html\"\n      - \"howard.jpeg\"\nresources:\n  - \"**\"\n  - \"!(.qmd|.rmd)\"\n---\n\n::: {#resources}\n:::\n\n# Presentations\n\n::: {.cell}\n::: {.cell-output-display}\n```{=html}\n<div id=\"htmlwidget-e1419518ef1026fcca07\" class=\"reactable html-widget\" style=\"width:auto;height:auto;\"></div>\n<script type=\"application/json\" data-for=\"htmlwidget-e1419518ef1026fcca07\">{\"x\":{\"tag\":{\"name\":\"Reactable\",\"attribs\":{\"data\":{\"Project\":[\"Intro Urban Tables\"],\"url\":[\"https://mockup-quarto.netlify.app/docs/slides/intro-tables-urban.html\"],\"Description\":[\"An overview of tables for Urban Institute\"]},\"columns\":[{\"accessor\":\"Project\",\"name\":\"Title\",\"type\":\"character\",\"cell\":[{\"name\":\"a\",\"attribs\":{\"href\":\"https://mockup-quarto.netlify.app/docs/slides/intro-tables-urban.html\"},\"children\":[\"Intro Urban Tables\"]}],\"minWidth\":150},{\"accessor\":\"url\",\"name\":\"url\",\"type\":\"character\",\"show\":false},{\"accessor\":\"Description\",\"name\":\"Description\",\"type\":\"character\",\"minWidth\":250}],\"searchable\":true,\"defaultPageSize\":10,\"paginationType\":\"numbers\",\"showPageInfo\":true,\"minRows\":1,\"theme\":{\"borderColor\":\"#dfe2e5\",\"stripedColor\":\"#f6f8fa\",\"highlightColor\":\"#f0f5f9\",\"cellPadding\":\"8px 12px\",\"style\":{\"fontFamily\":\"-apple-system, Lato, sans-serif\",\"fontSize\":\"16px\"}},\"language\":{\"searchPlaceholder\":\"Filter\"},\"dataKey\":\"d4b200a74bd202279b97e21a200c5ab4\",\"key\":\"d4b200a74bd202279b97e21a200c5ab4\"},\"children\":[]},\"class\":\"reactR_markup\"},\"evals\":[],\"jsHooks\":[]}</script>\n```\n:::\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"../../site_libs/core-js-2.5.3/shim.min.js\"></script>\n<script src=\"../../site_libs/react-17.0.0/react.min.js\"></script>\n<script src=\"../../site_libs/react-17.0.0/react-dom.min.js\"></script>\n<script src=\"../../site_libs/reactwidget-1.0.0/react-tools.js\"></script>\n<script src=\"../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js\"></script>\n<script src=\"../../site_libs/reactable-binding-0.2.3/reactable.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

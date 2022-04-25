@@ -1,0 +1,14 @@
+{
+  "hash": "ffcdc02fbe1c5a50f91dd4b4e6385f73",
+  "result": {
+    "markdown": "---\ntitle: \"Building a blog with Quarto\"\ndescription: |\n  A snapshot of your code state\nauthor: Thomas Mock\ndate: 04-18-2022\ncategories:\n  - meta\n  - quarto\nimage: preview.png\nimage-alt: \"A polaroid picture of an open book in black and white\"\ndraft: true\n---\n\n## Converting from `distill`\n\n### Change the YAML\n\nYAML items that ported over include: title, description, author, date, categories\n\nItems that needed to be changed:\n- `preview` to `image`\n- `output: distill::distill_article` to nothing (although you will set `format: html` in the `_quarto.yml`)\n- drop `base_url` from each article - add to `_quarto.yml`\n\nI also had a lot of use for things like tabsets from `xaringanExtra`, `<aside>` from `distill` and lots of broken code from 3 years ago 🙃.\n\nYou're in charge of creating sub-folders and file names, so you can either revert back to `distill` style posts with kebab-case dates eg:\n\n`posts/2022-04-25-blog-with-quarto/blog-with-quarto.qmd`\n\nOr start with an alternative format like splitting by date:\n\n`posts/2022/04/25/index.qmd`\n\n:::{.callout-tip collapse=\"true\"}\n## Expand for Session Info\n::: {.cell}\n::: {.cell-output .cell-output-stdout}\n```\n─ Session info ───────────────────────────────────────────────────────────────\n setting  value\n version  R version 4.1.1 (2021-08-10)\n os       macOS Monterey 12.2.1\n system   aarch64, darwin20\n ui       X11\n language (EN)\n collate  en_US.UTF-8\n ctype    en_US.UTF-8\n tz       America/Chicago\n date     2022-04-25\n pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)\n quarto   0.9.294 @ /usr/local/bin/quarto\n\n─ Packages ───────────────────────────────────────────────────────────────────\n package     * version date (UTC) lib source\n sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.1.1)\n\n [1] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library\n\n──────────────────────────────────────────────────────────────────────────────\n```\n:::\n:::\n\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

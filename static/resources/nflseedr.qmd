@@ -1,0 +1,231 @@
+---
+title: "{nflseedR} table"
+description: "An interactive {reactable} table with {nflseedR} data, styled like FiveThirtyEight"
+format: 
+  html:
+    toc: false
+    page-layout: full
+    column: page-inset
+---
+
+```{r setup, include=FALSE}
+library(reactable)
+library(htmltools)
+library(tidyverse)
+library(glue)
+sim <- read_rds("qbr-sim.rds")
+```
+
+
+```{r, echo = FALSE}
+rating_column <- function(maxWidth = 55, ...) {
+  colDef(maxWidth = maxWidth, align = "center", class = "cell number", ...)
+}
+playoff_pct_color <- scales::col_numeric(
+  palette = c("white", "#6fc0e7", "#018fd5"), 
+  domain = c(0, 1)
+  )
+draft_pct_color <- scales::col_numeric(
+  palette = c("white", "lightsalmon", "salmon"), 
+  domain = c(0, 1)
+  )
+playoff_column <- function(maxWidth = 70, class = NULL, color_type = "playoff", ...) {
+  colDef(
+    defaultSortOrder = "desc",
+    cell = format_pct,
+    maxWidth = maxWidth,
+    class = paste("cell number", class),
+    style = function(value) {
+      # Lighter color for <1%
+      if (value < 0.01) {
+        list(color = "#aaa")
+      } else if(value >= 0.01 & color_type == "playoff") {
+        list(color = "#111", background = playoff_pct_color(value))
+      } else if(value >= 0.01 & color_type == "draft") {
+        list(color = "#111", background = draft_pct_color(value))
+      }
+    },
+    ...
+  )
+}
+format_pct <- function(value) {
+  if (value == 0) "  \u2013 "    # en dash for 0%
+  else if (value == 1) "\u2713"  # checkmark for 100%
+  else if (value < 0.01) " <1%"
+  else if (value > 0.99) ">99%"
+  else formatC(paste0(round(value * 100), "%"), width = 4)
+}
+```
+
+```{r, echo = FALSE}
+team_logos <- select(nflfastR::teams_colors_logos, team = team_abbr, team_nick, team_logo_espn)
+overall_sim <- sim$overall %>%
+  left_join(team_logos, by = "team") %>% 
+  select(team = team_nick, team_logo_espn, group = division, wins, playoff:draft5) %>% 
+  group_by(group) %>% 
+  arrange(desc(won_sb)) %>% 
+  ungroup()
+sim_table <- reactable(
+  select(overall_sim, -team_logo_espn),
+  pagination = FALSE,
+  defaultSorted = list(group = "asc", won_sb = "desc"),
+  defaultSortOrder = "desc",
+  defaultColDef = colDef(class = "cell", headerClass = "header"),
+  defaultColGroup = colGroup(headerClass = "group-header"),
+  columnGroups = list(
+    colGroup(
+      name = "PLAYOFF CHANCES", 
+      columns = c("playoff", "div1", "seed1", "won_conf", "won_sb")
+      ),
+    colGroup(name = "DRAFT CHANCES", columns = c("draft1", "draft5"))
+  ),
+  columns = list(
+    team = colDef(
+      name = "TEAM",
+      minWidth = 120,
+      defaultSortOrder = "asc",
+      headerStyle = list(fontWeight = 700),
+      cell = function(value, index) {
+        
+        logos <- overall_sim$team_logo_espn[index]
+        
+        div(
+          class = "team",
+          # add team logos here
+          img(class = "logo", alt = paste(value, "logo"), src = logos, height = "24px"),
+          div(class = "team-name", value)
+          # div(class = "record", sprintf("%s pts.", forecasts[index, "points"]))
+        )
+      }
+    ),
+    group = colDef(
+      name = "DIVISION",
+      defaultSortOrder = "asc",
+      align = "center",
+      maxWidth = 120,
+      class = "cell group",
+      headerStyle = list(fontWeight = 700)
+    ),
+    wins = colDef(
+      name = "Wins",
+      format = colFormat(digits = 1),
+      maxWidth = 100,
+      class = "cell number"
+    ),
+    playoff = playoff_column(name = "Make Playoff", class = "border-left", maxWidth = 75),
+    div1 = playoff_column(name = "Win Div"),
+    seed1 = playoff_column(name = "1st RD Bye"),
+    won_conf = playoff_column(name = "Win Conf"),
+    won_sb = playoff_column(name = "Win SB"),
+    draft1 = playoff_column(name = "First Pick", class = "border-left", color_type = "draft"),
+    draft5 = playoff_column(name = "Top 5 Pick", color_type = "draft")
+  ),
+  # Emphasize borders between groups when sorting by division
+  rowClass = JS("
+    function(rowInfo, state) {
+      const firstSorted = state.sorted[0]
+      if (firstSorted && firstSorted.id === 'group') {
+        const nextRow = state.pageRows[rowInfo.viewIndex + 1]
+        if (nextRow && rowInfo.row.group !== nextRow.group) {
+          return 'group-last'
+        }
+      }
+    }"),
+  showSortIcon = FALSE,
+  borderless = TRUE,
+  class = "standings-table"
+)
+div(
+  class = "standings",
+  div(
+    class = "title",
+    h1("2020 NFL Simulations"),
+    "Team points simulated based off team QBR (QuarterBack Rating) via {nflseedR}"
+  ),
+  sim_table,
+  "Simulation by @thomas_mock via 1,000 {nflseedR} simulated games"
+)
+```
+
+```{css, echo = FALSE}
+tags$link(href = "https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback", rel = "stylesheet")
+.standings {
+  font-family: Karla, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+.title {
+  margin: 18px 0;
+  font-size: 16px;
+}
+.title h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.standings-table {
+  margin-bottom: 20px;
+}
+/* Align header text to the bottom */
+.header,
+.group-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.header {
+  border-bottom-color: #555;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+/* Highlight headers when sorting */
+.header:hover,
+.header[aria-sort="ascending"],
+.header[aria-sort="descending"] {
+  background-color: #eee;
+}
+.border-left {
+  border-left: 2px solid #555;
+}
+/* Use box-shadow to create row borders that appear behind vertical borders */
+.cell {
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  padding: 5px 12px;
+}
+.group-last .cell {
+  box-shadow: inset 0 -2px 0 #555;
+}
+.team {
+  display: flex;
+}
+.record {
+  margin-left: 5px;
+  color: #999;
+  font-size: 13px;
+}
+.team-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+.logo {
+  margin-right: 8px;
+  height: 24px;
+}
+.group {
+  font-size: 19px;
+}
+.number {
+  font-family: "Fira Mono", Consolas, Monaco, monospace;
+  font-size: 16px;
+  line-height: 30px;
+  white-space: pre;
+}
+.wins {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  border-radius: 50%;
+  color: #000;
+  font-size: 13px;
+  letter-spacing: -2px;
+}
+```

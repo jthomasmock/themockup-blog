@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="Pivoting data from wide to long to run many models at once">
+<title>The MockUp - Flipping tibbles for many models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Flipping tibbles for many models">
+<meta property="og:description" content="Pivoting data from wide to long to run many models at once
+">
+<meta property="og:image" content="https://themockup.blog//posts/2020-05-01-tidy-long-models/preview.png">
+<meta property="og:site-name" content="The MockUp">
+<meta property="og:image:height" content="576">
+<meta property="og:image:width" content="720">
+<meta name="twitter:title" content="The MockUp - Flipping tibbles for many models">
+<meta name="twitter:description" content="Pivoting data from wide to long to run many models at once
+">
+<meta name="twitter:image" content="https://themockup.blog//posts/2020-05-01-tidy-long-models/preview.png">
+<meta name="twitter:image-height" content="576">
+<meta name="twitter:image-width" content="720">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-fa fa-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Flipping tibbles for many models</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">espnscrapeR</div>
+                <div class="quarto-category">NFL</div>
+                <div class="quarto-category">tidyverse</div>
+                <div class="quarto-category">tidymodels</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>Pivoting data from wide to long to run many models at once</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">05-01-2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#many-models" id="toc-many-models" class="nav-link active" data-scroll-target="#many-models">Many Models</a>
+  <ul class="collapse">
+<li><a href="#basic-example" id="toc-basic-example" class="nav-link" data-scroll-target="#basic-example">Basic Example</a></li>
+  </ul>
+</li>
+  <li><a href="#nfl-example" id="toc-nfl-example" class="nav-link" data-scroll-target="#nfl-example">NFL Example</a></li>
+  <li>
+<a href="#get-the-data" id="toc-get-the-data" class="nav-link" data-scroll-target="#get-the-data">Get the data</a>
+  <ul class="collapse">
+<li><a href="#pivot-the-data-longer" id="toc-pivot-the-data-longer" class="nav-link" data-scroll-target="#pivot-the-data-longer">Pivot the data longer</a></li>
+  <li><a href="#join-the-data" id="toc-join-the-data" class="nav-link" data-scroll-target="#join-the-data">Join the data</a></li>
+  <li><a href="#nest-the-data" id="toc-nest-the-data" class="nav-link" data-scroll-target="#nest-the-data">Nest the Data</a></li>
+  <li><a href="#fit-the-models" id="toc-fit-the-models" class="nav-link" data-scroll-target="#fit-the-models">Fit the models</a></li>
+  <li>
+<a href="#unnest-the-model-metrics" id="toc-unnest-the-model-metrics" class="nav-link" data-scroll-target="#unnest-the-model-metrics">Unnest the model metrics</a>
+  <ul class="collapse">
+<li><a href="#get-just-the-good-bits" id="toc-get-just-the-good-bits" class="nav-link" data-scroll-target="#get-just-the-good-bits">Get just the good bits</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">TLDR</a></li>
+  <li><a href="#plot-it" id="toc-plot-it" class="nav-link" data-scroll-target="#plot-it">Plot it</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><section id="many-models" class="level1"><h1>Many Models</h1>
+<p>The <code>tidymodels</code> package advocates for a nest-map-unnest workflow for running many models at once. While this typically is used for some type of group as seen in the <a href="https://www.tidymodels.org/learn/statistics/tidy-analysis/#regression-models"><code>tidymodels</code> docs</a>, we can also do it for running many models at once from a wide dataset.</p>
+<p>Our goal is to get all of the measures into a <code>long</code> form tibble so that we can fit all of the models at once, and plot it all at once.</p>
+<section id="basic-example" class="level2"><h2 class="anchored" data-anchor-id="basic-example">Basic Example</h2>
+<p>This basic example is borrowed directly from the <a href="https://www.tidymodels.org/learn/statistics/tidy-analysis/#regression-models"><code>tidymodels</code> docs</a>.</p>
+<p>First you nest the data by a grouping variable to get list-columns of each split data/tibble.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">mtcars</span> <span class="op">&lt;-</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>  <span class="co"># to play nicely with list-cols</span>
+
+<span class="va">nest_mtcars</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op">%&gt;%</span>
+  <span class="fu">nest</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">am</span><span class="op">)</span><span class="op">)</span> 
+
+<span class="va">nest_mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+     am data              
+  &lt;dbl&gt; &lt;list&gt;            
+1     1 &lt;tibble [13 × 10]&gt;
+2     0 &lt;tibble [19 × 10]&gt;</code></pre>
+</div>
+</div>
+<p>Now you can apply a <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> call w/ <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code> to each dataset, and then <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy()</a></code> the model output!</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">nest_mtcars</span> <span class="op">%&gt;%</span> 
+  <span class="fu">mutate</span><span class="op">(</span>
+    fit <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">data</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">wt</span> <span class="op">~</span> <span class="va">mpg</span> <span class="op">+</span> <span class="va">qsec</span> <span class="op">+</span> <span class="va">gear</span>, data <span class="op">=</span> <span class="va">.x</span><span class="op">)</span><span class="op">)</span>,  <span class="co"># S3 list-col</span>
+    tidied <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">fit</span>, <span class="va">tidy</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">unnest</span><span class="op">(</span><span class="va">tidied</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">data</span>, <span class="op">-</span><span class="va">fit</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 6
+     am term        estimate std.error statistic  p.value
+  &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1     1 (Intercept)   4.28      3.46      1.24   0.247   
+2     1 mpg          -0.101     0.0294   -3.43   0.00750 
+3     1 qsec          0.0398    0.151     0.264  0.798   
+4     1 gear         -0.0229    0.349    -0.0656 0.949   
+5     0 (Intercept)   4.92      1.40      3.52   0.00309 
+6     0 mpg          -0.192     0.0443   -4.33   0.000591
+7     0 qsec          0.0919    0.0983    0.935  0.365   
+8     0 gear          0.147     0.368     0.398  0.696   </code></pre>
+</div>
+</div>
+<p>Now each of the model metrics for automatic vs manual transmissions (0 vs 1) is easy to work with! We’ll use a similar approach (nest-map-unnest) albeit with a slightly different data structure for our following analysis.</p>
+</section></section><section id="nfl-example" class="level1"><h1>NFL Example</h1>
+<p>We’ll be performing a similar analysis to what Josh Hermsmeyer’s did in his <a href="https://fivethirtyeight.com/features/why-the-nfl-cant-rely-on-defense/">538 article</a>. The raw code for his analysis is available on his <a href="https://github.com/friscojosh/defensive-metric-stability">GitHub</a>. Essentially he evaluated how stable metrics were year-over-year, by comparing:</p>
+<ul>
+<li>
+<code>Metric in Year N</code><br>
+</li>
+<li><code>Metric in Year N + 1</code></li>
+</ul>
+<p>We’re skipping most of the <code>nflscrapR</code> aggregation (see the <a href="https://github.com/friscojosh/defensive-metric-stability">link</a> for full script), the portion we can change a bit to make our lives easier is the repeated modeling.</p>
+<p>Rather than having to generate a model for every metric one-by-one, we can generate the models for ALL the metrics in the datase at once, while still running the model just for each metric by the following year’s metric.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co">### QB Hits model  ------------------------------------------------------------</span>
+
+<span class="va">qb_hits_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">team_defense_joined</span>, <span class="va">qb_hit.y</span> <span class="op">~</span> <span class="va">qb_hit.x</span><span class="op">)</span>
+
+<span class="va">qb_hits_stability</span> <span class="op">&lt;-</span> <span class="fu">glance</span><span class="op">(</span><span class="va">qb_hits_model</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">mutate</span><span class="op">(</span>metric <span class="op">=</span> <span class="st">"QB Hits"</span>,
+          r.squared <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">r.squared</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+   <span class="fu">select</span><span class="op">(</span><span class="va">metric</span>, <span class="va">r.squared</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="get-the-data" class="level1"><h1>Get the data</h1>
+<p>So let’s load our libraries and get to modeling!</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span> <span class="co"># all the things</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jthomasmock/espnscrapeR">espnscrapeR</a></span><span class="op">)</span> <span class="co"># NFL data summaries</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span> <span class="co"># tidy modeling</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidyverse/glue">glue</a></span><span class="op">)</span> <span class="co"># nice string creation</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op">)</span> <span class="co"># for formatted text in ggplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First we’ll get all the data from the 2000-2019 seasons for NFL offenses via <code><a href="https://rdrr.io/pkg/espnscrapeR/man/scrape_team_stats_nfl.html">espnscrapeR::scrape_team_stats_nfl()</a></code>.</p>
+<div class="cell" data-hash="tidy-models-long-data_cache/html/scrape data_a6be9a5a5ac6e069a4d2dbfbe40b631c">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Get data from espnscrapeR</span>
+<span class="va">all_off</span> <span class="op">&lt;-</span> <span class="fl">2000</span><span class="op">:</span><span class="fl">2019</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span><span class="op">(</span><span class="va">scrape_team_stats_nfl</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2000!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2001!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2002!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2003!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2004!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2005!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2006!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2007!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2008!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2009!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2010!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2011!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2012!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2013!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2014!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2015!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2016!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2017!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2018!</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Scraping passing for offense from 2019!</code></pre>
+</div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">all_off</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Rows: 626
+Columns: 19
+$ season         &lt;int&gt; 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2…
+$ role           &lt;chr&gt; "OFFENSE", "OFFENSE", "OFFENSE", "OFFENSE", "OFFENSE", …
+$ stat           &lt;chr&gt; "PASSING", "PASSING", "PASSING", "PASSING", "PASSING", …
+$ team           &lt;chr&gt; "RedskinsRedskins", "BuccaneersBuccaneers", "SeahawksSe…
+$ pass_att       &lt;int&gt; 561, 433, 507, 583, 578, 439, 554, 575, 637, 529, 497, …
+$ pass_comp      &lt;int&gt; 343, 237, 308, 366, 311, 217, 316, 331, 352, 311, 298, …
+$ pass_comp_pct  &lt;dbl&gt; 0.611, 0.547, 0.607, 0.628, 0.538, 0.494, 0.570, 0.576,…
+$ yds_att        &lt;dbl&gt; 6.9, 6.5, 6.3, 7.5, 6.1, 6.2, 6.3, 5.9, 6.3, 6.8, 7.2, …
+$ pass_yds       &lt;int&gt; 3892, 2824, 3198, 4400, 3540, 2738, 3478, 3386, 4023, 3…
+$ pass_td        &lt;int&gt; 18, 18, 21, 32, 19, 12, 16, 21, 23, 22, 22, 18, 33, 15,…
+$ int            &lt;int&gt; 21, 13, 21, 10, 30, 10, 24, 15, 29, 13, 15, 15, 18, 17,…
+$ pass_rating    &lt;dbl&gt; 77.0, 76.2, 75.5, 97.0, 61.8, 68.9, 67.4, 75.9, 67.5, 8…
+$ first_downs    &lt;int&gt; 185, 144, 168, 211, 156, 128, 156, 182, 192, 195, 169, …
+$ pass_first_pct &lt;dbl&gt; 0.330, 0.333, 0.331, 0.362, 0.270, 0.292, 0.282, 0.317,…
+$ pass_20plus    &lt;int&gt; 43, 38, 26, 61, 41, 37, 41, 46, 50, 46, 42, 35, 57, 32,…
+$ pass_40plus    &lt;int&gt; 10, 5, 7, 9, 9, 3, 11, 5, 8, 7, 8, 5, 13, 8, 8, 21, 8, …
+$ pass_long      &lt;chr&gt; "77T", "75", "71", "69T", "83T", "77T", "70T", "70T", "…
+$ sacks          &lt;int&gt; 32, 38, 46, 25, 53, 43, 35, 45, 20, 28, 39, 48, 35, 28,…
+$ sack_yds       &lt;int&gt; 244, 241, 238, 161, 302, 220, 228, 262, 99, 243, 244, 2…</code></pre>
+</div>
+</div>
+<section id="pivot-the-data-longer" class="level2"><h2 class="anchored" data-anchor-id="pivot-the-data-longer">Pivot the data longer</h2>
+<p>Because we are looking to run all the models at once, we’ll need to take the data structure from wide to longer, so we can <code><a href="https://tidyr.tidyverse.org/reference/nest.html">nest()</a></code> the datasets by metric and run the model on each metric pair. By <code>pivot</code>ing to long format we get our team-level data by season and metric with the corresponding value of each season.</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">long_off_stats</span> <span class="op">&lt;-</span> <span class="va">all_off</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">team</span>, <span class="va">pass_att</span><span class="op">:</span><span class="va">sacks</span>, <span class="va">season</span>,<span class="op">-</span><span class="va">pass_long</span>, <span class="op">-</span><span class="va">pass_comp</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>season2 <span class="op">=</span> <span class="va">season</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>
+    cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">team</span>, <span class="op">-</span><span class="va">season</span>, <span class="op">-</span><span class="va">season2</span><span class="op">)</span>, 
+    names_to <span class="op">=</span> <span class="st">"metric"</span>, 
+    values_to <span class="op">=</span> <span class="st">"value"</span><span class="op">)</span>
+
+<span class="va">long_off_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,512 × 5
+   team             season season2 metric            value
+   &lt;chr&gt;             &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;
+ 1 RedskinsRedskins   2000    2001 pass_att        561    
+ 2 RedskinsRedskins   2000    2001 pass_comp_pct     0.611
+ 3 RedskinsRedskins   2000    2001 yds_att           6.9  
+ 4 RedskinsRedskins   2000    2001 pass_yds       3892    
+ 5 RedskinsRedskins   2000    2001 pass_td          18    
+ 6 RedskinsRedskins   2000    2001 int              21    
+ 7 RedskinsRedskins   2000    2001 pass_rating      77    
+ 8 RedskinsRedskins   2000    2001 first_downs     185    
+ 9 RedskinsRedskins   2000    2001 pass_first_pct    0.33 
+10 RedskinsRedskins   2000    2001 pass_20plus      43    
+# … with 7,502 more rows</code></pre>
+</div>
+</div>
+</section><section id="join-the-data" class="level2"><h2 class="anchored" data-anchor-id="join-the-data">Join the data</h2>
+<p>Next we need to join the data back into itself to get the matched value 1 (year) with value 2 (year + 1). The join renames <code>value</code> on the left-hand side (<code>value.x</code>) and the right-hand side (<code>value.y</code>). Technically we don’t need season or season 2 anymore, but I’ve kept them so we can do a quick visual check on the data. The numbers look good and are aligned properly!</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">join_years</span> <span class="op">&lt;-</span> <span class="va">long_off_stats</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">long_off_stats</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"season2"</span> <span class="op">=</span> <span class="st">"season"</span>, <span class="st">"team"</span>, <span class="st">"metric"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">-</span><span class="va">season2.y</span><span class="op">)</span>
+
+<span class="va">join_years</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7,116 × 6
+   team             season season2 metric          value.x  value.y
+   &lt;chr&gt;             &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;    &lt;dbl&gt;
+ 1 RedskinsRedskins   2000    2001 pass_att        561      432    
+ 2 RedskinsRedskins   2000    2001 pass_comp_pct     0.611    0.544
+ 3 RedskinsRedskins   2000    2001 yds_att           6.9      6.3  
+ 4 RedskinsRedskins   2000    2001 pass_yds       3892     2716    
+ 5 RedskinsRedskins   2000    2001 pass_td          18       13    
+ 6 RedskinsRedskins   2000    2001 int              21       13    
+ 7 RedskinsRedskins   2000    2001 pass_rating      77       71.1  
+ 8 RedskinsRedskins   2000    2001 first_downs     185      122    
+ 9 RedskinsRedskins   2000    2001 pass_first_pct    0.33     0.282
+10 RedskinsRedskins   2000    2001 pass_20plus      43       31    
+# … with 7,106 more rows</code></pre>
+</div>
+</div>
+</section><section id="nest-the-data" class="level2"><h2 class="anchored" data-anchor-id="nest-the-data">Nest the Data</h2>
+<p>We now need to nest the data, leaving <code>metric</code> out so that it is used as the group/label data. Now each of the metrics are separated into their own respective nested datasets!</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">nest_off_data</span> <span class="op">&lt;-</span> <span class="va">join_years</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">metric</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">nest_off_data</span> </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 2
+   metric         data              
+   &lt;chr&gt;          &lt;list&gt;            
+ 1 pass_att       &lt;tibble [593 × 5]&gt;
+ 2 pass_comp_pct  &lt;tibble [593 × 5]&gt;
+ 3 yds_att        &lt;tibble [593 × 5]&gt;
+ 4 pass_yds       &lt;tibble [593 × 5]&gt;
+ 5 pass_td        &lt;tibble [593 × 5]&gt;
+ 6 int            &lt;tibble [593 × 5]&gt;
+ 7 pass_rating    &lt;tibble [593 × 5]&gt;
+ 8 first_downs    &lt;tibble [593 × 5]&gt;
+ 9 pass_first_pct &lt;tibble [593 × 5]&gt;
+10 pass_20plus    &lt;tibble [593 × 5]&gt;
+11 pass_40plus    &lt;tibble [593 × 5]&gt;
+12 sacks          &lt;tibble [593 × 5]&gt;</code></pre>
+</div>
+</div>
+</section><section id="fit-the-models" class="level2"><h2 class="anchored" data-anchor-id="fit-the-models">Fit the models</h2>
+<p>Now let’s <code>fit</code> the models and tidy the outputs with <code><a href="https://generics.r-lib.org/reference/glance.html">broom::glance()</a></code>. We now have the raw fit and the tidy output as list-column tibbles! We’re really just interested in r.squared for this example, so we’ll <code><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest()</a></code> the data in the next step to get that out by metric.</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">tidy_off_models</span> <span class="op">&lt;-</span> <span class="va">nest_off_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      fit <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">value.y</span> <span class="op">~</span> <span class="va">value.x</span>, data <span class="op">=</span> <span class="va">.x</span><span class="op">)</span><span class="op">)</span>,
+      tidy_output <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">glance</span><span class="op">)</span>
+    <span class="op">)</span>
+
+<span class="va">tidy_off_models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 4
+   metric         data               fit    tidy_output      
+   &lt;chr&gt;          &lt;list&gt;             &lt;list&gt; &lt;list&gt;           
+ 1 pass_att       &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+ 2 pass_comp_pct  &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+ 3 yds_att        &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+ 4 pass_yds       &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+ 5 pass_td        &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+ 6 int            &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+ 7 pass_rating    &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+ 8 first_downs    &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+ 9 pass_first_pct &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+10 pass_20plus    &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+11 pass_40plus    &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;
+12 sacks          &lt;tibble [593 × 5]&gt; &lt;lm&gt;   &lt;tibble [1 × 12]&gt;</code></pre>
+</div>
+</div>
+</section><section id="unnest-the-model-metrics" class="level2"><h2 class="anchored" data-anchor-id="unnest-the-model-metrics">Unnest the model metrics</h2>
+<p>Now we have a few options - we can use <code><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_wider()</a></code> to get ALL the model metrics, but again that’s overkill for our example.</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">tidy_off_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">unnest_wider</a></span><span class="op">(</span><span class="va">tidy_output</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 15
+   metric      data     fit   r.squared adj.r.squared   sigma statistic  p.value
+   &lt;chr&gt;       &lt;list&gt;   &lt;lis&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+ 1 pass_att    &lt;tibble&gt; &lt;lm&gt;     0.181         0.180  5.36e+1     131.  1.85e-27
+ 2 pass_comp_… &lt;tibble&gt; &lt;lm&gt;     0.290         0.289  3.59e-2     242.  5.93e-46
+ 3 yds_att     &lt;tibble&gt; &lt;lm&gt;     0.176         0.175  6.65e-1     127.  9.69e-27
+ 4 pass_yds    &lt;tibble&gt; &lt;lm&gt;     0.306         0.305  4.93e+2     261.  7.20e-49
+ 5 pass_td     &lt;tibble&gt; &lt;lm&gt;     0.180         0.178  6.63e+0     130.  2.77e-27
+ 6 int         &lt;tibble&gt; &lt;lm&gt;     0.0623        0.0607 4.81e+0      39.3 7.06e-10
+ 7 pass_rating &lt;tibble&gt; &lt;lm&gt;     0.233         0.232  1.04e+1     179.  6.61e-36
+ 8 first_downs &lt;tibble&gt; &lt;lm&gt;     0.308         0.307  2.55e+1     263.  3.50e-49
+ 9 pass_first… &lt;tibble&gt; &lt;lm&gt;     0.225         0.224  3.31e-2     172.  1.23e-34
+10 pass_20plus &lt;tibble&gt; &lt;lm&gt;     0.133         0.131  9.92e+0      90.3 5.03e-20
+11 pass_40plus &lt;tibble&gt; &lt;lm&gt;     0.0518        0.0502 3.51e+0      32.3 2.10e- 8
+12 sacks       &lt;tibble&gt; &lt;lm&gt;     0.121         0.119  1.01e+1      81.1 2.98e-18
+# … with 7 more variables: df &lt;dbl&gt;, logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;,
+#   deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>Instead we’ll use <code><a href="https://tidyr.tidyverse.org/reference/hoist.html">tidyr::hoist()</a></code> which pulls specific columns from nested data. In this case, we are extracting just the r.squared values for each respective metric and then arranging by r.squared. Full details of <code>unnest</code> vs <code>hoist</code> can be found at <a href="https://tidyr.tidyverse.org/reference/hoist.html"><code>tidyr</code> site</a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">off_lm_output</span> <span class="op">&lt;-</span> <span class="va">tidy_off_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">hoist</a></span><span class="op">(</span><span class="va">tidy_output</span>, r.squared <span class="op">=</span> <span class="st">"r.squared"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">r.squared</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">off_lm_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 5
+   metric         data               fit    r.squared tidy_output      
+   &lt;chr&gt;          &lt;list&gt;             &lt;list&gt;     &lt;dbl&gt; &lt;list&gt;           
+ 1 first_downs    &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.308  &lt;tibble [1 × 11]&gt;
+ 2 pass_yds       &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.306  &lt;tibble [1 × 11]&gt;
+ 3 pass_comp_pct  &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.290  &lt;tibble [1 × 11]&gt;
+ 4 pass_rating    &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.233  &lt;tibble [1 × 11]&gt;
+ 5 pass_first_pct &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.225  &lt;tibble [1 × 11]&gt;
+ 6 pass_att       &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.181  &lt;tibble [1 × 11]&gt;
+ 7 pass_td        &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.180  &lt;tibble [1 × 11]&gt;
+ 8 yds_att        &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.176  &lt;tibble [1 × 11]&gt;
+ 9 pass_20plus    &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.133  &lt;tibble [1 × 11]&gt;
+10 sacks          &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.121  &lt;tibble [1 × 11]&gt;
+11 int            &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.0623 &lt;tibble [1 × 11]&gt;
+12 pass_40plus    &lt;tibble [593 × 5]&gt; &lt;lm&gt;      0.0518 &lt;tibble [1 × 11]&gt;</code></pre>
+</div>
+</div>
+<section id="get-just-the-good-bits" class="level3"><h3 class="anchored" data-anchor-id="get-just-the-good-bits">Get just the good bits</h3>
+<p>So we just want the r.squared and metric values, plus a label we can use for <code>ggplot</code> down the road. Boom we have the final output!</p>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">off_stability</span> <span class="op">&lt;-</span> <span class="va">off_lm_output</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">metric</span>, <span class="va">r.squared</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>metric_label <span class="op">=</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"{metric} (R^2 = {round(r.squared, 3)})"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">off_stability</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 3
+   metric         r.squared metric_label                
+   &lt;chr&gt;              &lt;dbl&gt; &lt;glue&gt;                      
+ 1 first_downs       0.308  first_downs (R^2 = 0.308)   
+ 2 pass_yds          0.306  pass_yds (R^2 = 0.306)      
+ 3 pass_comp_pct     0.290  pass_comp_pct (R^2 = 0.29)  
+ 4 pass_rating       0.233  pass_rating (R^2 = 0.233)   
+ 5 pass_first_pct    0.225  pass_first_pct (R^2 = 0.225)
+ 6 pass_att          0.181  pass_att (R^2 = 0.181)      
+ 7 pass_td           0.180  pass_td (R^2 = 0.18)        
+ 8 yds_att           0.176  yds_att (R^2 = 0.176)       
+ 9 pass_20plus       0.133  pass_20plus (R^2 = 0.133)   
+10 sacks             0.121  sacks (R^2 = 0.121)         
+11 int               0.0623 int (R^2 = 0.062)           
+12 pass_40plus       0.0518 pass_40plus (R^2 = 0.052)   </code></pre>
+</div>
+</div>
+</section></section></section><section id="tldr" class="level1"><h1>TLDR</h1>
+<p>Now that may have seemed like a lot of code, mainly because we broke down an example. Let’s look at it all together now. We rearranged the dataset, nested, ran 9 models, and got our outputs in one pipe with just a few lines of code!</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="op">(</span><span class="va">off_stability</span> <span class="op">&lt;-</span> <span class="va">long_off_stats</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">long_off_stats</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"season2"</span> <span class="op">=</span> <span class="st">"season"</span>, <span class="st">"team"</span>, <span class="st">"metric"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">-</span><span class="va">season2.y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">metric</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      fit <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">value.y</span> <span class="op">~</span> <span class="va">value.x</span>, data <span class="op">=</span> <span class="va">.x</span><span class="op">)</span><span class="op">)</span>,
+      glanced <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">glance</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/hoist.html">hoist</a></span><span class="op">(</span><span class="va">glanced</span>, r.squared <span class="op">=</span> <span class="st">"r.squared"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">r.squared</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>metric_label <span class="op">=</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"{metric} (R^2 = {round(r.squared, 3)})"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="plot-it" class="level1 page-columns page-full"><h1>Plot it</h1>
+<p>Now there’s another advantage to getting data into this longer format!</p>
+<p>We can combine our labels that we generated with <code>glue</code> and the long-form data to plot ALL of the raw metrics at once with one <code>ggplot</code>. Note I have added an example line in light grey (slope = 1 for perfect fit) and a red-line for the <code>lm</code> for each dataset. That’s all for this example, but hopefully that opened your eyes to a nest-map-unnest workflow even for relatively simple models!</p>
+<p>I’d definitely recommend trying out the rest of the <code>tidymodels</code> ecosystem for your more advanced machine learning and statistical analyses. You can learn all about it at the <a href="https://www.tidymodels.org/learn/">tidymodels.org site</a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="op">(</span><span class="va">off_plot</span> <span class="op">&lt;-</span> <span class="va">long_off_stats</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">long_off_stats</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"season2"</span> <span class="op">=</span> <span class="st">"season"</span>, <span class="st">"team"</span>, <span class="st">"metric"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">metric</span>,
+                           levels <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">off_stability</span>, <span class="va">metric</span><span class="op">)</span>,
+                           labels <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">off_stability</span>, <span class="va">metric_label</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value.x</span>, y <span class="op">=</span> <span class="va">value.y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, color <span class="op">=</span> <span class="st">"#ff2b4f"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_pretty.html">pretty_breaks</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_pretty.html">pretty_breaks</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fl">0</span>, slope <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"grey"</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">metric</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"\nYear Y Metric"</span>, 
+         y <span class="op">=</span> <span class="st">"Year Y + 1 Metric\n"</span>,
+         title <span class="op">=</span> <span class="st">"Offense Stats - 2000-2019"</span>,
+         subtitle <span class="op">=</span> <span class="st">"Linear model fit comparing Year and Year + 1"</span>,
+         caption <span class="op">=</span> <span class="st">"Plot: @thomas_mock | Data: espnscrapeR"</span><span class="op">)</span>  <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>,
+          strip.text <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_textbox.html">element_textbox</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"bold"</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># optional output</span>
+<span class="co"># ggsave("off_stability_plot.png", off_plot, height = 8, width = 10, dpi = 150)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="column-body-outset">
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="off_stability_plot.png" class="img-fluid" width="500"></p>
+</div>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.1.1 (2021-08-10)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-25
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ broom       * 0.7.9   2021-07-27 [1] CRAN (R 4.1.0)
+ dplyr       * 1.0.8   2022-02-08 [1] CRAN (R 4.1.1)
+ espnscrapeR * 0.6.5   2021-10-27 [1] Github (jthomasmock/espnscrapeR@084ce80)
+ forcats     * 0.5.1   2021-01-27 [1] CRAN (R 4.1.1)
+ ggplot2     * 3.3.5   2021-06-25 [1] CRAN (R 4.1.1)
+ ggtext      * 0.1.1   2020-12-17 [1] CRAN (R 4.1.1)
+ glue        * 1.6.2   2022-02-24 [1] CRAN (R 4.1.1)
+ purrr       * 0.3.4   2020-04-17 [1] CRAN (R 4.1.0)
+ readr       * 2.0.2   2021-09-27 [1] CRAN (R 4.1.1)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.1.1)
+ stringr     * 1.4.0   2019-02-10 [1] CRAN (R 4.1.1)
+ tibble      * 3.1.6   2021-11-07 [1] CRAN (R 4.1.1)
+ tidyr       * 1.2.0   2022-02-01 [1] CRAN (R 4.1.1)
+ tidyverse   * 1.3.1   2021-04-15 [1] CRAN (R 4.1.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/mockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

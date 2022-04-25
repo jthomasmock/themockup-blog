@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 .httr-oauth
+.DS_Store
+_backlog
+/.quarto/

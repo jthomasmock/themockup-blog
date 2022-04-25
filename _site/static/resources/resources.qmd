@@ -1,0 +1,74 @@
+---
+title: "&nbsp;"
+toc: false
+listing:
+  - id: "resources"
+    sort-ui: false
+    filter-ui: true
+    categories: false
+    type: table
+    page-size: 10
+    fields: [title, description]
+    contents: 
+      - "*.qmd"
+resources:
+  - "**"
+  - "!(.qmd|.rmd)"
+---
+
+## Resources
+
+::: {#resources}
+:::
+
+## Presentations
+
+```{r, echo=FALSE,warning=FALSE}
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(reactable)
+})
+
+data_in <- tibble::tribble(
+  ~Project, ~url, ~Type, ~Description,
+  "Intro Urban Tables", "https://themockup.blog//static/slides/intro-tables-urban.html", "Presentation", "An overview of tables for Urban Institute",
+  "#TidyTuesday", "https://github.com/rfordatascience/tidytuesday/blob/master/README.md", "Event", "A weekly data project aimed at the R ecosystem",
+  "{espnscrapeR}", "https://jthomasmock.github.io/espnscrapeR/", "Package", "A small package to scrape or collect NFL data from ESPN or NFL.com",
+  "Improving your {nflfastR} graphics", "https://jthomasmock.github.io/nfl_plotting_cookbook/", "Guide", "An in-depth guide to data visualization and techniques for play-by-play data",
+  "Intro to {tidymodels} in 15 min", "https://jthomasmock.github.io/nfl_hanic", "Presentation", "A short presentation on using `tidymodels` to predict whether the opposing team will run or pass",
+  "Intro to {tidymodels} workshop", "https://themockup.blog//static/slides/nfl-tidymodels.html", "Presentation", "A full workshop on using `tidymodels` to predict whether the opposing team will run or pass",
+  "Intro to Tables", "https://themockup.blog//static/slides/intro-tables.html", "Presentation", "A presentation on 10 best practices for creating tables with {gt}",
+  "Intro to {ggplot2} themes", "https://themockup.blog//static/slides/intro-plot.html", "Presentation", "A deep dive into {ggplot2} themes and making beautiful graphics in R"
+) %>% 
+  filter(Type == "Presentation") %>% 
+  select(-Type)
+
+data_in %>%
+  reactable::reactable(
+    searchable = TRUE,
+    pagination = TRUE,
+    language = reactableLang(
+    searchPlaceholder = "Filter",
+    ),
+    columns = list(
+      Project = colDef(
+        name = "Title",
+        minWidth = 150,
+        cell = function(value, index) {
+          url_in <- data_in$url[index]
+          htmltools::a(href = url_in, value)
+        }
+      ),
+      url = colDef(show = FALSE),
+      Description = colDef(minWidth = 250)
+    ),
+    theme = reactableTheme(
+      borderColor = "#dfe2e5",
+      stripedColor = "#f6f8fa",
+      highlightColor = "#f0f5f9",
+      cellPadding = "8px 12px",
+      style = list(fontFamily = "-apple-system, Lato, sans-serif",
+        fontSize = "16px"),
+    )
+  )
+```

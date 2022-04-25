@@ -1,0 +1,463 @@
+---
+title: "Displaying verbatim code chunks in RMarkdown and Xaringan presentations"
+description: |
+  Because the best way to teach RMarkdown is with RMarkdown.
+author: Thomas Mock
+date: 08-27-2021
+image: preview.png
+categories:
+  - meta
+  - xaringan
+  - rmarkdown
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(quarto)
+```
+
+This will be a short article, but I wanted to note it for my own future use and hopefully a discoverable resource if folks get stuck trying to do the same thing!
+
+:::{.callout-tip}
+## New `{knitr}` verbatim options
+Also note that since I originally published this article in `2021-08-27`, `{knitr} v1.37` introduced new options for `verbatim`, `comment` and `asis` chunks. See the full examples in the [`knitr` News](https://github.com/yihui/knitr/blob/master/NEWS.md#new-features-1). They may make this article obsolete!
+
+The last option that `knitr` recently introduced was the concept of curly-curly (ie `{{r}}`) verbatim code. This is by far one one of my favorite options! See it expanded upon in this [`knitr` Issue](https://github.com/yihui/knitr/issues/2040).
+
+:::
+
+Back to the original blogpost!
+
+I recently gave a presentation on Advanced RMarkdown use, and part of what I was displaying in my RMarkdown generated `{xaringan}` slides was literal RMarkdown code chunks. These verbatim code chunks are very useful and in some cases *necessary* to accurately convey a teaching example.
+
+<iframe width="800" height="450" src="https://www.youtube.com/embed/WkF7nqEYF1E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+Notably, while these verbatim code chunks are extremely useful some difficulty can arise as you're essentially nesting R and RMarkdown code/logic _inside_ a RMarkdown document. In order to "tell" RMarkdown to ignore the code and simply print it out verbatim you need to use a few different techniques.
+
+More details can be found in the [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html).
+
+## Verbatim Code Chunks
+
+The primary problem here is we need to "tell" RMarkdown not to parse the RMarkdown code chunk as _real_ code. So we need to account for the 3x backticks that make up an R code chunk as seen below.
+
+```{r, echo = FALSE}
+cat("```{r, echo = TRUE}
+...code_goes_here...
+```")
+```
+
+### `cat()` to the rescue
+
+You can use `cat()` to output specific code chunks verbatim as raw text. This can be very fast, but requires you to write code by hand in text.
+
+```{r echo = TRUE, comment = NA}
+
+output_code <-
+"````
+```{r, eval=TRUE}`r ''`
+library(dplyr)
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg))
+```\n````"
+
+cat(output_code)
+```
+
+
+### We need more backticks captain!
+
+To return unevaluated verbatim code chunks code you need N + 1 of the max backticks, so for RMarkdown chunks that have 3x backticks, you need to wrap it in 4x backticks on either side of the code.
+
+You _also_ need to invalidate the code chunk by adding a blank `r knitr::inline_expr("''")` to the _end_ of the existing code chunk (ie immediately after the `{r}` like so:
+
+```{r, echo = FALSE}
+cat("```{r}`r''`
+...code_goes_here...
+```")
+```
+
+As a code example I can wrap my code in 4x backticks around the 3x backticks, also note the invalidated `r` expression after the `{r}`.
+
+```{r, echo = FALSE}
+
+code_out <- "````
+```{r}`r ''`
+library(dplyr)
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg))
+```\n````"
+cat(code_out)
+```
+
+That rendered inside RMarkdown outputs:
+
+````
+```{r}`r ''`
+library(dplyr)
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg))
+```
+
+````
+
+However you may notice that there's no grey `code` background for the code chunk. To format it, we can also add the code type to the end of the 4x backticks for formatting purposes. I have a panelset of some of the various code types appended to the 4x backticks below. This affects some highlighting of specific functions/strings/etc in the code as well.
+
+A note here is that my blog is written in `{distill}`, so what you see here is not identical to `{xaringan}` which is built on `remark.js`. As such, I've included the `{distill}` output below, and after that another embedded version of a minimal `{xaringan}` presentation. In `{xaringan}` there is also the `highlightStyle` argument in the YAML which allows for a lot of customization of the code chunk/code/comments colors. The various options for this argument are at the bottom of the [`remark.js` wiki](https://github.com/gnab/remark/wiki/Configuration).
+
+### `{distill}` output
+
+<!-- begin panelset -->
+
+::: {.column-page-inset}
+
+::: {.panel-tabset}
+
+## Blank
+
+Add nothing to end of 4x backticks
+
+`````
+
+````
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+
+````
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+<!-- end panel1 -->
+
+
+## `r`
+
+Add the letter `r` to end of 4x backticks
+
+`````
+
+````r
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````r
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+<!-- end panel2 -->
+
+## `fortan`
+
+Add `fortran` to the end of the 4x backticks
+
+`````
+
+````fortran
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+
+````fortran
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+<!-- end panel3 -->
+
+## `markdown`
+
+Add `markdown` or `md` to the end of the 4x backticks
+
+`````
+
+````markdown
+````
+
+`````
+
+Which returns code formatted like the below:
+
+````markdown
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+<!-- end panel4 -->
+
+## `c`
+
+Add the letter `c` to the end of the 4x backticks
+
+`````
+
+````c
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````c
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+<!-- end panel5 -->
+
+## `haskell`
+
+Add `haskell` to the end of the 4x backticks
+
+`````
+
+````haskell
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````haskell
+```{r}`r ''`
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarize(n = n(), mean = mean(mpg)) %>% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+
+````
+
+<!-- end panel6 -->
+
+## `python`
+
+Add `python` to the end of the 4x backticks
+
+`````
+
+````python
+````
+
+`````
+
+Which returns code formatted like the below:
+
+
+````python
+```{python}`r ''`
+# load library and data
+import pandas as pd
+import statsmodels.api as sm
+
+mtcars = sm.datasets.get_rdataset("mtcars", "datasets", cache=True).data
+
+# Execute code
+(mtcars
+  .groupby(['cyl'])
+  .agg(['count', 'mean']))
+```
+
+````
+
+<!-- end panel7 -->
+
+:::
+:::
+
+<!-- end panelset -->
+
+
+### Xaringan output
+
+```{r, echo = FALSE}
+knitr::include_url("https://themockup.blog/static/slides/xaringan-ex.html")
+```
+
+
+---
+
+## Add more complexity
+
+Now you can also embed essentially entire RMarkdown documents, including inline code. For inline code such as `'r 1 + 1'`, you'll need to use one more technique - also outlined in the [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html#show-a-verbatim-inline-expression).
+
+To display inline code like `r knitr::inline_expr('1+1')` you'll need to use `knitr::inline_expr('1+1')` which will convert the raw expression to the expected inline output of `r knitr::inline_expr('1+1')` before it's evaluated by RMarkdown.
+
+A meta example from the RMarkdown Cookbook:
+
+```{r}
+code = 'This will show a verbatim inline R expression `r knitr::inline_expr(\'knitr::inline_expr("1+1")\')` in the output.'
+
+cat(code)
+```
+
+Which if used as code outputs:
+
+```md
+This will show a verbatim inline R expression
+`r knitr::inline_expr('knitr::inline_expr("1+1")')` in the output.
+```
+
+We can use a full example below.
+
+### Generate inline code
+
+To generate the verbatim inline code we actually used:
+
+```md
+We have data about `r knitr::inline_expr('knitr::inline_expr("nrow(penguins)")')` penguins.  Only 
+`r knitr::inline_expr('knitr::inline_expr("nrow(penguins) - nrow(smaller)")')` are classified as
+`r knitr::inline_expr('knitr::inline_expr("params$species")')`. The distribution of the 
+`r knitr::inline_expr('knitr::inline_expr("params$species")')` penguins are shown below:
+```
+
+Which generated the code below:
+
+````md
+
+We have data about `r knitr::inline_expr("nrow(penguins)")`  penguins.  Only 
+`r knitr::inline_expr("nrow(penguins) - nrow(smaller)")` are classified as
+`r knitr::inline_expr("params$species")`. The distribution of the 
+`r knitr::inline_expr("params$species")` penguins are shown below:
+
+````
+
+### All together now
+
+Here's YAML + code chunks + inline R expression, all in one code block!
+
+
+````md
+---
+title: "Penguins"
+date: 2020-08-11
+output: html_document
+params:
+  species: Adelie
+---
+```{r setup, include = FALSE}`r ''`
+library(tidyverse)
+library(palmerpenguins)
+smaller <- penguins %>% 
+  filter(species == params$species, 
+         !is.na(body_mass_g))
+```
+We have data about `r knitr::inline_expr("nrow(penguins)")` penguins.  Only 
+`r knitr::inline_expr("nrow(penguins) - nrow(smaller)")` are classified as
+`r knitr::inline_expr("params$species")`. The distribution of the 
+`r knitr::inline_expr("params$species")` penguins are shown below:
+
+```{r, echo = FALSE}`r ''`
+smaller %>% 
+  ggplot(aes(body_mass_g)) + 
+  geom_histogram(binwidth = 100)
+```
+````
+
+:::{.aside}
+
+Make sure to keep track of your back ticks as the code can stop looking like _"real"_ code after staring at for a while. I highly recommend checking yourself as you go, because if you miss a backtick it can be quite tricky to "find the needle in the haystack"...
+
+:::
+
+Just for fun, I've included a [link to the source code](https://gist.github.com/jthomasmock/771853602d5b15662a36eca237e2113d) for the above embedded RMarkdown so you can explore it.
+
+I also highly recommend exploring the [source code of the RMarkdown Cookbook](https://github.com/yihui/rmarkdown-cookbook/blob/master/05-formatting.Rmd) to figure out how they did all of their inline embedding.
+
+```{r, echo = FALSE, column="column-page-inset"}
+knitr::include_url("https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html#", height = "800px")
+```
+
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+
+# get the quarto version
+quarto_version <- system("quarto --version", intern = TRUE)
+
+# inject the quarto info
+pkg_sesh$platform$quarto <- paste(
+  system("quarto --version", intern = TRUE), 
+  "@", 
+  quarto::quarto_path()
+  )
+
+# print it out
+pkg_sesh
+```
+
+:::

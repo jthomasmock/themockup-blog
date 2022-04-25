@@ -1,0 +1,7 @@
+---
+title: "Presentations"
+description: "From here and there"
+resources:
+  - "**"
+  - "!(.qmd|.rmd)"
+---

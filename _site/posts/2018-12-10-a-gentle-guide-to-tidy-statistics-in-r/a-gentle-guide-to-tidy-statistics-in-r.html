@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="Working your way through a basic analysis">
+<title>The MockUp - A Gentle Guide to Tidy Statistics in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - A Gentle Guide to Tidy Statistics in R">
+<meta property="og:description" content="Working your way through a basic analysis
+">
+<meta property="og:image" content="https://themockup.blog//posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png">
+<meta property="og:site-name" content="The MockUp">
+<meta property="og:image:height" content="1225">
+<meta property="og:image:width" content="1400">
+<meta name="twitter:title" content="The MockUp - A Gentle Guide to Tidy Statistics in R">
+<meta name="twitter:description" content="Working your way through a basic analysis
+">
+<meta name="twitter:image" content="https://themockup.blog//posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png">
+<meta name="twitter:image-height" content="1225">
+<meta name="twitter:image-width" content="1400">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-fa fa-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A Gentle Guide to Tidy Statistics in R</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">tidyverse</div>
+                <div class="quarto-category">statistics</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>Working your way through a basic analysis</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">3-16-2018</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+<li><a href="#load-the-tidyverse-broom-and-knitr" id="toc-load-the-tidyverse-broom-and-knitr" class="nav-link" data-scroll-target="#load-the-tidyverse-broom-and-knitr">Load the tidyverse, broom, and knitr</a></li>
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link" data-scroll-target="#loading-the-data">Loading the data</a></li>
+  <li><a href="#data-exploration-of-dependent-variable" id="toc-data-exploration-of-dependent-variable" class="nav-link" data-scroll-target="#data-exploration-of-dependent-variable">Data exploration of dependent variable</a></li>
+  <li><a href="#summary-statistics" id="toc-summary-statistics" class="nav-link" data-scroll-target="#summary-statistics">Summary Statistics</a></li>
+  <li><a href="#summary-graph" id="toc-summary-graph" class="nav-link" data-scroll-target="#summary-graph">Summary graph</a></li>
+  <li><a href="#the-anova-finally" id="toc-the-anova-finally" class="nav-link" data-scroll-target="#the-anova-finally">The ANOVA finally!</a></li>
+  <li><a href="#post-hocs-post-docs-academia-jokes-dad-jokes" id="toc-post-hocs-post-docs-academia-jokes-dad-jokes" class="nav-link" data-scroll-target="#post-hocs-post-docs-academia-jokes-dad-jokes">Post-hocs &gt; Post-docs (academia jokes &lt; dad jokes)</a></li>
+  <li><a href="#publication-graph" id="toc-publication-graph" class="nav-link" data-scroll-target="#publication-graph">Publication Graph</a></li>
+  </ul>
+</li>
+  <li><a href="#thank-you" id="toc-thank-you" class="nav-link" data-scroll-target="#thank-you">Thank you</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="https://cdn.pixabay.com/photo/2018/02/07/22/54/gas-storage-3138241_960_720.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">While data analysis in R can seem intimidating, we will explore how to use it effectively and clearly!</figcaption><p></p>
+</figure>
+</div>
+<section id="introduction" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>After a great discussion started by Jesse Maegan (<span class="citation" data-cites="kiersi">@kiersi</span>) on Twitter, I decided to post a workthrough of some (fake) experimental treatment data. These data correspond to a new (fake) research drug called AD-x37, a theoretical drug that has been shown to have beneficial outcomes on cognitive decline in mouse models of Alzheimer’s disease. In the current experiment we will be statistically testing whether the drug was effective in reducing cognitive impairment in dementia patients. See the data <a href="https://github.com/jthomasmock/tidy-stats-in-R/blob/master/ad_treatment.xlsx" title="Data for Tidy Stats">HERE</a>.</p>
+<p>We will be using MMSE (mini-mental status exam) scores to assess the degree of cognitive impairment. In a real clinical trial, many other variables would be recorded, but for the sake of a straightforward but multi-variate example we will stick to just MMSE.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="https://i.imgur.com/YGevPDS.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Source: Folstein et al, 1975, J Psychiatr Res 12:189–198</figcaption><p></p>
+</figure>
+</div>
+<p>We will be working through loading, plotting, analyzing, and saving the outputs of our analysis through the tidyverse, an “opinionated collection of R packages” designed for data analysis. We will limit dependence to two packages: tidyverse and broomwhile using base R for the rest. These two packages dramatically improve the data analysis workflow in my opinion. While other stats-heavy packages provide additional statistical testing, base R has a decent ability to perform statistical analyses out of the box. I will use knitr::kable to generate some html tables for a markdown document, but it is not necessary for the workflow.</p>
+<p>Additionally, I will be uploading the <a href="https://github.com/jthomasmock/tidy-stats-in-R/blob/master/ad_treatment.xlsx" title="Data for Tidy Stats">Excel Sheet</a> used in this example, so that you can re-create the workflow on your own. You can simply copy-paste the code seen here and it will run in R. If you would rather see the entire workflow in an R-Markdown document, please see <a href="http://rpubs.com/jtmock/tidy-stats-in-R">here</a>. R Markdown is a document created inside R that allows you to write code, execute it inline, and write comments/notes as you go. You could think of it like being able to write R code inside a basic Word document (but it can do a lot more than that!).</p>
+<p>Although you may not be interested in the dataset I have provided, this hopefully provides a clear workflow for you to swap in your data of interest and accomplish a basic analysis!</p>
+<section id="load-the-tidyverse-broom-and-knitr" class="level3"><h3 class="anchored" data-anchor-id="load-the-tidyverse-broom-and-knitr">Load the tidyverse, broom, and knitr</h3>
+<p>Using the <code>library</code> function we will load the <code>tidyverse</code>. If you have never installed it before you can also use the <code>install.packages("tidyverse")</code> call to install it for the first time. This package includes <code>ggplot2</code> (graphs), <code>dplyr</code>/<code>tidyr</code> (summary statistics, data manipulation), and <code>readxl</code> (reading excel files) as well as the pipe <code>%&gt;%</code>which will make our code much more readable! We will also load the <code>broom</code> package to tidy up some of our statistical outputs. Lastly we will load <code>knitr</code> for making nice html tables via <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable</a></code>, but not necessary for simply saving the outputs to Excel.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Load libraries</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/">knitr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This will output some message about the packages being loaded and any conflicts of function calls.</p>
+</section><section id="loading-the-data" class="level3"><h3 class="anchored" data-anchor-id="loading-the-data">Loading the data</h3>
+<p>While I am calling <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_xlsx</a></code> you could also simply use <code>read_xlsx</code>, but in the interest of transparency, I will be using the full call to begin. The concept of calling a function with the use of <code>::</code> is important as some packages have conflicts in functions, for example multiple packages include the function select and summarize. As such, we can clarify from which package we want R to call our function from, so <code>package::function</code> ! To read more about the concept of “namespace” when calling functions, please look <a href="http://r-pkgs.had.co.nz/namespace.html" title="R Packages">here</a>.</p>
+<p><code>readxl</code> is unfortunately a funny case, as installing the <code>tidyverse</code> installs <code>readxl</code>, but <code>readxl</code> is not loaded when loading the <code>tidyverse</code> via a <code>library</code> call. As such we must either load <code>readxl</code> like any other package or call both the package and the name as in <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_xlsx</a></code>. <code>readxl</code> allows us to read .xls, .xlsx files into R. Alternatively, you could convert your Excel sheet into .csv, which can be read by <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code>. By using the <code>glimpse</code> function from <code>dplyr</code> we can see how the variables were imported, as well as the first few rows.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 600
+Columns: 5
+$ age            &lt;dbl&gt; 80, 85, 82, 80, 83, 79, 82, 79, 80, 79, 80, 79, 81, 83,…
+$ sex            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0…
+$ health_status  &lt;chr&gt; "Healthy", "Healthy", "Healthy", "Healthy", "Healthy", …
+$ drug_treatment &lt;chr&gt; "Placebo", "Placebo", "Placebo", "Placebo", "Placebo", …
+$ mmse           &lt;dbl&gt; 24.78988, 24.88192, 25.10903, 24.92636, 23.38845, 24.11…</code></pre>
+</div>
+</div>
+<hr>
+<p>We can collect some information about the dataset now. Namely, we have our 3 categorical/factor variables: sex, health_status, and drug_treatment and 1 dependent variable (DV): mmse. We also have age, but importantly it is recorded as a discrete number instead of as a factor (eg as 85 years, instead of old). Thus we can look at age, but we will not use it as a factor in our ANOVA.</p>
+<p>Checking the data distribution</p>
+<p>We will use our first ggplot2call to create a graph showing the distribution of age. To break down what we are doing, we need to call ggplot, tell it what data to use, and use the aes or <code>aesthetic</code> call to assign the x coordinate. We then add a <code>+</code> which tells ggplot to include the next line of code. The <code>geom_density</code> tells R that we want to make create a density distribution layer and we want to fillit with a blue color! For more info about ggplot2 please go <a href="http://r4ds.had.co.nz/data-visualisation.html">HERE</a> or <a href="http://moderndive.com/3-viz.html">here</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="a-gentle-guide-to-tidy-statistics-in-r_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<hr>
+<p>The graph shows us that age really only goes from 79–85 years, and that there is really not any age over or underrepresented. We can confirm the age ranges by a <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> call or by calling <code>range</code> in base R. As a slight aside, we can now talk about using the pipe or <code>%&gt;%</code>. The pipe passes the results or data from the left of it to the right. For more info about the pipe, please see <a href="http://r4ds.had.co.nz/pipes.html">here</a>.</p>
+<p>We can read the following code as take <code>raw_df</code> and then summarize it by taking the min and max of the age variable. Now because we started with raw_df R understands we want to take the column age from this dataframe.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+    min   max
+  &lt;dbl&gt; &lt;dbl&gt;
+1    79    85</code></pre>
+</div>
+</div>
+<p>Alternatively we could use the base R <code>range</code> function, which requires the use of <code>$</code> . The dollar sign indicates that R should use the age column from raw_df. Both of these functions give us the same results, the minimum number and maximum number.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 79 85</code></pre>
+</div>
+</div>
+<p>For more information about using these two syntaxes look <a href="http://www.science.smith.edu/~amcnamara/Syntax-cheatsheet.pdf">here</a> or for cheat sheets look <a href="https://www.rstudio.com/resources/cheatsheets/">here</a>.</p>
+<section id="what-about-the-experimental-variables-levels" class="level4"><h4 class="anchored" data-anchor-id="what-about-the-experimental-variables-levels">What about the experimental variables levels?</h4>
+<p>Now while I am very aware of the variables in this dataframe, you might not be without exploring it! To quickly determine drug_treatment groups, health_status groups and how they interact we can do a table call. By calling it on both drug_treatment and health_status, we get a nice table breaking down how many rows are in each of the variable groups.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">raw_df</span><span class="op">$</span><span class="va">drug_treatment</span>, <span class="va">raw_df</span><span class="op">$</span><span class="va">health_status</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           
+            Alzheimer's Healthy
+  High Dose         100     100
+  Low dose          100     100
+  Placebo           100     100</code></pre>
+</div>
+</div>
+<hr>
+<p>Alternatively we can do the same thing in <code>dplyr</code> with the following code.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">raw_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">drug_treatment</span>, <span class="va">health_status</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+# Groups:   drug_treatment, health_status [6]
+  drug_treatment health_status     n
+  &lt;chr&gt;          &lt;chr&gt;         &lt;int&gt;
+1 High Dose      Alzheimer's     100
+2 High Dose      Healthy         100
+3 Low dose       Alzheimer's     100
+4 Low dose       Healthy         100
+5 Placebo        Alzheimer's     100
+6 Placebo        Healthy         100</code></pre>
+</div>
+</div>
+<p>Now we know the levels of our variables of interest, and that there are 100 patients per overall treatment group!</p>
+</section></section><section id="data-exploration-of-dependent-variable" class="level3"><h3 class="anchored" data-anchor-id="data-exploration-of-dependent-variable">Data exploration of dependent variable</h3>
+<p>Before running our summary statistics we can actually visualize the range, central tendency and quartiles via a geom_boxplot call.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">raw_df</span>, <span class="co"># add the data</span>
+       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">drug_treatment</span>, y <span class="op">=</span> <span class="va">mmse</span>, <span class="co"># set x, y coordinates</span>
+           color <span class="op">=</span> <span class="va">drug_treatment</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>    <span class="co"># color by treatment</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span><span class="op">~</span><span class="va">health_status</span><span class="op">)</span> <span class="co"># create panes base on health status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="a-gentle-guide-to-tidy-statistics-in-r_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p>We have split the data into separate graph facets (or panes) for healthy and Alzheimer’s patients, as well as into groups within each facet by drug treatment. This graph tells us a few things of interest for later. It definitely looks like we have an effect with our (fake) awesome drug! Let’s explore that with descriptive statistics.</p>
+<p>While this is an exploratory graph and we don’t necessarily want to “tweak” it to perfection, we can take note that our drug treatment should be ordered Placebo &lt; Low dose &lt; High Dose and we should have Healthy patients presented first, and Alzheimer’s patients second. This is something we can fix in our next section!</p>
+</section><section id="summary-statistics" class="level3"><h3 class="anchored" data-anchor-id="summary-statistics">Summary Statistics</h3>
+<p>We are looking to generate the mean and standard error for mmse scores, this is useful as a measure of central tendency, and for creating our final publication graphs. We have our categorical variables of sex, drug treatment, and health status. However going back to our glimpse call from earlier, we can see that the data is not ‘coded’ properly. Namely, sex is a <code>dbl</code> (number), without a descriptive name, and health_status/drug_treatment are <code>chr</code> (characters)! These need to be converted into factors!</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 600
+Columns: 5
+$ age            &lt;dbl&gt; 80, 85, 82, 80, 83, 79, 82, 79, 80, 79, 80, 79, 81, 83,…
+$ sex            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0…
+$ health_status  &lt;chr&gt; "Healthy", "Healthy", "Healthy", "Healthy", "Healthy", …
+$ drug_treatment &lt;chr&gt; "Placebo", "Placebo", "Placebo", "Placebo", "Placebo", …
+$ mmse           &lt;dbl&gt; 24.78988, 24.88192, 25.10903, 24.92636, 23.38845, 24.11…</code></pre>
+</div>
+</div>
+<hr>
+<p>We can use the <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code> function to tell R we want to change (mutate) the rows within a variable of interest. So we will take the data in the sex, drug_treatment, and health_status columns and convert them from either just numbers or characters into a factor variable! <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code> can also perform math, and many other interesting things. For more information please see <a href="http://stat545.com/block010_dplyr-end-single-table.html#use-mutate-to-add-new-variables">here</a>.</p>
+<p>We will use the <code>mutate</code> function and the base R <code>factor</code> function to convert our variables into the proper factors, and give them labels (for sex) or reorder the levels of the factors.</p>
+<p>We need to be REALLY careful to type the labels EXACTLY as they appear in the column or it will replace those misspelled with a NA. For example, did you notice that High Dose has a capital “D” while Low dose has a lower case “d”?</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">sum_df</span> <span class="op">&lt;-</span> <span class="va">raw_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+            <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+              sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">sex</span>, 
+                  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span><span class="op">)</span>,
+              drug_treatment <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">drug_treatment</span>, 
+                  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Placebo"</span>, <span class="st">"Low dose"</span>, <span class="st">"High Dose"</span><span class="op">)</span><span class="op">)</span>,
+              health_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">health_status</span>, 
+                  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Healthy"</span>, <span class="st">"Alzheimer's"</span><span class="op">)</span><span class="op">)</span>
+              <span class="op">)</span>
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">sum_df</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As powerful as R is, it needs explicit and accurate code input to accomplish the end goals. As such, if we had typed “High dose” it would give an NA, while “High Dose” outputs correctly. We now see age and mmse as dbl (numerics) and sex, health_status, and drug_treatment as factors.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 600
+Columns: 5
+$ age            &lt;dbl&gt; 80, 85, 82, 80, 83, 79, 82, 79, 80, 79, 80, 79, 81, 83,…
+$ sex            &lt;fct&gt; Male, Male, Male, Male, Male, Male, Male, Male, Female,…
+$ health_status  &lt;fct&gt; Healthy, Healthy, Healthy, Healthy, Healthy, Healthy, H…
+$ drug_treatment &lt;fct&gt; Placebo, Placebo, Placebo, Placebo, Placebo, Placebo, P…
+$ mmse           &lt;dbl&gt; 24.78988, 24.88192, 25.10903, 24.92636, 23.38845, 24.11…</code></pre>
+</div>
+</div>
+<p>Now that everything is coded properly, we can calculate our mean and standard error (se = standard deviation/square root of number of samples)! We will use the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to tell R which factors we want to… group by! Then we will create named summaries by first calling <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> and then specifying which summaries we want with mmse_mean and mmse_seand the number of samples <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code>. Lastly we will <code>ungroup</code>, which removes the <code>group_by</code> code from the dataframe.</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">sum_df</span> <span class="op">&lt;-</span> <span class="va">sum_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>   
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">sex</span>, <span class="va">health_status</span>, <span class="va">drug_treatment</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>mmse_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mmse</span><span class="op">)</span>,   
+            mmse_se <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">mmse</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,
+            n_samples <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># ungrouping variable is a good habit to prevent errors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'sex', 'health_status'. You can override
+using the `.groups` argument.</code></pre>
+</div>
+</div>
+<hr>
+<p>Now we have a nicely formatted dataframe that can be saved to Excel, or used in graphing. We need to indicate what data we are writing (sum_df) and what we want the resulting file to be named (“adx37_sum_stats.csv”).</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># code to save the table into a .csv Excel file</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">sum_df</span>, <span class="st">"adx37_sum_stats.csv"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr></section><section id="summary-graph" class="level3"><h3 class="anchored" data-anchor-id="summary-graph">Summary graph</h3>
+<p>By calling a ggplot function we can generate a preliminary summary graph.</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sum_df</span>, <span class="co"># add the data</span>
+       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">drug_treatment</span>,  <span class="co">#set x, y coordinates</span>
+           y <span class="op">=</span> <span class="va">mmse_mean</span>,
+           group <span class="op">=</span> <span class="va">drug_treatment</span>,  <span class="co"># group by treatment</span>
+           color <span class="op">=</span> <span class="va">drug_treatment</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>    <span class="co"># color by treatment</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span><span class="va">sex</span><span class="op">~</span><span class="va">health_status</span><span class="op">)</span> <span class="co"># create facets by sex and status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="a-gentle-guide-to-tidy-statistics-in-r_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can now see that the graph is properly sorted by drug treatment and by health status. We still have some work to do on the final graph, but let’s move on to the ANOVAs first!</p>
+</section><section id="the-anova-finally" class="level3"><h3 class="anchored" data-anchor-id="the-anova-finally">The ANOVA finally!</h3>
+<p>We will be prepping a dataframe for analysis via ANOVA. We need to again make sure we have our factors as factors via mutate, and in the correct order. This is necessary for the ANOVA/post-hoc testing to work, and to make the post-hocs and the ANOVA outputs easier to read.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 600
+Columns: 5
+$ age            &lt;dbl&gt; 80, 85, 82, 80, 83, 79, 82, 79, 80, 79, 80, 79, 81, 83,…
+$ sex            &lt;fct&gt; Male, Male, Male, Male, Male, Male, Male, Male, Female,…
+$ health_status  &lt;fct&gt; Healthy, Healthy, Healthy, Healthy, Healthy, Healthy, H…
+$ drug_treatment &lt;fct&gt; Placebo, Placebo, Placebo, Placebo, Placebo, Placebo, P…
+$ mmse           &lt;dbl&gt; 24.78988, 24.88192, 25.10903, 24.92636, 23.38845, 24.11…</code></pre>
+</div>
+</div>
+<hr>
+<p>That gets our dataframe into working status!</p>
+<p>Calling the ANOVA is a done via the aov function. The basic syntax is shown via pseudocode below. We put the dependent variable first (mmse in our case), then a ~ then the independent variable we want to test. Lastly we specify what data to use.</p>
+<div class="cell">
+
+</div>
+<p>We can add our real data set via the code below, but because we have 3 independent variables we have a choice to make. We can simply look for main effects by adding a + in between each of our variables, or we can look for both main effects and interactions by adding a <code>*</code> between each variable. Make sure to not replace the <code>+</code> or <code>*</code> with commas, as that will lead to an error.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<hr>
+<p>By assigning the ANOVA to the ad_aov object, we can then call <code>summary</code> on it to look at the results of the ANOVA.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                                  Df Sum Sq Mean Sq  F value Pr(&gt;F)    
+sex                                1      0       0    0.047  0.828    
+drug_treatment                     2   3601    1801  909.213 &lt;2e-16 ***
+health_status                      1  10789   10789 5447.953 &lt;2e-16 ***
+sex:drug_treatment                 2      8       4    2.070  0.127    
+sex:health_status                  1      5       5    2.448  0.118    
+drug_treatment:health_status       2   2842    1421  717.584 &lt;2e-16 ***
+sex:drug_treatment:health_status   2      5       2    1.213  0.298    
+Residuals                        588   1164       2                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The summary gives us the degrees of freedom, sum of squares, mean squares, F value, and the p value. I added a bold emphasis on the &lt;2e -16, these p values are so small that R switches to scientific notation. So we see significant main effects of drug treatment, health status, and an interaction of drug treatment by health status. We can interpret that Alzheimer’s patients had different cognitive scores than healthy, and that drug treatment had an effect on cognitive scores. Importantly, sex was not a significant factor, as p = 0.828. Variables being scored as significant or non-significant can both be important!</p>
+<p>We can also use <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy</a></code> to clean up the results of the ANOVA and put them into a dataframe. This is useful for storage, or for automation of some analysis for future ANOVAs.</p>
+<div class="cell">
+
+</div>
+<p>However, we don’t know the direction of differences, or where exactly the differences were Was it just the high dose? Low dose? Both? We need follow-up post hoc tests to determine these answers!</p>
+</section><section id="post-hocs-post-docs-academia-jokes-dad-jokes" class="level3"><h3 class="anchored" data-anchor-id="post-hocs-post-docs-academia-jokes-dad-jokes">Post-hocs &gt; Post-docs (academia jokes &lt; dad jokes)</h3>
+<p>We have multiple ways of looking at post-hocs. I will show two in this section.</p>
+<p>For the pairwise, we need to use the <code>$</code> to select columns from each of the dataframes and look at the interaction via <code>:</code>. Our first pairwise has NO correction for multiple comparisons, and is comparable to a unprotected Fisher’s-LSD post-hoc. This is not stringent at all, and given the amount of comparisons we have it is advisable to either move forward with a p.adjusting Bonferonni correction (change <code>p.adj = “none”</code> to <code>p.adj = “bonf”</code>) or the Tukey post-hoc test seen in the next example. You can see that this method is a little jumbled to read due to the <code>dataset$column</code> method and the need for <code>:</code> in between each interaction. We can read this as we want pairwise.t.test for the interaction of sex by drug_treatment by health_status, which gives us every iteration of these factors against the other.</p>
+<div class="cell">
+
+</div>
+<p>Additionally, we need to extract the matrix of p values and save to an Excel file for future use.</p>
+<p>We do this by simply wrapping our ad_last posthoc with <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy</a></code>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  group1                    group2                     p.value
+  &lt;chr&gt;                     &lt;chr&gt;                        &lt;dbl&gt;
+1 Male:Placebo:Alzheimer's  Male:Placebo:Healthy     1.25e-199
+2 Male:Low dose:Healthy     Male:Placebo:Healthy     9.84e-  1
+3 Male:Low dose:Healthy     Male:Placebo:Alzheimer's 8.68e-198
+4 Male:Low dose:Alzheimer's Male:Placebo:Healthy     8.01e-157
+5 Male:Low dose:Alzheimer's Male:Placebo:Alzheimer's 1.37e- 18
+6 Male:Low dose:Alzheimer's Male:Low dose:Healthy    3.23e-155</code></pre>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<hr>
+<p>The Tukey post-hoc is a little cleaner to call, and is preferable to the unadjusted pairwise t-test. Notice we also are already wrapping the Tukey results in broom::tidy to save as a tidy dataframe! The TukeyHSD call incorporates the results of the ANOVA call, and is preferable to the previous method.</p>
+<p>The following code can be read as we want a Tukey post-hoc test on the results of our ad_aov ANOVA across the interactions of sex by drug_treatment by health_status. Notice the quotation marks around ‘sex:drug_treatment:health_status’ and the : in between each variable. These are necessary to tell R how we want the Tukey to be run! Once this is done, R then runs tidy on it to make it into a nice dataframe similar to our previous pairwise test. We can then save the results to Excel!</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 33%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: left;">contrast</th>
+<th style="text-align: right;">null.value</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+<th style="text-align: right;">adj.p.value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sex:drug_treatment:health_status</td>
+<td style="text-align: left;">Female:Placebo:Healthy-Male:Placebo:Healthy</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0111117</td>
+<td style="text-align: right;">-0.9140819</td>
+<td style="text-align: right;">0.9363052</td>
+<td style="text-align: right;">1.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sex:drug_treatment:health_status</td>
+<td style="text-align: left;">Male:Low dose:Healthy-Male:Placebo:Healthy</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0056692</td>
+<td style="text-align: right;">-0.9000907</td>
+<td style="text-align: right;">0.9114291</td>
+<td style="text-align: right;">1.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sex:drug_treatment:health_status</td>
+<td style="text-align: left;">Female:Low dose:Healthy-Male:Placebo:Healthy</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0403184</td>
+<td style="text-align: right;">-0.8748132</td>
+<td style="text-align: right;">0.9554500</td>
+<td style="text-align: right;">1.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sex:drug_treatment:health_status</td>
+<td style="text-align: left;">Male:High Dose:Healthy-Male:Placebo:Healthy</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.7762410</td>
+<td style="text-align: right;">-0.1295189</td>
+<td style="text-align: right;">1.6820009</td>
+<td style="text-align: right;">0.1775310</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sex:drug_treatment:health_status</td>
+<td style="text-align: left;">Female:High Dose:Healthy-Male:Placebo:Healthy</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4360609</td>
+<td style="text-align: right;">-0.4790707</td>
+<td style="text-align: right;">1.3511925</td>
+<td style="text-align: right;">0.9213646</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sex:drug_treatment:health_status</td>
+<td style="text-align: left;">Male:Placebo:Alzheimer’s-Male:Placebo:Healthy</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-12.8040144</td>
+<td style="text-align: right;">-13.7053250</td>
+<td style="text-align: right;">-11.9027038</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="publication-graph" class="level3"><h3 class="anchored" data-anchor-id="publication-graph">Publication Graph</h3>
+<p>Now that we have generated our ANOVAs and post-hocs, and saved them to Excel for storage, we can start making a publication-grade graph!</p>
+<p><code>ggplot2</code> graphs allow for extreme customization, some of the additions I make to this graph are a personal choice, and as such I would recommend discussion with a mentor or experienced member in your field. Bar graphs are ubiquitous in my field, and while I think plotting as a boxplot would tell more about the data, I will initially start with a bar graph.</p>
+<p>Our goal is to plot the means, standard errors, and indicate significance where it occurs. Rather than relying on a package to label significance, I will be handmaking a custom dataframe with the tribble function. There are alternatives to doing it this way, but I can easily control what happens with this method, and it is explicitly apparent what the dataframe contains. The basics of tribble are shown in the below example. We assign columns with the ~ and then explicitly write out what we want in each row of the columns.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  colA   colB
+  &lt;chr&gt; &lt;dbl&gt;
+1 a         1
+2 b         2
+3 c         3</code></pre>
+</div>
+</div>
+<p>And here is our actual code for making the custom dataframe.</p>
+<div class="cell">
+
+</div>
+<p>Now that we have this data frame, we can use it in a <code>geom_text</code> call to label our bars with significance labels as indicated by a <code>*</code>.</p>
+<p>Here is what the final publication graph looks like in <code>ggplot2</code> code. You’ll notice I assigned it to <code>g1</code> rather than just calling it directly. This means I will have to call <code>g1</code> to view the graph, but I can save it now! To read what we are doing, I am calling the initial <code>ggplot</code> call as before, but adding an error bar layer, a bar graph layer, separating into panes for sex and health_status, switching to an alternate appearance (<code>theme_bw</code>), setting the colors manually, making minor adjustments via theme, adding the <code>*</code> for indication of significance, and lastly altering the axis labels while adding a figure caption.</p>
+<div class="cell">
+
+</div>
+<p>Saving is done via the ggsave function, where we will need to name the resulting file with surrounding “ “, tell R which ggplot object we want (g1), and indicate the size via height, width, and units. Don’t forget to save the graph with a dpi call to make it nice and crisp!</p>
+<div class="cell">
+
+</div>
+<p>And the final graph!</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="a-gentle-guide-to-tidy-statistics-in-r_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<hr>
+<p>I think it would be a disservice to say you can learn ggplot by simply recreating my example. As such, I would like to point you in the direction of the <a href="http://r4ds.had.co.nz/index.html">R for Data Science textbook</a>, as well as the <a href="http://moderndive.com/">Modern Dive ebook</a>. These free ebooks have a tremendous amount of information that may be beyond what you need to accomplish today, but would serve you well in your future endeavors. Their chapters on data visualization are very helpful for getting started in R plotting!</p>
+</section></section><section id="thank-you" class="level2"><h2 class="anchored" data-anchor-id="thank-you">Thank you</h2>
+<p>If you have made it this far, good for you! I hope this was helpful and if you have any questions, I would recommend reaching out on Twitter via the <code>#rstats</code> or <code>#r4ds</code> hashtag, or you can find me <span class="citation" data-cites="thomas_mock">@thomas_mock</span> on twitter.</p>
+<p>Additionally, Jesse Maegan has a R for Data Science Slack channel where you can learn and ask questions as you work through the R for Data Science text, read all about it <a href="https://www.jessemaegan.com/post/r4ds-the-next-iteration/">here</a>!. R Studio (caretakers of the Tidyverse) hosts their own <a href="https://community.rstudio.com/">forums</a>.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.1.1 (2021-08-10)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-25
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ broom       * 0.7.9   2021-07-27 [1] CRAN (R 4.1.0)
+ dplyr       * 1.0.8   2022-02-08 [1] CRAN (R 4.1.1)
+ forcats     * 0.5.1   2021-01-27 [1] CRAN (R 4.1.1)
+ ggplot2     * 3.3.5   2021-06-25 [1] CRAN (R 4.1.1)
+ here        * 1.0.1   2020-12-13 [1] CRAN (R 4.1.0)
+ knitr       * 1.38.3  2022-04-19 [1] Github (yihui/knitr@fc00199)
+ purrr       * 0.3.4   2020-04-17 [1] CRAN (R 4.1.0)
+ readr       * 2.0.2   2021-09-27 [1] CRAN (R 4.1.1)
+ readxl      * 1.3.1   2019-03-13 [1] CRAN (R 4.1.0)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.1.1)
+ stringr     * 1.4.0   2019-02-10 [1] CRAN (R 4.1.1)
+ tibble      * 3.1.6   2021-11-07 [1] CRAN (R 4.1.1)
+ tidyr       * 1.2.0   2022-02-01 [1] CRAN (R 4.1.1)
+ tidyverse   * 1.3.1   2021-04-15 [1] CRAN (R 4.1.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/mockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

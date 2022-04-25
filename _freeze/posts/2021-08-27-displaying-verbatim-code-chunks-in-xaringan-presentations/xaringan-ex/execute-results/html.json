@@ -1,0 +1,20 @@
+{
+  "hash": "7f5bd304d6e7338fab8a8ab0b4d88f26",
+  "result": {
+    "markdown": "---\noutput:\n  xaringan::moon_reader:\n    nature:\n      self_contained: true\n      highlightStyle: github\n      highlightLines: true\n---\n\n::: {.cell}\n::: {.cell-output-display}\n\n:::\n:::\n\n\n<!-- begin panelset -->\n\n.panelset[\n.panel[.panel-name[Blank]\n\nAdd nothing to end of 4x backticks\n\n`````\n\n````\n````\n\n`````\n\nWhich returns code formatted like the below:\n\n\n\n````\n```{r}\n# load library\nlibrary(dplyr)\n\n# Execute code\nmtcars %>% \n  group_by(cyl) %>% \n  summarize(n = n(), mean = mean(mpg)) %>% \n  mutate(cyl_name = paste(cyl, \"Cylinders\"))\n```\n\n````\n\n]\n\n<!-- end panel1 -->\n\n.panel[.panel-name[`r`]\n\nAdd the letter `r` to end of 4x backticks\n\n`````\n\n````r\n````\n\n`````\n\nWhich returns code formatted like the below:\n\n\n````r\n```{r}\n# load library\nlibrary(dplyr)\n\n# Execute code\nmtcars %>% \n  group_by(cyl) %>% \n  summarize(n = n(), mean = mean(mpg)) %>% \n  mutate(cyl_name = paste(cyl, \"Cylinders\"))\n```\n\n````\n\n]\n\n<!-- end panel2 -->\n\n.panel[.panel-name[`fortran`]\n\nAdd `fortran` to the end of the 4x backticks\n\n`````\n\n````fortran\n````\n\n`````\n\nWhich returns code formatted like the below:\n\n\n\n````fortran\n```{r}\n# load library\nlibrary(dplyr)\n\n# Execute code\nmtcars %>% \n  group_by(cyl) %>% \n  summarize(n = n(), mean = mean(mpg)) %>% \n  mutate(cyl_name = paste(cyl, \"Cylinders\"))\n```\n\n````\n\n]\n\n<!-- end panel3 -->\n\n.panel[.panel-name[`markdown`]\n\nAdd `markdown` or `md` to the end of the 4x backticks\n\n`````\n\n````markdown\n````\n\n`````\n\nWhich returns code formatted like the below:\n\n````markdown\n```{r}\n# load library\nlibrary(dplyr)\n\n# Execute code\nmtcars %>% \n  group_by(cyl) %>% \n  summarize(n = n(), mean = mean(mpg)) %>% \n  mutate(cyl_name = paste(cyl, \"Cylinders\"))\n```\n\n````\n\n]\n\n<!-- end panel4 -->\n\n.panel[.panel-name[`c`]\n\nAdd the letter `c` to the end of the 4x backticks\n\n`````\n\n````c\n````\n\n`````\n\nWhich returns code formatted like the below:\n\n\n````c\n```{r}\n# load library\nlibrary(dplyr)\n\n# Execute code\nmtcars %>% \n  group_by(cyl) %>% \n  summarize(n = n(), mean = mean(mpg)) %>% \n  mutate(cyl_name = paste(cyl, \"Cylinders\"))\n```\n\n````\n\n]\n\n<!-- end panel5 -->\n\n.panel[.panel-name[`haskell`]\n\nAdd `haskell` to the end of the 4x backticks\n\n`````\n\n````haskell\n````\n\n`````\n\nWhich returns code formatted like the below:\n\n\n````haskell\n```{r}\n# load library\nlibrary(dplyr)\n\n# Execute code\nmtcars %>% \n  group_by(cyl) %>% \n  summarize(n = n(), mean = mean(mpg)) %>% \n  mutate(cyl_name = paste(cyl, \"Cylinders\"))\n```\n\n````\n\n]\n\n<!-- end panel6 -->\n\n.panel[.panel-name[`python`]\n\nAdd `python` to the end of the 4x backticks\n\n`````\n\n````python\n````\n\n`````\n\nWhich returns code formatted like the below:\n\n\n````python\n```{python}\n# load library and data\nimport pandas as pd\nimport statsmodels.api as sm\n\nmtcars = sm.datasets.get_rdataset(\"mtcars\", \"datasets\", cache=True).data\n\n# Execute code\n(mtcars\n  .groupby(['cyl'])\n  .agg(['count', 'mean']))\n```\n\n````\n\n]\n\n<!-- end panel7 -->\n\n]\n\n<!-- end panelset -->",
+    "supporting": [
+      "xaringan-ex_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"../../site_libs/panelset-0.2.6/panelset.css\" rel=\"stylesheet\" />\n<script src=\"../../site_libs/panelset-0.2.6/panelset.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": null
+  }
+}

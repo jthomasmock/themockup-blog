@@ -1,0 +1,57 @@
+---
+title: "Building a blog with Quarto"
+description: |
+  A snapshot of your code state
+author: Thomas Mock
+date: 04-18-2022
+categories:
+  - meta
+  - quarto
+image: preview.png
+image-alt: "A polaroid picture of an open book in black and white"
+draft: true
+---
+
+## Converting from `distill`
+
+### Change the YAML
+
+YAML items that ported over include: title, description, author, date, categories
+
+Items that needed to be changed:
+- `preview` to `image`
+- `output: distill::distill_article` to nothing (although you will set `format: html` in the `_quarto.yml`)
+- drop `base_url` from each article - add to `_quarto.yml`
+
+I also had a lot of use for things like tabsets from `xaringanExtra`, `<aside>` from `distill` and lots of broken code from 3 years ago `r emo::ji("upside_down_face")`.
+
+You're in charge of creating sub-folders and file names, so you can either revert back to `distill` style posts with kebab-case dates eg:
+
+`posts/2022-04-25-blog-with-quarto/blog-with-quarto.qmd`
+
+Or start with an alternative format like splitting by date:
+
+`posts/2022/04/25/index.qmd`
+
+:::{.callout-tip collapse="true"}
+## Expand for Session Info
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+
+# get the quarto version
+quarto_version <- system("quarto --version", intern = TRUE)
+
+# inject the quarto info
+pkg_sesh$platform$quarto <- paste(
+  system("quarto --version", intern = TRUE), 
+  "@", 
+  quarto::quarto_path()
+  )
+
+# print it out
+pkg_sesh
+```
+
+:::

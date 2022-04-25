@@ -1,9 +1,0 @@
-palette:
-- r: 36
-- g: 15
-- b: 150
-- a: 84
-template: material
-font_family: Source Code Pro
-padding_vertical: 11
-padding_horizontal: 14

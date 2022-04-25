@@ -1,0 +1,221 @@
+---
+title: "100 Women - BBC"
+description: "An interactive {reactable} table based off the 100 women of 2020"
+format: 
+  html:
+    toc: false
+editor: visual
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(reactable)
+library(tidytuesdayR)
+library(htmltools)
+```
+
+```{r, cache=TRUE, echo=FALSE, message=FALSE,warning=FALSE, include=FALSE}
+tt_data <- tt_load(2020, "50")
+summary_df <- tt_data$women %>% 
+  filter(category != "All") %>% 
+  group_by(category) %>% 
+  summarize(
+    Quantity = n(),
+    `Birth Place` = list(unique(country))
+  )
+women_df <- tt_data$women %>%
+  select(img, name, category, country, role) %>% 
+  slice(-1)
+```
+
+```{r, include=FALSE}
+htmltools::tags$link(href = "https://fonts.googleapis.com/css?family=Raleway&display=swap",
+                     rel = "stylesheet")
+```
+
+
+```{css, echo = FALSE}
+*{
+  font-family: 'Raleway', sans-serif;
+}
+div.role-name{
+  border-top-color: red
+}
+hr.leadership-color{
+  display: block;
+  height: 1px;
+  width: 45px;
+  border: 0;
+  border-top: 3px solid #f08538;
+  margin: 0em 0;
+  padding: 0;
+}
+hr.creativity-color{
+  display: block;
+  height: 1px;
+  width: 45px;
+  border: 0;
+  border-top: 3px solid #d04592;
+  margin: 0em 0;
+  padding: 0;
+}
+hr.knowledge-color{
+  display: block;
+  height: 1px;
+  width: 45px;
+  border: 0;
+  border-top: 3px solid #5ac2dd;
+  margin: 0em 0;
+  padding: 0;
+}
+hr.identity-color{
+  display: block;
+  height: 1px;
+  width: 45px;
+  border: 0;
+  border-top: 3px solid #34aa4d;
+  margin: 0em 0;
+  padding: 0;
+}
+div.center{
+  width: 100%;
+  margin: 0 auto;
+}
+div.center-wide{
+  width: 80%;
+  margin: 0 auto;
+}
+.tag {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 12px;
+}
+.category-leadership {
+  background: #FFD285;
+  color: #AB4000;
+}
+.category-creativity {
+  background: #FFC4FF;
+  color: #840046;
+}
+.category-knowledge {
+  background: #D9FFFF;
+  color: #0E7691;
+}
+.category-identity {
+  background: #B3FFCC;
+  color: #005E01;
+}
+```
+
+
+```{r table, echo=FALSE}
+women_table <- women_df %>%
+  reactable(
+    searchable = TRUE,
+    theme = reactableTheme(
+      headerStyle = list(
+        borderColor = "#555"
+      )
+    ),
+    details = function(index) {
+      desc_data <- tt_data$women$description %>%
+        .[-1] %>%
+        .[index]
+      line_grp <- women_df$category[index]
+      background_color <- case_when(
+        line_grp == "Leadership" ~ "rgb(240, 133, 56, 0.2)",
+        line_grp == "Knowledge" ~ "rgb(90, 194, 221, 0.2)",
+        line_grp == "Creativity" ~ "rgb(208, 69, 146, 0.2)",
+        line_grp == "Identity" ~ "rgb(52, 170, 77, 0.2)"
+      )
+      htmltools::div(
+        style = list(padding = "5px 150px 5px 70px", background = background_color),
+        desc_data
+      )
+    },
+    columns = list(
+      img = colDef(
+        name = "",
+        width = 80,
+        cell = function(value, index) {
+          line_grp <- women_df$category[index]
+          border_color <- case_when(
+            line_grp == "Leadership" ~ "#f08538",
+            line_grp == "Knowledge" ~ "#5ac2dd",
+            line_grp == "Creativity" ~ "#d04592",
+            line_grp == "Identity" ~ "#34aa4d"
+          )
+          image <- htmltools::img(
+            src = value, height = "70px", width = "70px", 
+            style = glue::glue("border-radius: 50%;border: 3px solid {border_color};")
+            )
+          htmltools::tagList(
+            htmltools::div(style = list(display = "inline-block", width = "70px"), image)
+          )
+        }
+      ),
+      name = colDef(
+        name = "",
+        cell = function(value, index) {
+          role <- women_df$role[index]
+          category <- women_df$category[index]
+          tagList(
+            div(style = list(fontWeight = 600), value),
+            hr(class = glue::glue("{tolower(category)}-color")),
+            div(class = "role-name", style = list(fontSize = 12), role)
+          )
+        }
+      ),
+      role = colDef(show = FALSE),
+      category = colDef(
+        name = "Category",
+        width = 100,
+        cell = function(value) {
+          class <- glue::glue("tag category-{tolower(value)}")
+          htmltools::div(class = class, value)
+        }
+      ),
+      country = colDef("Birth Place", width = 100)
+    )
+  )
+```
+
+
+```{r, echo=FALSE, fig.align="center", out.width=700}
+knitr::include_graphics("https://ichef.bbci.co.uk/news/976/cpsprodpb/073B/production/_115615810_100_women_2020_index_promo.jpg")
+```
+
+
+```{r, echo = FALSE, fig.align='center'}
+div(
+  class = "center",
+  p(
+    strong("The BBC has revealed its list of 100 inspiring and influential women from around the world for 2020.")
+  ),
+  div(
+    p("This year 100 Women is highlighting those who are leading change and making a difference during these turbulent times."),
+    p("The list includes Sanna Marin, who leads Finland's all-female coalition government, Michelle Yeoh, star of the new Avatar and Marvel films and Sarah Gilbert, who heads the Oxford University research into a coronavirus vaccine, as well as Jane Fonda, a climate activist and actress."),
+    p("And in an extraordinary year, when countless women around the world have made a sacrifice to help others, the first place on the list is left open to acknowledge their work and to remember those who have lost their lives while making a difference.")
+  )
+)
+```
+
+
+```{r, echo = FALSE, fig.align='center'}
+div(
+  class = "center",
+  h1("The BBC's 100 Women of 2020"),
+  p("Though BBC 100 Women cannot name every woman across the globe who has made a contribution, the 'First Spot' missing from the list of 100 is designed to allow you to think of the people who have had an impact on you, over the course of 2020."),
+  div(
+    class = "center-wide",
+    women_table
+  ),
+  p(
+    "Source: ",
+    a("BBC", href = "https://www.bbc.com/news/world-55042935")
+  )
+)
+```

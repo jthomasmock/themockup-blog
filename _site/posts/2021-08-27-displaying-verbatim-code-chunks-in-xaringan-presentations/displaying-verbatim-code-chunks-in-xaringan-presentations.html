@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="Because the best way to teach RMarkdown is with RMarkdown.">
+<title>The MockUp - Displaying verbatim code chunks in RMarkdown and Xaringan presentations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Displaying verbatim code chunks in RMarkdown and Xaringan presentations">
+<meta property="og:description" content="Because the best way to teach RMarkdown is with RMarkdown.
+">
+<meta property="og:image" content="https://themockup.blog//posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/preview.png">
+<meta property="og:site-name" content="The MockUp">
+<meta property="og:image:height" content="1019">
+<meta property="og:image:width" content="1408">
+<meta name="twitter:title" content="The MockUp - Displaying verbatim code chunks in RMarkdown and Xaringan presentations">
+<meta name="twitter:description" content="Because the best way to teach RMarkdown is with RMarkdown.
+">
+<meta name="twitter:image" content="https://themockup.blog//posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/preview.png">
+<meta name="twitter:image-height" content="1019">
+<meta name="twitter:image-width" content="1408">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-fa fa-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Displaying verbatim code chunks in RMarkdown and Xaringan presentations</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">meta</div>
+                <div class="quarto-category">xaringan</div>
+                <div class="quarto-category">rmarkdown</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>Because the best way to teach RMarkdown is with RMarkdown.</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">08-27-2021</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#verbatim-code-chunks" id="toc-verbatim-code-chunks" class="nav-link active" data-scroll-target="#verbatim-code-chunks">Verbatim Code Chunks</a>
+  <ul class="collapse">
+<li><a href="#cat-to-the-rescue" id="toc-cat-to-the-rescue" class="nav-link" data-scroll-target="#cat-to-the-rescue"><code>cat()</code> to the rescue</a></li>
+  <li><a href="#we-need-more-backticks-captain" id="toc-we-need-more-backticks-captain" class="nav-link" data-scroll-target="#we-need-more-backticks-captain">We need more backticks captain!</a></li>
+  <li><a href="#distill-output" id="toc-distill-output" class="nav-link" data-scroll-target="#distill-output"><code>{distill}</code> output</a></li>
+  <li><a href="#xaringan-output" id="toc-xaringan-output" class="nav-link" data-scroll-target="#xaringan-output">Xaringan output</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#add-more-complexity" id="toc-add-more-complexity" class="nav-link" data-scroll-target="#add-more-complexity">Add more complexity</a>
+  <ul class="collapse">
+<li><a href="#generate-inline-code" id="toc-generate-inline-code" class="nav-link" data-scroll-target="#generate-inline-code">Generate inline code</a></li>
+  <li><a href="#all-together-now" id="toc-all-together-now" class="nav-link" data-scroll-target="#all-together-now">All together now</a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><p>This will be a short article, but I wanted to note it for my own future use and hopefully a discoverable resource if folks get stuck trying to do the same thing!</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+New <a href="https://yihui.org/knitr/">knitr</a> verbatim options
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Also note that since I originally published this article in <code>2021-08-27</code>, <code>{knitr} v1.37</code> introduced new options for <code>verbatim</code>, <code>comment</code> and <code>asis</code> chunks. See the full examples in the <a href="https://github.com/yihui/knitr/blob/master/NEWS.md#new-features-1"><code>knitr</code> News</a>. They may make this article obsolete!</p>
+<p>The last option that <code>knitr</code> recently introduced was the concept of curly-curly (ie <code>{{r}}</code>) verbatim code. This is by far one one of my favorite options! See it expanded upon in this <a href="https://github.com/yihui/knitr/issues/2040"><code>knitr</code> Issue</a>.</p>
+</div>
+</div>
+<p>Back to the original blogpost!</p>
+<p>I recently gave a presentation on Advanced RMarkdown use, and part of what I was displaying in my RMarkdown generated <a href="https://github.com/yihui/xaringan">xaringan</a> slides was literal RMarkdown code chunks. These verbatim code chunks are very useful and in some cases <em>necessary</em> to accurately convey a teaching example.</p>
+<iframe width="800" height="450" src="https://www.youtube.com/embed/WkF7nqEYF1E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<hr>
+<p>Notably, while these verbatim code chunks are extremely useful some difficulty can arise as you’re essentially nesting R and RMarkdown code/logic <em>inside</em> a RMarkdown document. In order to “tell” RMarkdown to ignore the code and simply print it out verbatim you need to use a few different techniques.</p>
+<p>More details can be found in the <a href="https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html">RMarkdown Cookbook</a>.</p>
+<section id="verbatim-code-chunks" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="verbatim-code-chunks">Verbatim Code Chunks</h2>
+<p>The primary problem here is we need to “tell” RMarkdown not to parse the RMarkdown code chunk as <em>real</em> code. So we need to account for the 3x backticks that make up an R code chunk as seen below.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>```{r, echo = TRUE}
+...code_goes_here...
+```</code></pre>
+</div>
+</div>
+<section id="cat-to-the-rescue" class="level3"><h3 class="anchored" data-anchor-id="cat-to-the-rescue">
+<code>cat()</code> to the rescue</h3>
+<p>You can use <code><a href="https://rdrr.io/r/base/cat.html">cat()</a></code> to output specific code chunks verbatim as raw text. This can be very fast, but requires you to write code by hand in text.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">output_code</span> <span class="op">&lt;-</span>
+<span class="st">"````
+```{r, eval=TRUE}`r ''`
+library(dplyr)
+mtcars %&gt;% 
+  group_by(cyl) %&gt;% 
+  summarize(n = n(), mean = mean(mpg))
+```\n````"</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">output_code</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>````
+```{r, eval=TRUE}`r ''`
+library(dplyr)
+mtcars %&gt;% 
+  group_by(cyl) %&gt;% 
+  summarize(n = n(), mean = mean(mpg))
+```
+````</code></pre>
+</div>
+</div>
+</section><section id="we-need-more-backticks-captain" class="level3"><h3 class="anchored" data-anchor-id="we-need-more-backticks-captain">We need more backticks captain!</h3>
+<p>To return unevaluated verbatim code chunks code you need N + 1 of the max backticks, so for RMarkdown chunks that have 3x backticks, you need to wrap it in 4x backticks on either side of the code.</p>
+<p>You <em>also</em> need to invalidate the code chunk by adding a blank <code>r ''</code> to the <em>end</em> of the existing code chunk (ie immediately after the <code>{r}</code> like so:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>```{r}`r''`
+...code_goes_here...
+```</code></pre>
+</div>
+</div>
+<p>As a code example I can wrap my code in 4x backticks around the 3x backticks, also note the invalidated <code>r</code> expression after the <code>{r}</code>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>````
+```{r}`r ''`
+library(dplyr)
+mtcars %&gt;% 
+  group_by(cyl) %&gt;% 
+  summarize(n = n(), mean = mean(mpg))
+```
+````</code></pre>
+</div>
+</div>
+<p>That rendered inside RMarkdown outputs:</p>
+<pre><code>```{r}
+library(dplyr)
+mtcars %&gt;% 
+  group_by(cyl) %&gt;% 
+  summarize(n = n(), mean = mean(mpg))
+```
+</code></pre>
+<p>However you may notice that there’s no grey <code>code</code> background for the code chunk. To format it, we can also add the code type to the end of the 4x backticks for formatting purposes. I have a panelset of some of the various code types appended to the 4x backticks below. This affects some highlighting of specific functions/strings/etc in the code as well.</p>
+<p>A note here is that my blog is written in <a href="https://github.com/rstudio/distill">distill</a>, so what you see here is not identical to <a href="https://github.com/yihui/xaringan">xaringan</a> which is built on <code>remark.js</code>. As such, I’ve included the <a href="https://github.com/rstudio/distill">distill</a> output below, and after that another embedded version of a minimal <a href="https://github.com/yihui/xaringan">xaringan</a> presentation. In <a href="https://github.com/yihui/xaringan">xaringan</a> there is also the <code>highlightStyle</code> argument in the YAML which allows for a lot of customization of the code chunk/code/comments colors. The various options for this argument are at the bottom of the <a href="https://github.com/gnab/remark/wiki/Configuration"><code>remark.js</code> wiki</a>.</p>
+</section><section id="distill-output" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="distill-output">
+<code>{distill}</code> output</h3>
+<!-- begin panelset -->
+<div class="column-page-inset">
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Blank</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false"><code>r</code></a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false"><code>fortan</code></a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false"><code>markdown</code></a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false"><code>c</code></a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false"><code>haskell</code></a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false"><code>python</code></a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Add nothing to end of 4x backticks</p>
+<pre><code>
+````
+````
+</code></pre>
+<p>Which returns code formatted like the below:</p>
+<pre><code>```{r}
+# load library
+library(dplyr)
+
+# Execute code
+mtcars %&gt;% 
+  group_by(cyl) %&gt;% 
+  summarize(n = n(), mean = mean(mpg)) %&gt;% 
+  mutate(cyl_name = paste(cyl, "Cylinders"))
+```
+</code></pre>
+<!-- end panel1 -->
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Add the letter <code>r</code> to end of 4x backticks</p>
+<pre><code>
+````r
+````
+</code></pre>
+<p>Which returns code formatted like the below:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">{r}</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at"># load library</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">library(dplyr)</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at"># Execute code</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">mtcars %&gt;% </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">  group_by(cyl) %&gt;% </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">  summarize(n = n(), mean = mean(mpg)) %&gt;% </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">  mutate(cyl_name = paste(cyl, "Cylinders"))</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!-- end panel2 -->
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Add <code>fortran</code> to the end of the 4x backticks</p>
+<pre><code>
+````fortran
+````
+</code></pre>
+<p>Which returns code formatted like the below:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode fortran code-with-copy"><code class="sourceCode fortranfixed"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>```<span class="kw">{</span>r<span class="kw">}</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ot"># load library</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>library(dplyr)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ot"># Execute code</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>mtcars %<span class="op">&gt;</span>% </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  group_by(cyl) %<span class="op">&gt;</span>% </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  summarize(n <span class="kw">=</span> n(), mean <span class="kw">=</span> mean(mpg)) %<span class="op">&gt;</span>% </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  mutate(cyl_name <span class="kw">=</span> paste(cyl, <span class="st">"Cylinders"</span>))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!-- end panel3 -->
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<p>Add <code>markdown</code> or <code>md</code> to the end of the 4x backticks</p>
+<pre><code>
+````markdown
+````
+</code></pre>
+<p>Which returns code formatted like the below:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load library</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Execute code</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cyl) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">mean =</span> <span class="fu">mean</span>(mpg)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cyl_name =</span> <span class="fu">paste</span>(cyl, <span class="st">"Cylinders"</span>))</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!-- end panel4 -->
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<p>Add the letter <code>c</code> to the end of the 4x backticks</p>
+<pre><code>
+````c
+````
+</code></pre>
+<p>Which returns code formatted like the below:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>```<span class="op">{</span>r<span class="op">}</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="er"># load library</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>library<span class="op">(</span>dplyr<span class="op">)</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="er"># Execute code</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>mtcars <span class="op">%&gt;%</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  group_by<span class="op">(</span>cyl<span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  summarize<span class="op">(</span>n <span class="op">=</span> n<span class="op">(),</span> mean <span class="op">=</span> mean<span class="op">(</span>mpg<span class="op">))</span> <span class="op">%&gt;%</span> </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  mutate<span class="op">(</span>cyl_name <span class="op">=</span> paste<span class="op">(</span>cyl<span class="op">,</span> <span class="st">"Cylinders"</span><span class="op">))</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!-- end panel5 -->
+</div>
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<p>Add <code>haskell</code> to the end of the 4x backticks</p>
+<pre><code>
+````haskell
+````
+</code></pre>
+<p>Which returns code formatted like the below:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode haskell code-with-copy"><code class="sourceCode haskell"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ot">```{r}</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ot"># load library</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="ot">library(dplyr)</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="ot"># Execute code</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="ot">mtcars %&gt;% </span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="ot">  group_by(cyl) %&gt;% </span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="ot">  summarize(n = n(), mean = mean(mpg)) %&gt;% </span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="ot">  mutate(cyl_name = paste(cyl, "Cylinders"))</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!-- end panel6 -->
+</div>
+<div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
+<p>Add <code>python</code> to the end of the 4x backticks</p>
+<pre><code>
+````python
+````
+</code></pre>
+<p>Which returns code formatted like the below:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>```{python}</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load library and data</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>mtcars <span class="op">=</span> sm.datasets.get_rdataset(<span class="st">"mtcars"</span>, <span class="st">"datasets"</span>, cache<span class="op">=</span><span class="va">True</span>).data</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Execute code</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>(mtcars</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  .groupby([<span class="st">'cyl'</span>])</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  .agg([<span class="st">'count'</span>, <span class="st">'mean'</span>]))</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<!-- end panel7 -->
+</div>
+</div>
+</div>
+</div>
+<!-- end panelset -->
+</section><section id="xaringan-output" class="level3"><h3 class="anchored" data-anchor-id="xaringan-output">Xaringan output</h3>
+<div class="cell">
+<iframe src="https://themockup.blog/static/slides/xaringan-ex.html" width="672" height="400px" data-external="1">
+</iframe>
+</div>
+<hr></section></section><section id="add-more-complexity" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="add-more-complexity">Add more complexity</h2>
+<p>Now you can also embed essentially entire RMarkdown documents, including inline code. For inline code such as <code>'r 1 + 1'</code>, you’ll need to use one more technique - also outlined in the <a href="https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html#show-a-verbatim-inline-expression">RMarkdown Cookbook</a>.</p>
+<p>To display inline code like <code>r 1+1</code> you’ll need to use <code>knitr::inline_expr('1+1')</code> which will convert the raw expression to the expected inline output of <code>r 1+1</code> before it’s evaluated by RMarkdown.</p>
+<p>A meta example from the RMarkdown Cookbook:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">code</span> <span class="op">=</span> <span class="st">'This will show a verbatim inline R expression `r knitr::inline_expr(\'knitr::inline_expr("1+1")\')` in the output.'</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">code</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>This will show a verbatim inline R expression `r knitr::inline_expr('knitr::inline_expr("1+1")')` in the output.</code></pre>
+</div>
+</div>
+<p>Which if used as code outputs:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>This will show a verbatim inline R expression</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="in">`r knitr::inline_expr("1+1")`</span> in the output.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can use a full example below.</p>
+<section id="generate-inline-code" class="level3"><h3 class="anchored" data-anchor-id="generate-inline-code">Generate inline code</h3>
+<p>To generate the verbatim inline code we actually used:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>We have data about <span class="in">`r knitr::inline_expr("nrow(penguins)")`</span> penguins.  Only </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="in">`r knitr::inline_expr("nrow(penguins) - nrow(smaller)")`</span> are classified as</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="in">`r knitr::inline_expr("params$species")`</span>. The distribution of the </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="in">`r knitr::inline_expr("params$species")`</span> penguins are shown below:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Which generated the code below:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>We have data about <span class="in">`r nrow(penguins)`</span>  penguins.  Only </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="in">`r nrow(penguins) - nrow(smaller)`</span> are classified as</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="in">`r params$species`</span>. The distribution of the </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="in">`r params$species`</span> penguins are shown below:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="all-together-now" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="all-together-now">All together now</h3>
+<p>Here’s YAML + code chunks + inline R expression, all in one code block!</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Penguins"</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2020-08-11</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="an">output:</span><span class="co"> html_document</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="an">params:</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">  species: Adelie</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include = FALSE}</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>smaller <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> params<span class="sc">$</span>species, </span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(body_mass_g))</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>We have data about <span class="in">`r nrow(penguins)`</span> penguins.  Only </span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="in">`r nrow(penguins) - nrow(smaller)`</span> are classified as</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="in">`r params$species`</span>. The distribution of the </span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="in">`r params$species`</span> penguins are shown below:</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>smaller <span class="sc">%&gt;%</span> </span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(body_mass_g)) <span class="sc">+</span> </span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">100</span>)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="aside">
+<p>Make sure to keep track of your back ticks as the code can stop looking like <em>“real”</em> code after staring at for a while. I highly recommend checking yourself as you go, because if you miss a backtick it can be quite tricky to “find the needle in the haystack”…</p>
+</div>
+<p>Just for fun, I’ve included a <a href="https://gist.github.com/jthomasmock/771853602d5b15662a36eca237e2113d">link to the source code</a> for the above embedded RMarkdown so you can explore it.</p>
+<p>I also highly recommend exploring the <a href="https://github.com/yihui/rmarkdown-cookbook/blob/master/05-formatting.Rmd">source code of the RMarkdown Cookbook</a> to figure out how they did all of their inline embedding.</p>
+<div class="cell column-column-page-inset">
+<iframe src="https://bookdown.org/yihui/rmarkdown-cookbook/verbatim-code-chunks.html#" width="672" height="800px" data-external="1">
+</iframe>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-2" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.1.1 (2021-08-10)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-25
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version    date (UTC) lib source
+ quarto      * 1.0.0.9000 2021-11-18 [1] Github (quarto-dev/quarto-r@8f5c74d)
+ sessioninfo * 1.2.2      2021-12-06 [1] CRAN (R 4.1.1)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/mockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

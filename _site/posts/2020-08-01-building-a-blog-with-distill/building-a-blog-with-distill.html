@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="I love simplicity.">
+<title>The MockUp - Building a blog with distill</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Building a blog with distill">
+<meta property="og:description" content="I love simplicity.
+">
+<meta property="og:image" content="https://themockup.blog//posts/2020-08-01-building-a-blog-with-distill/modern.jpeg">
+<meta property="og:site-name" content="The MockUp">
+<meta name="twitter:title" content="The MockUp - Building a blog with distill">
+<meta name="twitter:description" content="I love simplicity.
+">
+<meta name="twitter:image" content="https://themockup.blog//posts/2020-08-01-building-a-blog-with-distill/modern.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-fa fa-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Building a blog with distill</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">rmarkdown</div>
+                <div class="quarto-category">tidyverse</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>I love simplicity.</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">08-01-2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#distill" id="toc-distill" class="nav-link active" data-scroll-target="#distill"><code>distill</code></a>
+  <ul class="collapse">
+<li>
+<a href="#why-consider-distill" id="toc-why-consider-distill" class="nav-link" data-scroll-target="#why-consider-distill">Why consider <code>distill</code>?</a>
+  <ul class="collapse">
+<li><a href="#pros" id="toc-pros" class="nav-link" data-scroll-target="#pros">Pros</a></li>
+  <li><a href="#cons" id="toc-cons" class="nav-link" data-scroll-target="#cons">Cons</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li>
+<a href="#steps-to-create" id="toc-steps-to-create" class="nav-link" data-scroll-target="#steps-to-create">Steps to create</a>
+  <ul class="collapse">
+<li><a href="#step-1-install-distill" id="toc-step-1-install-distill" class="nav-link" data-scroll-target="#step-1-install-distill">Step 1: Install <code>distill</code></a></li>
+  <li><a href="#step-2-new-project-from-distill-blog" id="toc-step-2-new-project-from-distill-blog" class="nav-link" data-scroll-target="#step-2-new-project-from-distill-blog">Step 2: New project from <code>distill blog</code></a></li>
+  <li><a href="#step-3-preview" id="toc-step-3-preview" class="nav-link" data-scroll-target="#step-3-preview">Step 3: Preview</a></li>
+  <li><a href="#step-4-_site.yml" id="toc-step-4-_site.yml" class="nav-link" data-scroll-target="#step-4-_site.yml">Step 4: <code>_site.yml</code></a></li>
+  <li><a href="#step-5-example-blog-post" id="toc-step-5-example-blog-post" class="nav-link" data-scroll-target="#step-5-example-blog-post">Step 5: Example blog post</a></li>
+  <li><a href="#step-6-new-post" id="toc-step-6-new-post" class="nav-link" data-scroll-target="#step-6-new-post">Step 6: New post</a></li>
+  <li><a href="#step-7-add-to-git" id="toc-step-7-add-to-git" class="nav-link" data-scroll-target="#step-7-add-to-git">Step 7: Add to Git</a></li>
+  <li>
+<a href="#step-8-netlify" id="toc-step-8-netlify" class="nav-link" data-scroll-target="#step-8-netlify">Step 8: Netlify</a>
+  <ul class="collapse">
+<li><a href="#once-youre-logged-in" id="toc-once-youre-logged-in" class="nav-link" data-scroll-target="#once-youre-logged-in">Once you’re logged in:</a></li>
+  </ul>
+</li>
+  <li><a href="#step-9-blog-post-workflows" id="toc-step-9-blog-post-workflows" class="nav-link" data-scroll-target="#step-9-blog-post-workflows">Step 9: Blog post workflows</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a>
+  <ul class="collapse">
+<li>
+<a href="#customize-appearance" id="toc-customize-appearance" class="nav-link" data-scroll-target="#customize-appearance">Customize Appearance</a>
+  <ul class="collapse">
+<li><a href="#example-changes" id="toc-example-changes" class="nav-link" data-scroll-target="#example-changes">Example changes</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="modern.jpeg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Modern building</figcaption><p></p>
+</figure>
+</div>
+<section id="distill" class="level1"><h1><code>distill</code></h1>
+<p><code>distill</code> is “Scientific and technical writing, native to the web”. I’ve gotten lots of requests for creating a <code>distill</code> blog from scratch, so I’ve finally gotten around to building that!</p>
+<p>Please note that the docs for <code>distill</code> are already excellent, check them out at: <a href="https://rstudio.github.io/distill/blog.html">Distill: Creating a Blog</a>. This guide is aimed more at the end-to-end process of creating your first blog.</p>
+<p>The <strong>first</strong> blog is typically the hardest and I’ve lived through the uncertainty of not really understanding how all the pieces work together. I appreciate the simplicity of <code>distill</code> for this very reason - there’s less <strong>stuff</strong> to change. At its core <code>distill</code> is <em>just</em> writing articles for a website/blog!</p>
+<p>I also have owed this post to many people, namely Maëlle Salmon and JD Long as seen on my <a href="https://twitter.com/thomas_mock/status/1287936723843002368?s=20">Twitter</a>.</p>
+<section id="why-consider-distill" class="level2"><h2 class="anchored" data-anchor-id="why-consider-distill">Why consider <code>distill</code>?</h2>
+<section id="pros" class="level3"><h3 class="anchored" data-anchor-id="pros">Pros</h3>
+<p>No Hugo dependency, no theme dependency, it’s a very stable format with the ability to customize just enough with a bit of effort. Think a self-hosted <code>Medium.com</code> in appearance. Very minimal, lightly themed, focused on writing and code! Again, I think that for someone getting started with creating websites or blogs it’s a very good starting point.</p>
+<p>With <code>distill</code> you render/knit your articles locally, so you can quickly check your work without having to deploy to a git branch or to production. I do think that eventually it is a good idea to have git branches for previews or collaboration, but that’s a lot to ask for an initial first stab at a blog/site.</p>
+<p><code>distill</code> also natively supports <a href="https://rstudio.github.io/distill/citations.html">citations</a>, footnotes and asides, a rich auto-generated table of contents, support for HTMLwidgets and/or custom javascript, and a reader friendly typography that is mobile friendly/auto-adapts to mobile.</p>
+<p>Another nicety is the ability to <a href="https://rstudio.github.io/distill/blog_workflow.html#importing-a-post">import a post</a> with <code>import_post()</code>. This means you can take an existing blogpost from another website and import it into your new blog. This “does not require the original R Markdown document used to author the post—you only need access to the published HTML of a post to import it.”</p>
+<p>Lastly, I am always amazed at the power of both <a href="https://github.com/rstudio/blogdown"><code>blogdown</code></a> and the more recent <a href="https://hugodown.r-lib.org/"><code>hugodown</code></a>, but you are still relying on a changing version of Hugo and your theme over time. For a personal blog I <em>personally</em> prefer <code>distill</code> because I can get busy, neglect my blog for a year, come back to write a new post, and it still <em><code>just works</code></em>.</p>
+</section><section id="cons" class="level3"><h3 class="anchored" data-anchor-id="cons">Cons</h3>
+<p>However, <code>blogdown</code> and <code>hugodown</code> allow dramatically more customization. <code>distill</code> is truly an <strong>opinionated</strong> framework, and most of the <em>easy</em> customization you can do is fonts, colors, and the navbar. If you expect to create gorgeous custom-layout sites like <a href="education.rstudio.com">education.rstudio.com</a> or something like Desirée de Leon’s <a href="https://desiree.rbind.io/">blog</a> you’re likely going to be disappointed!</p>
+<p>Again, for my blog I really just wanted a simple but in my opinion elegant minimalist theme, so I was fine with the tradeoff, as I would have built something similar with <code>blogdown</code> anyway!</p>
+<p><code>blogdown</code> also supports other static site generators like Jekyll in place of Hugo, and a rich set of pre-built themes across the various generators. The structure of the site is extensible as well, so you can generate a site that truly looks like your own creation.</p>
+<p>Lastly, note that you DO lose some niceties like hugo shortcodes for embedding, and again there is ONLY ONE THEME. Most appearance customization is done at the level of custom CSS.</p>
+<p>If you’re still with me, here’s how to make it!</p>
+<hr></section></section></section><section id="steps-to-create" class="level1 page-columns page-full"><h1>Steps to create</h1>
+<section id="step-1-install-distill" class="level2"><h2 class="anchored" data-anchor-id="step-1-install-distill">Step 1: Install <code>distill</code>
+</h2>
+<ul>
+<li><code>install.packages("distill”)</code></li>
+</ul></section><section id="step-2-new-project-from-distill-blog" class="level2"><h2 class="anchored" data-anchor-id="step-2-new-project-from-distill-blog">Step 2: New project from <code>distill blog</code>
+</h2>
+<p>What this is really doing is running the following command, and generates the output below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> distill<span class="sc">::</span><span class="fu">create_blog</span>(<span class="at">dir =</span> <span class="st">"demo-distill"</span>, <span class="at">title =</span> <span class="st">"Demo Distill"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Creating website directory demo<span class="sc">-</span>distill</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Creating demo<span class="sc">-</span>distill<span class="sc">/</span>_site.yml</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Creating demo<span class="sc">-</span>distill<span class="sc">/</span>index.Rmd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Creating demo<span class="sc">-</span>distill<span class="sc">/</span>about.Rmd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Creating demo<span class="sc">-</span>distill<span class="sc">/</span>_posts<span class="sc">/</span>welcome<span class="sc">/</span>welcome.Rmd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This will create a home-directory titled whatever you passed for the <code>dir</code> argument above, so in our case “demo-distill”. This will contain the <code>_site.yml</code>, the <code>about.rmd</code> file, the <code>index.rmd</code> file, and two folders: <code>_posts</code> and <code>_site</code>. You should definitely change the <code>dir</code> and <code>title</code> arguments to whatever you want your site to be named, although you can edit this later with a bit of work.</p>
+<p>While you’re welcome to explore <code>_site</code> I consider it something you SHOULD NOT edit by hand and it will commonly get overridden by rebuilding posts or the whole site. <code>_site</code> is essentially where the built site lives as final HTML and other supporting files. The <code>_posts</code> folder on the other hand contains all the raw RMDs you will use to create posts.</p>
+</section><section id="step-3-preview" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="step-3-preview">Step 3: Preview</h2>
+<p>At this point the website is technically built! You can “preview” the site by going to:<br><code>_site</code> -&gt; <code>index.html</code></p>
+<p>The <code>index.html</code> is essentially the home page for your blog. You can navigate from there in either the RStudio viewer or send it to a web browser just like a normal webpage.</p>
+<p>Note: you can also use the <code>Build Website</code> button in RStudio to pull up the whole website. This will re-knit and build the entire site from scratch.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="preview-site.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Preview of the site</figcaption><p></p>
+</figure>
+</div>
+</section><section id="step-4-_site.yml" class="level2"><h2 class="anchored" data-anchor-id="step-4-_site.yml">Step 4: <code>_site.yml</code>
+</h2>
+<p>The <code>_site.yml</code> is where you control the overall details about your blog such as the name, title, description, and the navbar. You can add new “tabs” by changing the <code>_site.yml</code> file, where the default has a navbar with the site name on the left and a “Home” and “About” Tab on the right.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>name<span class="sc">:</span> <span class="st">"demo-distill"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">"Demo Distill"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>description<span class="sc">:</span> <span class="er">|</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  Demo Distill</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>output_dir<span class="sc">:</span> <span class="st">"_site"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>navbar<span class="sc">:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  right<span class="sc">:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span> text<span class="sc">:</span> <span class="st">"Home"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      href<span class="sc">:</span> index.html</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span> text<span class="sc">:</span> <span class="st">"About"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      href<span class="sc">:</span> about.html</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span> distill<span class="sc">::</span>distill_article</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="step-5-example-blog-post" class="level2"><h2 class="anchored" data-anchor-id="step-5-example-blog-post">Step 5: Example blog post</h2>
+<p>Navigate to <code>_posts</code> -&gt; <code>welcome</code> -&gt; <code>welcome.rmd</code>. This is the default “hello world” example that comes with you <code>distill</code>. Note you can delete that folder completely to drop it from the site, but let’s use it as a practice ground first.</p>
+<p>This is still just a RMarkdown file, but it has a specific YAML header, that contains a title, a description, author, date, and outputs to <code><a href="https://pkgs.rstudio.com/distill/reference/distill_article.html">distill::distill_article()</a></code>.</p>
+<p>Try adding some more text, code, or other content to this blog post and then knit it! It will generate and show the final output in the RStudio viewer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">"Welcome to Demo Distill"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>description<span class="sc">:</span> <span class="er">|</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  Welcome to our new blog, Demo Distill. We hope you enjoy </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  reading what we have to say<span class="sc">!</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span> name<span class="sc">:</span> Nora Jones </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    url<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>example.com<span class="sc">/</span>norajones</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    affiliation<span class="sc">:</span> Spacely Sprockets</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    affiliation_url<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>example.com<span class="sc">/</span>spacelysprokets</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>date<span class="sc">:</span> <span class="dv">07-27-2020</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  distill<span class="sc">::</span>distill_article<span class="sc">:</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    self_contained<span class="sc">:</span> false</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="step-6-new-post" class="level2"><h2 class="anchored" data-anchor-id="step-6-new-post">Step 6: New post</h2>
+<p>To create a new post, you can run the following command:<br><code>distill::create_post("title of post")</code></p>
+<p>Full arguments seen below! I’ll call out two specific things.</p>
+<ol type="1">
+<li>
+<code>draft</code> argument: this prevents the post from being included in the site build until you turn it to <code>FALSE</code>. This is useful if you’re working on a blogpost over time, or want to come back to finish it later.<br>
+</li>
+<li>
+<code>date_prefix</code>: this adds a date like <code>2020-08-01-blog-post</code> to the front of whatever your <code>blog-post</code> name is. This is useful as it also creates a folder structure that sorts properly, and prevents name clashes.</li>
+</ol>
+<p>Whenever you run the <code>create_post()</code> command it will generate a new folder and the basic RMarkdown doc to get started with the arguments you passed.</p>
+<pre><code>create_post(
+  title, # mandatory
+  author = "auto",
+  slug = "auto", # generates a website slug (URL)
+  date_prefix = TRUE, # adds date for sorting
+  draft = FALSE, 
+  edit = interactive()
+)
+</code></pre>
+<p>Note that a nice overview of the Blog Post Workflow is covered at the <a href="https://rstudio.github.io/distill/blog_workflow.html"><code>distill</code> site</a>. This includes collaborating via Git Branches (or using them as previews). I push to my main branch all the time since I’m working solo.</p>
+</section><section id="step-7-add-to-git" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="step-7-add-to-git">Step 7: Add to Git</h2>
+<p>We’re following instructions at: <a href="https://happygitwithr.com/existing-github-last.html">Chapter 17 Existing project, GitHub last | Happy Git and GitHub for the useR</a>. If you’re a Git expert, feel free to use whatever method you like. From my experience setting up a few blogs this is the least painful if you’re NOT a Git expert.</p>
+<div class="aside">
+<p>You could also do the create GitHub and then connect it to RStudio route <a href="https://happygitwithr.com/existing-github-last.html#make-and-connect-a-github-repo-option-2">Chapter 17 Existing project, GitHub last | Happy Git and GitHub for the useR</a>.</p>
+</div>
+<p>NOTE: if you don’t have a GitHub PAT, get one now by following these instructions <a href="https://happygitwithr.com/github-pat.html">B GitHub Personal Access Tokens | Happy Git and GitHub for the useR</a>.</p>
+<p>This will first use Git locally, and then create a new GitHub repo based off your existing local files.</p>
+<p>Run the <code><a href="https://usethis.r-lib.org/reference/use_git.html">usethis::use_git()</a></code> command, which will kick off some questions:</p>
+<ul>
+<li>Don’t commit just yet (Select <code>3: Not Now</code>)<br>
+</li>
+<li>Restart RStudio (Select <code>2: Yes</code>)</li>
+</ul>
+<p>You will know it all worked when you have the git logo at the top of RStudio</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="git.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Git logo</figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li>Click on the Git logo and commit everything, notice we can’t push since we haven’t configured GitHub yet</li>
+</ul>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="inital-commit.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Initial commit</figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li>
+<code><a href="https://usethis.r-lib.org/reference/use_github.html">usethis::use_github()</a></code> — this works if you have already configured a GitHub Personal Access Token
+<ul>
+<li>Next select https if you don’t have SSH keys<br>
+</li>
+<li>Say <code>1: yup</code> to the title and description</li>
+</ul>
+</li>
+</ul>
+<p>Example of what your console commands are and their output seen below!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> usethis<span class="sc">::</span><span class="fu">use_github</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>✓ Setting active project to <span class="st">'/Users/thomasmock/demo-distill-blog'</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>✓ Checking that current branch is <span class="st">'master'</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Which git protocol to use? (enter <span class="dv">0</span> to exit) </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span> ssh   <span class="ot">&lt;-</span><span class="sc">-</span> presumes that you have set up ssh keys</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span> https <span class="ot">&lt;-</span><span class="sc">-</span> choose this <span class="cf">if</span> you don<span class="st">'t have ssh keys (or don'</span>t know <span class="cf">if</span> you do<span class="er">)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>Selection<span class="sc">:</span> <span class="dv">2</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>● Tip<span class="sc">:</span> To suppress this menu <span class="cf">in</span> future, put</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">options(usethis.protocol = "https")</span><span class="st">`</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">in</span> your script or <span class="cf">in</span> a user<span class="sc">-</span> or project<span class="sc">-</span>level startup file, <span class="st">'.Rprofile'</span>.</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  Call <span class="st">`</span><span class="at">usethis::edit_r_profile()</span><span class="st">`</span> to open it <span class="cf">for</span> editing.</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>● Check title and description</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  Name<span class="sc">:</span>        demo<span class="sc">-</span>distill<span class="sc">-</span>blog</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  Description<span class="sc">:</span> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>Are title and description ok?</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span> Yup</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span> No way</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">:</span> Negative</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>Selection<span class="sc">:</span> <span class="dv">1</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>✓ Creating GitHub repository</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>✓ Setting remote <span class="st">'origin'</span> to <span class="st">'https://github.com/jthomasmock/demo-distill-blog.git'</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>✓ Pushing <span class="st">'master'</span> branch to GitHub and setting remote tracking branch</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>✓ Opening URL <span class="st">'https://github.com/jthomasmock/demo-distill-blog'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once this is all run, it should open up a new webpage with your fancy new GitHub repo! Mine opened at: <a href="https://github.com/jthomasmock/demo-distill-blog">GitHub - jthomasmock/demo-distill-blog</a>.</p>
+</section><section id="step-8-netlify" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="step-8-netlify">Step 8: Netlify</h2>
+<p>Now that we have our files on Github, we’re ready to deploy via Netlify!</p>
+<p>You’ll need to Create an account at netlify if you don’t have one already.</p>
+<section id="once-youre-logged-in" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="once-youre-logged-in">Once you’re logged in:</h3>
+<ul>
+<li>First click on import from Git</li>
+</ul>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="netlify-new-site.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">New site from Git</figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li>Click on <code>Configure netlify on GitHub</code>, and follow their instructions to allow access, and then add the selected repository you want to send over (demo-distill-blog for me)
+<ul>
+<li>Click Save!</li>
+</ul>
+</li>
+</ul>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="add-demo-repo.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Add specific repo</figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li>Click on <code>demo-distill-blog</code> or whatever your blog’s name is!</li>
+</ul>
+<p><strong>IMPORTANT</strong></p>
+<ul>
+<li>Make sure to set the <code>Publish Directory</code> to <code>_site</code> (so Netlify can find the knitted HTML content)<br>
+</li>
+<li>And then click deploy!</li>
+</ul>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="publish-directory.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Make sure to set publish directory to _site</figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li>You’ll get a fun temporary name (mine was <a href="https://confident-meitner-e6e7dc.netlify.app/">https://confident-meitner-e6e7dc.netlify.app/</a>). You can change this with the <code>Domain Settings</code> to <code>some-name.netlify.app</code> or even purchase a custom domain like I did for example <code>themockup.blog</code> or what Sharla Gelfand did with <code>sharla.party</code>.</li>
+</ul>
+<p>Now your website should be up and running! If you don’t see a site (it 404s), then I would check to make sure you set the <code>Publish Director</code> to <code>_site</code>, otherwise it won’t know where to find the actual HTML content.</p>
+</section></section><section id="step-9-blog-post-workflows" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="step-9-blog-post-workflows">Step 9: Blog post workflows</h2>
+<blockquote class="blockquote">
+<p>Workflow difference: Furthermore, website pages and root pages of blogs are re-rendered when the site is rebuilt but blog articles are not. Each blog article has to be rendered on its own, with intent. Why? Given that R package upgrades have a tendency to break older code, continuously re-rendering old posts is nearly impossible to do without errors, especially over longer periods of time.</p>
+</blockquote>
+<p>This means you can “Build Site” frequently locally to check out how things work. This is personally the workflow I prefer vs having to commit the output to GitHub or a GitHub branch just to see the preview. You can also knit individual blog posts and they will adapt to your theme, so you can again test local changes whenever you’d like!</p>
+<p>To get things into “production” once you have set up Netlify, you’ll just need to knit the new blog post, then commit and push to GitHub.</p>
+<p>You can use command line git or the git integration in RStudio.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="git.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Example of git in RStudio</figcaption><p></p>
+</figure>
+</div>
+<p>Basic idea is click commit and then push.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="inital-commit.png" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Example of a commit</figcaption><p></p>
+</figure>
+</div>
+</section></section><section id="next-steps" class="level1"><h1>Next Steps</h1>
+<p>If this guide didn’t provide enough detail, make sure to check out the <a href="https://rstudio.github.io/distill/blog_workflow.html">Blog Post Workflow</a> that goes into specific examples, like importing posts from elsewhere, changing URLs, updating old posts, etc.</p>
+<p>Now that you have a website running you can either leave it exactly as it is formatted, and just add new posts or you can do a little bit of customization to the “About Me”, Home page, etc.</p>
+<p>A lot of options are already covered at <a href="https://rstudio.github.io/distill/blog.html#next-steps">Distill for R Markdown: Creating a Blog</a></p>
+<p>A few notes:</p>
+<ul>
+<li>If you want Twitter cards to show up with your images, you need to add a <code>preview: some_img_name.png</code> argument to the YAML header for each post.<br>
+</li>
+<li>If you define a custom domain you’ll need to change the <a href="https://rstudio.github.io/distill/blog.html#Configuration"><code>base_url</code> at the <code>_site.yml</code> file</a>
+</li>
+</ul>
+<section id="customize-appearance" class="level2"><h2 class="anchored" data-anchor-id="customize-appearance">Customize Appearance</h2>
+<p>Probably of most interest to folks is customizing the appearance of the blog.</p>
+<ul>
+<li>In general the strategy you should use is to inspect parts of the website for the class names and then you can apply CSS to change it<br>
+</li>
+<li>A nice overview of the “Inspect” tool is covered <a href="https://developers.google.com/web/tools/chrome-devtools/open">here</a><br>
+</li>
+<li>HTML/CSS classes and selectors are covered in the Mozilla docs <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors">here</a><br>
+</li>
+<li>To use a custom CSS file, you’ll need to change the output in <code>_site.yml</code> to include the below:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">output</span><span class="op">:</span> 
+  <span class="fu">distill</span><span class="fu">::</span><span class="va"><a href="https://pkgs.rstudio.com/distill/reference/distill_article.html">distill_article</a></span><span class="op">:</span>
+    <span class="va">css</span><span class="op">:</span> <span class="va">styles.css</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I keep my <code>styles.css</code> file at the same level as my <code>_site.yml</code> file.</p>
+<section id="example-changes" class="level3"><h3 class="anchored" data-anchor-id="example-changes">Example changes</h3>
+<p>You’ll need to store all of these in your <code>styles.css</code> file, and note that some of them depend on other changes - specifically to use custom fonts you ALSO have to import the custom fonts!</p>
+<section id="bold-silver-title-pink-background" class="level4"><h4 class="anchored" data-anchor-id="bold-silver-title-pink-background">Bold silver title, pink background</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>.distill<span class="sc">-</span>site<span class="sc">-</span>nav {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  color<span class="sc">:</span> <span class="co">#C0C0C0; </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  background<span class="sc">-</span>color<span class="sc">:</span> <span class="co">#FF1493;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  font<span class="sc">-</span>size<span class="sc">:</span> 20px;</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  font<span class="sc">-</span>weight<span class="sc">:</span> <span class="dv">900</span>;</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="want-entire-webpage-to-be-pink" class="level4"><h4 class="anchored" data-anchor-id="want-entire-webpage-to-be-pink">Want entire webpage to be “pink”?</h4>
+<pre><code>body {
+  background-color: #FF1493;
+}</code></pre>
+</section><section id="change-hover-color-in-nav-bar" class="level4"><h4 class="anchored" data-anchor-id="change-hover-color-in-nav-bar">Change hover color in nav bar</h4>
+<pre><code>.distill-site-nav a:hover {
+  color: #383838;
+}</code></pre>
+</section><section id="change-header-font-or-color" class="level4"><h4 class="anchored" data-anchor-id="change-header-font-or-color">Change header font or color</h4>
+<pre><code>/* Change appearance of headers */
+h1, h2, h3, h4, h5 {
+  font-family: 'Fira Mono', sans-serif;
+  color: color: #383838;
+}</code></pre>
+</section><section id="import-custom-fonts-from-google" class="level4"><h4 class="anchored" data-anchor-id="import-custom-fonts-from-google">Import custom fonts from Google</h4>
+<pre><code>/* Import fonts from Google's API */
+@import url('https://fonts.googleapis.com/css2?family=Lato');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono');</code></pre>
+</section><section id="use-those-fonts-throughout" class="level4"><h4 class="anchored" data-anchor-id="use-those-fonts-throughout">Use those fonts throughout</h4>
+<pre><code>/* Use specific font in the body of the text */
+html, body, p {
+  
+  font-family: 'Lato', sans-serif;
+  font-weight: 200;
+  line-height: 1.3; 
+  font-size: 1.0em;
+  color: #333333;
+  font-style: normal;
+  
+}</code></pre>
+</section><section id="change-in-line-code" class="level4"><h4 class="anchored" data-anchor-id="change-in-line-code">Change in-line code</h4>
+<pre><code>/* Change the appearance of in-line code chunks */
+code {
+  font-family: 'Fira Mono', sans-serif;
+  color: #383838;
+  background: #F5F5F5;
+  font-weight: 400;
+  font-size: 0.9em;
+}</code></pre>
+</section><section id="change-code-chunk-colors" class="level4"><h4 class="anchored" data-anchor-id="change-code-chunk-colors">Change code chunk colors</h4>
+<pre><code>d-code {
+  background: grey;
+}</code></pre>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.1.1 (2021-08-10)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-25
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.1.1)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></section></section></section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/mockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
