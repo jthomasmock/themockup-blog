@@ -30,7 +30,7 @@ website:
       - icon: table
         href: https://jthomasmock.github.io/gtExtras/
       - icon: cup-straw
-        href: https:://drinksbytom.com
+        href: https://drinksbytom.com
 format:
   html:
     toc: true
