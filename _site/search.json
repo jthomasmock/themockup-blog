@@ -1694,6 +1694,13 @@
     "text": "Presentations"
   },
   {
+    "objectID": "static/resources/resources.html#random",
+    "href": "static/resources/resources.html#random",
+    "title": " ",
+    "section": "Random",
+    "text": "Random\nFavorite Cocktail Recipes"
+  },
+  {
     "objectID": "static/resources/100-women.html",
     "href": "static/resources/100-women.html",
     "title": "100 Women - BBC",
@@ -1706,12 +1713,5 @@
     "title": "{nflseedR} table",
     "section": "",
     "text": "2020 NFL Simulations\nTeam points simulated based off team QBR (QuarterBack Rating) via {nflseedR}\n\n\n\nSimulation by @thomas_mock via 1,000 {nflseedR} simulated games"
-  },
-  {
-    "objectID": "static/resources/resources.html#random",
-    "href": "static/resources/resources.html#random",
-    "title": " ",
-    "section": "Random",
-    "text": "Random\nFavorite Cocktail Recipes"
   }
 ]

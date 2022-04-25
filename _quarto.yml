@@ -9,9 +9,6 @@ website:
   twitter-card: true
   open-graph: true
   site-url: https://themockup.blog/
-  comments:
-    utterances:
-      repo: jthomasmock/themockup-blog
   navbar:
     search: true
     right:
@@ -33,6 +30,9 @@ website:
         href: https://drinksbytom.com
 format:
   html:
+    comments:
+      utterances:
+        repo: jthomasmock/themockup-blog
     toc: true
     code-link: true
     anchor-sections: true
