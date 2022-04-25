@@ -11,7 +11,7 @@ website:
   site-url: https://themockup.blog/
   comments:
     utterances:
-      repo: jthomasmock/mockup-blog
+      repo: jthomasmock/themockup-blog
   navbar:
     search: true
     right:
@@ -25,8 +25,12 @@ website:
         href: https://github.com/jthomasmock
       - icon: twitter
         href: https://twitter.com/thomas_mock
-      - icon: fa fa-rss
+      - icon: rss
         href: index.xml
+      - icon: table
+        href: https://jthomasmock.github.io/gtExtras/
+      - icon: cup-straw
+        href: https:://drinksbytom.com
 format:
   html:
     toc: true
