@@ -1,4 +1,8 @@
 ---
+twitter-card:
+  image: images/profile-preview.png
+  creator: "@thomas_mock"
+open-graph: true
 title: "Tom Mock"
 description: |
   Be humble, hungry and kind. 
