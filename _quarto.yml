@@ -9,6 +9,7 @@ website:
   repo-url: https://github.com/jthomasmock/themockup-blog
   open-graph: true
   twitter-card:
+    image: themockup.png
     creator: "@thomas_mock"
     card-style: summary_large_image
   site-url: https://themockup.blog
