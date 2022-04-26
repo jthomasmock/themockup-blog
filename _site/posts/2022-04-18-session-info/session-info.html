@@ -104,14 +104,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="The MockUp - Adding session info to blog posts">
-<meta property="og:description" content="A snapshot of your code state">
+<meta property="og:description" content="A snapshot of your code state
+">
 <meta property="og:image" content="https://themockup.blog/posts/2022-04-18-session-info/preview.png">
 <meta property="og:site-name" content="The MockUp">
 <meta property="og:image:height" content="559">
 <meta property="og:image:width" content="845">
 <meta property="og:image:alt" content="A polaroid camera sitting lens up in a pile of fallen brown leaves">
 <meta name="twitter:title" content="The MockUp - Adding session info to blog posts">
-<meta name="twitter:description" content="A snapshot of your code state">
+<meta name="twitter:description" content="A snapshot of your code state
+">
 <meta name="twitter:image" content="https://themockup.blog/posts/2022-04-18-session-info/preview.png">
 <meta name="twitter:creator" content="@thomas_mock">
 <meta name="twitter:card" content="summary_large_image">
@@ -227,11 +229,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#quarto-native-callouts" id="toc-quarto-native-callouts" class="nav-link" data-scroll-target="#quarto-native-callouts">Quarto-native callouts</a></li>
   </ul>
 </li>
+  <li><a href="#closing-notes" id="toc-closing-notes" class="nav-link" data-scroll-target="#closing-notes">Closing Notes</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><section id="adding-session-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="adding-session-info">Adding session info</h2>
-<div class="page-columns page-full"><p>Session info in R has lots of useful information on the state of your working environment at the moment you were coding. While tools such as <a href="https://rstudio.github.io/renv/articles/renv.html"><code>renv</code></a> or <code>packrat</code> can help you create project-specific libraries, <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> at least lets you capture the basic environment details. </p><div class="no-row-height column-margin column-container"><span class="aside">Put another way, <a href="https://rstudio.github.io/renv/">renv</a> can be useful for someone (including yourself) to revert back to the specific package environment, whereas the session info simply <em>returns</em> the basic environment info. For a blogpost, I don’t imagine others trying to match to exact package environments, but rather confirm that their package environment is “similar enough”.</span></div></div>
+<div class="page-columns page-full"><p>Session info in R has lots of useful information on the state of your working environment at the moment you were coding. While tools such as <a href="https://rstudio.github.io/renv/articles/renv.html"><code>renv</code></a> or <code>packrat</code> can help you create project-specific libraries, <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> at least lets you capture the basic environment details. I’m not wanting to create project-specific libraries, but I’m rather wanting to share a nicely formatted output of my environment metadata.</p><div class="no-row-height column-margin column-container"><span class="aside">Put another way, <a href="https://rstudio.github.io/renv/">renv</a> can be useful for someone (including yourself) to revert back to the specific package environment, whereas the session info simply <em>returns</em> the basic environment info. For a blogpost, I don’t imagine others trying to match to exact package environments, but rather confirm that their package environment is “similar enough”.</span></div></div>
 <p>We can create and capture the session details like so:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">base_sesh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
@@ -354,7 +357,7 @@ Note
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/Chicago
- date     2022-04-25
+ date     2022-04-26
  pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
 
 ─ Packages ───────────────────────────────────────────────────────────────────
@@ -397,7 +400,7 @@ Note
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/Chicago
- date     2022-04-25
+ date     2022-04-26
  pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
  quarto   0.9.294 @ /usr/local/bin/quarto
 
@@ -452,7 +455,7 @@ Session Info
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/Chicago
- date     2022-04-25
+ date     2022-04-26
  pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
  quarto   0.9.294 @ /usr/local/bin/quarto
 
@@ -515,7 +518,54 @@ Expand for Session Info
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/Chicago
- date     2022-04-25
+ date     2022-04-26
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.1.1)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section><section id="closing-notes" class="level2"><h2 class="anchored" data-anchor-id="closing-notes">Closing Notes</h2>
+<p>If you want to see some examples of this in action on other blogs, check out:</p>
+<ul>
+<li><a href="https://github.com/tjmahr/tjmahr.github.io/blob/master/_R/_footer.Rmd">TJ Mahr’s <code>_footer.Rmd</code></a></li>
+<li><a href="https://github.com/djnavarro/quarto-blog/blob/main/posts/2022-04-20_porting-to-quarto/appendix.R">Danielle Navarro’s <code>appendix.R</code></a></li>
+</ul>
+<p>TJ also uses <code><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html">sessioninfo::session_info()</a></code> while Danielle takes it a step further and generates a full <a href="https://rstudio.github.io/renv/">renv</a> lockfile.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-3" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.1.1 (2021-08-10)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-26
  pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
  quarto   0.9.294 @ /usr/local/bin/quarto
 
@@ -533,7 +583,7 @@ Expand for Session Info
 </div>
 
 
-</section></section></main><!-- /main --><script type="application/javascript">
+</section></main><!-- /main --><script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
   const anchorJS = new window.AnchorJS();

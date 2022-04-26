@@ -13,7 +13,7 @@ image-alt: "A polaroid camera sitting lens up in a pile of fallen brown leaves"
 
 ## Adding session info
 
-Session info in R has lots of useful information on the state of your working environment at the moment you were coding. While tools such as [`renv`](https://rstudio.github.io/renv/articles/renv.html) or `packrat` can help you create project-specific libraries, `sessionInfo()` at least lets you capture the basic environment details. [Put another way, `{renv}` can be useful for someone (including yourself) to revert back to the specific package environment, whereas the session info simply _returns_ the basic environment info. For a blogpost, I don't imagine others trying to match to exact package environments, but rather confirm that their package environment is "similar enough".]{.aside}
+Session info in R has lots of useful information on the state of your working environment at the moment you were coding. While tools such as [`renv`](https://rstudio.github.io/renv/articles/renv.html) or `packrat` can help you create project-specific libraries, `sessionInfo()` at least lets you capture the basic environment details. I'm not wanting to create project-specific libraries, but I'm rather wanting to share a nicely formatted output of my environment metadata.[Put another way, `{renv}` can be useful for someone (including yourself) to revert back to the specific package environment, whereas the session info simply _returns_ the basic environment info. For a blogpost, I don't imagine others trying to match to exact package environments, but rather confirm that their package environment is "similar enough".]{.aside}
 
 We can create and capture the session details like so:
 
@@ -211,3 +211,16 @@ pkg_sesh
 ```
 
 :::
+
+## Closing Notes
+
+If you want to see some examples of similar concepts in action on other blogs, check out:
+
+- [TJ Mahr's `footer.Rmd`](https://github.com/tjmahr/tjmahr.github.io/blob/master/_R/_footer.Rmd)
+- [Danielle Navarro's `appendix.R`](https://github.com/djnavarro/quarto-blog/blob/main/posts/2022-04-20_porting-to-quarto/appendix.R)
+
+TJ also uses `sessioninfo::session_info()` while Danielle takes it a step further and generates a full `{renv}` lockfile.
+
+```{r, echo=FALSE, child="/Users/thomasmock/themockup-blog/_R/footer.qmd"}
+```
+

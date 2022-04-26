@@ -11,7 +11,7 @@ website:
   twitter-card:
     creator: "@thomas_mock"
     card-style: summary_large_image
-  site-url: https://themockup.blog/
+  site-url: https://themockup.blog
   navbar:
     search: true
     right:

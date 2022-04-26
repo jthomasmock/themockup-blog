@@ -7,3 +7,11 @@
 .navbar-brand{
   font-family: "Fira Mono";
 }
+
+.navbar a:hover{
+  color: #ff6700;
+}
+
+.quarto-listing-category {
+  font-family: "Fira Mono";
+}
