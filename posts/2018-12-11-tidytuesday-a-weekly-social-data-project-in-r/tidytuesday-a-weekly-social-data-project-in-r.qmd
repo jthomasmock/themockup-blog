@@ -1,6 +1,6 @@
 ---
 title: "TidyTuesday"
-subtitle: |
+description: |
   A weekly social data project in R
 author: Thomas Mock
 date: 04-05-2018

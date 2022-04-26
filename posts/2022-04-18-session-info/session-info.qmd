@@ -8,7 +8,7 @@ categories:
   - meta
   - quarto
 image: preview.png
-image-alt: "A polaroid picture of an open book in black and white"
+image-alt: "A polaroid camera sitting lens up in a pile of fallen brown leaves"
 ---
 
 ## Adding session info

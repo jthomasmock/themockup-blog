@@ -1,6 +1,6 @@
 ---
 title: "A Gentle Guide to Tidy Statistics in R"
-subtitle: |
+description: |
   Working your way through a basic analysis
 author: "Thomas Mock"
 date: "3-16-2018"
