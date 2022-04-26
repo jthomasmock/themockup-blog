@@ -6,8 +6,11 @@ website:
   description: "Data science tips brought to you by Tom Mock"
   favicon: themockup.png
   image: themockup.png
-  twitter-card: true
+  repo-url: https://github.com/jthomasmock/themockup-blog
   open-graph: true
+  twitter-card:
+    creator: "@thomas_mock"
+    card-style: summary_large_image
   site-url: https://themockup.blog/
   navbar:
     search: true

@@ -47,7 +47,7 @@ ul.task-list{list-style: none;}
     }
 
     const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-subtitle','listing-description','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       page: 9,
     pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
       searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
@@ -68,9 +68,10 @@ ul.task-list{list-style: none;}
 <meta property="og:image:width" content="845">
 <meta name="twitter:title" content="The MockUp">
 <meta name="twitter:image" content="https://themockup.blog//posts/2022-04-18-session-info/preview.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="559">
 <meta name="twitter:image-width" content="845">
-<meta name="twitter:card" content="summary_large_image">
 </head>
 <body class="nav-fixed">
 
@@ -159,7 +160,7 @@ ul.task-list{list-style: none;}
 </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="meta,quarto" data-listing-date-sort="1650258000000" data-listing-file-modified-sort="1650903464789" data-listing-reading-time-sort="4.19">
+<div class="g-col-1" data-index="0" data-categories="meta,quarto" data-listing-date-sort="1650258000000" data-listing-file-modified-sort="1650932825948" data-listing-reading-time-sort="4.19">
 <a href="./posts/2022-04-18-session-info/session-info.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -168,11 +169,14 @@ ul.task-list{list-style: none;}
 <h5 class="no-anchor card-title listing-title">
 Adding session info to blog posts
 </h5>
+<div class="card-subtitle listing-subtitle">
+<p>A snapshot of your code state</p>
+</div>
 <div class="listing-reading-time card-text text-muted">
 4 min
 </div>
 <div class="card-text listing-description">
-<p>A snapshot of your code state</p>
+Session info in R has lots of useful information on the state of your working environment at the moment you were coding. While tools such as…
 </div>
 <div class="card-attribution card-text-small end">
 <div class="listing-date">
@@ -927,7 +931,7 @@ TidyTuesday enhancements
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="32" data-categories="TidyTuesday,tidyverse,Community" data-listing-date-sort="1522904400000" data-listing-file-modified-sort="1650914204182" data-listing-reading-time-sort="9.72">
+<div class="g-col-1" data-index="32" data-categories="TidyTuesday,tidyverse,Community" data-listing-date-sort="1522904400000" data-listing-file-modified-sort="1650932737310" data-listing-reading-time-sort="9.72">
 <a href="./posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/tidytuesday-a-weekly-social-data-project-in-r.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -936,11 +940,14 @@ TidyTuesday enhancements
 <h5 class="no-anchor card-title listing-title">
 TidyTuesday
 </h5>
+<div class="card-subtitle listing-subtitle">
+<p>A weekly social data project in R</p>
+</div>
 <div class="listing-reading-time card-text text-muted">
 9 min
 </div>
 <div class="card-text listing-description">
-<p>A weekly social data project in R</p>
+<code>{r setup, include=FALSE} knitr::opts_chunk$set(echo = FALSE) knitr::opts_chunk$set(eval = TRUE)</code>
 </div>
 <div class="card-attribution card-text-small end">
 <div class="listing-date">
@@ -951,7 +958,7 @@ TidyTuesday
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="33" data-categories="purrr,tidyverse,statistics" data-listing-date-sort="1521349200000" data-listing-file-modified-sort="1650914191127" data-listing-reading-time-sort="7.115">
+<div class="g-col-1" data-index="33" data-categories="purrr,tidyverse,statistics" data-listing-date-sort="1521349200000" data-listing-file-modified-sort="1650932730583" data-listing-reading-time-sort="7.115">
 <a href="./posts/2018-12-11-functional-progamming-in-r-with-purrr/functional-progamming-in-r-with-purrr.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -960,11 +967,14 @@ TidyTuesday
 <h5 class="no-anchor card-title listing-title">
 Functional Progamming in R with purrr
 </h5>
+<div class="card-subtitle listing-subtitle">
+<p>Minimizing repetition with further replication</p>
+</div>
 <div class="listing-reading-time card-text text-muted">
 7 min
 </div>
 <div class="card-text listing-description">
-<p>Minimizing repetition with further replication</p>
+<code>{r setup, include=FALSE} knitr::opts_chunk$set(echo = TRUE)</code>
 </div>
 <div class="card-attribution card-text-small end">
 <div class="listing-date">
@@ -975,7 +985,7 @@ Functional Progamming in R with purrr
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="34" data-categories="tidyverse,statistics" data-listing-date-sort="1521176400000" data-listing-file-modified-sort="1650914180314" data-listing-reading-time-sort="23.27">
+<div class="g-col-1" data-index="34" data-categories="tidyverse,statistics" data-listing-date-sort="1521176400000" data-listing-file-modified-sort="1650932664729" data-listing-reading-time-sort="23.27">
 <a href="./posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/a-gentle-guide-to-tidy-statistics-in-r.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -984,11 +994,14 @@ Functional Progamming in R with purrr
 <h5 class="no-anchor card-title listing-title">
 A Gentle Guide to Tidy Statistics in R
 </h5>
+<div class="card-subtitle listing-subtitle">
+<p>Working your way through a basic analysis</p>
+</div>
 <div class="listing-reading-time card-text text-muted">
 23 min
 </div>
 <div class="card-text listing-description">
-<p>Working your way through a basic analysis</p>
+<code>{r setup, include=FALSE} knitr::opts_chunk$set(echo = FALSE)</code>
 </div>
 <div class="card-attribution card-text-small end">
 <div class="listing-date">

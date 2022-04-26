@@ -1,6 +1,6 @@
 ---
 title: "Functional Progamming in R with purrr"
-description: |
+subtitle: |
   Minimizing repetition with further replication
 author: Thomas Mock
 date: 03-18-2018

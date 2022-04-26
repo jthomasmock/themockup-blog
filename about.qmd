@@ -3,7 +3,7 @@ title: "Tom Mock"
 description: |
   Be humble, hungry and kind. 
   Be so good they can't ignore you.
-image: profile.jpeg
+image: images/profile-preview.png
 about:
   template: trestles
   links:

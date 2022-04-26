@@ -7,7 +7,7 @@ listing:
     - "date desc"
     - "title desc"
   type: "grid"
-  fields: [image, date, title, description, reading-time]
+  fields: [image, date, title, subtitle, description, reading-time]
   categories: true
   date-format: "YYYY-MM-DD"
   page-size: 9
