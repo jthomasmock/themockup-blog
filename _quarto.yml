@@ -33,6 +33,9 @@ website:
         href: https://drinksbytom.com
 format:
   html:
+    twitter-card:
+      creator: "@thomas_mock"
+      card-style: summary_large_image
     comments:
       utterances:
         repo: jthomasmock/themockup-blog

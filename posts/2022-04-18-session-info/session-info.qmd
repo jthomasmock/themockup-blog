@@ -1,6 +1,6 @@
 ---
 title: "Adding session info to blog posts"
-subtitle: |
+description: |
   A snapshot of your code state
 author: Thomas Mock
 date: 04-18-2022
