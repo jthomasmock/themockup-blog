@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="It’s more than just a passing fad.">
+<title>The MockUp - Heatmaps in ggplot2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Heatmaps in ggplot2">
+<meta property="og:description" content="It's more than just a passing fad.
+">
+<meta property="og:image" content="https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/preview.png">
+<meta property="og:site-name" content="The MockUp">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:width" content="1200">
+<meta name="twitter:title" content="The MockUp - Heatmaps in ggplot2">
+<meta name="twitter:description" content="It's more than just a passing fad.
+">
+<meta name="twitter:image" content="https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/themockup.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Heatmaps in ggplot2</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">data visualization</div>
+                <div class="quarto-category">ggplot2</div>
+                <div class="quarto-category">tidyverse</div>
+                <div class="quarto-category">NFL</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>It’s more than just a passing fad.</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">08-28-2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#load-everything" id="toc-load-everything" class="nav-link active" data-scroll-target="#load-everything">Load Everything</a></li>
+  <li>
+<a href="#why-not-just-plot-the-points" id="toc-why-not-just-plot-the-points" class="nav-link" data-scroll-target="#why-not-just-plot-the-points">Why not just plot the points?</a>
+  <ul class="collapse">
+<li><a href="#fear-the-beard" id="toc-fear-the-beard" class="nav-link" data-scroll-target="#fear-the-beard">Fear the beard</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#d-density-alternatives" id="toc-d-density-alternatives" class="nav-link" data-scroll-target="#d-density-alternatives">2D Density Alternatives</a>
+  <ul class="collapse">
+<li><a href="#dont-bury-the-lede" id="toc-dont-bury-the-lede" class="nav-link" data-scroll-target="#dont-bury-the-lede">Don’t bury the lede?</a></li>
+  </ul>
+</li>
+  <li><a href="#d-density-of-smaller-data" id="toc-d-density-of-smaller-data" class="nav-link" data-scroll-target="#d-density-of-smaller-data">2D Density of “smaller” data</a></li>
+  <li>
+<a href="#build-the-field" id="toc-build-the-field" class="nav-link" data-scroll-target="#build-the-field">Build the field</a>
+  <ul class="collapse">
+<li><a href="#wrap-the-field-in-a-function" id="toc-wrap-the-field-in-a-function" class="nav-link" data-scroll-target="#wrap-the-field-in-a-function">Wrap the field in a function</a></li>
+  <li><a href="#qb-comparison" id="toc-qb-comparison" class="nav-link" data-scroll-target="#qb-comparison">QB Comparison</a></li>
+  </ul>
+</li>
+  <li><a href="#specify-color-schemes" id="toc-specify-color-schemes" class="nav-link" data-scroll-target="#specify-color-schemes">Specify Color schemes</a></li>
+  <li><a href="#pff_moo-style-field" id="toc-pff_moo-style-field" class="nav-link" data-scroll-target="#pff_moo-style-field">PFF_Moo style Field</a></li>
+  <li>
+<a href="#get-the-raw-density-estimates" id="toc-get-the-raw-density-estimates" class="nav-link" data-scroll-target="#get-the-raw-density-estimates">Get the raw density estimates</a>
+  <ul class="collapse">
+<li><a href="#compare-2d-density" id="toc-compare-2d-density" class="nav-link" data-scroll-target="#compare-2d-density">Compare 2D Density</a></li>
+  <li><a href="#call-the-function" id="toc-call-the-function" class="nav-link" data-scroll-target="#call-the-function">Call the function</a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><div class="page-columns page-full"><p>Many thanks to <a href="https://twitter.com/ChiefsAnalytics">Ethan Douglas</a> for sharing his heatmap python code on <a href="https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/">OpenSource Football</a>! <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This is a similar walkthrough to Ethan’s post, but in R + <code>ggplot2</code>. Additionally, credit for both collecting the data and the original plot go to Ethan.</p><div class="no-row-height column-margin column-container"><li id="fn1" role="doc-endnote"><p><sup>1</sup>&nbsp;Douglas (2020, Aug.&nbsp;21). Open Source Football: NFL Pass Location Visualization. Retrieved from https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/</p></li></div></div>
+<div class="page-columns page-full"><p>Please also note that the original code adapted from Ethan came from <a href="https://arxiv.org/abs/1906.03339">Sarah Mallepalle et al, 2019</a>. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Many thanks to Sarah, Ron, Konstantinos, and Sam for sharing this data collection tool!</p><div class="no-row-height column-margin column-container"><li id="fn2" role="doc-endnote"><p><sup>2</sup>&nbsp;https://arxiv.org/abs/1906.03339</p></li></div></div>
+<section id="load-everything" class="level2"><h2 class="anchored" data-anchor-id="load-everything">Load Everything</h2>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span> <span class="co"># all the things</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/daattali/ggExtra">ggExtra</a></span><span class="op">)</span>   <span class="co"># marginal plots</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op">)</span>    <span class="co"># color your text</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span> <span class="co"># combine multiple plots</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/EmilHvitfeldt/paletteer">paletteer</a></span><span class="op">)</span> <span class="co"># get all the color palettes</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span>    <span class="co"># helper functions from ggplot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">souce_url</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/ArrowheadAnalytics/next-gen-scrapy-2.0/master/pass_and_game_data.csv"</span>
+
+<span class="va">pass_map_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="va">souce_url</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">pass_map_df</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 37,408
+Columns: 42
+$ posteam          &lt;chr&gt; "BAL", "BAL", "BAL", "BAL", "BAL", "BAL", "BAL", "BAL…
+$ week             &lt;dbl&gt; 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 1…
+$ name             &lt;chr&gt; "Joseph Flacco", "Joseph Flacco", "Joseph Flacco", "J…
+$ pass_type        &lt;chr&gt; "COMPLETE", "COMPLETE", "COMPLETE", "COMPLETE", "COMP…
+$ x                &lt;dbl&gt; 1.4, 12.6, -11.1, 18.3, 9.6, -13.8, -4.4, 17.1, -20.0…
+$ y                &lt;dbl&gt; 2.0, -6.6, -0.1, 8.1, 1.9, 12.1, 6.8, -4.4, 2.3, 14.1…
+$ season           &lt;dbl&gt; 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017,…
+$ game_id          &lt;chr&gt; "2017_12_HOU_BAL", "2017_12_HOU_BAL", "2017_12_HOU_BA…
+$ game_type        &lt;chr&gt; "REG", "REG", "REG", "REG", "REG", "REG", "REG", "REG…
+$ gameday          &lt;date&gt; 2017-11-27, 2017-11-27, 2017-11-27, 2017-11-27, 2017…
+$ weekday          &lt;chr&gt; "Monday", "Monday", "Monday", "Monday", "Monday", "Mo…
+$ gametime         &lt;time&gt; 20:30:00, 20:30:00, 20:30:00, 20:30:00, 20:30:00, 20…
+$ away_team        &lt;chr&gt; "HOU", "HOU", "HOU", "HOU", "HOU", "HOU", "HOU", "HOU…
+$ away_score       &lt;dbl&gt; 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 1…
+$ home_team        &lt;chr&gt; "BAL", "BAL", "BAL", "BAL", "BAL", "BAL", "BAL", "BAL…
+$ home_score       &lt;dbl&gt; 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 2…
+$ location         &lt;chr&gt; "Home", "Home", "Home", "Home", "Home", "Home", "Home…
+$ result           &lt;dbl&gt; 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,…
+$ total            &lt;dbl&gt; 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 3…
+$ overtime         &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ old_game_id      &lt;dbl&gt; 2017112700, 2017112700, 2017112700, 2017112700, 20171…
+$ away_rest        &lt;dbl&gt; 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,…
+$ home_rest        &lt;dbl&gt; 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,…
+$ away_moneyline   &lt;dbl&gt; 311, 311, 311, 311, 311, 311, 311, 311, 311, 311, 311…
+$ home_moneyline   &lt;dbl&gt; -357, -357, -357, -357, -357, -357, -357, -357, -357,…
+$ spread_line      &lt;dbl&gt; 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5…
+$ away_spread_odds &lt;dbl&gt; -103, -103, -103, -103, -103, -103, -103, -103, -103,…
+$ home_spread_odds &lt;dbl&gt; -107, -107, -107, -107, -107, -107, -107, -107, -107,…
+$ total_line       &lt;dbl&gt; 39.5, 39.5, 39.5, 39.5, 39.5, 39.5, 39.5, 39.5, 39.5,…
+$ under_odds       &lt;dbl&gt; -102, -102, -102, -102, -102, -102, -102, -102, -102,…
+$ over_odds        &lt;dbl&gt; -108, -108, -108, -108, -108, -108, -108, -108, -108,…
+$ div_game         &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ roof             &lt;chr&gt; "outdoors", "outdoors", "outdoors", "outdoors", "outd…
+$ surface          &lt;chr&gt; "grass", "grass", "grass", "grass", "grass", "grass",…
+$ temp             &lt;dbl&gt; 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 5…
+$ wind             &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ away_coach       &lt;chr&gt; "Bill O'Brien", "Bill O'Brien", "Bill O'Brien", "Bill…
+$ home_coach       &lt;chr&gt; "John Harbaugh", "John Harbaugh", "John Harbaugh", "J…
+$ referee          &lt;chr&gt; "Brad Allen", "Brad Allen", "Brad Allen", "Brad Allen…
+$ stadium_id       &lt;chr&gt; "BAL00", "BAL00", "BAL00", "BAL00", "BAL00", "BAL00",…
+$ stadium          &lt;chr&gt; "M&amp;T Bank Stadium", "M&amp;T Bank Stadium", "M&amp;T Bank Sta…
+$ defteam          &lt;chr&gt; "HOU", "HOU", "HOU", "HOU", "HOU", "HOU", "HOU", "HOU…</code></pre>
+</div>
+</div>
+</section><section id="why-not-just-plot-the-points" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="why-not-just-plot-the-points">Why not just plot the points?</h2>
+<p>Why even mess around with <code>heatmaps</code> or 2d density plots? Well, we run the risk of overplotting by graphing just the points without thinking or adjusting any of the aesthetics.</p>
+<p>Hadley Wickham in <a href="https://ggplot2-book.org/statistical-summaries.html#overplotting"><code>ggplot2</code>: Elegant Graphics for Data Analysis</a>:</p>
+<blockquote class="blockquote">
+<p>When the data is large, points will be often plotted on top of each other, obscuring the true relationship. In extreme cases, you will only be able to see the extent of the data, and any conclusions drawn from the graphic will be suspect. This problem is called <strong>overplotting</strong>.</p>
+</blockquote>
+<p>Hadley uses an example with just 2000 data points, which already has a lot of overplotting due to a small sample x-y space. We have about 43,000 passes for this dataset, spread out over a relatively large space. We still need to be careful of overplotting though!</p>
+<div class="aside">
+<p><a href="https://www.data-to-viz.com/caveat/overplotting.html">Data to Viz</a> and <a href="https://clauswilke.com/dataviz/overlapping-points.html">Clause Wilke</a> have good writeups on overplotting as well</p>
+</div>
+<details class="page-columns page-full"><summary class="page-columns page-full"><strong class="page-columns page-full">Claus Wilke | Fundamentals of Data Visualization<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>
+<div class="no-row-height column-margin column-container"><li id="fn3" role="doc-endnote"><p><sup>3</sup>&nbsp;https://clauswilke.com/dataviz/</p></li></div></strong></summary><p>While it’s not really focused on the problem at hand, Claus Wilke has a wonderful book on the <em>Fundaments of Data Visualization</em>. His chapters below are applicable and very helpful for best practices:</p>
+<ul>
+<li>
+<a href="https://clauswilke.com/dataviz/histograms-density-plots.html">Visualizing Distributions</a> - Histograms and density plots</li>
+</ul>
+<div class="page-columns page-full"><p>Main idea here is potentially overlapping plots to see where differences arise. Code adapted from Claus Wilke’s source code. <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn4" role="doc-endnote"><p><sup>4</sup>&nbsp;https://github.com/clauswilke/dataviz/blob/master/visualizing_distributions_I.Rmd#L303-L323</p></li></div></div>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"Derek Carr|Mahomes"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html">geom_density</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">y</span>, y <span class="op">=</span> <span class="va">..count..</span>, fill <span class="op">=</span> <span class="va">name</span>, color <span class="op">=</span> <span class="va">name</span><span class="op">)</span>,
+               alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">5</span>, color <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">5</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Yardline"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">10</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"scaled density"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"QB"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/muted.html">muted</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span><span class="op">)</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"QB"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+    axis.line.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
+    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.9</span>, <span class="fl">.87</span><span class="op">)</span>,
+    legend.justification <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"right"</span>, <span class="st">"top"</span><span class="op">)</span>,
+    legend.box.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,
+    plot.margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">margin</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">7</span>, <span class="fl">3</span>, <span class="fl">1.5</span><span class="op">)</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/viz-distributions-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>
+<a href="https://clauswilke.com/dataviz/boxplots-violins.html">Visualizing many distributions at once</a> - Plotting multiple or many distributions at once, and introduces the <code>ggridges</code> package</li>
+</ul>
+<p>Main idea here is overlapping many distributions at once, to see general trends or differences.</p>
+<p><a href="https://github.com/wilkelab/ggridges"><code>ggridges</code></a> has a <a href="https://cran.r-project.org/web/packages/ggridges/vignettes/gallery.html">vignette</a> on now to use it, but here’s a minimal example with the data at hand. Note that we are doing 1 dimensional density, so we could use this with <code>nflfastR</code> data as well!</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggridges/">ggridges</a></span><span class="op">)</span>
+
+<span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"Wilson|Mahomes|Prescott|Watson|Rodgers"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/word.html">word</a></span><span class="op">(</span><span class="va">name</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">y</span>, group <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://wilkelab.org/ggridges/reference/stat_density_ridges.html">stat_density_ridges</a></span><span class="op">(</span>quantile_lines <span class="op">=</span> <span class="cn">TRUE</span>, quantiles <span class="op">=</span> <span class="fl">2</span>, scale <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://wilkelab.org/ggridges/reference/theme_ridges.html">theme_ridges</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">10</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Yardline"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">""</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 2.1</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/ggridges-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>
+<a href="https://clauswilke.com/dataviz/overlapping-points.html">Handling overlapping points</a> - Dealing with overplotting with small data or big data</li>
+</ul>
+<p>We create some bins and then plot the data for Mahomes. Here the data is relatively small, but still stacks.</p>
+<div class="cell" data-fig.dim="[4,6]">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">bin_data</span> <span class="op">&lt;-</span> <span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"Mahomes"</span><span class="op">)</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">y</span>, <span class="op">-</span><span class="fl">5</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="co"># create 5 yard bins on y axis</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>y_bins <span class="op">=</span> <span class="va">y</span> <span class="op">-</span> <span class="va">y</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">5</span><span class="op">)</span> 
+
+<span class="va">bin_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y_bins</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">20</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/bin-data1-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<p>We can add transparency with <code>alpha</code> along with <code><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter()</a></code> to add some random noise in the y-direction w/ <code>height</code>. Note that this is kind of a silly example since we have x and y coords, but you can imagine a situation where you only have binned data or like <code>nflfastR</code> you have large bins (left, middle right and short, long).</p>
+<div class="cell" data-fig.dim="[4,6]">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">bin_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y_bins</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.3</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">20</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/bin-data2-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<p>Claus then goes on to cover details with <code><a href="https://ggplot2.tidyverse.org/reference/geom_bin_2d.html">geom_bin2d()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex()</a></code>, and <code><a href="https://ggplot2.tidyverse.org/reference/geom_contour.html">geom_contour()</a></code>, still worth reading but stuff we’ve covered in the bulk of this post. Again, Claus’ book is amazing, and a great resource regardless of what software you are plotting in. He used R, but intentionally left out code and focused on concepts.</p>
+</details><section id="fear-the-beard" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="fear-the-beard">Fear the beard</h3>
+<p>We can display our points with a quick <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> call but this returns a lot of overplotting albeit in a happy beard shape!</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/sanity-check-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<div class="page-columns page-full"><p>We can add 90% transparency with <code>alpha = 0.1</code> or set <code>alpha</code> as uirea ratio, and change the color to red, but this still leaves us with difficulty parsing through the high vs medium pass locations. Although the 1/20 ratio gets us a bit farther. The ratio denominator can be though of as the “number of points that must overplotted to give a solid color.” <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn5" role="doc-endnote"><p><sup>5</sup>&nbsp;https://ggplot2-book.org/statistical-summaries.html#overplotting</p></li></div></div>
+<p>Passes around the 5 yard mark appear to be as common as at the 10 and even 20 yard mark in some cases! We know this isn’t true from <code>nflfastR</code> data. Maybe we can try to get closer views of the actual distributions with <code>ggMarginal</code> from the <a href="https://github.com/daattali/ggExtra"><code>ggExtra</code></a> R package, which provides marginal histograms, box plots, or density plots.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">red_beard</span> <span class="op">&lt;-</span> <span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.1</span>, color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Alpha = 0.1 or 90% transparency"</span><span class="op">)</span>
+
+<span class="va">red_beard_ratio</span> <span class="op">&lt;-</span> <span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">20</span>, color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Alpha = 1/20, so 20 points must be stacked to give solid color"</span><span class="op">)</span>
+
+
+<span class="va">red_beard</span> <span class="op">+</span> <span class="va">red_beard_ratio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>We can add some marginal plots to help out a bit, but that still doesn’t solve the problem of honing in on specific areas of interest that well.</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># add density or histogram in the margins</span>
+<span class="fu"><a href="https://rdrr.io/pkg/ggExtra/man/ggMarginal.html">ggMarginal</a></span><span class="op">(</span><span class="va">red_beard</span>, type <span class="op">=</span> <span class="st">"density"</span>, fill <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/marginal-plots-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># add density or histogram in the margins</span>
+<span class="fu"><a href="https://rdrr.io/pkg/ggExtra/man/ggMarginal.html">ggMarginal</a></span><span class="op">(</span><span class="va">red_beard</span>, type <span class="op">=</span> <span class="st">"histogram"</span>, fill <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/marginal-plots2-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+</section></section><section id="d-density-alternatives" class="level2"><h2 class="anchored" data-anchor-id="d-density-alternatives">2D Density Alternatives</h2>
+<p>Since we’re actually interested in the density/counts of observations at each x-y coordinate instead of plotting <em>each</em> individual point, we also have a few other tools in our toolbox! We can use <a href="https://ggplot2.tidyverse.org/reference/geom_hex.html"><code>geom_hex()</code></a> or <a href="https://ggplot2.tidyverse.org/reference/geom_bin2d.html"><code>geom_bin2d()</code></a>. Note that there are a few other methods such as <code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster()</a></code> which require you to provide your own “z” metric, and there are <code>stat_?</code> versions of each of these geoms for more custom calculations.</p>
+<div class="aside">
+<p>If you read the <code>ggplot2</code> + overplotting <a href="https://ggplot2-book.org/statistical-summaries.html#overplotting"><code>ggplot2</code> book chapter</a>, you can find more reproducible longer form examples and strategies with <code><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_bin_2d.html">geom_bin2d()</a></code>.</p>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">hex_plot</span> <span class="op">&lt;-</span> <span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex</a></span><span class="op">(</span>
+    binwidth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"red"</span>, high <span class="op">=</span> <span class="st">"yellow"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">7</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">hex_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/hex-plot-1.png" class="img-fluid" width="576"></p>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">bin2d</span> <span class="op">&lt;-</span> <span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bin_2d.html">geom_bin2d</a></span><span class="op">(</span>
+    binwidth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"red"</span>, high <span class="op">=</span> <span class="st">"yellow"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">7</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">bin2d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/hex-plot-2.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>We can now see that while there ARE passes all over the field, the majority are around the 2-7 yard mark with small but relatively dense pockets elsewhere. Passes are most frequently thrown at 4, 5 or 6 yards and ~68% of passes are thrown 10 yards or shorter.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># histogram of just Y coord</span>
+<span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/not-heatmaps-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># calc some percentages</span>
+<span class="va">pass_by_y</span> <span class="op">&lt;-</span> <span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>y_rnd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">y</span>, digits <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">y_rnd</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>,
+    pct_total <span class="op">=</span> <span class="va">n</span> <span class="op">/</span> <span class="va">total</span>,
+    roll_total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">pct_total</span><span class="op">)</span>
+  <span class="op">)</span>
+
+<span class="co"># ~35.6% of passes between 2-7 yards</span>
+<span class="va">pass_by_y</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">y_rnd</span>, <span class="fl">2</span>, <span class="fl">7</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">pct_total</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+    pct
+  &lt;dbl&gt;
+1 0.346</code></pre>
+</div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># passes are most commonly thrown at 4-6 yards</span>
+<span class="co"># 68% of passes are thrown 10 yards or shorter</span>
+<span class="va">pass_by_y</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">pct_total</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 67 × 5
+   y_rnd     n total pct_total roll_total
+   &lt;dbl&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+ 1     4  2732 37408    0.0730      0.409
+ 2     5  2528 37408    0.0676      0.477
+ 3     6  2399 37408    0.0641      0.541
+ 4     2  2103 37408    0.0562      0.286
+ 5     3  1879 37408    0.0502      0.336
+ 6     1  1476 37408    0.0395      0.230
+ 7     0  1365 37408    0.0365      0.190
+ 8     7  1320 37408    0.0353      0.576
+ 9     8  1297 37408    0.0347      0.611
+10    12  1226 37408    0.0328      0.730
+# … with 57 more rows</code></pre>
+</div>
+</div>
+<section id="dont-bury-the-lede" class="level3"><h3 class="anchored" data-anchor-id="dont-bury-the-lede">Don’t bury the lede?</h3>
+<p>Another major advantage of <code>geom_hex</code> or <code><a href="https://ggplot2.tidyverse.org/reference/geom_bin_2d.html">geom_bin2d()</a></code> is they’re remarkably faster for big data than plotting <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> along with reducing the likelihood of overplotting! For a toy example of about 1.7 million points, <code><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex()</a></code> executes in about 2 sec vs 20 sec with <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>, and then subsequent 30-60 sec to “draw” the output in the viewer of R/RStudio.</p>
+<div class="aside">
+<p>Using these techniques are useful, as they are both computationally helpful (aka faster), and can help you better understand plots of “bigger” data.</p>
+</div>
+</section></section><section id="d-density-of-smaller-data" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="d-density-of-smaller-data">2D Density of “smaller” data</h2>
+<p>So we’ve covered hex and rectangular 2d bins. To me, these are not as attractive for “small data” like we may see for individual QB plots. Let’s take Patrick Mahomes for example, he <em>only</em> has ~1,000 passes in this dataset. We can plot with a <code><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex()</a></code> for each 1x1 yard chunk like we did before, but I honestly have trouble determining trends of where he likes to throw with that graphic.</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mahomes"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/mahomes-alone-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>We could always use larger bins, but if we’re just trying to see large trends we have another strategy in <a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html"><code>geom_density_2d()</code></a>.</p>
+<blockquote class="blockquote">
+<p>Perform a 2D kernel density estimation using <a href="https://rdrr.io/pkg/MASS/man/kde2d.html"><code>MASS::kde2d()</code></a> and display the results with contours. This can be useful for dealing with overplotting. This is a 2D version of geom_density(). geom_density_2d() draws contour lines, and geom_density_2d_filled() draws filled contour bands.</p>
+</blockquote>
+<p>This essentially fits a polygon around the most frequent points by x/y coordinates, and then colors them according to density. In this case, x/y is basically the position on the field and “z” is the density of how many plots were thrown to that area.</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mahomes"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/mahomes-2d-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>Now if we want to get even more clever, we can use this compare passing heatmaps of specific QBs. We can normalize across the facets, and drop the least frequent passes with specific breaks. I’ve binned into 10 specific breakpoints, and by setting breaks between 0.1 and 1.0, we also drop the very least frequent passes which otherwise show up as a light fill of the entire remaining plot. Additionally, by adding a horizontal reference line we can pretty clearly see that Carr’s most common passes are behind the 5 yard line, while Mahomes has passed beyond the 5 yard line much more frequently.</p>
+<div class="cell page-columns page-full">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mahomes|Derek Carr"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">..level..</span><span class="op">)</span>,
+    contour_var <span class="op">=</span> <span class="st">"ndensity"</span>, <span class="co"># normalize to each QBs total passes</span>
+    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">1.0</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="co"># drop the lowest passes</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">name</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display column-screen">
+<p><img src="index_files/figure-html/mahomes-compare-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>This is all well and good, but it’s not the prettiest piece of dataviz.</p>
+<div class="page-columns page-full"><p>Thanks again to <a href="https://twitter.com/ChiefsAnalytics">Ethan Douglas</a> and his post on <a href="https://www.opensourcefootball.com/posts/2020-08-22-nfl-pass-location-visualization/">OpenSourceFootball.com</a> <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, we have a good framework about how to approach building a NFL field as a graph.</p><div class="no-row-height column-margin column-container"><li id="fn6" role="doc-endnote"><p><sup>6</sup>&nbsp;Douglas (2020, Aug.&nbsp;21). Open Source Football: NFL Pass Location Visualization. Retrieved from https://mrcaseb.github.io/open-source-football/posts/2020-08-22-nfl-pass-location-visualization/</p></li></div></div>
+</section><section id="build-the-field" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="build-the-field">Build the field</h2>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">not_div_5</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="co"># select only elements of the vector not divisible by 5</span>
+  <span class="va">x</span><span class="op">[</span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">5</span> <span class="op">!=</span> <span class="fl">0</span><span class="op">]</span>
+<span class="op">}</span>
+
+<span class="va">center_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3.1</span>, <span class="fl">60</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3.1</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span>,
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">14</span>, <span class="fl">59</span>, <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">not_div_5</span><span class="op">(</span><span class="op">)</span>,
+  text <span class="op">=</span> <span class="st">"--"</span>
+<span class="op">)</span>
+
+<span class="co"># line labels</span>
+<span class="va">annotate_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12.88</span>, <span class="op">-</span><span class="fl">12.88</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span>each <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">50</span>, <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,
+  text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">50</span>, <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="st">"(.)(.)"</span>, <span class="st">"\\1 \\2"</span><span class="op">)</span>,
+  rotation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">270</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span>each <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="co"># yardlines</span>
+<span class="va">yardline_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,
+  yend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">16</span><span class="op">)</span>,
+  xend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">16</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="co"># sidelines</span>
+<span class="va">sideline_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15.15</span>, <span class="op">-</span><span class="fl">15.15</span><span class="op">)</span>,
+  yend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">60.15</span>, <span class="fl">60.15</span><span class="op">)</span>,
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,
+  xend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After building some datasets, we can now plot just the field without any other data. This looks nice enough, but I don’t want to copy paste it for all the remaining examples, so let’s try putting it into a function that we can call with <code>+ add_field()</code>!</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="cn">NULL</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>
+    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">53.333</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">53.333</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,
+    ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">60</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
+    data <span class="op">=</span> <span class="va">annotate_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">text</span>, angle <span class="op">=</span> <span class="va">rotation</span><span class="op">)</span>,
+    color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">8</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+    data <span class="op">=</span> <span class="va">yardline_df</span>, color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, xend <span class="op">=</span> <span class="va">xend</span>, yend <span class="op">=</span> <span class="va">yend</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+    x <span class="op">=</span> <span class="op">-</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, y <span class="op">=</span> <span class="fl">0</span>, xend <span class="op">=</span> <span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, yend <span class="op">=</span> <span class="fl">0</span>,
+    color <span class="op">=</span> <span class="st">"blue"</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+    data <span class="op">=</span> <span class="va">sideline_df</span>, color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">2</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, xend <span class="op">=</span> <span class="va">xend</span>, yend <span class="op">=</span> <span class="va">yend</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
+    data <span class="op">=</span> <span class="va">center_df</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">text</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"black"</span>, vjust <span class="op">=</span> <span class="fl">0.32</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/field_plot-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<section id="wrap-the-field-in-a-function" class="level3"><h3 class="anchored" data-anchor-id="wrap-the-field-in-a-function">Wrap the field in a function</h3>
+<p>We can turn this into a function so that we don’t have to copy-paste it all over the place. Note that I’m wrapping it in a list so I can use it with <code>+</code> in a sequence of <code>ggplot2</code> calls.</p>
+<p>I’m also using <code>front_col</code> and <code>back_col</code> to let us switch from white on black to black on white if needed.</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">add_field</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>
+      xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">53.333</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">53.333</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,
+      ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">60</span><span class="op">)</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
+      data <span class="op">=</span> <span class="va">annotate_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">text</span>, angle <span class="op">=</span> <span class="va">rotation</span><span class="op">)</span>,
+      color <span class="op">=</span> <span class="va">front_col</span>, size <span class="op">=</span> <span class="fl">8</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+      data <span class="op">=</span> <span class="va">yardline_df</span>, color <span class="op">=</span> <span class="va">front_col</span>, size <span class="op">=</span> <span class="fl">1</span>,
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, xend <span class="op">=</span> <span class="va">xend</span>, yend <span class="op">=</span> <span class="va">yend</span><span class="op">)</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+      x <span class="op">=</span> <span class="op">-</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, y <span class="op">=</span> <span class="fl">0</span>, xend <span class="op">=</span> <span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, yend <span class="op">=</span> <span class="fl">0</span>,
+      color <span class="op">=</span> <span class="st">"blue"</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+      data <span class="op">=</span> <span class="va">sideline_df</span>, color <span class="op">=</span> <span class="va">front_col</span>, size <span class="op">=</span> <span class="fl">2</span>,
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, xend <span class="op">=</span> <span class="va">xend</span>, yend <span class="op">=</span> <span class="va">yend</span><span class="op">)</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
+      data <span class="op">=</span> <span class="va">center_df</span>,
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">text</span><span class="op">)</span>, color <span class="op">=</span> <span class="va">front_col</span>, vjust <span class="op">=</span> <span class="fl">0.32</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+      strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span>, color <span class="op">=</span> <span class="va">front_col</span><span class="op">)</span>,
+      plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">back_col</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,
+      legend.position <span class="op">=</span> <span class="st">"none"</span>,
+      plot.margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"cm"</span><span class="op">)</span>,
+      plot.caption <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">front_col</span><span class="op">)</span>,
+      plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">front_col</span><span class="op">)</span>,
+      plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">front_col</span><span class="op">)</span>,
+      panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">back_col</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,
+      panel.border <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="op">)</span>
+  <span class="op">)</span>
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="qb-comparison" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="qb-comparison">QB Comparison</h3>
+<p>First let’s filter down to just our two QBs to compare, Patrick Mahomes and Russell Wilson.</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">passer_df</span> <span class="op">&lt;-</span> <span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mahomes|Russell"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">name</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Patrick Mahomes"</span>, <span class="st">"Russell Wilson"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">x</span>, <span class="va">y</span><span class="op">)</span>
+
+<span class="va">passer_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density2d_filled</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/create-passer-df-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>We’ll specify fill and color to both scale with the level/density and normal density peaks across our plots, and finally set our breaks to drop the lowest bin of passes.</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pass_map</span> <span class="op">&lt;-</span> <span class="va">passer_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">..level..</span>, color <span class="op">=</span> <span class="va">..level..</span><span class="op">)</span>,
+    contour_var <span class="op">=</span> <span class="st">"ndensity"</span>, <span class="co"># normalize across facets</span>
+    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">1.0</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">name</span><span class="op">)</span>
+
+<span class="va">pass_map</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/initial-map-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>We can quickly add the field background to this with our function <code>add_field()</code>!</p>
+<div class="cell page-columns page-full">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">back_col</span> <span class="op">&lt;-</span> <span class="st">"white"</span>
+<span class="va">front_col</span> <span class="op">&lt;-</span> <span class="st">"black"</span>
+
+<span class="va">pass_map</span> <span class="op">+</span>
+  <span class="fu">add_field</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display column-screen">
+<p><img src="index_files/figure-html/add-field-plot-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section></section><section id="specify-color-schemes" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="specify-color-schemes">Specify Color schemes</h2>
+<p>While that’s essentially our final graph perhaps you don’t want to use <code>viridis</code> which is the default color scheme. We can generate custom color palettes or use a pre-built color palette via the <a href="https://github.com/EmilHvitfeldt/paletteer"><code>paleteer</code></a> R package. Note that the 3 color palettes I create all do essentially the same thing but it’s:</p>
+<ul>
+<li>Building your own custom color sequence with <code><a href="https://rdrr.io/r/grDevices/colorRamp.html">grDevices::colorRampPalette()</a></code><br>
+</li>
+<li>Returning a pre-built palette w/ <code><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer::paletteer_d()</a></code><br>
+</li>
+<li>Expanding a pre-built palette to be longer with <code>colorRampPalette</code>
+</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">heat_colors</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#800026FF"</span>, <span class="st">"#FC4E2AFF"</span>, <span class="st">"#FEB24CFF"</span>, <span class="st">"#FFFFCCFF"</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+
+<span class="va">heat_palette</span> <span class="op">&lt;-</span> <span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"RColorBrewer::YlOrRd"</span>, n <span class="op">=</span> <span class="fl">9</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span>
+
+<span class="va">heat_colors_interpolated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span><span class="op">(</span><span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"RColorBrewer::YlOrRd"</span>, n <span class="op">=</span> <span class="fl">9</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+
+<span class="va">heat_colors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html">show_col</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/colors-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">heat_palette</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html">show_col</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/colors-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">heat_colors_interpolated</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html">show_col</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/colors-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell page-columns page-full">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pass_map</span> <span class="op">+</span>
+  <span class="fu">add_field</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">heat_colors_interpolated</span><span class="op">)</span>, aesthetics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fill"</span>, <span class="st">"color"</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display column-screen">
+<p><img src="index_files/figure-html/use-colors-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<section id="and-also-in-black" class="level4 page-columns page-full"><h4 class="anchored" data-anchor-id="and-also-in-black">And also in black!</h4>
+<div class="cell page-columns page-full">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">back_col</span> <span class="op">&lt;-</span> <span class="st">"black"</span>
+<span class="va">front_col</span> <span class="op">&lt;-</span> <span class="st">"white"</span>
+
+<span class="va">pass_map</span> <span class="op">+</span>
+  <span class="fu">add_field</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">heat_colors_interpolated</span><span class="op">)</span>, aesthetics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fill"</span>, <span class="st">"color"</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display column-screen">
+<p><img src="index_files/figure-html/use-colors2-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+</section></section><section id="pff_moo-style-field" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="pff_moo-style-field">PFF_Moo style Field</h2>
+<div class="page-columns page-full"><p><a href="https://twitter.com/PFF_Moo/status/1235681100837486592?s=20">PFF_Moo</a> takes a different approach to field lines, which can be recreated below. <a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn7" role="doc-endnote"><p><sup>7</sup>&nbsp;https://twitter.com/PFF_Moo/status/1235681100837486592?s=20</p></li></div></div>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">not_div_5</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="co"># select only elements of the vector not divisible by 5</span>
+  <span class="va">x</span><span class="op">[</span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">5</span> <span class="op">!=</span> <span class="fl">0</span><span class="op">]</span>
+<span class="op">}</span>
+
+<span class="va">center_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3.1</span>, <span class="fl">60</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3.1</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span>,
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">14</span>, <span class="fl">59</span>, <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">not_div_5</span><span class="op">(</span><span class="op">)</span>,
+  text <span class="op">=</span> <span class="st">"--"</span>
+<span class="op">)</span>
+
+<span class="co"># line labels</span>
+<span class="va">horiz_yd_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12.88</span>, <span class="op">-</span><span class="fl">12.88</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span>each <span class="op">=</span> <span class="fl">14</span><span class="op">)</span>,
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">55</span>, <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,
+  text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">55</span>, <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="co"># yardlines</span>
+<span class="va">yardline_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,
+  yend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">60</span>, <span class="fl">5</span><span class="op">)</span>,
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">16</span><span class="op">)</span>,
+  xend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">16</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="co"># sidelines</span>
+<span class="va">sideline_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15.15</span>, <span class="op">-</span><span class="fl">15.15</span><span class="op">)</span>,
+  yend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">60.15</span>, <span class="fl">60.15</span><span class="op">)</span>,
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">56.5</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">56.5</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,
+  xend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">56.5</span> <span class="op">/</span> <span class="fl">2</span>, <span class="fl">56.5</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="va">add_moo_field</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>
+      xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">53.333</span><span class="op">/</span><span class="fl">2</span>, <span class="fl">53.333</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,
+      ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">60</span><span class="op">)</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+      data <span class="op">=</span> <span class="va">yardline_df</span>, color <span class="op">=</span> <span class="va">front_col</span>, size <span class="op">=</span> <span class="fl">0.5</span>,
+      linetype <span class="op">=</span> <span class="st">"dashed"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>,
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, xend <span class="op">=</span> <span class="va">xend</span>, yend <span class="op">=</span> <span class="va">yend</span><span class="op">)</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="op">-</span><span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, y <span class="op">=</span> <span class="fl">0</span>, xend <span class="op">=</span> <span class="fl">56</span> <span class="op">/</span> <span class="fl">2</span>, yend <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,
+      color <span class="op">=</span> <span class="st">"blue"</span>, size <span class="op">=</span> <span class="fl">1</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>
+      data <span class="op">=</span> <span class="va">sideline_df</span>, color <span class="op">=</span> <span class="va">front_col</span>, size <span class="op">=</span> <span class="fl">2</span>,
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, xend <span class="op">=</span> <span class="va">xend</span>, yend <span class="op">=</span> <span class="va">yend</span><span class="op">)</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
+      data <span class="op">=</span> <span class="va">center_df</span>,
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">text</span><span class="op">)</span>, color <span class="op">=</span> <span class="va">front_col</span>, vjust <span class="op">=</span> <span class="fl">0.32</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>
+      data <span class="op">=</span> <span class="va">horiz_yd_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">text</span><span class="op">)</span>,
+      color <span class="op">=</span> <span class="va">front_col</span>, size <span class="op">=</span> <span class="fl">4</span>, fontface <span class="op">=</span> <span class="st">"bold"</span>
+    <span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+      strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span>, color <span class="op">=</span> <span class="va">front_col</span><span class="op">)</span>,
+      plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">back_col</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,
+      legend.position <span class="op">=</span> <span class="st">"none"</span>,
+      plot.margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>, unit <span class="op">=</span> <span class="st">"cm"</span><span class="op">)</span>,
+      plot.caption <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">front_col</span><span class="op">)</span>,
+      plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">front_col</span><span class="op">)</span>,
+      plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">front_col</span><span class="op">)</span>,
+      panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">back_col</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,
+      panel.border <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="op">)</span>
+  <span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">back_col</span> <span class="op">&lt;-</span> <span class="st">"white"</span>
+<span class="va">front_col</span> <span class="op">&lt;-</span> <span class="st">"black"</span>
+
+
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">pass_map_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">..level..</span><span class="op">)</span>,
+    contour_var <span class="op">=</span> <span class="st">"ndensity"</span>, <span class="co"># normalize to each QBs total passes</span>
+    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">1.0</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="co"># drop the lowest passes</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu">add_moo_field</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/field_plot_moo-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+</section><section id="get-the-raw-density-estimates" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="get-the-raw-density-estimates">Get the raw density estimates</h2>
+<div class="page-columns page-full"><p>Lastly, we can also get the raw density measures to use against the points for example or for other more computational measures as opposed to just graphics. <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Note that this is for ALL the QBs at once.</p><div class="no-row-height column-margin column-container"><li id="fn8" role="doc-endnote"><p><sup>8</sup>&nbsp;Function adapted from <a href="https://slowkow.com/notes/ggplot2-color-by-density/">Kamil Slowikowski</a></p></li></div></div>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">get_density</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">density_out</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/kde2d.html">kde2d</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span>
+  <span class="va">int_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/findInterval.html">findInterval</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">density_out</span><span class="op">$</span><span class="va">x</span><span class="op">)</span>
+  <span class="va">int_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/findInterval.html">findInterval</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">density_out</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>
+  <span class="va">comb_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">int_x</span>, <span class="va">int_y</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">density_out</span><span class="op">$</span><span class="va">z</span><span class="op">[</span><span class="va">comb_int</span><span class="op">]</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">density_map</span> <span class="op">&lt;-</span> <span class="va">pass_map_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="co"># function works in dplyr!</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>density <span class="op">=</span> <span class="fu">get_density</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">density_map</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_color_gradient</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"red"</span>, high <span class="op">=</span> <span class="st">"yellow"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/dens-calc-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<div class="aside">
+<p>Here’s the hexplot for comparison:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</div>
+<section id="compare-2d-density" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="compare-2d-density">Compare 2D Density</h3>
+<p>Now for this, we’re actually creating two separate 2 dimensional density estimates, and then subtracting the density of QB2’s passes from QB1’s.</p>
+<div class="page-columns page-full"><p>This requires us to play around a bit more with matrices, which is a good exercise! I’m going to keep working to see if this could fit into a <code>tibble</code> oriented workflow, but so far it’s a matrix up to the end. Credit to eipi10 for code I adapted from <a href="https://stackoverflow.com/questions/28521145/r-calculate-and-plot-difference-between-two-density-countours">Stack Overflow</a>. <a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn9" role="doc-endnote"><p><sup>9</sup>&nbsp;https://stackoverflow.com/questions/28521145/r-calculate-and-plot-difference-between-two-density-countours</p></li></div></div>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_density_compare</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">pass_df</span>, <span class="va">qb1_name</span>, <span class="va">qb2_name</span>, <span class="va">n</span> <span class="op">=</span> <span class="fl">200</span><span class="op">)</span><span class="op">{</span>
+  
+  <span class="co"># filter to qb1</span>
+  <span class="va">qb1</span> <span class="op">&lt;-</span> <span class="va">pass_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">qb1_name</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co">#filter to qb2</span>
+  <span class="va">qb2</span> <span class="op">&lt;-</span> <span class="va">pass_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">qb2_name</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># get x/y coords as vectors</span>
+  <span class="va">qb1_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">qb1</span>, <span class="va">x</span><span class="op">)</span>
+  <span class="va">qb1_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">qb1</span>, <span class="va">y</span><span class="op">)</span>
+  
+  <span class="co"># get x/y coords as vectors</span>
+  <span class="va">qb2_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">qb2</span>, <span class="va">x</span><span class="op">)</span>
+  <span class="va">qb2_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">qb2</span>, <span class="va">y</span><span class="op">)</span>
+
+  <span class="co"># get x and y range to compute comparisons across</span>
+  <span class="va">x_rng</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">qb1_x</span>, <span class="va">qb2_x</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">y_rng</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">qb1_y</span>, <span class="va">qb2_y</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># Explicitly calculate bandwidth for future use</span>
+  <span class="va">bandwidth_x</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/bandwidth.nrd.html">bandwidth.nrd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">qb1_x</span>, <span class="va">qb2_x</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">bandwidth_y</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/bandwidth.nrd.html">bandwidth.nrd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">qb1_y</span>, <span class="va">qb2_y</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="va">bandwidth_calc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">bandwidth_x</span>, <span class="va">bandwidth_y</span><span class="op">)</span>
+  
+  <span class="co"># Calculate the 2d density estimate over the common range</span>
+  <span class="va">d2_qb1</span> <span class="op">=</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/kde2d.html">kde2d</a></span><span class="op">(</span><span class="va">qb1_x</span>, <span class="va">qb1_y</span>, h <span class="op">=</span> <span class="va">bandwidth_calc</span>, n<span class="op">=</span><span class="va">n</span>, lims<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x_rng</span>, <span class="va">y_rng</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">d2_qb2</span> <span class="op">=</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/kde2d.html">kde2d</a></span><span class="op">(</span><span class="va">qb2_x</span>, <span class="va">qb2_y</span>, h <span class="op">=</span> <span class="va">bandwidth_calc</span>, n<span class="op">=</span><span class="va">n</span>, lims<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x_rng</span>, <span class="va">y_rng</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># create diff df</span>
+  <span class="va">qb_diff</span> <span class="op">&lt;-</span> <span class="va">d2_qb1</span>
+  
+  <span class="co"># matrix subtraction density from qb2 from qb1</span>
+  <span class="va">qb_diff</span><span class="op">$</span><span class="va">z</span> <span class="op">&lt;-</span> <span class="va">d2_qb1</span><span class="op">$</span><span class="va">z</span> <span class="op">-</span> <span class="va">d2_qb2</span><span class="op">$</span><span class="va">z</span>
+  
+  <span class="co"># add matrix col names</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">qb_diff</span><span class="op">$</span><span class="va">z</span><span class="op">)</span> <span class="op">=</span> <span class="va">qb_diff</span><span class="op">$</span><span class="va">y</span>
+  
+  <span class="co">#### return tidy tibble ####</span>
+  <span class="va">qb_diff</span><span class="op">$</span><span class="va">z</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="co"># each col_name is actually the y from the matrix</span>
+    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="co"># add back the x</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">qb_diff</span><span class="op">$</span><span class="va">x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span>, names_to <span class="op">=</span> <span class="st">"y"</span>, values_to <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/double.html">as.double</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>,
+           bandwidth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">bandwidth_calc</span><span class="op">)</span>,
+           comparison <span class="op">=</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"{qb1_name} (QB1) vs {qb2_name} (QB2)"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="call-the-function" class="level3"><h3 class="anchored" data-anchor-id="call-the-function">Call the function</h3>
+<p>Now we can just call the function to generate a beautiful dataset to plot or work with!</p>
+<p>Let’s compare… Mahomes vs Rodgers.</p>
+<div class="cell" data-fig.dim="[5,10]">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">compared_z</span> <span class="op">&lt;-</span> <span class="fu">qb_density_compare</span><span class="op">(</span><span class="va">pass_map_df</span>, <span class="st">"Mahomes"</span>, <span class="st">"Rodgers"</span>, n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> 
+
+<span class="op">(</span><span class="va">compared_plot</span> <span class="op">&lt;-</span> <span class="va">compared_z</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  
+  <span class="co"># add core heatmap - note that geom_raster or geom_tile both work</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, fill<span class="op">=</span><span class="va">z</span><span class="op">)</span><span class="op">)</span>  <span class="op">+</span>
+  
+  <span class="co"># add contour polygon lines around the most dense points</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_contour.html">stat_contour</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">..level..</span>, z <span class="op">=</span> <span class="va">z</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  
+  <span class="co"># add a fill gradient from low (blue) to high (red) </span>
+  <span class="co"># with white as the zero midpoint</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient2</a></span><span class="op">(</span>low<span class="op">=</span><span class="st">"blue"</span>,mid<span class="op">=</span><span class="st">"white"</span>, high<span class="op">=</span><span class="st">"red"</span>, midpoint<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_color_gradient2</a></span><span class="op">(</span>low<span class="op">=</span><span class="st">"blue"</span>, mid<span class="op">=</span><span class="st">"white"</span>, high<span class="op">=</span><span class="st">"red"</span>, midpoint<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="co"># drop the legends</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>color<span class="op">=</span><span class="cn">FALSE</span>, fill <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">add_moo_field</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">compared_z</span><span class="op">$</span><span class="va">comparison</span><span class="op">)</span>,
+       subtitle <span class="op">=</span> <span class="st">"Color is more passes by &lt;span style='color:red'&gt;**QB1**&lt;/span&gt; or by &lt;span style='color:blue'&gt;**QB2**&lt;/span&gt;"</span>,
+       caption <span class="op">=</span> <span class="st">"Plot: @thomas_mock | Data: @ChiefsAnalytics"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="co"># add some customizations to the plot</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span>, legend.key.width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"cm"</span><span class="op">)</span>,
+        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,
+        plot.subtitle <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,
+        plot.caption <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span><span class="op">)</span> </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =
+"none")` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/compare_qb_plot-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+<p>Try it out for yourself!</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-28
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version    date (UTC) lib source
+ dplyr       * 1.0.8      2022-02-08 [1] CRAN (R 4.2.0)
+ forcats     * 0.5.1      2021-01-27 [1] CRAN (R 4.2.0)
+ ggExtra     * 0.10.0     2022-03-23 [1] CRAN (R 4.2.0)
+ ggplot2     * 3.3.5      2021-06-25 [1] CRAN (R 4.2.0)
+ ggridges    * 0.5.3      2021-01-08 [1] CRAN (R 4.2.0)
+ ggtext      * 0.1.1      2020-12-17 [1] CRAN (R 4.2.0)
+ paletteer   * 1.4.0      2021-07-20 [1] CRAN (R 4.2.0)
+ patchwork   * 1.1.0.9000 2022-04-26 [1] Github (thomasp85/patchwork@79223d3)
+ purrr       * 0.3.4      2020-04-17 [1] CRAN (R 4.2.0)
+ readr       * 2.1.2      2022-01-30 [1] CRAN (R 4.2.0)
+ scales      * 1.2.0      2022-04-13 [1] CRAN (R 4.2.0)
+ sessioninfo * 1.2.2      2021-12-06 [1] CRAN (R 4.2.0)
+ stringr     * 1.4.0      2019-02-10 [1] CRAN (R 4.2.0)
+ tibble      * 3.1.6      2021-11-07 [1] CRAN (R 4.2.0)
+ tidyr       * 1.2.0      2022-02-01 [1] CRAN (R 4.2.0)
+ tidyverse   * 1.3.1      2021-04-15 [1] CRAN (R 4.2.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="Put a bird on it - Portlandia.">
+<title>The MockUp - Add a logo to your plot</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Add a logo to your plot">
+<meta property="og:description" content="Put a bird on it - Portlandia.
+">
+<meta property="og:image" content="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940">
+<meta property="og:site-name" content="The MockUp">
+<meta name="twitter:title" content="The MockUp - Add a logo to your plot">
+<meta name="twitter:description" content="Put a bird on it - Portlandia.
+">
+<meta name="twitter:image" content="https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot/themockup.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Add a logo to your plot</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">magick</div>
+                <div class="quarto-category">data visualization</div>
+                <div class="quarto-category">ggplot2</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>Put a bird on it - Portlandia.</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">01-09-2019</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#magic-with-magick" id="toc-magic-with-magick" class="nav-link active" data-scroll-target="#magic-with-magick">Magic with magick!</a></li>
+  <li>
+<a href="#building-a-ggplot-with-a-logo" id="toc-building-a-ggplot-with-a-logo" class="nav-link" data-scroll-target="#building-a-ggplot-with-a-logo">Building a ggplot with a logo</a>
+  <ul class="collapse">
+<li><a href="#read-in-a-plot" id="toc-read-in-a-plot" class="nav-link" data-scroll-target="#read-in-a-plot">Read in a plot</a></li>
+  <li><a href="#where-to-put-the-logo" id="toc-where-to-put-the-logo" class="nav-link" data-scroll-target="#where-to-put-the-logo">Where to put the logo?</a></li>
+  <li><a href="#add-the-logo" id="toc-add-the-logo" class="nav-link" data-scroll-target="#add-the-logo">Add the logo</a></li>
+  <li><a href="#put-it-in-a-function-bird-not-included" id="toc-put-it-in-a-function-bird-not-included" class="nav-link" data-scroll-target="#put-it-in-a-function-bird-not-included">Put it in a function! (Bird not included)</a></li>
+  <li><a href="#the-function-details" id="toc-the-function-details" class="nav-link" data-scroll-target="#the-function-details">The function details</a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><iframe src="https://giphy.com/embed/l4EpavLlevncK4vsY" width="480" height="270" frameborder="0" class="giphy-embed" allowfullscreen="">
+</iframe>
+<p>
+<a href="https://giphy.com/gifs/portlandia-season-1-episode-2-l4EpavLlevncK4vsY">via GIPHY</a>
+</p>
+<p>If you missed out on Portlandia, you should take some time to watch this clip of the “Put a bird on it” episode.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iHmLljk2t8M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<p>Just like Bryce and Lisa - we can put birds on anything with the <code>magick</code> package from ROpenSci!</p>
+<p>So let’s get started putting birds on things!</p>
+<section id="magic-with-magick" class="level1"><h1>Magic with magick!</h1>
+<p>The <code>magick</code> package is an R interface to the ImageMagick STL, one of the most comprehensive open source image processing libraries. It gives a lot of power to R users, and we’ll briefly cover the workflow before getting into our real example.</p>
+<p>If you want a deeper dive on all the features of <code>magick</code>, check out their awesome <a href="https://cran.r-project.org/web/packages/magick/vignettes/intro.html">vignette</a>!</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Load the library</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/">magick</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to ImageMagick 6.9.12.3
+Enabled features: cairo, fontconfig, freetype, heic, lcms, pango, raw, rsvg, webp
+Disabled features: fftw, ghostscript, x11</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># "read" in an image</span>
+<span class="va">dog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="st">"https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">dog</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  format width height colorspace matte filesize density
+1   JPEG  1880   1208       sRGB FALSE    87884   72x72</code></pre>
+</div>
+</div>
+<p>We can see a few things about the r_logo object, it is a .png, it’s height and width, filesize, and DPI/density.</p>
+<p>We can also view the image in line.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">dog</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  format width height colorspace matte filesize density
+1   JPEG  1880   1208       sRGB FALSE    87884   72x72</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="940"></p>
+</div>
+</div>
+<p>We also have image manipulation options like <code>image_rotate</code>, <code>image_resize</code>, all of which are pipeable with the <code>%&gt;%</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">dog</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_rotate</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="co"># rotate 30 degrees</span>
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="st">"400x400"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># change size to 400 x 400 pixels</span>
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_flop</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># flip the image horizontally</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="200"></p>
+</div>
+</div>
+<p>Most importantly we can <code>put a bird on it</code>!</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">bird</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="st">"https://user-images.githubusercontent.com/29187501/38769895-edae85d0-3fcf-11e8-95f9-bbd530b32771.png"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="st">"150x150"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://docs.ropensci.org/magick/reference/composite.html">image_composite</a></span><span class="op">(</span><span class="va">dog</span>, <span class="va">bird</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="940"></p>
+</div>
+</div>
+<p>Now please note where the bird showed up, in the top left corner. We can control the placement of composite images by specifying the offset.</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">dog</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/composite.html">image_composite</a></span><span class="op">(</span><span class="va">bird</span>, offset <span class="op">=</span> <span class="st">"+500+1000"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="940"></p>
+</div>
+</div>
+<p>Notice that offset reads as x-axis pixels, y-axis pixels, so <code>"+500+1000</code> indicates from the top left corner place the image 500 pixels to the right and 1000 pixels down.</p>
+<p>Now that we’ve been oriented to how the <code>magick</code> package works, and had some fun by putting a bird on our lovely Boston Terrier model, let’s dive into the real purpose of this post - adding a logo to your <code>ggplot</code>!</p>
+</section><section id="building-a-ggplot-with-a-logo" class="level1"><h1>Building a ggplot with a logo</h1>
+<p>In the exampe I will show below you will have already saved the plot as an image, so we can skip with the normal <code>ggplot2</code> code. However, please note that if you do want to build in some extra whitespace to your plot to save “space” for your logo you can do so by changing the margins of your overall plot. You can also add a figure caption with <code>labs(caption = "text to change here")</code>, which inherently adds some whitespace to incorporate the caption.</p>
+<p>Margins can take multiple units arguments including: “cm”, “in”, “lines”, “pt”, for more info check out the <a href="https://ggplot2.tidyverse.org/reference/element.html"><code>ggplot2</code> docs</a>.</p>
+<p><strong>Notice</strong>: The margins read as t, r, b, l or <code>c(top, right, bottom, left)</code>. I typically see logos on the bottom left or top right so you can:</p>
+<ul>
+<li><p>add space at the top for example with:<br><code>c(2.5, 0.5, 0.5, 0.5)</code></p></li>
+<li><p>add space to the bottom with:<br><code>c(0.5, 0.5, 2.5, 0.5)</code></p></li>
+</ul>
+<p>Notice the below plot has extra space on the bottom, and I have added a grey background purely to highlight this extra space.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+✔ tibble  3.1.6     ✔ dplyr   1.0.8
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">cyl</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>plot.margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">2.5</span>, <span class="fl">0.5</span><span class="op">)</span>, <span class="st">"lines"</span><span class="op">)</span>,
+        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span><span class="st">"lightgrey"</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># plot background = lightgrey for highlight, not necessary for sizing</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="read-in-a-plot" class="level2"><h2 class="anchored" data-anchor-id="read-in-a-plot">Read in a plot</h2>
+<p>So let’s read in our publication plot to work with! Please notice that this can be a local file with traditional path structure or a hosted image as a url. I’m using URLs so you can try these out yourself!</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pub_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/jthomasmock/tomtom/master/vignettes/basic_plot.png"</span><span class="op">)</span>
+
+<span class="va">logo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="st">"https://www.rstudio.com/wp-content/uploads/2018/10/RStudio-Logo-Flat.png"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="fl">300</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pub_plot</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 7
+  format width height colorspace matte filesize density
+  &lt;chr&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;      &lt;lgl&gt;    &lt;int&gt; &lt;chr&gt;  
+1 PNG     2222   1951 sRGB       TRUE    168897 72x72  </code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1111"></p>
+</div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">logo</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 7
+  format width height colorspace matte filesize density
+  &lt;chr&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;      &lt;lgl&gt;    &lt;int&gt; &lt;chr&gt;  
+1 PNG      300    105 sRGB       TRUE         0 57x57  </code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="150"></p>
+</div>
+</div>
+</section><section id="where-to-put-the-logo" class="level2"><h2 class="anchored" data-anchor-id="where-to-put-the-logo">Where to put the logo?</h2>
+<p>We can then overlay the logo over the plot, let’s try bottom left, and we want ~ 1% padding for aesthetics - so we can use the following code to get dimensions and pixel numbers.</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># get dims of the plot</span>
+<span class="va">plot_height</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">pub_plot</span><span class="op">)</span><span class="op">$</span><span class="va">height</span>
+<span class="va">plot_width</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">pub_plot</span><span class="op">)</span><span class="op">$</span><span class="va">width</span>
+
+<span class="co"># get dims of the logo</span>
+<span class="va">logo_width</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">logo</span><span class="op">)</span><span class="op">$</span><span class="va">width</span>
+<span class="va">logo_height</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">logo</span><span class="op">)</span><span class="op">$</span><span class="va">height</span>
+
+<span class="co"># get number of pixels to be 1% from the bottom of the plot</span>
+<span class="co"># while accounting for the logo height</span>
+<span class="va">plot_height</span> <span class="op">-</span> <span class="va">logo_height</span> <span class="op">-</span> <span class="va">plot_height</span> <span class="op">*</span> <span class="fl">0.01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1826.49</code></pre>
+</div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># get number of pixels to be 1% from the left of the plot</span>
+<span class="va">plot_width</span> <span class="op">*</span> <span class="fl">0.01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 22.22</code></pre>
+</div>
+</div>
+</section><section id="add-the-logo" class="level2"><h2 class="anchored" data-anchor-id="add-the-logo">Add the logo</h2>
+<p>By using <code>offset = "+22+1826"</code> we indicate that we are placing the logo 22 pixels to the right and 1826 pixels down.</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">pub_plot</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/composite.html">image_composite</a></span><span class="op">(</span><span class="va">logo</span>, offset <span class="op">=</span> <span class="st">"+22+1826"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="1111"></p>
+</div>
+</div>
+<p>Boom! We have our logo overlay on the plot in the right location! But we had to manually figure out and set the logo position, which is less than ideal for programmatic use down the road. I also manually resized the logo to 300 pixels in an earlier step - we should make that automagick as well!</p>
+</section><section id="put-it-in-a-function-bird-not-included" class="level2"><h2 class="anchored" data-anchor-id="put-it-in-a-function-bird-not-included">Put it in a function! (Bird not included)</h2>
+<p>To make the logo add process more reproducible, we can build a function to take the various heights and widths of the logo/plot and automatically resize the logo to match as well as calculating the number of pixels to put it in each respective corner. The logo_scale argument defaults to 10 - so the logo will be 1/10th the width of the plot.</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">plot_with_logo</span> <span class="op">&lt;-</span> <span class="fu">add_logo</span><span class="op">(</span>
+  plot_path <span class="op">=</span> <span class="st">""</span>, <span class="co"># url or local file for the plot</span>
+  logo_path <span class="op">=</span> <span class="st">""</span>, <span class="co"># url or local file for the logo</span>
+  logo_position <span class="op">=</span> <span class="st">""</span> <span class="co"># choose a corner</span>
+  <span class="co"># 'top left', 'top right', 'bottom left' or 'bottom right'</span>
+  <span class="co">#logo_scale = 10 as default, but can change to manually make logo bigger</span>
+<span class="op">)</span>
+
+<span class="co"># save the image and write to working directory</span>
+<span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_write</a></span><span class="op">(</span><span class="va">plot_with_logo</span>, <span class="st">"plot_with_logo.png"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="the-function-details" class="level2"><h2 class="anchored" data-anchor-id="the-function-details">The function details</h2>
+<p>This function takes in two images, gets the dimension information, then pastes the logo at 1/10th scale in the specified corner with 1% padding. The function also has a warning if you input a <code>logo_position</code> that is not included.</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">add_logo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">plot_path</span>, <span class="va">logo_path</span>, <span class="va">logo_position</span>, <span class="va">logo_scale</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">{</span>
+
+    <span class="co"># Requires magick R Package https://github.com/ropensci/magick</span>
+
+    <span class="co"># Useful error message for logo position</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">logo_position</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"top right"</span>, <span class="st">"top left"</span>, <span class="st">"bottom right"</span>, <span class="st">"bottom left"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Error Message: Uh oh! Logo Position not recognized\n  Try: logo_positon = 'top left', 'top right', 'bottom left', or 'bottom right'"</span><span class="op">)</span>
+    <span class="op">}</span>
+
+    <span class="co"># read in raw images</span>
+    <span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="va">plot_path</span><span class="op">)</span>
+    <span class="va">logo_raw</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="va">logo_path</span><span class="op">)</span>
+
+    <span class="co"># get dimensions of plot for scaling</span>
+    <span class="va">plot_height</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">plot</span><span class="op">)</span><span class="op">$</span><span class="va">height</span>
+    <span class="va">plot_width</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">plot</span><span class="op">)</span><span class="op">$</span><span class="va">width</span>
+
+    <span class="co"># default scale to 1/10th width of plot</span>
+    <span class="co"># Can change with logo_scale</span>
+    <span class="va">logo</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_scale</a></span><span class="op">(</span><span class="va">logo_raw</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">plot_width</span><span class="op">/</span><span class="va">logo_scale</span><span class="op">)</span><span class="op">)</span>
+
+    <span class="co"># Get width of logo</span>
+    <span class="va">logo_width</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">logo</span><span class="op">)</span><span class="op">$</span><span class="va">width</span>
+    <span class="va">logo_height</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">logo</span><span class="op">)</span><span class="op">$</span><span class="va">height</span>
+
+    <span class="co"># Set position of logo</span>
+    <span class="co"># Position starts at 0,0 at top left</span>
+    <span class="co"># Using 0.01 for 1% - aesthetic padding</span>
+
+    <span class="kw">if</span> <span class="op">(</span><span class="va">logo_position</span> <span class="op">==</span> <span class="st">"top right"</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">x_pos</span> <span class="op">=</span> <span class="va">plot_width</span> <span class="op">-</span> <span class="va">logo_width</span> <span class="op">-</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="va">plot_width</span>
+        <span class="va">y_pos</span> <span class="op">=</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="va">plot_height</span>
+    <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">logo_position</span> <span class="op">==</span> <span class="st">"top left"</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">x_pos</span> <span class="op">=</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="va">plot_width</span>
+        <span class="va">y_pos</span> <span class="op">=</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="va">plot_height</span>
+    <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">logo_position</span> <span class="op">==</span> <span class="st">"bottom right"</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">x_pos</span> <span class="op">=</span> <span class="va">plot_width</span> <span class="op">-</span> <span class="va">logo_width</span> <span class="op">-</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="va">plot_width</span>
+        <span class="va">y_pos</span> <span class="op">=</span> <span class="va">plot_height</span> <span class="op">-</span> <span class="va">logo_height</span> <span class="op">-</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="va">plot_height</span>
+    <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">logo_position</span> <span class="op">==</span> <span class="st">"bottom left"</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">x_pos</span> <span class="op">=</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="va">plot_width</span>
+        <span class="va">y_pos</span> <span class="op">=</span> <span class="va">plot_height</span> <span class="op">-</span> <span class="va">logo_height</span> <span class="op">-</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="va">plot_height</span>
+    <span class="op">}</span>
+
+    <span class="co"># Compose the actual overlay</span>
+    <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/composite.html">image_composite</a></span><span class="op">(</span><span class="va">plot</span>, <span class="va">logo</span>, offset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="va">x_pos</span>, <span class="st">"+"</span>, <span class="va">y_pos</span><span class="op">)</span><span class="op">)</span>
+
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="1111"></p>
+</div>
+</div>
+<p>So there you go! Happy logo adding and bird putting!</p>
+<p>For more information on adding logos to plots with <code><a href="https://docs.ropensci.org/magick/reference/animation.html">magick::image_append()</a></code> instead, check out this <a href="https://www.danielphadley.com/ggplot-logo/">blog post</a> by Daniel Hadley on using <code><a href="https://docs.ropensci.org/magick/reference/animation.html">magick::image_append</a></code> to add a logo or his <a href="https://resources.rstudio.com/rstudio-conf-2018/branding-and-automating-your-work-with-r-markdown-daniel-hadley">RStudioConf</a> talk on the same idea.</p>
+<p>Cheers!</p>
+<p><img src="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" class="img-fluid"></p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-28
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ dplyr       * 1.0.8   2022-02-08 [1] CRAN (R 4.2.0)
+ forcats     * 0.5.1   2021-01-27 [1] CRAN (R 4.2.0)
+ ggplot2     * 3.3.5   2021-06-25 [1] CRAN (R 4.2.0)
+ magick      * 2.7.3   2021-08-18 [1] CRAN (R 4.2.0)
+ purrr       * 0.3.4   2020-04-17 [1] CRAN (R 4.2.0)
+ readr       * 2.1.2   2022-01-30 [1] CRAN (R 4.2.0)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.2.0)
+ stringr     * 1.4.0   2019-02-10 [1] CRAN (R 4.2.0)
+ tibble      * 3.1.6   2021-11-07 [1] CRAN (R 4.2.0)
+ tidyr       * 1.2.0   2022-02-01 [1] CRAN (R 4.2.0)
+ tidyverse   * 1.3.1   2021-04-15 [1] CRAN (R 4.2.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

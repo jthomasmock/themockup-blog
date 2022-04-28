@@ -1,0 +1,2999 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="dcterms.date" content="2021-03-07">
+<meta name="description" content="Creating and testing your own functions is fun!">
+<title>The MockUp - Creating a custom gt function for aligning first-row text and testing it with testthat</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Creating a custom gt function for aligning first-row text and testing it with testthat">
+<meta property="og:description" content="Creating and testing your own functions is fun!
+">
+<meta property="og:image" content="https://themockup.blog/posts/2021-03-07-custom-gt-functions-and-testing/preview.jpeg">
+<meta property="og:site-name" content="The MockUp">
+<meta name="twitter:title" content="The MockUp - Creating a custom gt function for aligning first-row text and testing it with testthat">
+<meta name="twitter:description" content="Creating and testing your own functions is fun!
+">
+<meta name="twitter:image" content="https://themockup.blog/posts/2021-03-07-custom-gt-functions-and-testing/themockup.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Creating a custom gt function for aligning first-row text and testing it with testthat</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">gt</div>
+                <div class="quarto-category">functions</div>
+                <div class="quarto-category">testing</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>Creating and testing your own functions is fun!</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">2021-03-07</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#creating-and-testing-gt-functions" id="toc-creating-and-testing-gt-functions" class="nav-link active" data-scroll-target="#creating-and-testing-gt-functions">Creating and testing <code>gt</code> functions</a></li>
+  <li>
+<a href="#no-repeats" id="toc-no-repeats" class="nav-link" data-scroll-target="#no-repeats">No repeats</a>
+  <ul class="collapse">
+<li><a href="#no-repeats-in-gt" id="toc-no-repeats-in-gt" class="nav-link" data-scroll-target="#no-repeats-in-gt">No repeats in <code>gt</code></a></li>
+  </ul>
+</li>
+  <li>
+<a href="#format-symbol-first-function" id="toc-format-symbol-first-function" class="nav-link" data-scroll-target="#format-symbol-first-function">Format symbol first Function</a>
+  <ul class="collapse">
+<li><a href="#use-the-function" id="toc-use-the-function" class="nav-link" data-scroll-target="#use-the-function">Use the function</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#unit-testing" id="toc-unit-testing" class="nav-link" data-scroll-target="#unit-testing">Unit testing</a>
+  <ul class="collapse">
+<li><a href="#testing-gt" id="toc-testing-gt" class="nav-link" data-scroll-target="#testing-gt">Testing <code>gt</code></a></li>
+  <li><a href="#rvest" id="toc-rvest" class="nav-link" data-scroll-target="#rvest"><code>rvest</code></a></li>
+  <li><a href="#test-html" id="toc-test-html" class="nav-link" data-scroll-target="#test-html">Test HTML</a></li>
+  <li><a href="#testing-function" id="toc-testing-function" class="nav-link" data-scroll-target="#testing-function">Testing function</a></li>
+  <li><a href="#put-it-all-together" id="toc-put-it-all-together" class="nav-link" data-scroll-target="#put-it-all-together">Put it all together</a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="creating-and-testing-gt-functions" class="level2"><h2 class="anchored" data-anchor-id="creating-and-testing-gt-functions">Creating and testing <code>gt</code> functions</h2>
+<p>It’s no secret, but I <strong>love</strong> the <code>gt</code> package and tables in general. I’ve been on a big table kick for almost a year at this point!</p>
+<p>While I love all the amazing features built into <code>gt</code>, sometimes I also want to create my own functions to wrap or extend features.</p>
+<p>For example, I’ve done:</p>
+<ul>
+<li>Custom <code>gt</code>-themes and functions <a href="https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/">Blogpost</a><br>
+</li>
+<li>Embedding custom HTML <a href="https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables/">Blogpost</a><br>
+</li>
+<li>Created repeatable beautiful table reporting <a href="https://gist.github.com/jthomasmock/3576e0620fe54ed84e02aa371444778b">Gist</a> and <a href="https://gist.github.com/jthomasmock/4a8851d74d911ce9b90bf7a43c4cdf47">Gist</a><br>
+</li>
+<li>Using <code>patchwork</code> to combine <code>ggplot2</code> + <code>gt</code> <a href="https://gist.github.com/jthomasmock/67892387f23708b94819ef12ee76dc70">Gist</a>
+</li>
+</ul>
+<p>This blogpost will cover how to solve a fairly common ask, how to add a symbol/character to the end of <em>ONLY</em> the first row of a column and maintain the alignment of the entire column. We’ll walk through how to accomplish this with <code>gt</code> only, creating our own function to do it more succinctly, and then how to further test our <code>gt</code> outputs with <code>testthat</code>!</p>
+</section><section id="no-repeats" class="level2"><h2 class="anchored" data-anchor-id="no-repeats">No repeats</h2>
+<p>I’ve always been a fan of not having to repeat symbols/prefixes/suffixes inside tables. There’s some ongoing work here in <code>gt</code> to add this as a feature, but in the meantime I wanted to play around with a few ways to accomplish this with <code>gt</code> as it is, and/or a custom function as of today.</p>
+<p>You can imagine a situation like below, where we want to label cells within a column as a percent, and want to indicate that it’s a percent ONLY on the first row.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">gtcars</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>hp_pct <span class="op">=</span> <span class="op">(</span><span class="va">hp</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mfr</span>, <span class="va">model</span>, <span class="va">year</span>, <span class="va">trim</span>, <span class="va">hp</span>, <span class="va">hp_pct</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">fmt_percent</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="va">hp_pct</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fl">1</span>, scale_values <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">fmt_number</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="va">hp_pct</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">tab_style</span><span class="op">(</span>
+    style <span class="op">=</span> <span class="fu">cell_text</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>, 
+    locations <span class="op">=</span> <span class="fu">cells_body</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">hp_pct</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+    <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fbpyezxfpb" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#fbpyezxfpb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fbpyezxfpb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fbpyezxfpb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fbpyezxfpb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fbpyezxfpb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fbpyezxfpb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fbpyezxfpb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fbpyezxfpb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fbpyezxfpb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fbpyezxfpb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fbpyezxfpb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fbpyezxfpb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fbpyezxfpb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fbpyezxfpb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fbpyezxfpb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fbpyezxfpb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fbpyezxfpb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fbpyezxfpb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fbpyezxfpb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fbpyezxfpb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fbpyezxfpb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fbpyezxfpb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fbpyezxfpb .gt_left {
+  text-align: left;
+}
+
+#fbpyezxfpb .gt_center {
+  text-align: center;
+}
+
+#fbpyezxfpb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fbpyezxfpb .gt_font_normal {
+  font-weight: normal;
+}
+
+#fbpyezxfpb .gt_font_bold {
+  font-weight: bold;
+}
+
+#fbpyezxfpb .gt_font_italic {
+  font-style: italic;
+}
+
+#fbpyezxfpb .gt_super {
+  font-size: 65%;
+}
+
+#fbpyezxfpb .gt_two_val_uncert {
+  display: inline-block;
+  line-height: 1em;
+  text-align: right;
+  font-size: 60%;
+  vertical-align: -0.25em;
+  margin-left: 0.1em;
+}
+
+#fbpyezxfpb .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#fbpyezxfpb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fbpyezxfpb .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#fbpyezxfpb .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#fbpyezxfpb .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+<thead class="gt_col_headings"><tr>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">mfr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">model</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">trim</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">hp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">hp_pct</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td class="gt_row gt_left">Ford</td>
+<td class="gt_row gt_left">GT</td>
+<td class="gt_row gt_right">2017</td>
+<td class="gt_row gt_left">Base Coupe</td>
+<td class="gt_row gt_right">647</td>
+<td class="gt_row gt_right" style="color: #FF0000;">97.88%</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">458 Speciale</td>
+<td class="gt_row gt_right">2015</td>
+<td class="gt_row gt_left">Base Coupe</td>
+<td class="gt_row gt_right">597</td>
+<td class="gt_row gt_right">90.32</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">458 Spider</td>
+<td class="gt_row gt_right">2015</td>
+<td class="gt_row gt_left">Base</td>
+<td class="gt_row gt_right">562</td>
+<td class="gt_row gt_right">85.02</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">458 Italia</td>
+<td class="gt_row gt_right">2014</td>
+<td class="gt_row gt_left">Base Coupe</td>
+<td class="gt_row gt_right">562</td>
+<td class="gt_row gt_right">85.02</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">488 GTB</td>
+<td class="gt_row gt_right">2016</td>
+<td class="gt_row gt_left">Base Coupe</td>
+<td class="gt_row gt_right">661</td>
+<td class="gt_row gt_right">100.00</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">California</td>
+<td class="gt_row gt_right">2015</td>
+<td class="gt_row gt_left">Base Convertible</td>
+<td class="gt_row gt_right">553</td>
+<td class="gt_row gt_right">83.66</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>However, you can quickly see that this misaligned the first row from the remaining rows.</p>
+<p><img src=".png" class="img-fluid"></p>
+<hr>
+<section id="no-repeats-in-gt" class="level3"><h3 class="anchored" data-anchor-id="no-repeats-in-gt">No repeats in <code>gt</code>
+</h3>
+<p>An alternative would be to convert those rows to text and apply specific changes.</p>
+<p>There’s quite a bit going on here:</p>
+<ul>
+<li>
+<em>Must</em> use a mono space font for the column of interest
+<ul>
+<li>Must be mono-spaced so that everything aligns properly</li>
+</ul>
+</li>
+<li>Align the now text column to be right-aligned
+<ul>
+<li>Align to right, so again the decimal places align (text default aligns to left otherwise)</li>
+</ul>
+</li>
+<li>Use <code><a href="https://gt.rstudio.com/reference/text_transform.html">gt::text_transform()</a></code> to add percent to the first row
+<ul>
+<li>use <code><a href="https://rdrr.io/r/base/format.html">base::format()</a></code> to round and “force” a specific number of decimal places</li>
+</ul>
+</li>
+<li>Use <code><a href="https://gt.rstudio.com/reference/text_transform.html">gt::text_transform()</a></code> to add non-breaking space <code>"&amp;nbsp"</code> to remaining rows
+<ul>
+<li>Must use <code>"&amp;nbsp"</code>, which is the HTML code for nonbreaking space, as a raw space (eg <code>" "</code>) will not work</li>
+</ul>
+</li>
+</ul>
+<p>I want to pause here and say with the code below, we have officially accomplished our goal. However, this was fairly manual and can be repetitive for adding several of these transformations in a single table.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">gtcars</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>hp_pct <span class="op">=</span> <span class="op">(</span><span class="va">hp</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mfr</span>, <span class="va">model</span>, <span class="va">year</span>, <span class="va">trim</span>, <span class="va">hp</span>, <span class="va">hp_pct</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="co"># use a mono-spaced font</span>
+  <span class="fu">tab_style</span><span class="op">(</span>
+    style <span class="op">=</span> <span class="fu">cell_text</span><span class="op">(</span>font <span class="op">=</span> <span class="fu">google_font</span><span class="op">(</span><span class="st">"Fira Mono"</span><span class="op">)</span><span class="op">)</span>,
+    locations <span class="op">=</span> <span class="fu">cells_body</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="va">hp_pct</span><span class="op">)</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="co"># align the column of interst to right</span>
+  <span class="fu">cols_align</span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, columns <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="va">hp_pct</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="co"># round and transform the first row to percent</span>
+  <span class="fu">text_transform</span><span class="op">(</span>
+    locations <span class="op">=</span> <span class="fu">cells_body</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">hp_pct</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
+    fn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span> 
+      <span class="va">fmt_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/double.html">as.double</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, nsmall <span class="op">=</span> <span class="fl">1</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">fmt_val</span>, <span class="st">"%"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/html.html">html</a></span><span class="op">(</span><span class="op">)</span><span class="op">}</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">text_transform</span><span class="op">(</span>
+    locations <span class="op">=</span> <span class="fu">cells_body</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="va">hp_pct</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>,
+    fn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span> 
+      <span class="co"># round remaining rows, add a non-breaking space</span>
+     <span class="va">fmt_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/double.html">as.double</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, nsmall <span class="op">=</span> <span class="fl">1</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+     <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">fmt_val</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">'&amp;nbsp'</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/html.html">html</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="mivhzsomgr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#mivhzsomgr .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mivhzsomgr .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mivhzsomgr .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mivhzsomgr .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mivhzsomgr .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mivhzsomgr .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mivhzsomgr .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mivhzsomgr .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mivhzsomgr .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mivhzsomgr .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mivhzsomgr .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mivhzsomgr .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mivhzsomgr .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mivhzsomgr .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mivhzsomgr .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mivhzsomgr .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mivhzsomgr .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mivhzsomgr .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mivhzsomgr .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mivhzsomgr .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mivhzsomgr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mivhzsomgr .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mivhzsomgr .gt_left {
+  text-align: left;
+}
+
+#mivhzsomgr .gt_center {
+  text-align: center;
+}
+
+#mivhzsomgr .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mivhzsomgr .gt_font_normal {
+  font-weight: normal;
+}
+
+#mivhzsomgr .gt_font_bold {
+  font-weight: bold;
+}
+
+#mivhzsomgr .gt_font_italic {
+  font-style: italic;
+}
+
+#mivhzsomgr .gt_super {
+  font-size: 65%;
+}
+
+#mivhzsomgr .gt_two_val_uncert {
+  display: inline-block;
+  line-height: 1em;
+  text-align: right;
+  font-size: 60%;
+  vertical-align: -0.25em;
+  margin-left: 0.1em;
+}
+
+#mivhzsomgr .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#mivhzsomgr .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mivhzsomgr .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#mivhzsomgr .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#mivhzsomgr .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+<thead class="gt_col_headings"><tr>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">mfr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">model</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">trim</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">hp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">hp_pct</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td class="gt_row gt_left">Ford</td>
+<td class="gt_row gt_left">GT</td>
+<td class="gt_row gt_right">2017</td>
+<td class="gt_row gt_left">Base Coupe</td>
+<td class="gt_row gt_right">647</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">97.9%</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">458 Speciale</td>
+<td class="gt_row gt_right">2015</td>
+<td class="gt_row gt_left">Base Coupe</td>
+<td class="gt_row gt_right">597</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';"> 90.3&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">458 Spider</td>
+<td class="gt_row gt_right">2015</td>
+<td class="gt_row gt_left">Base</td>
+<td class="gt_row gt_right">562</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';"> 85.0&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">458 Italia</td>
+<td class="gt_row gt_right">2014</td>
+<td class="gt_row gt_left">Base Coupe</td>
+<td class="gt_row gt_right">562</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';"> 85.0&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">488 GTB</td>
+<td class="gt_row gt_right">2016</td>
+<td class="gt_row gt_left">Base Coupe</td>
+<td class="gt_row gt_right">661</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">100.0&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_left">California</td>
+<td class="gt_row gt_right">2015</td>
+<td class="gt_row gt_left">Base Convertible</td>
+<td class="gt_row gt_right">553</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';"> 83.7&amp;nbsp</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section></section><section id="format-symbol-first-function" class="level2"><h2 class="anchored" data-anchor-id="format-symbol-first-function">Format symbol first Function</h2>
+<p>We can try to wrap some of the <code>gt</code> code into a function and apply these transformations in bulk at the location of our choosing! This is especially important for making it generally apply to other types of inputs instead of JUST <code>%</code>. The function of interest is actually two custom functions, some <code>gt</code> functions, and a good chunk of logic.</p>
+<p>I’ve commented the individual sections as to their purpose, and included quite a bit of error-handling or protecting against various user inputs.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">fmt_symbol_first</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span>
+  <span class="va">gt_data</span>,
+  <span class="va">column</span> <span class="op">=</span> <span class="cn">NULL</span>,        <span class="co"># column of interest to apply to</span>
+  <span class="va">symbol</span> <span class="op">=</span> <span class="cn">NULL</span>,        <span class="co"># symbol to add, optionally</span>
+  <span class="va">suffix</span> <span class="op">=</span> <span class="st">""</span>,          <span class="co"># suffix to add, optionally</span>
+  <span class="va">decimals</span> <span class="op">=</span> <span class="cn">NULL</span>,      <span class="co"># number of decimal places to round to</span>
+  <span class="va">last_row_n</span>,           <span class="co"># what's the last row in data?</span>
+  <span class="va">symbol_first</span> <span class="op">=</span> <span class="cn">FALSE</span>  <span class="co"># symbol before or after suffix?</span>
+<span class="op">)</span> <span class="op">{</span>
+  
+  <span class="co"># Test and error out if mandatory columns are missing</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="st">"`symbol_first` argument must be a logical"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html">is.logical</a></span><span class="op">(</span><span class="va">symbol_first</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="st">"`last_row_n` argument must be specified and numeric"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">last_row_n</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="st">"Input must be a gt table"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">gt_data</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"gt_tbl"</span><span class="op">)</span>
+
+  <span class="co"># needs to type convert to double to play nicely with decimals and rounding</span>
+  <span class="co"># as it's converted to character by gt::text_transform</span>
+  <span class="va">add_to_first</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">suff</span> <span class="op">=</span> <span class="va">suffix</span>, <span class="va">symb</span> <span class="op">=</span> <span class="va">symbol</span><span class="op">)</span> <span class="op">{</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">decimals</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+      <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/double.html">as.double</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+      <span class="va">fmt_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, nsmall <span class="op">=</span> <span class="va">decimals</span>, digits <span class="op">=</span> <span class="va">decimals</span><span class="op">)</span>
+    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+      <span class="va">fmt_val</span> <span class="op">&lt;-</span> <span class="va">x</span>
+    <span class="op">}</span>
+
+    <span class="co"># combine the value, passed suffix, symbol -&gt; html</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">symbol_first</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">fmt_val</span>, <span class="va">symb</span>, <span class="va">suff</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/html.html">html</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">fmt_val</span>, <span class="va">suff</span>, <span class="va">symb</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/html.html">html</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="op">}</span>
+  <span class="op">}</span>
+
+  <span class="co"># repeat non-breaking space for combined length of suffix + symbol</span>
+  <span class="co"># logic is based on is a NULL passed or not</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">symbol</span><span class="op">)</span> <span class="op">|</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">symbol</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">suffix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">suffix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>, <span class="st">""</span>, <span class="va">suffix</span><span class="op">)</span>
+    <span class="va">length_nbsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"&amp;nbsp"</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"&amp;nbsp"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">suffix</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span>collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="va">suffix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">suffix</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>, <span class="st">""</span>, <span class="va">suffix</span><span class="op">)</span>
+    <span class="va">length_nbsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"&amp;nbsp"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">suffix</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span>collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
+  <span class="op">}</span>
+
+  <span class="co"># affect rows OTHER than the first row</span>
+  <span class="va">add_to_remainder</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">length</span> <span class="op">=</span> <span class="va">length_nbsp</span><span class="op">)</span> <span class="op">{</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">decimals</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+      <span class="co"># if decimal not null, convert to double</span>
+      <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/double.html">as.double</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+      <span class="co"># then round and format ALL to force specific decimals</span>
+      <span class="va">fmt_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, nsmall <span class="op">=</span> <span class="va">decimals</span>, digits <span class="op">=</span> <span class="va">decimals</span><span class="op">)</span>
+    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+      <span class="va">fmt_val</span> <span class="op">&lt;-</span> <span class="va">x</span>
+    <span class="op">}</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">fmt_val</span>, <span class="va">length</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="fu">gt</span><span class="fu">::</span><span class="va"><a href="https://gt.rstudio.com/reference/html.html">html</a></span><span class="op">)</span>
+  <span class="op">}</span>
+
+  <span class="co"># pass gt object</span>
+  <span class="co"># align right to make sure the spacing is meaningful</span>
+  <span class="va">gt_data</span> <span class="op">%&gt;%</span>
+    <span class="fu">cols_align</span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, columns <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">column</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="co"># convert to mono-font for column of interest</span>
+    <span class="fu">tab_style</span><span class="op">(</span>
+      style <span class="op">=</span> <span class="fu">cell_text</span><span class="op">(</span>font <span class="op">=</span> <span class="fu">google_font</span><span class="op">(</span><span class="st">"Fira Mono"</span><span class="op">)</span><span class="op">)</span>,
+      locations <span class="op">=</span> <span class="fu">cells_body</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu">vars</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">column</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="co"># transform first rows</span>
+    <span class="fu">text_transform</span><span class="op">(</span>
+      locations <span class="op">=</span> <span class="fu">cells_body</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">column</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
+      fn <span class="op">=</span> <span class="va">add_to_first</span>
+    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="co"># transform remaining rows</span>
+    <span class="fu">text_transform</span><span class="op">(</span>
+      locations <span class="op">=</span> <span class="fu">cells_body</span><span class="op">(</span><span class="fu">vars</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">column</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="va">last_row_n</span><span class="op">)</span>,
+      fn <span class="op">=</span> <span class="va">add_to_remainder</span>
+    <span class="op">)</span>
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="use-the-function" class="level3"><h3 class="anchored" data-anchor-id="use-the-function">Use the function</h3>
+<p>We can now use that <code>fmt_symbol_first()</code> function, note that I’m testing a few different combinations of suffix/symbols, decimals, etc that may be a bit nonsensical in the table itself but are interactively testing that the results are what I expect. Specifically, I’m making sure that symbols/suffixes are added, and that the spacing is correct. While this is useful for sanity checking quickly, we can also take another step to apply some proper unit-testing in the next section.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">gtcars</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mfr</span>, <span class="va">year</span>, <span class="va">bdy_style</span>, <span class="va">mpg_h</span>, <span class="va">hp</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>mpg_h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">22</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">opt_table_lines</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">mfr</span>, symbol <span class="op">=</span> <span class="st">"&amp;#x24;"</span>, suffix <span class="op">=</span> <span class="st">" "</span>, last_row_n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">year</span>, symbol <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="st">"%"</span>, last_row_n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">mpg_h</span>, symbol <span class="op">=</span> <span class="st">"&amp;#37;"</span>, suffix <span class="op">=</span> <span class="cn">NULL</span>, last_row_n <span class="op">=</span> <span class="fl">6</span>, decimals <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">hp</span>, symbol <span class="op">=</span> <span class="st">"&amp;#176;"</span>, suffix <span class="op">=</span> <span class="st">"F"</span>, last_row_n <span class="op">=</span> <span class="fl">6</span>, decimals <span class="op">=</span> <span class="cn">NULL</span>, symbol_first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="olmgvztewr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#olmgvztewr .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: solid;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#olmgvztewr .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#olmgvztewr .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#olmgvztewr .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#olmgvztewr .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#olmgvztewr .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#olmgvztewr .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#olmgvztewr .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#olmgvztewr .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#olmgvztewr .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#olmgvztewr .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#olmgvztewr .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#olmgvztewr .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#olmgvztewr .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#olmgvztewr .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#olmgvztewr .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#olmgvztewr .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#olmgvztewr .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#olmgvztewr .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#olmgvztewr .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#olmgvztewr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#olmgvztewr .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#olmgvztewr .gt_left {
+  text-align: left;
+}
+
+#olmgvztewr .gt_center {
+  text-align: center;
+}
+
+#olmgvztewr .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#olmgvztewr .gt_font_normal {
+  font-weight: normal;
+}
+
+#olmgvztewr .gt_font_bold {
+  font-weight: bold;
+}
+
+#olmgvztewr .gt_font_italic {
+  font-style: italic;
+}
+
+#olmgvztewr .gt_super {
+  font-size: 65%;
+}
+
+#olmgvztewr .gt_two_val_uncert {
+  display: inline-block;
+  line-height: 1em;
+  text-align: right;
+  font-size: 60%;
+  vertical-align: -0.25em;
+  margin-left: 0.1em;
+}
+
+#olmgvztewr .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#olmgvztewr .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#olmgvztewr .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#olmgvztewr .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#olmgvztewr .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+<thead class="gt_col_headings"><tr>
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mfr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">bdy_style</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mpg_h</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">hp</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ford $</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2017%</td>
+<td class="gt_row gt_left">coupe</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">23.4%</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">647°F</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2015&amp;nbsp</td>
+<td class="gt_row gt_left">coupe</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">22.1&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">597&amp;nbsp&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2015&amp;nbsp</td>
+<td class="gt_row gt_left">convertible</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">21.4&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">562&amp;nbsp&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2014&amp;nbsp</td>
+<td class="gt_row gt_left">coupe</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">23.7&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">562&amp;nbsp&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2016&amp;nbsp</td>
+<td class="gt_row gt_left">coupe</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">23.1&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">661&amp;nbsp&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2015&amp;nbsp</td>
+<td class="gt_row gt_left">convertible</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">22.3&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">553&amp;nbsp&amp;nbsp</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section></section><section id="unit-testing" class="level2"><h2 class="anchored" data-anchor-id="unit-testing">Unit testing</h2>
+<p>At this point, we’ve created a custom <code>gt</code> wrapper function, added some relatively robust checks into the function, but are still manually checking the output confirms to our expectations. We can perform proper unit testing with the <a href="https://testthat.r-lib.org/index.html"><code>{testthat}</code></a> package.</p>
+<blockquote class="blockquote">
+<p>Testing your code can be painful and tedious, but it greatly increases the quality of your code. <code>testthat</code> tries to make testing as fun as possible, so that you get a visceral satisfaction from writing tests.</p>
+</blockquote>
+<p>While an in-depth run through of <code>testhat</code> is beyond the scope of this post, I have included an expandable section with a minimal example below, expanded from the “R Packages” book <a href="https://r-pkgs.org/tests.html">chapter on testing</a>:</p>
+<details><summary><code>testthat</code> Example
+</summary><div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org">stringr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org">testthat</a></span><span class="op">)</span>
+
+<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>   <span class="co"># 1 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"ab"</span><span class="op">)</span>  <span class="co"># 2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"abc"</span><span class="op">)</span> <span class="co"># 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+<p>So <code><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length()</a></code> counts the length of a string, fairly straightforward!</p>
+<p>We can convert this to a logical confirmation, which means that a computer can understand if the output was as expected, rather than just printing and reading which is mainly for our interactive use. I have included one <code>FALSE</code> output just as an example.</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>   <span class="op">==</span> <span class="fl">1</span> <span class="co"># 1 TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"ab"</span><span class="op">)</span>  <span class="op">==</span> <span class="fl">2</span> <span class="co"># 2 TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"abc"</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span> <span class="co"># 3 TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"abc"</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span> <span class="co"># 3 FALSE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+<p>While this testing is useful, we can make it even easier with <code>testhat</code>, by using <code><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal()</a></code>. Now, these functions will not return anything if they pass. If they fail, then they will print an error, and a helpful statement saying what the failure was.</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co">### All TRUE</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>,   <span class="fl">1</span><span class="op">)</span> <span class="co"># TRUE</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"ab"</span><span class="op">)</span>,  <span class="fl">2</span><span class="op">)</span> <span class="co"># TRUE</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"abc"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span> <span class="co"># TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Just to show you, here’s one where we get a <code>FALSE</code>, the match is off by 2.</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>,  <span class="fl">3</span><span class="op">)</span> <span class="co"># FALSE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: str_length("a") not equal to 3.
+1/1 mismatches
+[1] 1 - 3 == -2</code></pre>
+</div>
+</div>
+<p>The last step, is wrapping our various tests into <code>test_that</code> structure. Here, while the individual tests return no visible output, we can get a friendly message saying they have all passed!</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  desc <span class="op">=</span> <span class="st">"str_length is number of characters"</span>,
+  code <span class="op">=</span> <span class="op">{</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"ab"</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"abc"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test passed 🥳</code></pre>
+</div>
+</div>
+<p>We can also see what happens if there is a failure (<code>abcd</code> is not 3 characters, but 4).</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  desc <span class="op">=</span> <span class="st">"str_length is number of characters"</span>,
+  code <span class="op">=</span> <span class="op">{</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"ab"</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"abc"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>
+    <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="st">"abcd"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>── Failure (&lt;text&gt;:7:5): str_length is number of characters ────────────────────
+str_length("abcd") not equal to 3.
+1/1 mismatches
+[1] 4 - 3 == 1</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error:
+! Test failed</code></pre>
+</div>
+</div>
+</details><p>These tests can be used interactively, but ultimately are even more useful when rolled into an R package. For that next step, I recommend reading through the “R Packages” book, specifically the <a href="https://r-pkgs.org/tests.html">Packages Chapter</a>.</p>
+<section id="testing-gt" class="level3"><h3 class="anchored" data-anchor-id="testing-gt">Testing <code>gt</code>
+</h3>
+<p>Now you may say, well those minimal example tests were easy, it’s just counting?! How do I test <code>gt</code>? We can treat <code>gt</code> exactly like what it is, a HTML table. Quick example below using our custom function (<code>fmt_symbol_first()</code>).</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">ex_gt</span> <span class="op">&lt;-</span> <span class="va">gtcars</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mfr</span>, <span class="va">year</span>, <span class="va">bdy_style</span>, <span class="va">mpg_h</span>, <span class="va">hp</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>mpg_h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20.2</span>, <span class="fl">22.0</span>, <span class="fl">20.8</span>, <span class="fl">21.2</span>, <span class="fl">22.8</span>, <span class="fl">22.7</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">opt_table_font</span><span class="op">(</span>font <span class="op">=</span> <span class="fu">google_font</span><span class="op">(</span><span class="st">"Roboto Mono"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">opt_table_lines</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">mfr</span>, symbol <span class="op">=</span> <span class="st">"&amp;#x24;"</span>, suffix <span class="op">=</span> <span class="st">" "</span>, last_row_n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">year</span>, symbol <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="st">"%"</span>, last_row_n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">mpg_h</span>, symbol <span class="op">=</span> <span class="st">"&amp;#37;"</span>, suffix <span class="op">=</span> <span class="cn">NULL</span>, last_row_n <span class="op">=</span> <span class="fl">6</span>, decimals <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">hp</span>, symbol <span class="op">=</span> <span class="st">"&amp;#176;"</span>, suffix <span class="op">=</span> <span class="st">"F"</span>, last_row_n <span class="op">=</span> <span class="fl">6</span>, decimals <span class="op">=</span> <span class="cn">NULL</span>, symbol_first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead</code></pre>
+</div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># example table</span>
+<span class="va">ex_gt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="ydpjvyjeva" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: 'Roboto Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#ydpjvyjeva .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: solid;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ydpjvyjeva .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ydpjvyjeva .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ydpjvyjeva .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ydpjvyjeva .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ydpjvyjeva .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ydpjvyjeva .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ydpjvyjeva .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ydpjvyjeva .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ydpjvyjeva .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ydpjvyjeva .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ydpjvyjeva .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ydpjvyjeva .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydpjvyjeva .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ydpjvyjeva .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ydpjvyjeva .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydpjvyjeva .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ydpjvyjeva .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydpjvyjeva .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ydpjvyjeva .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydpjvyjeva .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ydpjvyjeva .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydpjvyjeva .gt_left {
+  text-align: left;
+}
+
+#ydpjvyjeva .gt_center {
+  text-align: center;
+}
+
+#ydpjvyjeva .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ydpjvyjeva .gt_font_normal {
+  font-weight: normal;
+}
+
+#ydpjvyjeva .gt_font_bold {
+  font-weight: bold;
+}
+
+#ydpjvyjeva .gt_font_italic {
+  font-style: italic;
+}
+
+#ydpjvyjeva .gt_super {
+  font-size: 65%;
+}
+
+#ydpjvyjeva .gt_two_val_uncert {
+  display: inline-block;
+  line-height: 1em;
+  text-align: right;
+  font-size: 60%;
+  vertical-align: -0.25em;
+  margin-left: 0.1em;
+}
+
+#ydpjvyjeva .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#ydpjvyjeva .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ydpjvyjeva .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#ydpjvyjeva .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#ydpjvyjeva .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+<thead class="gt_col_headings"><tr>
+<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mfr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">bdy_style</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mpg_h</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">hp</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ford $</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2017%</td>
+<td class="gt_row gt_left">coupe</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">20.2%</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">647°F</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2015&amp;nbsp</td>
+<td class="gt_row gt_left">coupe</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">22.0&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">597&amp;nbsp&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2015&amp;nbsp</td>
+<td class="gt_row gt_left">convertible</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">20.8&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">562&amp;nbsp&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2014&amp;nbsp</td>
+<td class="gt_row gt_left">coupe</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">21.2&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">562&amp;nbsp&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2016&amp;nbsp</td>
+<td class="gt_row gt_left">coupe</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">22.8&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">661&amp;nbsp&amp;nbsp</td>
+</tr>
+<tr>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">Ferrari&amp;nbsp&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">2015&amp;nbsp</td>
+<td class="gt_row gt_left">convertible</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">22.7&amp;nbsp</td>
+<td class="gt_row gt_right" style="font-family: 'Fira Mono';">553&amp;nbsp&amp;nbsp</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># what is it?</span>
+<span class="va">ex_gt</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">as_raw_html</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://stringr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  
+  <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 'html' chr "&lt;table style=\"font-family: 'Roboto Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubunt"| __truncated__
+ - attr(*, "html")= logi TRUE</code></pre>
+</div>
+</div>
+</section><section id="rvest" class="level3"><h3 class="anchored" data-anchor-id="rvest"><code>rvest</code></h3>
+<p>That’s a relatively basic table, but if used interactively it will just print out the output. We can “capture” the raw HTML via <code><a href="https://gt.rstudio.com/reference/as_raw_html.html">gt::as_raw_html()</a></code>, and then just treat it like another table to “webscrape” with <code>rvest</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/">rvest</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rvest'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:readr':
+
+    guess_encoding</code></pre>
+</div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># create object as RAW html</span>
+<span class="va">ex_gt_raw</span> <span class="op">&lt;-</span> <span class="va">ex_gt</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">as_raw_html</span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># read into rvest, and grab the table body</span>
+<span class="va">ex_html_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="va">ex_gt_raw</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rvest.tidyverse.org/reference/rename.html">html_node</a></span><span class="op">(</span><span class="st">"table &gt; tbody"</span><span class="op">)</span> 
+
+<span class="co"># 6 row table!</span>
+<span class="va">ex_html_tab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{html_node}
+&lt;tbody style="border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;"&gt;
+[1] &lt;tr&gt;\n&lt;td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px ...
+[2] &lt;tr&gt;\n&lt;td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px ...
+[3] &lt;tr&gt;\n&lt;td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px ...
+[4] &lt;tr&gt;\n&lt;td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px ...
+[5] &lt;tr&gt;\n&lt;td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px ...
+[6] &lt;tr&gt;\n&lt;td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px ...</code></pre>
+</div>
+</div>
+</section><section id="test-html" class="level3"><h3 class="anchored" data-anchor-id="test-html">Test HTML</h3>
+<p>Now that it’s saved as HTML, we can extract a column, and we’re back to raw strings!</p>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">col1_extract</span> <span class="op">&lt;-</span> <span class="va">ex_html_tab</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://rvest.tidyverse.org/reference/rename.html">html_nodes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"td:nth-child("</span>,<span class="fl">1</span> , <span class="st">")"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text</a></span><span class="op">(</span><span class="op">)</span> 
+
+<span class="va">col1_extract</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Ford $"            "Ferrari&amp;nbsp&amp;nbsp" "Ferrari&amp;nbsp&amp;nbsp"
+[4] "Ferrari&amp;nbsp&amp;nbsp" "Ferrari&amp;nbsp&amp;nbsp" "Ferrari&amp;nbsp&amp;nbsp"</code></pre>
+</div>
+</div>
+<p>Now, rather than using the whole string, I’m going to focus on testing the 1st row and then the remainder. Mainly because our function should do different things to the first row versus the remaining rows!</p>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">col1_extract</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Ford $"</code></pre>
+</div>
+</div>
+<p>So this should be relatively straightforward, we want to do an exact match expecting <code>"Ford $"</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">col1_extract</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"Ford $"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: col1_extract\[1\] does not match "Ford $".
+Actual value: "Ford \$"</code></pre>
+</div>
+</div>
+<p>BUT oh no we get a failure??? This is because the <code>$</code> is a special character in <code>regex</code>, so we need to “escape” it with <code>\\</code>. This tells <code>regex</code> to parse it as a literal “dollar sign”. After passing the escape, we now get a silent pass!</p>
+<div class="cell">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">col1_extract</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"Ford \\$"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can run it with <code><a href="https://testthat.r-lib.org/reference/test_that.html">test_that()</a></code> as well, and since it passes we get our friendly little message!</p>
+<div class="cell">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  desc <span class="op">=</span> <span class="st">"First word is Ford $"</span>,
+  code <span class="op">=</span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">col1_extract</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"Ford \\$"</span><span class="op">)</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test passed 🥇</code></pre>
+</div>
+</div>
+</section><section id="testing-function" class="level3"><h3 class="anchored" data-anchor-id="testing-function">Testing function</h3>
+<p>Now, I want to test the individual columns for different things, so I’m going to write a test expectation function.</p>
+<p>I’m interested in:</p>
+<ul>
+<li>The column number<br>
+</li>
+<li>The row number (ie first or remaining)<br>
+</li>
+<li>A specific expectation</li>
+</ul>
+<p>All using the same HTML input</p>
+<div class="cell">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_gt_by_col</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">col_n</span>, <span class="va">row_first</span> <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">expectation</span><span class="op">)</span><span class="op">{</span>
+  
+  <span class="co"># if row_first = TRUE, then just get the 1st row</span>
+  <span class="co"># otherwise select the remainder</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">row_first</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">row_sel</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="va">row_sel</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">6</span>
+  <span class="op">}</span>
+  
+  <span class="co"># use our example html</span>
+  <span class="co"># grab the column by number</span>
+  <span class="co"># get the rows by selection</span>
+  <span class="co"># test the expectation</span>
+  <span class="va">ex_html_tab</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://rvest.tidyverse.org/reference/rename.html">html_nodes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"td:nth-child("</span>,<span class="va">col_n</span> , <span class="st">")"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="va">.</span><span class="op">[</span><span class="va">row_sel</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">expectation</span><span class="op">)</span>
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can then use our function and avoid having to copy-paste much at all!</p>
+<div class="cell">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  desc <span class="op">=</span> <span class="st">"First word is Ford $"</span>,
+  code <span class="op">=</span> <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">1</span>, row_first <span class="op">=</span> <span class="cn">TRUE</span>, expectation <span class="op">=</span> <span class="st">"Ford \\$"</span><span class="op">)</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test passed 🎊</code></pre>
+</div>
+</div>
+<p>Just a quick reminder, if it fails (I’m intentionally failing). We can see that the expectation doesn’t match the remainder.</p>
+<div class="cell">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  desc <span class="op">=</span> <span class="st">"First word is Ford $"</span>,
+  code <span class="op">=</span> <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">1</span>, row_first <span class="op">=</span> <span class="cn">FALSE</span>, expectation <span class="op">=</span> <span class="st">"Ford \\$"</span><span class="op">)</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>── Failure (&lt;text&gt;:15:3): First word is Ford $ ─────────────────────────────────
+`\.` does not match "Ford \\$".
+Actual values:
+* Ferrari&amp;nbsp&amp;nbsp
+* Ferrari&amp;nbsp&amp;nbsp
+* Ferrari&amp;nbsp&amp;nbsp
+* Ferrari&amp;nbsp&amp;nbsp
+* Ferrari&amp;nbsp&amp;nbsp
+Backtrace:
+ 1. global test_gt_by_col(1, row_first = FALSE, expectation = "Ford \\$")
+ 3. testthat::expect_match(., expectation)
+ 4. testthat:::expect_match_(...)</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error:
+! Test failed</code></pre>
+</div>
+</div>
+<hr></section><section id="put-it-all-together" class="level3"><h3 class="anchored" data-anchor-id="put-it-all-together">Put it all together</h3>
+<p>We can put it all together now, and test all of our columns of interest, with <code>testthat</code> using our custom testing function ON the output of the custom function we wrote earlier.</p>
+<details><summary>
+Create HTML table, extract w/ <code>rvest</code>, define test function
+</summary><div class="cell">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">ex_gt</span> <span class="op">&lt;-</span> <span class="va">gtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mfr</span>, <span class="va">year</span>, <span class="va">bdy_style</span>, <span class="va">mpg_h</span>, <span class="va">hp</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>mpg_h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20.2</span>, <span class="fl">22.0</span>, <span class="fl">20.8</span>, <span class="fl">21.2</span>, <span class="fl">22.8</span>, <span class="fl">22.7</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">opt_table_font</span><span class="op">(</span>font <span class="op">=</span> <span class="fu">google_font</span><span class="op">(</span><span class="st">"Roboto Mono"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">opt_table_lines</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">mfr</span>, symbol <span class="op">=</span> <span class="st">"&amp;#x24;"</span>, suffix <span class="op">=</span> <span class="st">" "</span>, last_row_n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">year</span>, symbol <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="st">"%"</span>, last_row_n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">mpg_h</span>, symbol <span class="op">=</span> <span class="st">"&amp;#37;"</span>, suffix <span class="op">=</span> <span class="cn">NULL</span>, last_row_n <span class="op">=</span> <span class="fl">6</span>, decimals <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">fmt_symbol_first</span><span class="op">(</span>column <span class="op">=</span> <span class="va">hp</span>, symbol <span class="op">=</span> <span class="st">"&amp;#176;"</span>, suffix <span class="op">=</span> <span class="st">"F"</span>, last_row_n <span class="op">=</span> <span class="fl">6</span>, decimals <span class="op">=</span> <span class="cn">NULL</span>, symbol_first <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead
+
+Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
+* please use `columns = c(...)` instead</code></pre>
+</div>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">ex_gt_raw</span> <span class="op">&lt;-</span> <span class="va">ex_gt</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">as_raw_html</span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># read into rvest, and grab the table body</span>
+<span class="va">ex_html_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="va">ex_gt_raw</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rvest.tidyverse.org/reference/rename.html">html_node</a></span><span class="op">(</span><span class="st">"table &gt; tbody"</span><span class="op">)</span> 
+
+<span class="va">test_gt_by_col</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">col_n</span>, <span class="va">row_first</span> <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">expectation</span><span class="op">)</span><span class="op">{</span>
+  
+  <span class="co"># if row_first = TRUE, then just get the 1st row</span>
+  <span class="co"># otherwise select the remainder</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">row_first</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">row_sel</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="va">row_sel</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">6</span>
+  <span class="op">}</span>
+  
+  <span class="co"># use our example html</span>
+  <span class="co"># grab the column by number</span>
+  <span class="co"># get the rows by selection</span>
+  <span class="co"># test the expectation</span>
+  <span class="va">ex_html_tab</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://rvest.tidyverse.org/reference/rename.html">html_nodes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"td:nth-child("</span>,<span class="va">col_n</span> , <span class="st">")"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="va">.</span><span class="op">[</span><span class="va">row_sel</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_match.html">expect_match</a></span><span class="op">(</span><span class="va">expectation</span><span class="op">)</span>
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</details><p>Now we can run our tests on the specific columns and get a lot of “praise”! That’s it for now, but maybe we’ll explore putting these tests into a package down the line.</p>
+<div class="cell">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Test for escaped characters ---------------------------------------------</span>
+<span class="co"># check that a suffix + symbol worked, and that escaped characters can be tested</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  <span class="st">"Escaped characters work"</span>,
+  <span class="op">{</span>
+    <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">1</span>, expectation <span class="op">=</span> <span class="st">"Ford \\$"</span><span class="op">)</span>
+    <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">1</span>, row_first <span class="op">=</span> <span class="cn">FALSE</span>, expectation <span class="op">=</span> <span class="st">"Ferrari&amp;nbsp&amp;nbsp"</span><span class="op">)</span>
+  <span class="op">}</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test passed 😀</code></pre>
+</div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Test for raw percent ----------------------------------------------------</span>
+<span class="co"># on this column we used the literal string of %</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  <span class="st">"Raw percent character works"</span>,
+  <span class="op">{</span>
+    <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">2</span>, expectation <span class="op">=</span> <span class="st">"2017%"</span><span class="op">)</span>
+    <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">2</span>, row_first <span class="op">=</span> <span class="cn">FALSE</span>, expectation <span class="op">=</span> <span class="st">"201[4-7]&amp;nbsp"</span><span class="op">)</span>
+  <span class="op">}</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test passed 🎉</code></pre>
+</div>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Test for symbolic percent -----------------------------------------------</span>
+<span class="co"># on this column we used the HTML code for percent</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  <span class="st">"HTML symbol for percent works"</span>,
+  <span class="op">{</span>
+    <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">4</span>, expectation <span class="op">=</span> <span class="st">"20.2%"</span><span class="op">)</span>
+    <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">4</span>, row_first <span class="op">=</span> <span class="cn">FALSE</span>, expectation <span class="op">=</span> <span class="st">"[0-9]+&amp;nbsp"</span><span class="op">)</span>
+  <span class="op">}</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test passed 🥇</code></pre>
+</div>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Test for suffix + symbol ------------------------------------------------</span>
+<span class="co"># test for case where the symbol is in front of suffix</span>
+<span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html">test_that</a></span><span class="op">(</span>
+  <span class="st">"A combined suffix + symbol work"</span>,
+  <span class="op">{</span>
+    <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">5</span>, expectation <span class="op">=</span> <span class="st">"647°F"</span><span class="op">)</span>
+    <span class="fu">test_gt_by_col</span><span class="op">(</span><span class="fl">5</span>, row_first <span class="op">=</span> <span class="cn">FALSE</span>, expectation <span class="op">=</span> <span class="st">"[0-9]+&amp;nbsp&amp;nbsp"</span><span class="op">)</span>
+  <span class="op">}</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test passed 🎊</code></pre>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-28
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version    date (UTC) lib source
+ dplyr       * 1.0.8      2022-02-08 [1] CRAN (R 4.2.0)
+ forcats     * 0.5.1      2021-01-27 [1] CRAN (R 4.2.0)
+ ggplot2     * 3.3.5      2021-06-25 [1] CRAN (R 4.2.0)
+ gt          * 0.5.0.9000 2022-04-27 [1] Github (rstudio/gt@0d4c83d)
+ purrr       * 0.3.4      2020-04-17 [1] CRAN (R 4.2.0)
+ readr       * 2.1.2      2022-01-30 [1] CRAN (R 4.2.0)
+ rvest       * 1.0.2      2021-10-16 [1] CRAN (R 4.2.0)
+ scales      * 1.2.0      2022-04-13 [1] CRAN (R 4.2.0)
+ sessioninfo * 1.2.2      2021-12-06 [1] CRAN (R 4.2.0)
+ stringr     * 1.4.0      2019-02-10 [1] CRAN (R 4.2.0)
+ testthat    * 3.1.4      2022-04-26 [1] CRAN (R 4.2.0)
+ tibble      * 3.1.6      2021-11-07 [1] CRAN (R 4.2.0)
+ tidyr       * 1.2.0      2022-02-01 [1] CRAN (R 4.2.0)
+ tidyverse   * 1.3.1      2021-04-15 [1] CRAN (R 4.2.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

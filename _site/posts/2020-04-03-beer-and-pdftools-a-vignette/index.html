@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="A guide to extracting tables from many PDFs using the pdftools package">
+<title>The MockUp - Beer and pdftools - a vignette</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Beer and pdftools - a vignette">
+<meta property="og:description" content="A guide to extracting tables from many PDFs using the pdftools package
+">
+<meta property="og:image" content="https://raw.githubusercontent.com/jthomasmock/pdftools-guide/master/beer-kegs.jpeg">
+<meta property="og:site-name" content="The MockUp">
+<meta name="twitter:title" content="The MockUp - Beer and pdftools - a vignette">
+<meta name="twitter:description" content="A guide to extracting tables from many PDFs using the pdftools package
+">
+<meta name="twitter:image" content="https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette/themockup.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Beer and pdftools - a vignette</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">purrr</div>
+                <div class="quarto-category">pdftools</div>
+                <div class="quarto-category">tidyverse</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>A guide to extracting tables from many PDFs using the pdftools package</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">04-04-2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#scraping-complex-tables-from-pdfs-with-pdf-tools" id="toc-scraping-complex-tables-from-pdfs-with-pdf-tools" class="nav-link active" data-scroll-target="#scraping-complex-tables-from-pdfs-with-pdf-tools">Scraping Complex Tables from PDFs with PDF Tools</a>
+  <ul class="collapse">
+<li><a href="#load-libraries" id="toc-load-libraries" class="nav-link" data-scroll-target="#load-libraries">Load Libraries</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#pdfs" id="toc-pdfs" class="nav-link" data-scroll-target="#pdfs">PDFs</a>
+  <ul class="collapse">
+<li><a href="#list-file-names" id="toc-list-file-names" class="nav-link" data-scroll-target="#list-file-names">List File Names</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#raw-pdfs" id="toc-raw-pdfs" class="nav-link" data-scroll-target="#raw-pdfs">Raw PDFs</a>
+  <ul class="collapse">
+<li><a href="#split-by-row" id="toc-split-by-row" class="nav-link" data-scroll-target="#split-by-row">Split by row</a></li>
+  <li>
+<a href="#build-table" id="toc-build-table" class="nav-link" data-scroll-target="#build-table">Build Table</a>
+  <ul class="collapse">
+<li><a href="#remove-all-the-extra-whitespace" id="toc-remove-all-the-extra-whitespace" class="nav-link" data-scroll-target="#remove-all-the-extra-whitespace">Remove all the extra whitespace</a></li>
+  <li><a href="#convert-to-tibble" id="toc-convert-to-tibble" class="nav-link" data-scroll-target="#convert-to-tibble">Convert to tibble</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li><a href="#alternative-method-via-readr" id="toc-alternative-method-via-readr" class="nav-link" data-scroll-target="#alternative-method-via-readr">Alternative method via <code>readr</code></a></li>
+  <li>
+<a href="#proper-cleaning" id="toc-proper-cleaning" class="nav-link" data-scroll-target="#proper-cleaning">Proper Cleaning</a>
+  <ul class="collapse">
+<li><a href="#split-dataframe" id="toc-split-dataframe" class="nav-link" data-scroll-target="#split-dataframe">Split dataframe</a></li>
+  <li>
+<a href="#factor-cleaning-and-final-dataframes" id="toc-factor-cleaning-and-final-dataframes" class="nav-link" data-scroll-target="#factor-cleaning-and-final-dataframes">Factor cleaning and final dataframes</a>
+  <ul class="collapse">
+<li><a href="#print-the-dataframes" id="toc-print-the-dataframes" class="nav-link" data-scroll-target="#print-the-dataframes">Print the dataframes</a></li>
+  <li><a href="#finished-cleaning" id="toc-finished-cleaning" class="nav-link" data-scroll-target="#finished-cleaning">Finished Cleaning</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li><a href="#use-a-function" id="toc-use-a-function" class="nav-link" data-scroll-target="#use-a-function">Use a function</a></li>
+  <li>
+<a href="#purrr---iteration-without-repetition" id="toc-purrr---iteration-without-repetition" class="nav-link" data-scroll-target="#purrr---iteration-without-repetition"><code>purrr</code> - iteration without repetition</a>
+  <ul class="collapse">
+<li><a href="#all-possible-combos" id="toc-all-possible-combos" class="nav-link" data-scroll-target="#all-possible-combos">All possible combos</a></li>
+  <li>
+<a href="#final-output" id="toc-final-output" class="nav-link" data-scroll-target="#final-output">Final output</a>
+  <ul class="collapse">
+<li><a href="#manufacture-dataset" id="toc-manufacture-dataset" class="nav-link" data-scroll-target="#manufacture-dataset">Manufacture dataset</a></li>
+  <li><a href="#material-dataset" id="toc-material-dataset" class="nav-link" data-scroll-target="#material-dataset">Material dataset</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li><a href="#do-it-all-in-6-lines-of-code" id="toc-do-it-all-in-6-lines-of-code" class="nav-link" data-scroll-target="#do-it-all-in-6-lines-of-code">Do it all in 6 Lines of Code!</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><p><img src="beer-kegs.jpeg" class="img-fluid"></p>
+<section id="scraping-complex-tables-from-pdfs-with-pdf-tools" class="level1"><h1>Scraping Complex Tables from PDFs with PDF Tools</h1>
+<p>The goal of this is to provide a guide to extracting irregularly formatted tables from PDFs.</p>
+<section id="load-libraries" class="level2"><h2 class="anchored" data-anchor-id="load-libraries">Load Libraries</h2>
+<p>We’ll use ROpenSci’s <code>pdftools</code> package along with several <code>tidyverse</code> packages: - <code>stringr</code> - text manipulation - <code>dplyr</code> - general data manipulation - <code>tidyr</code> - data cleaning - <code>purrr</code> - repeated application of a function</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+✔ tibble  3.1.6     ✔ dplyr   1.0.8
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/pdftools/">pdftools</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Using poppler version 22.04.0</code></pre>
+</div>
+</div>
+</section></section><section id="pdfs" class="level1"><h1>PDFs</h1>
+<p>The PDFs for this guide come from <a href="https://www.ttb.gov/beer/statistics">Alcohol and Tobacco Tax and Trade Bureau</a>. We’ll use the 2011-2014 data for this example (84 total PDFs). For the purpose of today the files have already been downloaded, but I used the following script.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># General function for download</span>
+<span class="va">download_monthly_stats_pdf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">year</span><span class="op">)</span><span class="op">{</span>
+  
+  <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Downloading "</span>, <span class="va">year</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># The general format is yearmonth like 201101 for Jan 2011.</span>
+  <span class="va">month_in</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>, <span class="st">"06"</span>, <span class="st">"07"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span>
+  
+  <span class="va">year_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">year</span>, <span class="fl">12</span><span class="op">)</span>
+  
+  <span class="va">url_build</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">year_vec</span>, <span class="va">month_in</span><span class="op">)</span><span class="op">{</span>
+      <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"https://www.ttb.gov/images/pdfs/statistics/{year}/{year}{month_in}beer.pdf"</span><span class="op">)</span>
+  <span class="op">}</span>
+  
+  <span class="co"># output to the pdfs folder</span>
+  <span class="va">download_monthly_pdf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">url_in</span><span class="op">)</span><span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span>
+      url <span class="op">=</span> <span class="va">url_in</span>,
+      destfile <span class="op">=</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"pdfs/ttb_monthly_stats_{year}-{month}.pdf"</span><span class="op">)</span>
+      <span class="op">)</span>
+  <span class="op">}</span>
+  
+  <span class="co"># build all the input urls and attach to an input dataframe</span>
+  <span class="va">full_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>year <span class="op">=</span> <span class="va">year_vec</span>, month <span class="op">=</span> <span class="va">month_in</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>url_in <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_chr</a></span><span class="op">(</span>.l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">year_vec</span>, <span class="va">month_in</span><span class="op">)</span>, .f <span class="op">=</span> <span class="va">url_build</span><span class="op">)</span><span class="op">)</span> 
+  
+  <span class="co"># The pwalk here takes all 3 inputs and applies them to download_monthly_pdf function</span>
+  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">pwalk</a></span><span class="op">(</span><span class="va">full_df</span>, .f <span class="op">=</span> <span class="va">download_monthly_pdf</span><span class="op">)</span>
+  
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We could apply that function to all the years of interest with another <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::walk()</a></code> call. This will run <code>download_monthly_stats_pdf()</code> for 2011, 2012, 2013, and 2014.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">walk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2011</span><span class="op">:</span><span class="fl">2014</span><span class="op">)</span>, <span class="va">download_monthly_stats_pdf</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="list-file-names" class="level2"><h2 class="anchored" data-anchor-id="list-file-names">List File Names</h2>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># list all the files we have downloaded so far</span>
+<span class="va">all_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"pdfs"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">all_files</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 48</code></pre>
+</div>
+</div>
+<p>We have 48 PDFs, as expected - 12 months x 4 years = 48!</p>
+<p>Now let’s take a peek inside one of the PDFs.</p>
+<p><img src="PDF-table.png" class="img-fluid"></p>
+</section></section><section id="raw-pdfs" class="level1"><h1>Raw PDFs</h1>
+<p>When we run <code><a href="https://docs.ropensci.org/pdftools/reference/pdftools.html">pdftools::pdf_text()</a></code> we can see a decently formatted table. The main issue to consider is that there is a lot erroneous header descriptions, and there are unequal spacing between “columns” in the table. Importantly, each line of the PDF is separated by a newline <code>\n</code>. This is key to our strategy for pulling out individual lines.</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">pdftools</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/pdftools/reference/pdftools.html">pdf_text</a></span><span class="op">(</span><span class="st">"pdfs/ttb_monthly_stats_2011-01.pdf"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "                                                                                                                          Report Date:\n                                           DEPARTMENT OF THE TREASURY                                                     30-MAR-2011\n                                 ALCOHOL AND TOBACCO TAX AND TRADE BUREAU\n                                                                                                                          Report Symbol:\n                                                  STATISTICAL REPORT - BEER                                               TTB S 5130-01-2011\n\n                                                      Reporting Period: January 2011                                      Page: 1 of 1\n\n\n                                                                                                       Current Year             Prior Year\n                                                                                   Prior Year           Cumulative             Cumulative\nMANUFACTURE OF BEER                                     Current Month            Current Month         Year to Date            Year to Date\n\nProduction                                                    14,981,472              15,012,331          14,981,472               15,012,331\nRemovals\nTaxable ($7.00/$18.00 per barrel)\n  In bottles and cans                                         11,571,819              11,908,922          11,571,819               11,908,922\n  In barrels and kegs                                          1,245,125                   1,245,143       1,245,125                1,245,143\n  Tax Determined, Premises Use                                      5,989                     5,267            5,989                     5,267\n    Sub Total Taxable                                         12,822,933              13,159,332          12,822,933               13,159,332\nTax-free\n  For export                                                     264,669                    224,066          264,669                  224,066\n  For vessels and aircraft                                               0                        0                   0                       0\n  Consumed on brewery premises                                        886                       913              886                       913\n     Sub Total Tax-Free                                          265,555                    224,979          265,555                  224,979\n  Total Removals                                              13,088,488              13,384,311          13,088,488               13,384,311\nStocks On Hand end-of-month:                                   9,896,961                   9,993,268       9,896,961                9,993,268\n\n\nMATERIALS USED AT BREWERIES\n\n  Malt and malt products                                    322,480,722              330,304,432         322,480,722              330,304,432\n  Corn and corn products                                      58,632,672              56,705,162          58,632,672               56,705,162\n  Rice and rice products                                    108,112,318               59,701,345         108,112,318               59,701,345\n  Barley and barley products                                   4,705,175                   3,668,374       4,705,175                3,668,374\n  Wheat and wheat products                                     1,210,137                   1,409,685       1,210,137                1,409,685\n    Total Grain products                                    495,141,024              451,788,998         495,141,024              451,788,998\n\n  Sugar and syrups                                            73,793,509              47,308,358          73,793,509               47,308,358\n  Hops (dry)                                                   6,059,066                   4,765,924       6,059,066                4,765,924\n  Hops (used as extracts)                                        296,605                    271,405          296,605                  271,405\n  Other                                                        7,972,930              10,537,742           7,972,930               10,537,742\n     Total Non-Grain products                                 88,122,110              62,883,429          88,122,110               62,883,429\nTotal Used                                                  583,263,134              514,672,427         583,263,134              514,672,427\n\n\n        296,605 Pounds of hops is equivalent to          212,541     pounds of extract JAN 2011\n        271,405 Pounds of hops is equivalent to          101,087     pounds of extract JAN 2010\n\n\n\n\nNOTE: Changes in figures from prior reports could be due to amended reports being filed.\n     This data is not final and may need to be amended.\n\n\n\nhttp://www.ttb.gov\n"</code></pre>
+</div>
+</div>
+<section id="split-by-row" class="level2"><h2 class="anchored" data-anchor-id="split-by-row">Split by row</h2>
+<p>We can use <code><a href="https://stringr.tidyverse.org/reference/str_split.html">stringr::str_split()</a></code> to separate the text at each of the <code>\n</code> newlines. This generates a list of character strings, we call <code><a href="https://rdrr.io/r/base/unlist.html">unlist()</a></code> to extract to a vector. We now have a nicely separated vector of character strings, where each row is a new string.</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">raw_text</span> <span class="op">&lt;-</span> <span class="fu">pdftools</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/pdftools/reference/pdftools.html">pdf_text</a></span><span class="op">(</span><span class="st">"pdfs/ttb_monthly_stats_2011-01.pdf"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html">str_split</a></span><span class="op">(</span><span class="st">"\n"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">raw_text</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "                                                                                                                          Report Date:"         
+ [2] "                                           DEPARTMENT OF THE TREASURY                                                     30-MAR-2011"          
+ [3] "                                 ALCOHOL AND TOBACCO TAX AND TRADE BUREAU"                                                                      
+ [4] "                                                                                                                          Report Symbol:"       
+ [5] "                                                  STATISTICAL REPORT - BEER                                               TTB S 5130-01-2011"   
+ [6] ""                                                                                                                                               
+ [7] "                                                      Reporting Period: January 2011                                      Page: 1 of 1"         
+ [8] ""                                                                                                                                               
+ [9] ""                                                                                                                                               
+[10] "                                                                                                       Current Year             Prior Year"     
+[11] "                                                                                   Prior Year           Cumulative             Cumulative"      
+[12] "MANUFACTURE OF BEER                                     Current Month            Current Month         Year to Date            Year to Date"    
+[13] ""                                                                                                                                               
+[14] "Production                                                    14,981,472              15,012,331          14,981,472               15,012,331"  
+[15] "Removals"                                                                                                                                       
+[16] "Taxable ($7.00/$18.00 per barrel)"                                                                                                              
+[17] "  In bottles and cans                                         11,571,819              11,908,922          11,571,819               11,908,922"  
+[18] "  In barrels and kegs                                          1,245,125                   1,245,143       1,245,125                1,245,143"  
+[19] "  Tax Determined, Premises Use                                      5,989                     5,267            5,989                     5,267" 
+[20] "    Sub Total Taxable                                         12,822,933              13,159,332          12,822,933               13,159,332"  
+[21] "Tax-free"                                                                                                                                       
+[22] "  For export                                                     264,669                    224,066          264,669                  224,066"  
+[23] "  For vessels and aircraft                                               0                        0                   0                       0"
+[24] "  Consumed on brewery premises                                        886                       913              886                       913" 
+[25] "     Sub Total Tax-Free                                          265,555                    224,979          265,555                  224,979"  
+[26] "  Total Removals                                              13,088,488              13,384,311          13,088,488               13,384,311"  
+[27] "Stocks On Hand end-of-month:                                   9,896,961                   9,993,268       9,896,961                9,993,268"  
+[28] ""                                                                                                                                               
+[29] ""                                                                                                                                               
+[30] "MATERIALS USED AT BREWERIES"                                                                                                                    
+[31] ""                                                                                                                                               
+[32] "  Malt and malt products                                    322,480,722              330,304,432         322,480,722              330,304,432"  
+[33] "  Corn and corn products                                      58,632,672              56,705,162          58,632,672               56,705,162"  
+[34] "  Rice and rice products                                    108,112,318               59,701,345         108,112,318               59,701,345"  
+[35] "  Barley and barley products                                   4,705,175                   3,668,374       4,705,175                3,668,374"  
+[36] "  Wheat and wheat products                                     1,210,137                   1,409,685       1,210,137                1,409,685"  
+[37] "    Total Grain products                                    495,141,024              451,788,998         495,141,024              451,788,998"  
+[38] ""                                                                                                                                               
+[39] "  Sugar and syrups                                            73,793,509              47,308,358          73,793,509               47,308,358"  
+[40] "  Hops (dry)                                                   6,059,066                   4,765,924       6,059,066                4,765,924"  
+[41] "  Hops (used as extracts)                                        296,605                    271,405          296,605                  271,405"  
+[42] "  Other                                                        7,972,930              10,537,742           7,972,930               10,537,742"  
+[43] "     Total Non-Grain products                                 88,122,110              62,883,429          88,122,110               62,883,429"  
+[44] "Total Used                                                  583,263,134              514,672,427         583,263,134              514,672,427"  
+[45] ""                                                                                                                                               
+[46] ""                                                                                                                                               
+[47] "        296,605 Pounds of hops is equivalent to          212,541     pounds of extract JAN 2011"                                                
+[48] "        271,405 Pounds of hops is equivalent to          101,087     pounds of extract JAN 2010"                                                
+[49] ""                                                                                                                                               
+[50] ""                                                                                                                                               
+[51] ""                                                                                                                                               
+[52] ""                                                                                                                                               
+[53] "NOTE: Changes in figures from prior reports could be due to amended reports being filed."                                                       
+[54] "     This data is not final and may need to be amended."                                                                                        
+[55] ""                                                                                                                                               
+[56] ""                                                                                                                                               
+[57] ""                                                                                                                                               
+[58] "http://www.ttb.gov"                                                                                                                             
+[59] ""                                                                                                                                               </code></pre>
+</div>
+</div>
+</section><section id="build-table" class="level2"><h2 class="anchored" data-anchor-id="build-table">Build Table</h2>
+<p>Now that we have the data split into a vector we can start finding “rows” to drop. We can see that the 9th string is actually the column titles, and the table ends at the 36th string. However, this could change according to which PDF we are looking at, so rather than going by position we can use <code><a href="https://stringr.tidyverse.org/reference/str_subset.html">stringr::str_which()</a></code> to match a logical with matched text.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Start of table - column names</span>
+<span class="va">raw_text</span><span class="op">[</span><span class="fl">9</span><span class="op">]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] ""</code></pre>
+</div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># End of table - last value</span>
+<span class="va">raw_text</span><span class="op">[</span><span class="fl">36</span><span class="op">]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "  Wheat and wheat products                                     1,210,137                   1,409,685       1,210,137                1,409,685"</code></pre>
+</div>
+</div>
+<p>We get the same “rows” with our matching <code><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which()</a></code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># find start of table</span>
+<span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which</a></span><span class="op">(</span><span class="va">raw_text</span>, <span class="st">"MANUFACTURE OF BEER"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># find end of table</span>
+<span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which</a></span><span class="op">(</span><span class="va">raw_text</span>, <span class="st">"Total Used"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 44</code></pre>
+</div>
+</div>
+<p>Let’s actually assign this now, rather than just printing. We can also remove leading/trailing whitespace with <code><a href="https://stringr.tidyverse.org/reference/str_trim.html">stringr::str_trim()</a></code>. When we look at table_trimmed we can “see” a group of text strings that much closer resemble a table!</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">table_start</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which</a></span><span class="op">(</span><span class="va">raw_text</span>, <span class="st">"MANUFACTURE OF BEER"</span><span class="op">)</span>
+  
+<span class="co"># End of table (drop all the asterisks and the other descriptors)</span>
+<span class="va">table_end</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which</a></span><span class="op">(</span><span class="va">raw_text</span>, <span class="st">"Total Used"</span><span class="op">)</span>
+  
+<span class="co"># Trim the table to the start/end and drop whitespace at each line</span>
+<span class="va">table_trimmed</span> <span class="op">&lt;-</span> <span class="va">raw_text</span><span class="op">[</span><span class="va">table_start</span><span class="op">:</span><span class="va">table_end</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_trim.html">str_trim</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">table_trimmed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "MANUFACTURE OF BEER                                     Current Month            Current Month         Year to Date            Year to Date"  
+ [2] ""                                                                                                                                             
+ [3] "Production                                                    14,981,472              15,012,331          14,981,472               15,012,331"
+ [4] "Removals"                                                                                                                                     
+ [5] "Taxable ($7.00/$18.00 per barrel)"                                                                                                            
+ [6] "In bottles and cans                                         11,571,819              11,908,922          11,571,819               11,908,922"  
+ [7] "In barrels and kegs                                          1,245,125                   1,245,143       1,245,125                1,245,143"  
+ [8] "Tax Determined, Premises Use                                      5,989                     5,267            5,989                     5,267" 
+ [9] "Sub Total Taxable                                         12,822,933              13,159,332          12,822,933               13,159,332"    
+[10] "Tax-free"                                                                                                                                     
+[11] "For export                                                     264,669                    224,066          264,669                  224,066"  
+[12] "For vessels and aircraft                                               0                        0                   0                       0"
+[13] "Consumed on brewery premises                                        886                       913              886                       913" 
+[14] "Sub Total Tax-Free                                          265,555                    224,979          265,555                  224,979"     
+[15] "Total Removals                                              13,088,488              13,384,311          13,088,488               13,384,311"  
+[16] "Stocks On Hand end-of-month:                                   9,896,961                   9,993,268       9,896,961                9,993,268"
+[17] ""                                                                                                                                             
+[18] ""                                                                                                                                             
+[19] "MATERIALS USED AT BREWERIES"                                                                                                                  
+[20] ""                                                                                                                                             
+[21] "Malt and malt products                                    322,480,722              330,304,432         322,480,722              330,304,432"  
+[22] "Corn and corn products                                      58,632,672              56,705,162          58,632,672               56,705,162"  
+[23] "Rice and rice products                                    108,112,318               59,701,345         108,112,318               59,701,345"  
+[24] "Barley and barley products                                   4,705,175                   3,668,374       4,705,175                3,668,374"  
+[25] "Wheat and wheat products                                     1,210,137                   1,409,685       1,210,137                1,409,685"  
+[26] "Total Grain products                                    495,141,024              451,788,998         495,141,024              451,788,998"    
+[27] ""                                                                                                                                             
+[28] "Sugar and syrups                                            73,793,509              47,308,358          73,793,509               47,308,358"  
+[29] "Hops (dry)                                                   6,059,066                   4,765,924       6,059,066                4,765,924"  
+[30] "Hops (used as extracts)                                        296,605                    271,405          296,605                  271,405"  
+[31] "Other                                                        7,972,930              10,537,742           7,972,930               10,537,742"  
+[32] "Total Non-Grain products                                 88,122,110              62,883,429          88,122,110               62,883,429"     
+[33] "Total Used                                                  583,263,134              514,672,427         583,263,134              514,672,427"</code></pre>
+</div>
+</div>
+<section id="remove-all-the-extra-whitespace" class="level3"><h3 class="anchored" data-anchor-id="remove-all-the-extra-whitespace">Remove all the extra whitespace</h3>
+<p>Next we need to remove all the huge whitespaces from between columns. The regular expression (regex) of <code>"\\s{2,}"</code> matches whitespaces of 2 or more. If we use <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">stringr::str_replace_all()</a></code> to take all the whitespaces &gt; 2 and replace with a new delimiter such as <code>"|"</code> we can move to our next step. While we’re at it, let’s remove all the commas so that we can go straight to doubles rather than characters for all the beer production variables.</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Replace long spaces with a col break symbol</span>
+<span class="va">squished_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">table_trimmed</span>, <span class="st">"\\s{2,}"</span>, <span class="st">"|"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="st">","</span><span class="op">)</span>
+<span class="va">squished_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "MANUFACTURE OF BEER|Current Month|Current Month|Year to Date|Year to Date"
+ [2] ""                                                                         
+ [3] "Production|14981472|15012331|14981472|15012331"                           
+ [4] "Removals"                                                                 
+ [5] "Taxable ($7.00/$18.00 per barrel)"                                        
+ [6] "In bottles and cans|11571819|11908922|11571819|11908922"                  
+ [7] "In barrels and kegs|1245125|1245143|1245125|1245143"                      
+ [8] "Tax Determined Premises Use|5989|5267|5989|5267"                          
+ [9] "Sub Total Taxable|12822933|13159332|12822933|13159332"                    
+[10] "Tax-free"                                                                 
+[11] "For export|264669|224066|264669|224066"                                   
+[12] "For vessels and aircraft|0|0|0|0"                                         
+[13] "Consumed on brewery premises|886|913|886|913"                             
+[14] "Sub Total Tax-Free|265555|224979|265555|224979"                           
+[15] "Total Removals|13088488|13384311|13088488|13384311"                       
+[16] "Stocks On Hand end-of-month:|9896961|9993268|9896961|9993268"             
+[17] ""                                                                         
+[18] ""                                                                         
+[19] "MATERIALS USED AT BREWERIES"                                              
+[20] ""                                                                         
+[21] "Malt and malt products|322480722|330304432|322480722|330304432"           
+[22] "Corn and corn products|58632672|56705162|58632672|56705162"               
+[23] "Rice and rice products|108112318|59701345|108112318|59701345"             
+[24] "Barley and barley products|4705175|3668374|4705175|3668374"               
+[25] "Wheat and wheat products|1210137|1409685|1210137|1409685"                 
+[26] "Total Grain products|495141024|451788998|495141024|451788998"             
+[27] ""                                                                         
+[28] "Sugar and syrups|73793509|47308358|73793509|47308358"                     
+[29] "Hops (dry)|6059066|4765924|6059066|4765924"                               
+[30] "Hops (used as extracts)|296605|271405|296605|271405"                      
+[31] "Other|7972930|10537742|7972930|10537742"                                  
+[32] "Total Non-Grain products|88122110|62883429|88122110|62883429"             
+[33] "Total Used|583263134|514672427|583263134|514672427"                       </code></pre>
+</div>
+</div>
+</section><section id="convert-to-tibble" class="level3"><h3 class="anchored" data-anchor-id="convert-to-tibble">Convert to tibble</h3>
+<p>Now we have a nicely formatted vector of strings! We can use <code><a href="https://tibble.tidyverse.org/reference/enframe.html">tibble::enframe()</a></code> to create a dataframe/tibble out of the vector.</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Convert to tibble</span>
+<span class="va">raw_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/enframe.html">enframe</a></span><span class="op">(</span><span class="va">squished_table</span><span class="op">)</span>
+<span class="va">raw_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 33 × 2
+    name value                                                                  
+   &lt;int&gt; &lt;chr&gt;                                                                  
+ 1     1 "MANUFACTURE OF BEER|Current Month|Current Month|Year to Date|Year to …
+ 2     2 ""                                                                     
+ 3     3 "Production|14981472|15012331|14981472|15012331"                       
+ 4     4 "Removals"                                                             
+ 5     5 "Taxable ($7.00/$18.00 per barrel)"                                    
+ 6     6 "In bottles and cans|11571819|11908922|11571819|11908922"              
+ 7     7 "In barrels and kegs|1245125|1245143|1245125|1245143"                  
+ 8     8 "Tax Determined Premises Use|5989|5267|5989|5267"                      
+ 9     9 "Sub Total Taxable|12822933|13159332|12822933|13159332"                
+10    10 "Tax-free"                                                             
+# … with 23 more rows</code></pre>
+</div>
+</div>
+<p>Next we can separate value into the 5 columns. Notice that there are a few “rows” where the data is NA as there were rows that acted only as indicators of the type of beer production. We’ll use them later.</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">year</span> <span class="op">&lt;-</span> <span class="fl">2011</span>
+<span class="va">month</span> <span class="op">&lt;-</span> <span class="st">"02"</span>
+<span class="co"># Convert to tibble</span>
+<span class="va">beer_df</span> <span class="op">&lt;-</span> <span class="va">raw_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span><span class="va">value</span>, 
+             into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"type"</span>, <span class="st">"month_current"</span>, <span class="st">"month_prior_year"</span>, <span class="st">"ytd_current"</span>, <span class="st">"ytd_prior_year"</span><span class="op">)</span>, 
+             sep <span class="op">=</span> <span class="st">"\\|"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">month_current</span><span class="op">:</span><span class="va">ytd_prior_year</span><span class="op">)</span>, <span class="va">as.double</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>, month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">month</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">type</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expected 5 pieces. Missing pieces filled with `NA` in 9 rows [2, 4, 5,
+10, 17, 18, 19, 20, 27].</code></pre>
+</div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">beer_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 32 × 8
+    year month type              name month_current month_prior_year ytd_current
+   &lt;int&gt; &lt;int&gt; &lt;chr&gt;            &lt;int&gt;         &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;
+ 1  2011     2 ""                   2            NA               NA          NA
+ 2  2011     2 "Production"         3      14981472         15012331    14981472
+ 3  2011     2 "Removals"           4            NA               NA          NA
+ 4  2011     2 "Taxable ($7.00…     5            NA               NA          NA
+ 5  2011     2 "In bottles and…     6      11571819         11908922    11571819
+ 6  2011     2 "In barrels and…     7       1245125          1245143     1245125
+ 7  2011     2 "Tax Determined…     8          5989             5267        5989
+ 8  2011     2 "Sub Total Taxa…     9      12822933         13159332    12822933
+ 9  2011     2 "Tax-free"          10            NA               NA          NA
+10  2011     2 "For export"        11        264669           224066      264669
+# … with 22 more rows, and 1 more variable: ytd_prior_year &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Technically at this point, we have successfully converted from raw text to a dataframe/table/tibble! HOWEVER, for many many examples in the wild you will need to do additional data cleaning, data manipulation, factor assignment, etc. As such, I’ll continue working on this to get to a final output. I’ll also work on repeating this many times as opposed to one time.</p>
+</section></section></section><section id="alternative-method-via-readr" class="level1"><h1>Alternative method via <code>readr</code>
+</h1>
+<p>Thanks to Grant McDermott for bringing up a good point <a href="https://github.com/jthomasmock/pdftools-guide/issues/1">here</a> - I based this method off of tables where the white-space between columns is varying. If the white space is fixed between columns you could skip some steps as seen in the below example using <code><a href="https://readr.tidyverse.org/reference/read_fwf.html">readr::read_fwf()</a></code>, courtesy of Grant. I believe for most cases either using <code><a href="https://readr.tidyverse.org/reference/read_table.html">readr::read_table()</a></code> or <code><a href="https://readr.tidyverse.org/reference/read_fwf.html">readr::read_fwf()</a></code> would be simple, but will keep the additional workflow steps in case they help someone down the road!</p>
+<p>Overall, using <code>readr</code> to natively parse the table-format could save the workflow step of trimming, coercing to a tibble, and then separating, and just requires you to indicate the spacing of empty cells either manually with <code><a href="https://readr.tidyverse.org/reference/read_fwf.html">fwf_widths()</a></code> or guessing/parsing of columns via <code><a href="https://readr.tidyverse.org/reference/read_fwf.html">fwf_empty()</a></code>. Note that as of <code>readr</code>v2.0, you’ll need to wrap literal in-memory data with <code><a href="https://rdrr.io/r/base/AsIs.html">I()</a></code> - full details in <a href="https://www.tidyverse.org/blog/2021/07/readr-2-0-0/#literal-data"><code>readr</code> 2.0 announcement blogpost</a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">table_start_fwf</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which</a></span><span class="op">(</span><span class="va">raw_text</span>, <span class="st">"Production"</span><span class="op">)</span> <span class="co">## Changed since we're dropping the first row anyway</span>
+<span class="va">table_end_fwf</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which</a></span><span class="op">(</span><span class="va">raw_text</span>, <span class="st">"Total Used"</span><span class="op">)</span>
+<span class="co">## Trim the table to the start/end (NB: Don't drop whitespace this time!)</span>
+<span class="va">table_trimmed_fwf</span> <span class="op">&lt;-</span> <span class="va">raw_text</span><span class="op">[</span><span class="va">table_start_fwf</span><span class="op">:</span><span class="va">table_end_fwf</span><span class="op">]</span>
+<span class="va">beer_df_fwf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_fwf.html">read_fwf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">table_trimmed_fwf</span><span class="op">)</span>, 
+                        <span class="fu"><a href="https://readr.tidyverse.org/reference/read_fwf.html">fwf_empty</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">table_trimmed_fwf</span><span class="op">)</span>, 
+                                  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"type"</span>, 
+                                                <span class="st">"month_current"</span>, 
+                                                <span class="st">"month_prior_year"</span>, 
+                                                <span class="st">"ytd_current"</span>, 
+                                                <span class="st">"ytd_prior_year"</span><span class="op">)</span>
+                                  <span class="op">)</span>
+                        <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 31 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+
+chr (1): type
+dbl (1): ytd_prior_year
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">beer_df_fwf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 6
+   type        month_current month_prior_year ytd_current ytd_prior_year      X6
+   &lt;chr&gt;               &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Production       14981472         15012331    14981472             NA  1.50e7
+ 2 Removals               NA               NA          NA             NA NA     
+ 3 Taxable ($…            NA               NA          NA             NA NA     
+ 4 In bottles…      11571819         11908922    11571819             NA  1.19e7
+ 5 In barrels…       1245125          1245143     1245125             NA  1.25e6
+ 6 Tax Determ…          5989             5267        5989             NA  5.27e3
+ 7 Sub Total …      12822933         13159332    12822933             NA  1.32e7
+ 8 Tax-free               NA               NA          NA             NA NA     
+ 9 For export         264669           224066      264669             NA  2.24e5
+10 For vessel…             0                0          NA              0  0     
+# … with 21 more rows</code></pre>
+</div>
+</div>
+<p>One more alternative would be to just use <a href="https://readr.tidyverse.org/reference/read_table.html"><code>readr::read_table()</code></a> or <a href="https://readr.tidyverse.org/reference/read_table.html"><code>readr::read_table2()</code></a>. Now in practice this should be fairly robust, and works just fine for the examples here, but for messier tables it may fail which leads to the more complex and longer workflow shown below. Specifically, from the <code><a href="https://readr.tidyverse.org/reference/read_table.html">readr::read_table()</a></code> <a href="https://readr.tidyverse.org/reference/read_table.html">docs</a>:</p>
+<blockquote class="blockquote">
+<p><code><a href="https://readr.tidyverse.org/reference/read_table.html">read_table()</a></code> and <code><a href="https://readr.tidyverse.org/reference/read_table2.html">read_table2()</a></code> are designed to read the type of textual data where each column is separated by one (or more) &gt; columns of space.</p>
+<p><code><a href="https://readr.tidyverse.org/reference/read_table2.html">read_table2()</a></code> is like <code><a href="https://rdrr.io/r/utils/read.table.html">read.table()</a></code>, it allows any number of whitespace characters between columns, and the lines can be of different lengths.</p>
+<p><code><a href="https://readr.tidyverse.org/reference/read_table.html">read_table()</a></code> is more strict, each line must be the same length, and each field is in the same position in every line. It first finds empty columns and then parses like a fixed width file.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html">read_table</a></span><span class="op">(</span><span class="va">raw_text</span><span class="op">[</span><span class="va">table_start</span><span class="op">:</span><span class="va">table_end</span><span class="op">]</span>, skip <span class="op">=</span><span class="fl">1</span>,
+           col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"type"</span>, <span class="st">"month_current"</span>, <span class="st">"month_prior_year"</span>, 
+                         <span class="st">"ytd_current"</span>, <span class="st">"ytd_prior_year"</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: 25 parsing failures.
+row col  expected    actual         file
+  2  -- 5 columns 1 columns literal data
+  3  -- 5 columns 4 columns literal data
+  4  -- 5 columns 8 columns literal data
+  5  -- 5 columns 8 columns literal data
+  6  -- 5 columns 8 columns literal data
+... ... ......... ......... ............
+See problems(...) for more details.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 27 × 5
+   type       month_current month_prior_year ytd_current ytd_prior_year
+   &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;                &lt;dbl&gt;
+ 1 Production 14,981,472    15,012,331       14,981,472        15012331
+ 2 Removals   &lt;NA&gt;          &lt;NA&gt;             &lt;NA&gt;                    NA
+ 3 Taxable    ($7.00/$18.00 per              barrel)                 NA
+ 4 In         bottles       and              cans              11571819
+ 5 In         barrels       and              kegs               1245125
+ 6 Tax        Determined,   Premises         Use                   5989
+ 7 Sub        Total         Taxable          12,822,933        13159332
+ 8 Tax-free   &lt;NA&gt;          &lt;NA&gt;             &lt;NA&gt;                    NA
+ 9 For        export        264,669          224,066             264669
+10 For        vessels       and              aircraft                 0
+# … with 17 more rows</code></pre>
+</div>
+</div>
+</section><section id="proper-cleaning" class="level1"><h1>Proper Cleaning</h1>
+<p>This is actually two datasets that are combined into one large reporting table. As such we need to identify the specific row/point to split the dataset at. We can filter to just the row that matches either the string “MATERIALS USED” or “IN POUNDS”, as that indicates a label starting the 2nd dataset.</p>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">slice_num</span> <span class="op">&lt;-</span> <span class="va">beer_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="co"># find a string that has MATERIALS USED or IN POUNDS</span>
+  <span class="co"># | means OR</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"MATERIALS USED|IN POUNDS"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>
+<span class="va">slice_num</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 19</code></pre>
+</div>
+</div>
+<section id="split-dataframe" class="level2"><h2 class="anchored" data-anchor-id="split-dataframe">Split dataframe</h2>
+<p>Next we will add a column based on logic for the <code>slice_num</code>, and assign a grouping variable for either <code>Barrels Produced</code> (dataset 1) or <code>Pounds of Materials Used</code> (dataset 2). We can then drop the unneeded rows with a <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, <code>group_by(</code>) the newly produced grouping variable, and use <code><a href="https://dplyr.tidyverse.org/reference/group_split.html">dplyr::group_split()</a></code> to separate the combined dataset into a list of both datasets.</p>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># split data into materials vs barrels produced</span>
+<span class="va">split_df</span> <span class="op">&lt;-</span> <span class="va">beer_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>data_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">name</span> <span class="op">&gt;=</span> <span class="va">slice_num</span>, <span class="st">"Pounds of Materials Used"</span>, <span class="st">"Barrels Produced"</span><span class="op">)</span>,
+         type <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">":"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">data_type</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">-</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"IN POUNDS|MATERIALS USED|MANUFACTURE OF BEER|BARRELS"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">data_type</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">split_df</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>list&lt;tibble[,8]&gt; [1:2] 
+$ : tibble [17 × 8] (S3: tbl_df/tbl/data.frame)
+$ : tibble [14 × 8] (S3: tbl_df/tbl/data.frame)
+@ ptype: tibble [0 × 8] (S3: tbl_df/tbl/data.frame)</code></pre>
+</div>
+</div>
+</section><section id="factor-cleaning-and-final-dataframes" class="level2"><h2 class="anchored" data-anchor-id="factor-cleaning-and-final-dataframes">Factor cleaning and final dataframes</h2>
+<p>We can see that the <code>split_df</code> object is a list of 2 tibbles/dataframes. We can now operate on the individual dataframes and finalize the factor cleaning and assignment to make the data a bit tidier and analysis ready.</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">manufacture_df</span> <span class="op">&lt;-</span> <span class="va">split_df</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    tax_status <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+      <span class="va">type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"In bottles and cans"</span>, <span class="st">"In kegs"</span>, <span class="st">"In barrels and kegs"</span>,
+                  <span class="st">"Tax Determined, Premises Use"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Taxable"</span>,
+      <span class="va">type</span> <span class="op">==</span> <span class="st">"Sub Total Taxable"</span> <span class="op">~</span> <span class="st">"Sub Total Taxable"</span>,
+      <span class="va">type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"For export"</span>, <span class="st">"For vessels and aircraft"</span>, 
+                  <span class="st">"Consumed on brewery premises"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Tax Free"</span>,
+      <span class="va">type</span> <span class="op">==</span> <span class="st">"Sub Total Tax-Free"</span> <span class="op">~</span> <span class="st">"Sub Total Tax-Free"</span>,
+      <span class="va">type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Production"</span>, <span class="st">"Total Removals"</span>, 
+                  <span class="st">"Stocks On Hand end-of-month:"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Totals"</span>
+      <span class="op">)</span>,
+    tax_rate <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&lt;=</span> <span class="fl">2017</span>, <span class="st">"$7/$18 per barrel"</span>, <span class="st">"$3.50/$16 per barrel"</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">tax_status</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">data_type</span>, <span class="va">tax_status</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># clean up the material dataset</span>
+<span class="va">material_df</span> <span class="op">&lt;-</span> <span class="va">split_df</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    material_type <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+      <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"Malt|Corn|Rice|Barley|Wheat"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Grain Products"</span>,
+      <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"Sugar|Hops|Other"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Non-Grain Products"</span>,
+      <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"Total"</span><span class="op">)</span> <span class="op">~</span> <span class="va">type</span>
+    <span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">data_type</span>, <span class="va">material_type</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="print-the-dataframes" class="level3"><h3 class="anchored" data-anchor-id="print-the-dataframes">Print the dataframes</h3>
+<p>The manufacture dataframe now has the labels, factors, etc separated into nice columns, with the 4x columns for specific barrels produced.</p>
+<div class="cell">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">manufacture_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 10
+  data_type        tax_status    year month type  month_current month_prior_year
+  &lt;chr&gt;            &lt;chr&gt;        &lt;int&gt; &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+1 Barrels Produced Totals        2011     2 Prod…      14981472         15012331
+2 Barrels Produced Taxable       2011     2 In b…      11571819         11908922
+3 Barrels Produced Taxable       2011     2 In b…       1245125          1245143
+4 Barrels Produced Sub Total T…  2011     2 Sub …      12822933         13159332
+5 Barrels Produced Tax Free      2011     2 For …        264669           224066
+6 Barrels Produced Tax Free      2011     2 For …             0                0
+7 Barrels Produced Tax Free      2011     2 Cons…           886              913
+8 Barrels Produced Sub Total T…  2011     2 Sub …        265555           224979
+9 Barrels Produced Totals        2011     2 Tota…      13088488         13384311
+# … with 3 more variables: ytd_current &lt;dbl&gt;, ytd_prior_year &lt;dbl&gt;,
+#   tax_rate &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>The material dataframe now has the labels, factors, etc separated into nice columns, with the 4x columns for specific pounds of product used.</p>
+<div class="cell">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">material_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 14 × 9
+   data_type      material_type  year month type  month_current month_prior_year
+   &lt;chr&gt;          &lt;chr&gt;         &lt;int&gt; &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+ 1 Pounds of Mat… &lt;NA&gt;           2011     2 ""               NA               NA
+ 2 Pounds of Mat… Grain Produc…  2011     2 "Mal…     322480722        330304432
+ 3 Pounds of Mat… Grain Produc…  2011     2 "Cor…      58632672         56705162
+ 4 Pounds of Mat… Grain Produc…  2011     2 "Ric…     108112318         59701345
+ 5 Pounds of Mat… Grain Produc…  2011     2 "Bar…       4705175          3668374
+ 6 Pounds of Mat… Grain Produc…  2011     2 "Whe…       1210137          1409685
+ 7 Pounds of Mat… Total Grain …  2011     2 "Tot…     495141024        451788998
+ 8 Pounds of Mat… &lt;NA&gt;           2011     2 ""               NA               NA
+ 9 Pounds of Mat… Non-Grain Pr…  2011     2 "Sug…      73793509         47308358
+10 Pounds of Mat… Non-Grain Pr…  2011     2 "Hop…       6059066          4765924
+11 Pounds of Mat… Non-Grain Pr…  2011     2 "Hop…        296605           271405
+12 Pounds of Mat… Non-Grain Pr…  2011     2 "Oth…       7972930         10537742
+13 Pounds of Mat… Total Non-Gr…  2011     2 "Tot…      88122110         62883429
+14 Pounds of Mat… Total Used     2011     2 "Tot…     583263134        514672427
+# … with 2 more variables: ytd_current &lt;dbl&gt;, ytd_prior_year &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section><section id="finished-cleaning" class="level3"><h3 class="anchored" data-anchor-id="finished-cleaning">Finished Cleaning</h3>
+<p>We have now finished cleaning the manufacting and material dataframes! However, we did this all line-by-line without functions and would need to repeat this for the other 47 PDFs! Let’s convert ALL that code into a function that outputs the final dataframes.</p>
+</section></section></section><section id="use-a-function" class="level1"><h1>Use a function</h1>
+<div class="cell">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># create a function that works for most years</span>
+<span class="va">get_beer_tables</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span><span class="op">)</span> <span class="op">{</span>
+  
+  <span class="co"># read in the raw PDF</span>
+  <span class="va">raw_text</span> <span class="op">&lt;-</span> <span class="fu">pdftools</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/pdftools/reference/pdftools.html">pdf_text</a></span><span class="op">(</span><span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"pdfs/ttb_monthly_stats_{year}-{month}.pdf"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html">str_split</a></span><span class="op">(</span><span class="st">"\n"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="co">## Build Table</span>
+  <span class="co"># find start of table</span>
+  <span class="va">table_start</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which</a></span><span class="op">(</span><span class="va">raw_text</span>, <span class="st">"MANUFACTURE OF BEER"</span><span class="op">)</span>
+  <span class="co"># End of table (drop all the asterisks and the other descriptors)</span>
+  <span class="va">table_end</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_which</a></span><span class="op">(</span><span class="va">raw_text</span>, <span class="st">"Total Used"</span><span class="op">)</span>
+  <span class="co"># Trim the table to the start/end and drop whitespace at each line</span>
+  <span class="va">table_trimmed</span> <span class="op">&lt;-</span> <span class="va">raw_text</span><span class="op">[</span><span class="va">table_start</span><span class="op">:</span><span class="va">table_end</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_trim.html">str_trim</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">table_trimmed</span>
+  <span class="co">### Remove all the extra whitespace</span>
+  <span class="co"># Replace long spaces with a col break symbol</span>
+  <span class="va">squished_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">table_trimmed</span>, <span class="st">"\\s{2,}"</span>, <span class="st">"|"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="st">","</span><span class="op">)</span>
+  <span class="co">### Convert to tibble</span>
+  <span class="co"># Convert to tibble</span>
+  <span class="va">raw_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/enframe.html">enframe</a></span><span class="op">(</span><span class="va">squished_table</span><span class="op">)</span>
+  
+  <span class="co"># split the rows into their columns</span>
+  <span class="va">beer_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="va">raw_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span><span class="op">(</span><span class="va">value</span>,
+      into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"type"</span>, <span class="st">"month_current"</span>, <span class="st">"month_prior_year"</span>, <span class="st">"ytd_current"</span>, <span class="st">"ytd_prior_year"</span><span class="op">)</span>,
+      sep <span class="op">=</span> <span class="st">"\\|"</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_at</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">month_current</span><span class="op">:</span><span class="va">ytd_prior_year</span><span class="op">)</span>, <span class="va">as.double</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>, month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">month</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">type</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="co">### Proper Cleaning</span>
+  <span class="co"># ID the specific row/point to split the dataset at.</span>
+  <span class="va">slice_num</span> <span class="op">&lt;-</span> <span class="va">beer_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="co"># find a string that has MATERIALS USED or IN POUNDS</span>
+    <span class="co"># | means OR</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"MATERIALS USED|IN POUNDS"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>
+  <span class="co">#### Split dataframe</span>
+  <span class="co"># split data into materials vs barrels produced</span>
+  <span class="va">split_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="va">beer_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      data_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">name</span> <span class="op">&gt;=</span> <span class="va">slice_num</span>, <span class="st">"Pounds of Materials Used"</span>, <span class="st">"Barrels Produced"</span><span class="op">)</span>,
+      type <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">":"</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">data_type</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">-</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"IN POUNDS|MATERIALS USED|MANUFACTURE OF BEER|BARRELS"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">data_type</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="co">#### Factor cleaning and final dataframes</span>
+  <span class="co"># clean manufacture df</span>
+  <span class="va">manufacture_df</span> <span class="op">&lt;-</span> <span class="va">split_df</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      tax_status <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+        <span class="va">type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+          <span class="st">"In bottles and cans"</span>, <span class="st">"In kegs"</span>, <span class="st">"In barrels and kegs"</span>,
+          <span class="st">"Tax Determined, Premises Use"</span>
+        <span class="op">)</span> <span class="op">~</span> <span class="st">"Taxable"</span>,
+        <span class="va">type</span> <span class="op">==</span> <span class="st">"Sub Total Taxable"</span> <span class="op">~</span> <span class="st">"Sub Total Taxable"</span>,
+        <span class="va">type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+          <span class="st">"For export"</span>, <span class="st">"For vessels and aircraft"</span>,
+          <span class="st">"Consumed on brewery premises"</span>
+        <span class="op">)</span> <span class="op">~</span> <span class="st">"Tax Free"</span>,
+        <span class="va">type</span> <span class="op">==</span> <span class="st">"Sub Total Tax-Free"</span> <span class="op">~</span> <span class="st">"Sub Total Tax-Free"</span>,
+        <span class="va">type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+          <span class="st">"Production"</span>, <span class="st">"Total Removals"</span>,
+          <span class="st">"Stocks On Hand end-of-month:"</span>
+        <span class="op">)</span> <span class="op">~</span> <span class="st">"Totals"</span>
+      <span class="op">)</span>,
+      tax_rate <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&lt;=</span> <span class="fl">2017</span>, <span class="st">"$7/$18 per barrel"</span>, <span class="st">"$3.50/$16 per barrel"</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">tax_status</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">data_type</span>, <span class="va">tax_status</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="co"># clean up the material dataset</span>
+  <span class="va">material_df</span> <span class="op">&lt;-</span> <span class="va">split_df</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      material_type <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+        <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"Malt|Corn|Rice|Barley|Wheat"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Grain Products"</span>,
+        <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"Sugar|Hops|Other"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Non-Grain Products"</span>,
+        <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">type</span>, <span class="st">"Total"</span><span class="op">)</span> <span class="op">~</span> <span class="va">type</span>
+      <span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">data_type</span>, <span class="va">material_type</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="co"># output a list of both dfs</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">manufacture_df</span>, <span class="va">material_df</span><span class="op">)</span>
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Really the only code we have changed is we added a <code>glue</code> call to add the year, month to which PDF to read in, and we have the output as a list of both dataframes. Let’s test our function!</p>
+<div class="cell">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">get_beer_tables</span><span class="op">(</span><span class="fl">2011</span>, <span class="st">"01"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 9 × 10
+  data_type        tax_status    year month type  month_current month_prior_year
+  &lt;chr&gt;            &lt;chr&gt;        &lt;int&gt; &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+1 Barrels Produced Totals        2011     1 Prod…      14981472         15012331
+2 Barrels Produced Taxable       2011     1 In b…      11571819         11908922
+3 Barrels Produced Taxable       2011     1 In b…       1245125          1245143
+4 Barrels Produced Sub Total T…  2011     1 Sub …      12822933         13159332
+5 Barrels Produced Tax Free      2011     1 For …        264669           224066
+6 Barrels Produced Tax Free      2011     1 For …             0                0
+7 Barrels Produced Tax Free      2011     1 Cons…           886              913
+8 Barrels Produced Sub Total T…  2011     1 Sub …        265555           224979
+9 Barrels Produced Totals        2011     1 Tota…      13088488         13384311
+# … with 3 more variables: ytd_current &lt;dbl&gt;, ytd_prior_year &lt;dbl&gt;,
+#   tax_rate &lt;chr&gt;
+
+[[2]]
+# A tibble: 14 × 9
+   data_type      material_type  year month type  month_current month_prior_year
+   &lt;chr&gt;          &lt;chr&gt;         &lt;int&gt; &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+ 1 Pounds of Mat… &lt;NA&gt;           2011     1 ""               NA               NA
+ 2 Pounds of Mat… Grain Produc…  2011     1 "Mal…     322480722        330304432
+ 3 Pounds of Mat… Grain Produc…  2011     1 "Cor…      58632672         56705162
+ 4 Pounds of Mat… Grain Produc…  2011     1 "Ric…     108112318         59701345
+ 5 Pounds of Mat… Grain Produc…  2011     1 "Bar…       4705175          3668374
+ 6 Pounds of Mat… Grain Produc…  2011     1 "Whe…       1210137          1409685
+ 7 Pounds of Mat… Total Grain …  2011     1 "Tot…     495141024        451788998
+ 8 Pounds of Mat… &lt;NA&gt;           2011     1 ""               NA               NA
+ 9 Pounds of Mat… Non-Grain Pr…  2011     1 "Sug…      73793509         47308358
+10 Pounds of Mat… Non-Grain Pr…  2011     1 "Hop…       6059066          4765924
+11 Pounds of Mat… Non-Grain Pr…  2011     1 "Hop…        296605           271405
+12 Pounds of Mat… Non-Grain Pr…  2011     1 "Oth…       7972930         10537742
+13 Pounds of Mat… Total Non-Gr…  2011     1 "Tot…      88122110         62883429
+14 Pounds of Mat… Total Used     2011     1 "Tot…     583263134        514672427
+# … with 2 more variables: ytd_current &lt;dbl&gt;, ytd_prior_year &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Boom! Function is working for our example, let’s try it out with more than 1 input via <code>purrr</code>!</p>
+</section><section id="purrr---iteration-without-repetition" class="level1"><h1>
+<code>purrr</code> - iteration without repetition</h1>
+<p>We’ll be using <code><a href="https://purrr.tidyverse.org/reference/map2.html">pmap()</a></code> to apply our function multiple times, where <code>pmap</code> can take any number of inputs. For example if we call <code>get_beer_tables()</code> via <code>pmap</code>, we can get our tables for that 1 year/month combo!</p>
+<div class="cell">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Quick test of purrr</span>
+<span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">pmap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">2011</span>, <span class="st">"02"</span><span class="op">)</span>, <span class="va">get_beer_tables</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[[1]][[1]]
+# A tibble: 9 × 10
+  data_type        tax_status    year month type  month_current month_prior_year
+  &lt;chr&gt;            &lt;chr&gt;        &lt;int&gt; &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+1 Barrels Produced Totals        2011     2 Prod…      14350832         14297845
+2 Barrels Produced Taxable       2011     2 In b…      11509264         11847648
+3 Barrels Produced Taxable       2011     2 In b…       1234147          1308677
+4 Barrels Produced Sub Total T…  2011     2 Sub …      12749447         13161061
+5 Barrels Produced Tax Free      2011     2 For …        279150           263721
+6 Barrels Produced Tax Free      2011     2 For …             0                0
+7 Barrels Produced Tax Free      2011     2 Cons…           942              719
+8 Barrels Produced Sub Total T…  2011     2 Sub …        280092           264440
+9 Barrels Produced Totals        2011     2 Tota…      13029539         13425501
+# … with 3 more variables: ytd_current &lt;dbl&gt;, ytd_prior_year &lt;dbl&gt;,
+#   tax_rate &lt;chr&gt;
+
+[[1]][[2]]
+# A tibble: 14 × 9
+   data_type      material_type  year month type  month_current month_prior_year
+   &lt;chr&gt;          &lt;chr&gt;         &lt;int&gt; &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+ 1 Pounds of Mat… &lt;NA&gt;           2011     2 ""               NA               NA
+ 2 Pounds of Mat… Grain Produc…  2011     2 "Mal…     307076591        305543380
+ 3 Pounds of Mat… Grain Produc…  2011     2 "Cor…      53981943         54486996
+ 4 Pounds of Mat… Grain Produc…  2011     2 "Ric…      54287863         55198940
+ 5 Pounds of Mat… Grain Produc…  2011     2 "Bar…       4322047          3726630
+ 6 Pounds of Mat… Grain Produc…  2011     2 "Whe…        955671          1683401
+ 7 Pounds of Mat… Total Grain …  2011     2 "Tot…     420624115        420639347
+ 8 Pounds of Mat… &lt;NA&gt;           2011     2 ""               NA               NA
+ 9 Pounds of Mat… Non-Grain Pr…  2011     2 "Sug…      63374850         46718854
+10 Pounds of Mat… Non-Grain Pr…  2011     2 "Hop…       7617974          4899463
+11 Pounds of Mat… Non-Grain Pr…  2011     2 "Hop…        275963           268589
+12 Pounds of Mat… Non-Grain Pr…  2011     2 "Oth…       7997916          9022834
+13 Pounds of Mat… Total Non-Gr…  2011     2 "Tot…      79266703         60909740
+14 Pounds of Mat… Total Used     2011     2 "Tot…     499890818        481549087
+# … with 2 more variables: ytd_current &lt;dbl&gt;, ytd_prior_year &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>However our goal is all the inputs at once! We can create a vector of the month inputs as character strings, and then use <code><a href="https://tidyr.tidyverse.org/reference/expand.html">tidyr::crossing()</a></code> to output all the possible combinations of year + month as a dataframe. Notice two columns, year and month with a length of 48 - equal to all of our PDFs!</p>
+<div class="cell">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># add the month_num as vector</span>
+<span class="va">month_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>, <span class="st">"06"</span>, <span class="st">"07"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span>
+<span class="co"># use crossing to generate all combos for the data </span>
+<span class="co"># 2010 is missing, but as the data has prior year data we can theoretically</span>
+<span class="co"># add it back in after the fact</span>
+<span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html">crossing</a></span><span class="op">(</span>
+  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2011</span><span class="op">:</span><span class="fl">2014</span><span class="op">)</span>, 
+  month <span class="op">=</span> <span class="va">month_num</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 48
+Columns: 2
+$ year  &lt;int&gt; 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2011…
+$ month &lt;chr&gt; "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"…</code></pre>
+</div>
+</div>
+<section id="all-possible-combos" class="level2"><h2 class="anchored" data-anchor-id="all-possible-combos">All possible combos</h2>
+<p>We can use <code><a href="https://tidyr.tidyverse.org/reference/expand.html">tidyr::crossing()</a></code> again to generate the possible inputs and create the output dataframes as list column of two dataframes. Running this takes only about 2 seconds across the 48 PDFs! The output is not very exciting as the data is simply the year &amp; month columns, plus a list-column called data. Let’s get the final outputs!</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-24_511bfe226f9f7f60e236e6de677d27ae">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># add the month_num as vector</span>
+<span class="va">month_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"03"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>, <span class="st">"06"</span>, <span class="st">"07"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span><span class="op">)</span>
+<span class="co"># use crossing to generate all combos for the data </span>
+<span class="va">df_2011_2014</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html">crossing</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2011</span><span class="op">:</span><span class="fl">2014</span><span class="op">)</span>, 
+                         month <span class="op">=</span> <span class="va">month_num</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">pmap</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">get_beer_tables</span><span class="op">)</span><span class="op">)</span>
+<span class="va">df_2011_2014</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 48 × 3
+    year month data      
+   &lt;int&gt; &lt;chr&gt; &lt;list&gt;    
+ 1  2011 01    &lt;list [2]&gt;
+ 2  2011 02    &lt;list [2]&gt;
+ 3  2011 03    &lt;list [2]&gt;
+ 4  2011 04    &lt;list [2]&gt;
+ 5  2011 05    &lt;list [2]&gt;
+ 6  2011 06    &lt;list [2]&gt;
+ 7  2011 07    &lt;list [2]&gt;
+ 8  2011 08    &lt;list [2]&gt;
+ 9  2011 09    &lt;list [2]&gt;
+10  2011 10    &lt;list [2]&gt;
+# … with 38 more rows</code></pre>
+</div>
+</div>
+</section><section id="final-output" class="level2"><h2 class="anchored" data-anchor-id="final-output">Final output</h2>
+<p>We can now get just the output data, drop the other columns. We’re still working with list-columns, so let’s get to the <code>manufacture_df</code> and <code>material_df</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">final_output</span> <span class="op">&lt;-</span> <span class="va">df_2011_2014</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="co"># grab the data into respective columns</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>manufacture_data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>, <span class="fl">1</span><span class="op">)</span>,
+         material_data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">manufacture_data</span>, <span class="va">material_data</span><span class="op">)</span>
+<span class="va">final_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 48 × 2
+   manufacture_data  material_data    
+   &lt;list&gt;            &lt;list&gt;           
+ 1 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+ 2 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+ 3 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+ 4 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+ 5 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+ 6 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+ 7 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+ 8 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+ 9 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+10 &lt;tibble [9 × 10]&gt; &lt;tibble [14 × 9]&gt;
+# … with 38 more rows</code></pre>
+</div>
+</div>
+<p>The manufacture dataframe can be combined as below.</p>
+<div class="cell">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Grab just the manufacture data</span>
+<span class="va">manufacture_df</span> <span class="op">&lt;-</span> <span class="va">final_output</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">manufacture_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">manufacture_data</span><span class="op">)</span>
+<span class="co"># Grab just the manufacture data</span>
+<span class="va">material_df</span> <span class="op">&lt;-</span> <span class="va">final_output</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">material_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">material_data</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And now we can look at the outputs!</p>
+<section id="manufacture-dataset" class="level3"><h3 class="anchored" data-anchor-id="manufacture-dataset">Manufacture dataset</h3>
+<div class="cell">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">manufacture_df</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 432
+Columns: 10
+$ data_type        &lt;chr&gt; "Barrels Produced", "Barrels Produced", "Barrels Prod…
+$ tax_status       &lt;chr&gt; "Totals", "Taxable", "Taxable", "Sub Total Taxable", …
+$ year             &lt;int&gt; 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2011,…
+$ month            &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,…
+$ type             &lt;chr&gt; "Production", "In bottles and cans", "In barrels and …
+$ month_current    &lt;dbl&gt; 14981472, 11571819, 1245125, 12822933, 264669, 0, 886…
+$ month_prior_year &lt;dbl&gt; 15012331, 11908922, 1245143, 13159332, 224066, 0, 913…
+$ ytd_current      &lt;dbl&gt; 14981472, 11571819, 1245125, 12822933, 264669, 0, 886…
+$ ytd_prior_year   &lt;dbl&gt; 15012331, 11908922, 1245143, 13159332, 224066, 0, 913…
+$ tax_rate         &lt;chr&gt; "$7/$18 per barrel", "$7/$18 per barrel", "$7/$18 per…</code></pre>
+</div>
+</div>
+</section><section id="material-dataset" class="level3"><h3 class="anchored" data-anchor-id="material-dataset">Material dataset</h3>
+<div class="cell">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">material_df</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 637
+Columns: 9
+$ data_type        &lt;chr&gt; "Pounds of Materials Used", "Pounds of Materials Used…
+$ material_type    &lt;chr&gt; NA, "Grain Products", "Grain Products", "Grain Produc…
+$ year             &lt;int&gt; 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2011, 2011,…
+$ month            &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2,…
+$ type             &lt;chr&gt; "", "Malt and malt products", "Corn and corn products…
+$ month_current    &lt;dbl&gt; NA, 322480722, 58632672, 108112318, 4705175, 1210137,…
+$ month_prior_year &lt;dbl&gt; NA, 330304432, 56705162, 59701345, 3668374, 1409685, …
+$ ytd_current      &lt;dbl&gt; NA, 322480722, 58632672, 108112318, 4705175, 1210137,…
+$ ytd_prior_year   &lt;dbl&gt; NA, 330304432, 56705162, 59701345, 3668374, 1409685, …</code></pre>
+</div>
+</div>
+</section></section></section><section id="do-it-all-in-6-lines-of-code" class="level1"><h1>Do it all in 6 Lines of Code!</h1>
+<p>Now all of that could have been done in about 6 lines of <code>tidyverse</code> code since we created a function.</p>
+<div class="cell">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># Use crossing to generate all 48 combos for the data </span>
+<span class="co"># Use purrr to read in, clean, and output the 96 tables from the 48 PDFs</span>
+<span class="va">final_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html">crossing</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2011</span><span class="op">:</span><span class="fl">2014</span><span class="op">)</span>, month <span class="op">=</span> <span class="va">month_num</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">pmap</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">get_beer_tables</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>manufacture_data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>, <span class="fl">1</span><span class="op">)</span>, material_data <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">data</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">manufacture_data</span>, <span class="va">material_data</span><span class="op">)</span>
+<span class="co"># Grab just the manufacture data</span>
+<span class="va">manufacture_df</span> <span class="op">&lt;-</span> <span class="va">final_output</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">manufacture_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">manufacture_data</span><span class="op">)</span>
+<span class="co"># Grab just the manufacture data</span>
+<span class="va">material_df</span> <span class="op">&lt;-</span> <span class="va">final_output</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">material_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="va">material_data</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-28
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ dplyr       * 1.0.8   2022-02-08 [1] CRAN (R 4.2.0)
+ forcats     * 0.5.1   2021-01-27 [1] CRAN (R 4.2.0)
+ ggplot2     * 3.3.5   2021-06-25 [1] CRAN (R 4.2.0)
+ pdftools    * 3.1.1   2022-02-25 [1] CRAN (R 4.2.0)
+ purrr       * 0.3.4   2020-04-17 [1] CRAN (R 4.2.0)
+ readr       * 2.1.2   2022-01-30 [1] CRAN (R 4.2.0)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.2.0)
+ stringr     * 1.4.0   2019-02-10 [1] CRAN (R 4.2.0)
+ tibble      * 3.1.6   2021-11-07 [1] CRAN (R 4.2.0)
+ tidyr       * 1.2.0   2022-02-01 [1] CRAN (R 4.2.0)
+ tidyverse   * 1.3.1   2021-04-15 [1] CRAN (R 4.2.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

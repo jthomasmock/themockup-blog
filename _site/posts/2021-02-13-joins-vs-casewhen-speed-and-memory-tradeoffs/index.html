@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="Spoiler - joins are fastest, and can be easy to prep!">
+<title>The MockUp - Joins vs case whens - speed and memory tradeoffs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Joins vs case whens - speed and memory tradeoffs">
+<meta property="og:description" content="Spoiler - joins are fastest, and can be easy to prep!
+">
+<meta property="og:image" content="https://themockup.blog/posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/preview.jpeg">
+<meta property="og:site-name" content="The MockUp">
+<meta name="twitter:title" content="The MockUp - Joins vs case whens - speed and memory tradeoffs">
+<meta name="twitter:description" content="Spoiler - joins are fastest, and can be easy to prep!
+">
+<meta name="twitter:image" content="https://themockup.blog/posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/themockup.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Joins vs case whens - speed and memory tradeoffs</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">tidyverse</div>
+                <div class="quarto-category">data cleaning</div>
+                <div class="quarto-category">joins</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>Spoiler - joins are fastest, and can be easy to prep!</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">02-13-2021</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li>
+<a href="#matching-names" id="toc-matching-names" class="nav-link active" data-scroll-target="#matching-names">Matching names</a>
+  <ul class="collapse">
+<li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data">Example Data</a></li>
+  <li>
+<a href="#dplyrcase_when-solution" id="toc-dplyrcase_when-solution" class="nav-link" data-scroll-target="#dplyrcase_when-solution"><code>dplyr::case_when()</code> solution</a>
+  <ul class="collapse">
+<li><a href="#step-1-datapasta" id="toc-step-1-datapasta" class="nav-link" data-scroll-target="#step-1-datapasta">Step 1: <code>datapasta</code></a></li>
+  <li><a href="#step-2-multiple-line-selection-in-rstudio" id="toc-step-2-multiple-line-selection-in-rstudio" class="nav-link" data-scroll-target="#step-2-multiple-line-selection-in-rstudio">Step 2: Multiple line selection in RStudio</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#a-join-solution" id="toc-a-join-solution" class="nav-link" data-scroll-target="#a-join-solution">A join solution</a>
+  <ul class="collapse">
+<li><a href="#tribble" id="toc-tribble" class="nav-link" data-scroll-target="#tribble"><code>tribble</code></a></li>
+  </ul>
+</li>
+  <li><a href="#data.tablefcase" id="toc-data.tablefcase" class="nav-link" data-scroll-target="#data.tablefcase"><code>data.table::fcase</code></a></li>
+  </ul>
+</li>
+  <li><a href="#speed-and-memory" id="toc-speed-and-memory" class="nav-link" data-scroll-target="#speed-and-memory">Speed and Memory</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="matching-names" class="level1"><h1>Matching names</h1>
+<p>There are many times where you may have a reference dataset that has some type of short-code, abbreviations, nicknames, or even misspellings. In this situation we want to create a new column or even overwrite the existing column with the correct spelling, the full name, etc.</p>
+<p>While there isn’t a <strong>wrong</strong> way to do this, I’ve made mistakes in the past of making things more complicated for myself during data cleaning/prep steps. Most importantly to me in my data cleaning steps are “speed of thought” - aka how long it takes me to type out or reason through, but there are also tradeoffs in memory usage and in execution speed.</p>
+<p>I’m going to step through some strategies, honed by years of TidyTuesday data cleaning and prep!</p>
+<hr>
+<p>In general I want to preface all these examples with the fact that this exercise is easily translatable to various <code>join</code> options. Joins are great, but there are situations where the logicals aren’t simple matches/index (like <code>x == "val"</code>) but rather more complex queries (like <code>x &gt; 5 &amp; var %in% c("val", "val2")</code>), but I’m going to live within the constraints of my example use case. Also note that joins could join on more than one key or add as many variables as needed rather than just one, so there’s additional complexity possible here.</p>
+<hr>
+<p>To avoid burying the lede, joins are by far the fastest and most memory-efficient method if you can fit your problem to that solution, <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">data.table::fcase()</a></code> provides a easy to use and remarkably fast/memory-efficient intermediate method that works in base R, <code>data.tables</code> or <code>dplyr</code>, and <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">dplyr::case_when()</a></code> is the slowest/most-memory hungry for in-memory cases, BUT is probably fast enough for relatively small data (&lt; 1,000,000 rows) and is the option that allows pushing compute into a remote backend via <code>dbplyr</code>/<code>sparklyr</code>.</p>
+<hr>
+<section id="example-data" class="level2"><h2 class="anchored" data-anchor-id="example-data">Example Data</h2>
+<p>We’re going to simulate a dataset with NFL team abbreviations and a “stat” that is relatively in scope with something like EPA, but again this is all simulated data.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+
+<span class="co"># relatively nice sized dataset (100,000 rows)</span>
+<span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fl">100000</span>
+
+<span class="co"># Get example team names from espn</span>
+<span class="va">all_teams</span> <span class="op">&lt;-</span> <span class="fu">espnscrapeR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/espnscrapeR/man/get_nfl_teams.html">get_nfl_teams</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Getting NFL teams!</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># set a reproducible seed (h/t to Anthony's wife's new $4 luggage...)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">829</span><span class="op">)</span>
+
+<span class="va">ex_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  team <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">all_teams</span><span class="op">$</span><span class="va">team_abb</span>, size <span class="op">=</span> <span class="va">sample_size</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+  stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">sample_size</span>, mean <span class="op">=</span> <span class="fl">0.1</span>, sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="va">ex_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 100,000 × 2
+   team     stat
+   &lt;chr&gt;   &lt;dbl&gt;
+ 1 HOU    0.0593
+ 2 JAX   -0.0534
+ 3 DEN   -0.0488
+ 4 NO    -0.0527
+ 5 CAR    0.111 
+ 6 CHI    0.132 
+ 7 CAR    0.0481
+ 8 IND    0.412 
+ 9 HOU    0.0425
+10 ARI    0.200 
+# … with 99,990 more rows</code></pre>
+</div>
+</div>
+</section><section id="dplyrcase_when-solution" class="level2"><h2 class="anchored" data-anchor-id="dplyrcase_when-solution">
+<code>dplyr::case_when()</code> solution</h2>
+<p>There’s a fantastic function in the <code>dplyr</code> package called <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code>.</p>
+<p><a href="https://dplyr.tidyverse.org/reference/case_when.html"><code>case_when</code></a>:</p>
+<blockquote class="blockquote">
+<p>This function allows you to vectorise multiple if_else()</p>
+</blockquote>
+<p>In essence, this provides the ability to provide many logical statements to generate a specific outcome. You can read more about the syntax via: <code>?dplyr::case_when()</code> in the R console or the <a href="https://dplyr.tidyverse.org/reference/case_when.html">docs</a>. This functions works on vectors as well as in mutations inside data.frames/tibbles/data.tables. Lastly, it can also be translated into SQL automatically via <code>dbplyr</code> in situations where you don’t want to bring all the data into memory.</p>
+<p><code>case_when</code> is very readable to me, and feels better than a whole bundle of nested <code>ifelse</code>/<code>if_else</code> statements.</p>
+<hr>
+<p>A quick <code>reprex</code> of <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> usage.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">ex_car</span> <span class="op">&lt;-</span> <span class="va">mpg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">cyl</span>, <span class="va">cty</span>, <span class="va">hwy</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_sample</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
+
+<span class="va">ex_car</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    cyl_character <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+      <span class="co"># if logical statement is TRUE then assign new value</span>
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">4</span> <span class="op">~</span> <span class="st">"Four"</span>,
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">~</span> <span class="st">"Six"</span>,
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">8</span> <span class="op">~</span> <span class="st">"Eight"</span>,
+      <span class="co"># This last statement means, if none of the above conditions are met</span>
+      <span class="co"># then return a NA value, note that case_when is type-safe</span>
+      <span class="co"># so you'll want to use the various NA_??? for the type of output</span>
+      <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span>
+    <span class="op">)</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 100 × 5
+   model                 cyl   cty   hwy cyl_character
+   &lt;chr&gt;               &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;        
+ 1 a4                      4    20    31 Four         
+ 2 malibu                  4    22    30 Four         
+ 3 ram 1500 pickup 4wd     8     9    12 Eight        
+ 4 jetta                   5    21    29 &lt;NA&gt;         
+ 5 passat                  4    18    29 Four         
+ 6 camry solara            6    18    26 Six          
+ 7 f150 pickup 4wd         8    13    16 Eight        
+ 8 a4 quattro              6    17    25 Six          
+ 9 grand cherokee 4wd      8    14    19 Eight        
+10 jetta                   4    22    29 Four         
+# … with 90 more rows</code></pre>
+</div>
+</div>
+<hr>
+<p>Now that we understand the syntax a bit better, let’s try it on our dataset of interest! Remember, we want to take our team abbreviations and add the team names into the dataset. So we’ll need to provide a logical match of each <code>team</code> to the correct abbreviation and output the corresponding full name.</p>
+<p>This works out very well and we got all the names in the right spot, and with the basic timing via <code>tictoc</code> we can see it was still fast. However, there’s a LOT of typing, and more importantly a lot of repetitive typing to get this done.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/collectivemedia/tictoc">tictoc</a></span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">ex_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      team_name <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ARI"</span> <span class="op">~</span> <span class="st">"Cardinals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ATL"</span> <span class="op">~</span> <span class="st">"Falcons"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BAL"</span> <span class="op">~</span> <span class="st">"Ravens"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BUF"</span> <span class="op">~</span> <span class="st">"Bills"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CAR"</span> <span class="op">~</span> <span class="st">"Panthers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CHI"</span> <span class="op">~</span> <span class="st">"Bears"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CIN"</span> <span class="op">~</span> <span class="st">"Bengals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CLE"</span> <span class="op">~</span> <span class="st">"Browns"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DAL"</span> <span class="op">~</span> <span class="st">"Cowboys"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DEN"</span> <span class="op">~</span> <span class="st">"Broncos"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DET"</span> <span class="op">~</span> <span class="st">"Lions"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"GB"</span> <span class="op">~</span> <span class="st">"Packers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"HOU"</span> <span class="op">~</span> <span class="st">"Texans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"IND"</span> <span class="op">~</span> <span class="st">"Colts"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"JAX"</span> <span class="op">~</span> <span class="st">"Jaguars"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"KC"</span> <span class="op">~</span> <span class="st">"Chiefs"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LV"</span> <span class="op">~</span> <span class="st">"Raiders"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAC"</span> <span class="op">~</span> <span class="st">"Chargers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAR"</span> <span class="op">~</span> <span class="st">"Rams"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIA"</span> <span class="op">~</span> <span class="st">"Dolphins"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIN"</span> <span class="op">~</span> <span class="st">"Vikings"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NE"</span> <span class="op">~</span> <span class="st">"Patriots"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NO"</span> <span class="op">~</span> <span class="st">"Saints"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYG"</span> <span class="op">~</span> <span class="st">"Giants"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYJ"</span> <span class="op">~</span> <span class="st">"Jets"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PHI"</span> <span class="op">~</span> <span class="st">"Eagles"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PIT"</span> <span class="op">~</span> <span class="st">"Steelers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SF"</span> <span class="op">~</span> <span class="st">"49ers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SEA"</span> <span class="op">~</span> <span class="st">"Seahawks"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TB"</span> <span class="op">~</span> <span class="st">"Buccaneers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TEN"</span> <span class="op">~</span> <span class="st">"Titans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"WSH"</span> <span class="op">~</span> <span class="cn">NA_character_</span>,
+        <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span>
+      <span class="op">)</span>
+    <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 100,000 × 3
+   team     stat team_name
+   &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;    
+ 1 HOU    0.0593 Texans   
+ 2 JAX   -0.0534 Jaguars  
+ 3 DEN   -0.0488 Broncos  
+ 4 NO    -0.0527 Saints   
+ 5 CAR    0.111  Panthers 
+ 6 CHI    0.132  Bears    
+ 7 CAR    0.0481 Panthers 
+ 8 IND    0.412  Colts    
+ 9 HOU    0.0425 Texans   
+10 ARI    0.200  Cardinals
+# … with 99,990 more rows</code></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html">toc</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.082 sec elapsed</code></pre>
+</div>
+</div>
+<p>We can use a few tricks in RStudio to make this easier!</p>
+<p>We’ll use “multiple cursors” in RStudio and combine that with the amazing <a href="https://github.com/MilesMcBain/datapasta"><code>{datapasta}</code></a> package from Miles McBain.</p>
+<blockquote class="blockquote">
+<p><code>datapasta</code> is about reducing resistance associated with copying and pasting data to and from R. It is a response to the realisation that I often found myself using intermediate programs like Sublime to munge text into suitable formats. Addins and functions in <code>datapasta</code> support a wide variety of input and output situations, so it (probably) “just works”. Hopefully tools in this package will remove such intermediate steps and associated frustrations from our data slinging workflows.</p>
+</blockquote>
+<div class="aside">
+<p><code>datapasta</code> is an absolute life saver for converting objects like vectors/dataframes/clipboard contents and turning them into editable formats in a script.</p>
+</div>
+<section id="step-1-datapasta" class="level3"><h3 class="anchored" data-anchor-id="step-1-datapasta">Step 1: <code>datapasta</code>
+</h3>
+<p>We’ll first create a character vector via <code>datapasta</code>, using the below code:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">ex_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">team</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">team</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu">datapasta</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/datapasta/man/vector_paste_vertical.html">vector_paste_vertical</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I’ve shown a video of me stepping through this code since there are a lot of different options for <code>datapasta</code> and its outputs.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NH3anI8fPjA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<p>This gives us a nice starting point of all the vector items and we are ready to work with them in our script.</p>
+</section><section id="step-2-multiple-line-selection-in-rstudio" class="level3"><h3 class="anchored" data-anchor-id="step-2-multiple-line-selection-in-rstudio">Step 2: Multiple line selection in RStudio</h3>
+<p>I’ve done this as a video as it’s fairly complex to “write about”, but very easy to show! The video describes the process of enabling multiple selections in RStudio.</p>
+<p>Note that the enabling multi-line selection is done in RStudio via:</p>
+<ul>
+<li>Opt key + Left Mouse Button drag on Mac<br>
+</li>
+<li>Alt key + Left Mouse Button drag on Windows</li>
+</ul>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9OgYTCzPqdE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<p>Once we have this “skeleton” quickly created we can then add the individual “match outputs”, like “Cardinals” for “ARI”, “Falcons” for “ATL”, etc, but we’ve saved ourself the need to type out a lot of the repeated “skeleton” of the <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code>.</p>
+</section></section><section id="a-join-solution" class="level2"><h2 class="anchored" data-anchor-id="a-join-solution">A join solution</h2>
+<p>While the above method is pretty quick to create and understand, we still had to type quite a bit (which is decreased if you use multiple cursors), and in many situations a true join is more efficient in terms of typing, “speed of thought”, and execution time.</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">team_join</span> <span class="op">&lt;-</span> <span class="va">all_teams</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">team_name</span>, team <span class="op">=</span> <span class="va">team_abb</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">ex_df</span>, <span class="va">team_join</span>, by <span class="op">=</span> <span class="st">"team"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 100,000 × 3
+   team     stat team_name
+   &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;    
+ 1 HOU    0.0593 Texans   
+ 2 JAX   -0.0534 Jaguars  
+ 3 DEN   -0.0488 Broncos  
+ 4 NO    -0.0527 Saints   
+ 5 CAR    0.111  Panthers 
+ 6 CHI    0.132  Bears    
+ 7 CAR    0.0481 Panthers 
+ 8 IND    0.412  Colts    
+ 9 HOU    0.0425 Texans   
+10 ARI    0.200  Cardinals
+# … with 99,990 more rows</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html">toc</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.012 sec elapsed</code></pre>
+</div>
+</div>
+<p>Now you may say, well of course I could just use a join if I have a perfect dataset, what do I do with data cleaning?! I would say that a while ago this was a revelation as I typically only would move to key-value pairs + joins when it was obvious, and sometimes I’d end up using a case when solution when a join was easily possible.</p>
+<p>So, keep in mind that we can often “create” a joining dataset and use it pretty easily!</p>
+<section id="tribble" class="level3"><h3 class="anchored" data-anchor-id="tribble"><code>tribble</code></h3>
+<p>We can use <a href="https://tibble.tidyverse.org/reference/tribble.html"><code>tribble</code></a> to use almost the <em>exact</em> same setup as the <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code>. We can even use the same multiple cursor workflow to take alter our existing <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> code and turn it into the below <code>tribble</code> setup.</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span>
+  <span class="op">~</span><span class="va">team</span>, <span class="op">~</span><span class="va">team_name</span>,
+  <span class="st">"ARI"</span>, <span class="st">"Cardinals"</span>,
+  <span class="st">"ATL"</span>, <span class="st">"Falcons"</span>,
+  <span class="st">"BAL"</span>, <span class="st">"Ravens"</span>,
+  <span class="st">"BUF"</span>, <span class="st">"Bills"</span>,
+  <span class="st">"CAR"</span>, <span class="st">"Panthers"</span>,
+  <span class="st">"CHI"</span>, <span class="st">"Bears"</span>,
+  <span class="st">"CIN"</span>, <span class="st">"Bengals"</span>,
+  <span class="st">"CLE"</span>, <span class="st">"Browns"</span>,
+  <span class="st">"DAL"</span>, <span class="st">"Cowboys"</span>,
+  <span class="st">"DEN"</span>, <span class="st">"Broncos"</span>,
+  <span class="st">"DET"</span>, <span class="st">"Lions"</span>,
+  <span class="st">"GB"</span>, <span class="st">"Packers"</span>,
+  <span class="st">"HOU"</span>, <span class="st">"Texans"</span>,
+  <span class="st">"IND"</span>, <span class="st">"Colts"</span>,
+  <span class="st">"JAX"</span>, <span class="st">"Jaguars"</span>,
+  <span class="st">"KC"</span>, <span class="st">"Chiefs"</span>,
+  <span class="st">"LV"</span>, <span class="st">"Raiders"</span>,
+  <span class="st">"LAC"</span>, <span class="st">"Chargers"</span>,
+  <span class="st">"LAR"</span>, <span class="st">"Rams"</span>,
+  <span class="st">"MIA"</span>, <span class="st">"Dolphins"</span>,
+  <span class="st">"MIN"</span>, <span class="st">"Vikings"</span>,
+  <span class="st">"NE"</span>, <span class="st">"Patriots"</span>,
+  <span class="st">"NO"</span>, <span class="st">"Saints"</span>,
+  <span class="st">"NYG"</span>, <span class="st">"Giants"</span>,
+  <span class="st">"NYJ"</span>, <span class="st">"Jets"</span>,
+  <span class="st">"PHI"</span>, <span class="st">"Eagles"</span>,
+  <span class="st">"PIT"</span>, <span class="st">"Steelers"</span>,
+  <span class="st">"SF"</span>, <span class="st">"49ers"</span>,
+  <span class="st">"SEA"</span>, <span class="st">"Seahawks"</span>,
+  <span class="st">"TB"</span>, <span class="st">"Buccaneers"</span>,
+  <span class="st">"TEN"</span>, <span class="st">"Titans"</span>,
+  <span class="st">"WSH"</span>, <span class="cn">NA_character_</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 32 × 2
+   team  team_name
+   &lt;chr&gt; &lt;chr&gt;    
+ 1 ARI   Cardinals
+ 2 ATL   Falcons  
+ 3 BAL   Ravens   
+ 4 BUF   Bills    
+ 5 CAR   Panthers 
+ 6 CHI   Bears    
+ 7 CIN   Bengals  
+ 8 CLE   Browns   
+ 9 DAL   Cowboys  
+10 DEN   Broncos  
+# … with 22 more rows</code></pre>
+</div>
+</div>
+<p>You could also just create a more traditional <code>data.frame</code>/<code>tibble</code>, and do the same thing without having to “align” all the rows visually. I <em>do</em> find it a bit easier to look at it row-by-row in the <code>tribble</code> so that I can sanity check myself as I go, but up to the reader to decide!</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">ex_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">team</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">team</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    team_name <span class="op">=</span> 
+      <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+        <span class="st">"Cardinals"</span>, <span class="st">"Falcons"</span>, <span class="st">"Ravens"</span>, <span class="st">"Bills"</span>, <span class="st">"Panthers"</span>, <span class="st">"Bears"</span>, 
+        <span class="st">"Bengals"</span>, <span class="st">"Browns"</span>, <span class="st">"Cowboys"</span>, <span class="st">"Broncos"</span>, <span class="st">"Lions"</span>, <span class="st">"Packers"</span>, <span class="st">"Texans"</span>, 
+        <span class="st">"Colts"</span>, <span class="st">"Jaguars"</span>, <span class="st">"Chiefs"</span>, <span class="st">"Raiders"</span>, <span class="st">"Chargers"</span>, <span class="st">"Rams"</span>, <span class="st">"Dolphins"</span>, 
+        <span class="st">"Vikings"</span>, <span class="st">"Patriots"</span>, <span class="st">"Saints"</span>, <span class="st">"Giants"</span>, <span class="st">"Jets"</span>, <span class="st">"Eagles"</span>, <span class="st">"Steelers"</span>, 
+        <span class="st">"49ers"</span>, <span class="st">"Seahawks"</span>, <span class="st">"Buccaneers"</span>, <span class="st">"Titans"</span>, <span class="cn">NA_character_</span>
+    <span class="op">)</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 32 × 2
+   team  team_name
+   &lt;chr&gt; &lt;chr&gt;    
+ 1 ARI   Cardinals
+ 2 ATL   Falcons  
+ 3 BAL   Ravens   
+ 4 BUF   Bills    
+ 5 CAR   Panthers 
+ 6 CHI   Bears    
+ 7 CIN   Bengals  
+ 8 CLE   Browns   
+ 9 DAL   Cowboys  
+10 DEN   Broncos  
+# … with 22 more rows</code></pre>
+</div>
+</div>
+</section></section><section id="data.tablefcase" class="level2"><h2 class="anchored" data-anchor-id="data.tablefcase"><code>data.table::fcase</code></h2>
+<p>Now there is also an equivalent function to <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> in <code>data.table</code> called <a href="https://github.com/Rdatatable/data.table/issues/3823"><code>fcase</code></a> (short for fast case when) as of late 2019. Since it operates on any vector, you can use it as a drop in replacement for most in-memory cases of <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> in <code>dplyr</code>, or use it in native <code>data.table</code> objects. The expectation is that it will operate similarly in output but be more efficient with regards to memory/time.</p>
+<div class="aside">
+<p><code>data.table</code> actually provides all sorts of cool optimized functions like this that work anywhere, and you can generally assume a “f” in front of an existing base R function name for the “faster” version of it. See <code>fifelse</code>, <code>rleid</code>, <code>fsetdiff</code> for example.</p>
+</div>
+<p>Note, you do <em>not</em> have the ability to push the translation of <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase()</a></code> into SQL though, as <code>dbplyr</code> only has SQL-translation for <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code>.</p>
+<p>The syntax of <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> are <em>essentially</em> the same, but rather than a formula-syntax for assignment via <code>~</code>, it relies on another comma to assign by <strong>position</strong>.</p>
+<p>Compare the syntax below:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
+
+<span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    cyl_case_when <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+      <span class="co"># relies on `~` to indicate assign</span>
+      <span class="co"># read as if cyl is equal to 4 assign "Four"</span>
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">4</span> <span class="op">~</span> <span class="st">"Four"</span>,
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">~</span> <span class="st">"Six"</span>,
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">8</span> <span class="op">~</span> <span class="st">"Eight"</span>,
+      <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span>
+    <span class="op">)</span>,
+    cyl_fcase <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase</a></span><span class="op">(</span>
+      <span class="co"># relies on another `,` to assign by position</span>
+      <span class="co"># reas as if cyl is equal to 4, "Four"</span>
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">4</span>, <span class="st">"Four"</span>,
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span>, <span class="st">"Six"</span>,
+      <span class="va">cyl</span> <span class="op">==</span> <span class="fl">8</span>, <span class="st">"Eight"</span>,
+      <span class="cn">TRUE</span>, <span class="cn">NA_character_</span>
+    <span class="op">)</span>,
+    cyl_match <span class="op">=</span> <span class="va">cyl_case_when</span> <span class="op">==</span> <span class="va">cyl_fcase</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 32 × 5
+     mpg   cyl cyl_case_when cyl_fcase cyl_match
+   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;     &lt;lgl&gt;    
+ 1  21       6 Six           Six       TRUE     
+ 2  21       6 Six           Six       TRUE     
+ 3  22.8     4 Four          Four      TRUE     
+ 4  21.4     6 Six           Six       TRUE     
+ 5  18.7     8 Eight         Eight     TRUE     
+ 6  18.1     6 Six           Six       TRUE     
+ 7  14.3     8 Eight         Eight     TRUE     
+ 8  24.4     4 Four          Four      TRUE     
+ 9  22.8     4 Four          Four      TRUE     
+10  19.2     6 Six           Six       TRUE     
+# … with 22 more rows</code></pre>
+</div>
+</div>
+<p>Now, I have converted our example with the <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> statement into <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase()</a></code> for both <code>dplyr</code> and <code>data.table</code>, but have hidden the code in the detail box below since it’s <em>almost</em> identical and would be quite repetitive. I have printed a test to see if the outcomes are equivalent though between native <code>data.table</code> and <code>dplyr</code>, and they are! 🥳</p>
+<p>Really happy to have the option of using some various methods in-memory via <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase()</a></code> and/or <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> and optionally if working with REALLY large data push some of that compute into the database via <code>dbplyr</code> + <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code>.</p>
+<div class="cell" data-code_folding="true">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html">tic</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">dplyr_fcase</span> <span class="op">&lt;-</span> <span class="va">ex_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      team_name <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase</a></span><span class="op">(</span>
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ARI"</span>, <span class="st">"Cardinals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ATL"</span>, <span class="st">"Falcons"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BAL"</span>, <span class="st">"Ravens"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BUF"</span>, <span class="st">"Bills"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CAR"</span>, <span class="st">"Panthers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CHI"</span>, <span class="st">"Bears"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CIN"</span>, <span class="st">"Bengals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CLE"</span>, <span class="st">"Browns"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DAL"</span>, <span class="st">"Cowboys"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DEN"</span>, <span class="st">"Broncos"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DET"</span>, <span class="st">"Lions"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"GB"</span> ,<span class="st">"Packers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"HOU"</span>, <span class="st">"Texans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"IND"</span>, <span class="st">"Colts"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"JAX"</span>, <span class="st">"Jaguars"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"KC"</span> ,<span class="st">"Chiefs"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LV"</span> ,<span class="st">"Raiders"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAC"</span>, <span class="st">"Chargers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAR"</span>, <span class="st">"Rams"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIA"</span>, <span class="st">"Dolphins"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIN"</span>, <span class="st">"Vikings"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NE"</span> ,<span class="st">"Patriots"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NO"</span> ,<span class="st">"Saints"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYG"</span>, <span class="st">"Giants"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYJ"</span>, <span class="st">"Jets"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PHI"</span>, <span class="st">"Eagles"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PIT"</span>, <span class="st">"Steelers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SF"</span> ,<span class="st">"49ers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SEA"</span>, <span class="st">"Seahawks"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TB"</span> ,<span class="st">"Buccaneers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TEN"</span>, <span class="st">"Titans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"WSH"</span>, <span class="cn">NA_character_</span>,
+        <span class="cn">TRUE</span>, <span class="cn">NA_character_</span>
+      <span class="op">)</span>
+    <span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html">toc</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.017 sec elapsed</code></pre>
+</div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># data.table native</span>
+<span class="va">dt_fcase</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span><span class="va">ex_df</span><span class="op">)</span><span class="op">[</span>, <span class="va">team_name</span> <span class="op">:=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase</a></span><span class="op">(</span>
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"ARI"</span>, <span class="st">"Cardinals"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"ATL"</span>, <span class="st">"Falcons"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"BAL"</span>, <span class="st">"Ravens"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"BUF"</span>, <span class="st">"Bills"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"CAR"</span>, <span class="st">"Panthers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"CHI"</span>, <span class="st">"Bears"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"CIN"</span>, <span class="st">"Bengals"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"CLE"</span>, <span class="st">"Browns"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"DAL"</span>, <span class="st">"Cowboys"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"DEN"</span>, <span class="st">"Broncos"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"DET"</span>, <span class="st">"Lions"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"GB"</span> ,<span class="st">"Packers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"HOU"</span>, <span class="st">"Texans"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"IND"</span>, <span class="st">"Colts"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"JAX"</span>, <span class="st">"Jaguars"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"KC"</span> ,<span class="st">"Chiefs"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"LV"</span> ,<span class="st">"Raiders"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"LAC"</span>, <span class="st">"Chargers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"LAR"</span>, <span class="st">"Rams"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"MIA"</span>, <span class="st">"Dolphins"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"MIN"</span>, <span class="st">"Vikings"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"NE"</span> ,<span class="st">"Patriots"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"NO"</span> ,<span class="st">"Saints"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"NYG"</span>, <span class="st">"Giants"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"NYJ"</span>, <span class="st">"Jets"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"PHI"</span>, <span class="st">"Eagles"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"PIT"</span>, <span class="st">"Steelers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"SF"</span> ,<span class="st">"49ers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"SEA"</span>, <span class="st">"Seahawks"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"TB"</span> ,<span class="st">"Buccaneers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"TEN"</span>, <span class="st">"Titans"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"WSH"</span>, <span class="cn">NA_character_</span>,
+    <span class="cn">TRUE</span>, <span class="cn">NA_character_</span>
+  <span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/all_equal.html">all_equal</a></span><span class="op">(</span><span class="va">dplyr_fcase</span>, <span class="va">dt_fcase</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section></section><section id="speed-and-memory" class="level1"><h1>Speed and Memory</h1>
+<p>I’m going to preface this by also saying that this is a particular straight forward problem to translate into a <code>join</code>, and it has 32 total comparisons. Most uses of <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> or <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase()</a></code> will be more traditional and/or complex logic problems and be much fewer than 30!!!</p>
+<p>Now with that being said, you may still say, well I’m not convinced that <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">join()</a></code> method is any easier or faster to code out for humans, and we’re all free to make our own decisions! I do want to note that <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> gets memory-inefficient much faster than <code>???_join()</code>.</p>
+<p>We can really highlight the differences in the execution time and the memory allocated via the <a href="https://bench.r-lib.org/">bench</a> package. I’m using <code>bench</code> to execute the two different methods 3x time, compare the timing and the memory used, along with some other stats.</p>
+<p>In the expandable section below we have a repeat of our above <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> calls.</p>
+<div class="cell" data-code_folding="true">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">join_expr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">ex_df</span>, <span class="va">team_join</span>, by <span class="op">=</span> <span class="st">"team"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">case_when_expr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">ex_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      team_name <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ARI"</span> <span class="op">~</span> <span class="st">"Cardinals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ATL"</span> <span class="op">~</span> <span class="st">"Falcons"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BAL"</span> <span class="op">~</span> <span class="st">"Ravens"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BUF"</span> <span class="op">~</span> <span class="st">"Bills"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CAR"</span> <span class="op">~</span> <span class="st">"Panthers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CHI"</span> <span class="op">~</span> <span class="st">"Bears"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CIN"</span> <span class="op">~</span> <span class="st">"Bengals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CLE"</span> <span class="op">~</span> <span class="st">"Browns"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DAL"</span> <span class="op">~</span> <span class="st">"Cowboys"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DEN"</span> <span class="op">~</span> <span class="st">"Broncos"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DET"</span> <span class="op">~</span> <span class="st">"Lions"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"GB"</span> <span class="op">~</span> <span class="st">"Packers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"HOU"</span> <span class="op">~</span> <span class="st">"Texans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"IND"</span> <span class="op">~</span> <span class="st">"Colts"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"JAX"</span> <span class="op">~</span> <span class="st">"Jaguars"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"KC"</span> <span class="op">~</span> <span class="st">"Chiefs"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LV"</span> <span class="op">~</span> <span class="st">"Raiders"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAC"</span> <span class="op">~</span> <span class="st">"Chargers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAR"</span> <span class="op">~</span> <span class="st">"Rams"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIA"</span> <span class="op">~</span> <span class="st">"Dolphins"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIN"</span> <span class="op">~</span> <span class="st">"Vikings"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NE"</span> <span class="op">~</span> <span class="st">"Patriots"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NO"</span> <span class="op">~</span> <span class="st">"Saints"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYG"</span> <span class="op">~</span> <span class="st">"Giants"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYJ"</span> <span class="op">~</span> <span class="st">"Jets"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PHI"</span> <span class="op">~</span> <span class="st">"Eagles"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PIT"</span> <span class="op">~</span> <span class="st">"Steelers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SF"</span> <span class="op">~</span> <span class="st">"49ers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SEA"</span> <span class="op">~</span> <span class="st">"Seahawks"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TB"</span> <span class="op">~</span> <span class="st">"Buccaneers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TEN"</span> <span class="op">~</span> <span class="st">"Titans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"WSH"</span> <span class="op">~</span> <span class="cn">NA_character_</span>,
+        <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span>
+      <span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="op">}</span> </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can then compare their execution multiple times with the <code>bench</code> package. This will vary by the execution, but with 3 iterations and 100,000 rows, I have seen about a 10x speed improvement in <code>left_join</code> vs <code>case_when</code>. Note that in most cases this is still pretty much instantaneous in “human time”.</p>
+<div class="aside">
+<p>Visual reaction time in young adults is in the range of about 250 ms per <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4456887/">Jain et al</a>.</p>
+</div>
+<p>However, do note that we use about 28-30 times more memory for the <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> statement.</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html">mark</a></span><span class="op">(</span>
+  min_time <span class="op">=</span> <span class="fl">0.1</span>,
+  max_iterations <span class="op">=</span> <span class="fl">3</span>,
+  min_iterations <span class="op">=</span> <span class="fl">3</span>,
+  <span class="fu">case_when_expr</span><span class="op">(</span><span class="op">)</span>,
+  <span class="fu">join_expr</span><span class="op">(</span><span class="op">)</span>
+<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">expression</span>, <span class="va">min</span>, <span class="va">median</span>, <span class="va">mem_alloc</span>, <span class="va">n_itr</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  expression            min   median mem_alloc
+  &lt;bch:expr&gt;       &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:byt&gt;
+1 case_when_expr()  66.02ms  99.43ms  150.82MB
+2 join_expr()        5.07ms   5.15ms    5.37MB</code></pre>
+</div>
+</div>
+<p>The 150 Mb of memory used, may not seem like a lot with smaller datasets (100,000), but if we were to bump this up to 1,000,000 rows we see a similar 10x increase of memory. Specifically we are now up to ~1.5 Gb of memory used for <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code>. So if you’re going beyond the millions or 10s of millions of rows AND are trying to do a LOT of comparisons, probably a good idea to start refactoring into a <code>join</code> if possible!</p>
+<div class="cell" data-code_folding="true">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># 1,000,000 rows as 1e6</span>
+<span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fl">1e6</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">829</span><span class="op">)</span>
+
+<span class="va">ex_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
+  team <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">all_teams</span><span class="op">$</span><span class="va">team_abb</span>, size <span class="op">=</span> <span class="va">sample_size</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+  stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">sample_size</span>, mean <span class="op">=</span> <span class="fl">0.1</span>, sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html">mark</a></span><span class="op">(</span>
+  min_time <span class="op">=</span> <span class="fl">0.1</span>,
+  max_iterations <span class="op">=</span> <span class="fl">3</span>,
+  min_iterations <span class="op">=</span> <span class="fl">3</span>,
+  <span class="fu">case_when_expr</span><span class="op">(</span><span class="op">)</span>,
+  <span class="fu">join_expr</span><span class="op">(</span><span class="op">)</span>
+<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">expression</span>, <span class="va">min</span>, <span class="va">median</span>, <span class="va">mem_alloc</span>, <span class="va">n_itr</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  expression            min   median mem_alloc
+  &lt;bch:expr&gt;       &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:byt&gt;
+1 case_when_expr()  595.8ms  636.3ms    1.47GB
+2 join_expr()        42.7ms   45.9ms   53.43MB</code></pre>
+</div>
+</div>
+<p>There are situations where a <code>join</code> doesn’t solve the problem, so we can go one step further and add in our <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">data.table::fcase()</a></code> or <code>dtplyr</code>-translation of <code>dplyr</code> into <code>data.table</code>. All the example reprex code is in an expandable chunk below.</p>
+<div class="cell" data-code_folding="true">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dtplyr.tidyverse.org">dtplyr</a></span><span class="op">)</span>
+
+<span class="va">case_when_dplyr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">ex_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      team_name <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ARI"</span> <span class="op">~</span> <span class="st">"Cardinals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ATL"</span> <span class="op">~</span> <span class="st">"Falcons"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BAL"</span> <span class="op">~</span> <span class="st">"Ravens"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BUF"</span> <span class="op">~</span> <span class="st">"Bills"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CAR"</span> <span class="op">~</span> <span class="st">"Panthers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CHI"</span> <span class="op">~</span> <span class="st">"Bears"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CIN"</span> <span class="op">~</span> <span class="st">"Bengals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CLE"</span> <span class="op">~</span> <span class="st">"Browns"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DAL"</span> <span class="op">~</span> <span class="st">"Cowboys"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DEN"</span> <span class="op">~</span> <span class="st">"Broncos"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DET"</span> <span class="op">~</span> <span class="st">"Lions"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"GB"</span> <span class="op">~</span> <span class="st">"Packers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"HOU"</span> <span class="op">~</span> <span class="st">"Texans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"IND"</span> <span class="op">~</span> <span class="st">"Colts"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"JAX"</span> <span class="op">~</span> <span class="st">"Jaguars"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"KC"</span> <span class="op">~</span> <span class="st">"Chiefs"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LV"</span> <span class="op">~</span> <span class="st">"Raiders"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAC"</span> <span class="op">~</span> <span class="st">"Chargers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAR"</span> <span class="op">~</span> <span class="st">"Rams"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIA"</span> <span class="op">~</span> <span class="st">"Dolphins"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIN"</span> <span class="op">~</span> <span class="st">"Vikings"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NE"</span> <span class="op">~</span> <span class="st">"Patriots"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NO"</span> <span class="op">~</span> <span class="st">"Saints"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYG"</span> <span class="op">~</span> <span class="st">"Giants"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYJ"</span> <span class="op">~</span> <span class="st">"Jets"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PHI"</span> <span class="op">~</span> <span class="st">"Eagles"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PIT"</span> <span class="op">~</span> <span class="st">"Steelers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SF"</span> <span class="op">~</span> <span class="st">"49ers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SEA"</span> <span class="op">~</span> <span class="st">"Seahawks"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TB"</span> <span class="op">~</span> <span class="st">"Buccaneers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TEN"</span> <span class="op">~</span> <span class="st">"Titans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"WSH"</span> <span class="op">~</span> <span class="cn">NA_character_</span>,
+        <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span>
+      <span class="op">)</span>
+    <span class="op">)</span>
+<span class="op">}</span> 
+
+
+<span class="va">join_dplyr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">ex_df</span>, <span class="va">team_join</span>, by <span class="op">=</span> <span class="st">"team"</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">join_dtplyr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">dt_ex_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dtplyr.tidyverse.org/reference/lazy_dt.html">lazy_dt</a></span><span class="op">(</span><span class="va">ex_df</span><span class="op">)</span>
+  <span class="va">team_join</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dtplyr.tidyverse.org/reference/lazy_dt.html">lazy_dt</a></span><span class="op">(</span><span class="va">team_join</span><span class="op">)</span>
+    
+  <span class="va">dt_ex_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">team_join</span>, by <span class="op">=</span> <span class="st">"team"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">team</span>, <span class="va">stat</span>, <span class="va">team_name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> 
+<span class="op">}</span>
+
+<span class="va">case_when_dtplyr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://dtplyr.tidyverse.org/reference/lazy_dt.html">lazy_dt</a></span><span class="op">(</span><span class="va">ex_df</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      team_name <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ARI"</span> <span class="op">~</span> <span class="st">"Cardinals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ATL"</span> <span class="op">~</span> <span class="st">"Falcons"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BAL"</span> <span class="op">~</span> <span class="st">"Ravens"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BUF"</span> <span class="op">~</span> <span class="st">"Bills"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CAR"</span> <span class="op">~</span> <span class="st">"Panthers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CHI"</span> <span class="op">~</span> <span class="st">"Bears"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CIN"</span> <span class="op">~</span> <span class="st">"Bengals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CLE"</span> <span class="op">~</span> <span class="st">"Browns"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DAL"</span> <span class="op">~</span> <span class="st">"Cowboys"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DEN"</span> <span class="op">~</span> <span class="st">"Broncos"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DET"</span> <span class="op">~</span> <span class="st">"Lions"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"GB"</span> <span class="op">~</span> <span class="st">"Packers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"HOU"</span> <span class="op">~</span> <span class="st">"Texans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"IND"</span> <span class="op">~</span> <span class="st">"Colts"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"JAX"</span> <span class="op">~</span> <span class="st">"Jaguars"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"KC"</span> <span class="op">~</span> <span class="st">"Chiefs"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LV"</span> <span class="op">~</span> <span class="st">"Raiders"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAC"</span> <span class="op">~</span> <span class="st">"Chargers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAR"</span> <span class="op">~</span> <span class="st">"Rams"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIA"</span> <span class="op">~</span> <span class="st">"Dolphins"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIN"</span> <span class="op">~</span> <span class="st">"Vikings"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NE"</span> <span class="op">~</span> <span class="st">"Patriots"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NO"</span> <span class="op">~</span> <span class="st">"Saints"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYG"</span> <span class="op">~</span> <span class="st">"Giants"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYJ"</span> <span class="op">~</span> <span class="st">"Jets"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PHI"</span> <span class="op">~</span> <span class="st">"Eagles"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PIT"</span> <span class="op">~</span> <span class="st">"Steelers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SF"</span> <span class="op">~</span> <span class="st">"49ers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SEA"</span> <span class="op">~</span> <span class="st">"Seahawks"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TB"</span> <span class="op">~</span> <span class="st">"Buccaneers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TEN"</span> <span class="op">~</span> <span class="st">"Titans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"WSH"</span> <span class="op">~</span> <span class="cn">NA_character_</span>,
+        <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span>
+      <span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span>
+  
+<span class="op">}</span>
+
+<span class="va">fcase_dplyr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">ex_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+      team_name <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase</a></span><span class="op">(</span>
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ARI"</span>, <span class="st">"Cardinals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"ATL"</span>, <span class="st">"Falcons"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BAL"</span>, <span class="st">"Ravens"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"BUF"</span>, <span class="st">"Bills"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CAR"</span>, <span class="st">"Panthers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CHI"</span>, <span class="st">"Bears"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CIN"</span>, <span class="st">"Bengals"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"CLE"</span>, <span class="st">"Browns"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DAL"</span>, <span class="st">"Cowboys"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DEN"</span>, <span class="st">"Broncos"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"DET"</span>, <span class="st">"Lions"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"GB"</span> ,<span class="st">"Packers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"HOU"</span>, <span class="st">"Texans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"IND"</span>, <span class="st">"Colts"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"JAX"</span>, <span class="st">"Jaguars"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"KC"</span> ,<span class="st">"Chiefs"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LV"</span> ,<span class="st">"Raiders"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAC"</span>, <span class="st">"Chargers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"LAR"</span>, <span class="st">"Rams"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIA"</span>, <span class="st">"Dolphins"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"MIN"</span>, <span class="st">"Vikings"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NE"</span> ,<span class="st">"Patriots"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NO"</span> ,<span class="st">"Saints"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYG"</span>, <span class="st">"Giants"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"NYJ"</span>, <span class="st">"Jets"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PHI"</span>, <span class="st">"Eagles"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"PIT"</span>, <span class="st">"Steelers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SF"</span> ,<span class="st">"49ers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"SEA"</span>, <span class="st">"Seahawks"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TB"</span> ,<span class="st">"Buccaneers"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"TEN"</span>, <span class="st">"Titans"</span>,
+        <span class="va">team</span> <span class="op">==</span> <span class="st">"WSH"</span>, <span class="cn">NA_character_</span>
+      <span class="op">)</span>
+    <span class="op">)</span>
+<span class="op">}</span>
+  
+
+<span class="va">fcase_dt_native</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span><span class="va">ex_df</span><span class="op">)</span><span class="op">[</span>, <span class="va">team_name</span> <span class="op">:=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase</a></span><span class="op">(</span>
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"ARI"</span>, <span class="st">"Cardinals"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"ATL"</span>, <span class="st">"Falcons"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"BAL"</span>, <span class="st">"Ravens"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"BUF"</span>, <span class="st">"Bills"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"CAR"</span>, <span class="st">"Panthers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"CHI"</span>, <span class="st">"Bears"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"CIN"</span>, <span class="st">"Bengals"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"CLE"</span>, <span class="st">"Browns"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"DAL"</span>, <span class="st">"Cowboys"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"DEN"</span>, <span class="st">"Broncos"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"DET"</span>, <span class="st">"Lions"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"GB"</span> ,<span class="st">"Packers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"HOU"</span>, <span class="st">"Texans"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"IND"</span>, <span class="st">"Colts"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"JAX"</span>, <span class="st">"Jaguars"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"KC"</span> ,<span class="st">"Chiefs"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"LV"</span> ,<span class="st">"Raiders"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"LAC"</span>, <span class="st">"Chargers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"LAR"</span>, <span class="st">"Rams"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"MIA"</span>, <span class="st">"Dolphins"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"MIN"</span>, <span class="st">"Vikings"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"NE"</span> ,<span class="st">"Patriots"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"NO"</span> ,<span class="st">"Saints"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"NYG"</span>, <span class="st">"Giants"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"NYJ"</span>, <span class="st">"Jets"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"PHI"</span>, <span class="st">"Eagles"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"PIT"</span>, <span class="st">"Steelers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"SF"</span> ,<span class="st">"49ers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"SEA"</span>, <span class="st">"Seahawks"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"TB"</span> ,<span class="st">"Buccaneers"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"TEN"</span>, <span class="st">"Titans"</span>,
+    <span class="va">team</span> <span class="op">==</span> <span class="st">"WSH"</span>, <span class="cn">NA_character_</span>
+  <span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">join_dt_native</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span><span class="va">ex_df</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span><span class="va">team_join</span><span class="op">)</span>, on <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">team</span><span class="op">)</span>, <span class="va">team_name</span> <span class="op">:=</span> <span class="va">team_name</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span>
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally we can check the timing/memory usage for all of the combos. In short, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">join()</a></code>-methods are fastest and use the least memory, <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase()</a></code> whether in native <code>data.table</code> or <code>dplyr</code> is a bit slower/more memory than <code>join</code> but still ~5x faster/more memory efficient than <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when()</a></code> is the slowest/most memory hungry (but translates into SQL if needed).</p>
+<p>Overall, I’m really happy that we have the ability to mix and match functions from various awesome packages depending on the problems we’re trying to solve!</p>
+<div class="cell" data-code_folding="true" data-hash="index_cache/html/unnamed-chunk-15_dcace2cca6e8f49b8b0df21416ce5794">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html">mark</a></span><span class="op">(</span>
+  min_time <span class="op">=</span> <span class="fl">0.1</span>,
+  max_iterations <span class="op">=</span> <span class="fl">3</span>,
+  min_iterations <span class="op">=</span> <span class="fl">3</span>,
+  <span class="fu">case_when_dplyr</span><span class="op">(</span><span class="op">)</span>,
+  <span class="fu">case_when_dtplyr</span><span class="op">(</span><span class="op">)</span>,
+  <span class="fu">fcase_dplyr</span><span class="op">(</span><span class="op">)</span>,
+  <span class="fu">fcase_dt_native</span><span class="op">(</span><span class="op">)</span>,
+  <span class="fu">join_dplyr</span><span class="op">(</span><span class="op">)</span>,
+  <span class="fu">join_dt_native</span><span class="op">(</span><span class="op">)</span>,
+  check <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">expression</span>, <span class="va">min</span>, <span class="va">median</span>, <span class="va">mem_alloc</span>, <span class="va">n_itr</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  expression              min   median mem_alloc
+  &lt;bch:expr&gt;         &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:byt&gt;
+1 case_when_dplyr()   583.4ms  624.6ms    1.47GB
+2 case_when_dtplyr()  121.9ms  127.7ms  165.18MB
+3 fcase_dplyr()       120.3ms  120.5ms  133.72MB
+4 fcase_dt_native()   121.9ms  129.1ms  164.39MB
+5 join_dplyr()         41.1ms   42.7ms   53.43MB
+6 join_dt_native()     31.9ms   35.6ms   61.63MB</code></pre>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-28
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ bench       * 1.1.2   2021-11-30 [1] CRAN (R 4.2.0)
+ data.table  * 1.14.2  2021-09-27 [1] CRAN (R 4.2.0)
+ datapasta   * 3.1.1   2022-04-26 [1] Github (MilesMcBain/datapasta@69d2a69)
+ dplyr       * 1.0.8   2022-02-08 [1] CRAN (R 4.2.0)
+ dtplyr      * 1.2.1   2022-01-19 [1] CRAN (R 4.2.0)
+ espnscrapeR * 0.6.5   2022-04-26 [1] Github (jthomasmock/espnscrapeR@084ce80)
+ forcats     * 0.5.1   2021-01-27 [1] CRAN (R 4.2.0)
+ ggplot2     * 3.3.5   2021-06-25 [1] CRAN (R 4.2.0)
+ purrr       * 0.3.4   2020-04-17 [1] CRAN (R 4.2.0)
+ readr       * 2.1.2   2022-01-30 [1] CRAN (R 4.2.0)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.2.0)
+ stringr     * 1.4.0   2019-02-10 [1] CRAN (R 4.2.0)
+ tibble      * 3.1.6   2021-11-07 [1] CRAN (R 4.2.0)
+ tictoc      * 1.0.1   2021-04-19 [1] CRAN (R 4.2.0)
+ tidyr       * 1.2.0   2022-02-01 [1] CRAN (R 4.2.0)
+ tidyverse   * 1.3.1   2021-04-15 [1] CRAN (R 4.2.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

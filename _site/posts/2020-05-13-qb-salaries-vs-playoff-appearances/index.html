@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.294">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="description" content="Interactive tables make bad takes more fun.">
+<title>The MockUp - QB Salaries vs Playoff Appearances</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="../../site_libs/core-js-2.5.3/shim.min.js"></script><script src="../../site_libs/react-17.0.0/react.min.js"></script><script src="../../site_libs/react-17.0.0/react-dom.min.js"></script><script src="../../site_libs/reactwidget-1.0.0/react-tools.js"></script><script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="../../site_libs/reactable-binding-0.2.3/reactable.js"></script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - QB Salaries vs Playoff Appearances">
+<meta property="og:description" content="Interactive tables make bad takes more fun.
+">
+<meta property="og:image" content="https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances/preview.png">
+<meta property="og:site-name" content="The MockUp">
+<meta property="og:image:height" content="652">
+<meta property="og:image:width" content="1093">
+<meta name="twitter:title" content="The MockUp - QB Salaries vs Playoff Appearances">
+<meta name="twitter:description" content="Interactive tables make bad takes more fun.
+">
+<meta name="twitter:image" content="https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances/themockup.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">QB Salaries vs Playoff Appearances</h1>
+                          <div class="quarto-categories">
+                <div class="quarto-category">NFL</div>
+                <div class="quarto-category">tidyverse</div>
+                <div class="quarto-category">tables</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div>
+    <div class="description">
+      <p>Interactive tables make bad takes more fun.</p>
+    </div>
+  </div>
+
+
+
+
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">05-13-2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#reactable---interactive-data-tables" id="toc-reactable---interactive-data-tables" class="nav-link active" data-scroll-target="#reactable---interactive-data-tables"><code>reactable</code> - interactive data tables</a></li>
+  <li><a href="#more-complex" id="toc-more-complex" class="nav-link" data-scroll-target="#more-complex">More Complex</a></li>
+  <li><a href="#raw-code-to-generate-the-table" id="toc-raw-code-to-generate-the-table" class="nav-link" data-scroll-target="#raw-code-to-generate-the-table">Raw Code to generate the table</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><p>A recent tweet provided a (IMO) fairly week argument that paying a QB ends up making your team unsuccessful (no Superbowl wins for the 9 QBs below).</p>
+<blockquote class="twitter-tweet blockquote">
+<p lang="en" dir="ltr">
+Highest cap hits from 2014-19:<br><br>Matthew Stafford ($130M)<br>Ben Roethlisberger ($128M)<br>Aaron Rodgers ($126M)<br>Drew Brees ($125M)<br>Eli Manning ($124M)<br>Matt Ryan ($118M)<br>Philip Rivers ($117M)<br>Joe Flacco ($106M)<br>Cam Newton ($104M)<br><br>None won the Super Bowl during that time.
+</p>
+— Paul Hembekides (<span class="citation" data-cites="PaulHembo">@PaulHembo</span>) <a href="https://twitter.com/PaulHembo/status/1260182851137482752?ref_src=twsrc%5Etfw">May 12, 2020</a>
+</blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p>Moo had a good counter-argument (just include the <em>10th</em> QB) - Tom Brady ruins part of the narrative. Additionally, just include playoff appearances and/or wins.</p>
+<blockquote class="twitter-tweet blockquote">
+<p lang="en" dir="ltr">
+The thing here is the following:<br><br>If you include Brady who is the next in the list ($100M), these 10 QBs combine for 3 of 6 Super Bowl titles and 6 of 12 Super Bowl appearances.<br><br>Accounting for 50% is pretty good for 10/32 of the league, isn't it? <a href="https://t.co/C18MQAHfL8">https://t.co/C18MQAHfL8</a>
+</p>
+— Moo (<span class="citation" data-cites="PFF_Moo">@PFF_Moo</span>) <a href="https://twitter.com/PFF_Moo/status/1260300081904988160?ref_src=twsrc%5Etfw">May 12, 2020</a>
+</blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p>So let’s make a table of salary data vs playoff appearances! We could make this static (screenshot for Twitter) - but just for funs lets stretch a bit and make an interactive table with nice formatting.</p>
+<section id="reactable---interactive-data-tables" class="level3"><h3 class="anchored" data-anchor-id="reactable---interactive-data-tables">
+<code>reactable</code> - interactive data tables</h3>
+<p><code>reactable</code> is an R wrapper for the <code>react table</code> javascript library. Greg Lin at RStudio recently made this package and you can install it from CRAN with <code>install.packages("reactable")</code>. I adapted this table from some examples at the <a href="https://glin.github.io/reactable/articles/womens-world-cup/womens-world-cup.html"><code>reactable</code> package site</a>.</p>
+<p>Raw data comes from: <a href="https://www.pro-football-reference.com/play-index/pgl_finder.cgi?request=1&amp;match=game&amp;year_min=2014&amp;year_max=2019&amp;season_start=1&amp;season_end=-1&amp;pos%5B%5D=QB&amp;is_starter=E&amp;game_type=P&amp;career_game_num_min=1&amp;career_game_num_max=400&amp;qb_start_num_min=1&amp;qb_start_num_max=400&amp;game_num_min=0&amp;game_num_max=99&amp;week_num_min=0&amp;week_num_max=99&amp;qb_started=Y&amp;c5val=1.0&amp;order_by=pass_td">Pro Football Reference</a> &amp; <a href="https://overthecap.com/position/quarterback/">Over the Cap</a></p>
+<p>A very basic <code>reactable</code> table can be created as so:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">playoff_salary</span> <span class="op">%&gt;%</span>
+  <span class="fu">reactable</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-cefd68dfa94ef95ccb86" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-cefd68dfa94ef95ccb86">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Salary Rank":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],"player":["Matt Stafford","Ben Roethlisberger","Aaron Rodgers","Drew Brees","Eli Manning","Matt Ryan","Philip Rivers","Joe Flacco","Cam Newton","Tom Brady","Kirk Cousins","Alex Smith","Russell Wilson","Andy Dalton","Andrew Luck","Carson Palmer","Jimmy Garoppolo","Ryan Tannehill","Tony Romo","Marcus Mariota","Tyrod Taylor","Peyton Manning","Nick Foles","Blake Bortles","Jared Goff","Carson Wentz","Case Keenum","Mitchell Trubisky","Brock Osweiler","Brian Hoyer","Teddy Bridgewater","Patrick Mahomes","Deshaun Watson","Josh Allen","Dak Prescott","Lamar Jackson"],"Wildcard":[2,3,2,2,1,1,1,1,2,1,2,2,4,1,2,0,0,1,1,2,1,0,1,1,1,1,0,1,1,1,1,0,2,1,1,1],"Division":[0,3,4,2,0,2,1,1,2,5,1,2,4,0,2,1,1,1,1,1,0,2,1,1,1,0,1,0,1,0,0,2,1,0,2,1],"Conference":[0,1,3,1,0,1,0,0,1,5,0,0,1,0,1,1,1,1,0,0,0,1,0,1,1,0,1,0,0,0,0,2,0,0,0,0],"Superbowl":[0,0,0,0,0,1,0,0,1,4,0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"Total":[2,7,9,5,1,5,2,2,6,15,3,4,10,1,5,2,3,3,2,3,1,4,2,3,4,1,2,1,2,1,1,5,3,1,3,2],"salary":[129.7,127.7,125.6,125.2,124.2,118,117.3,106.1,104.4,100.1,98.4,93.7,91.1,80,75.3,62.9,59.8,51.2,47.6,45.1,37.7,35,33.8,31.7,29.7,26.6,24.7,19.8,15.6,12.9,12.4,11.2,9.4,8.7,4,3.9]},"columns":[{"accessor":"Salary Rank","name":"Salary Rank","type":"numeric"},{"accessor":"player","name":"player","type":"character"},{"accessor":"Wildcard","name":"Wildcard","type":"numeric"},{"accessor":"Division","name":"Division","type":"numeric"},{"accessor":"Conference","name":"Conference","type":"numeric"},{"accessor":"Superbowl","name":"Superbowl","type":"numeric"},{"accessor":"Total","name":"Total","type":"numeric"},{"accessor":"salary","name":"salary","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"044c9ce3ed4b5693afa9bb1177525e3c","key":"044c9ce3ed4b5693afa9bb1177525e3c"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="more-complex" class="level3"><h3 class="anchored">More Complex</h3>
+<p>At the risk of drawing the rest of the <code>*&amp;?$ing</code> owl here is a more complex interactive table using the same data.</p>
+<p>Part 2 of this blogpost will go step-by-step into creating more complex tables, but for now…enjoy and consume at your own risk!</p>
+<p>(Full code at bottom of this post) :::{.column-body-outset}</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="salary">
+<div class="title">
+<h2 class="anchored" data-anchor-id="more-complex">2014-2019 Salary and Playoff Appearances</h2>
+QBs limited to playoff games where they threw a pass
+</div>
+<div id="htmlwidget-4906214f2d2600b183ed" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4906214f2d2600b183ed">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Salary Rank":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],"player":["Matt Stafford","Ben Roethlisberger","Aaron Rodgers","Drew Brees","Eli Manning","Matt Ryan","Philip Rivers","Joe Flacco","Cam Newton","Tom Brady","Kirk Cousins","Alex Smith","Russell Wilson","Andy Dalton","Andrew Luck","Carson Palmer","Jimmy Garoppolo","Ryan Tannehill","Tony Romo","Marcus Mariota","Tyrod Taylor","Peyton Manning","Nick Foles","Blake Bortles","Jared Goff","Carson Wentz","Case Keenum","Mitchell Trubisky","Brock Osweiler","Brian Hoyer","Teddy Bridgewater","Patrick Mahomes","Deshaun Watson","Josh Allen","Dak Prescott","Lamar Jackson"],"Wildcard":[2,3,2,2,1,1,1,1,2,1,2,2,4,1,2,0,0,1,1,2,1,0,1,1,1,1,0,1,1,1,1,0,2,1,1,1],"Division":[0,3,4,2,0,2,1,1,2,5,1,2,4,0,2,1,1,1,1,1,0,2,1,1,1,0,1,0,1,0,0,2,1,0,2,1],"Conference":[0,1,3,1,0,1,0,0,1,5,0,0,1,0,1,1,1,1,0,0,0,1,0,1,1,0,1,0,0,0,0,2,0,0,0,0],"Superbowl":[0,0,0,0,0,1,0,0,1,4,0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"Total":[2,7,9,5,1,5,2,2,6,15,3,4,10,1,5,2,3,3,2,3,1,4,2,3,4,1,2,1,2,1,1,5,3,1,3,2],"salary":[129.7,127.7,125.6,125.2,124.2,118,117.3,106.1,104.4,100.1,98.4,93.7,91.1,80,75.3,62.9,59.8,51.2,47.6,45.1,37.7,35,33.8,31.7,29.7,26.6,24.7,19.8,15.6,12.9,12.4,11.2,9.4,8.7,4,3.9]},"columns":[{"accessor":"Salary Rank","name":"Salary Rank","type":"numeric","minWidth":100,"align":"center"},{"accessor":"player","name":"Name","type":"character","minWidth":140,"align":"left"},{"accessor":"Wildcard","name":"Wildcard","type":"numeric","minWidth":100,"align":"center"},{"accessor":"Division","name":"Division","type":"numeric","minWidth":100,"align":"center"},{"accessor":"Conference","name":"Conference","type":"numeric","minWidth":100,"align":"center"},{"accessor":"Superbowl","name":"Superbowl","type":"numeric","minWidth":100,"align":"center"},{"accessor":"Total","name":"Total","type":"numeric","minWidth":100,"align":"center","className":"border-left","style":[{"background":"#F0FAD0"},{"background":"#AADDAE"},{"background":"#91D2AB"},{"background":"#C2E9B2"},{"background":"#FFFFFF"},{"background":"#C2E9B2"},{"background":"#F0FAD0"},{"background":"#F0FAD0"},{"background":"#B6E3B0"},{"background":"#35B0AB"},{"background":"#E0F4C5"},{"background":"#D0EEB9"},{"background":"#81CCAB"},{"background":"#FFFFFF"},{"background":"#C2E9B2"},{"background":"#F0FAD0"},{"background":"#E0F4C5"},{"background":"#E0F4C5"},{"background":"#F0FAD0"},{"background":"#E0F4C5"},{"background":"#FFFFFF"},{"background":"#D0EEB9"},{"background":"#F0FAD0"},{"background":"#E0F4C5"},{"background":"#D0EEB9"},{"background":"#FFFFFF"},{"background":"#F0FAD0"},{"background":"#FFFFFF"},{"background":"#F0FAD0"},{"background":"#FFFFFF"},{"background":"#FFFFFF"},{"background":"#C2E9B2"},{"background":"#E0F4C5"},{"background":"#FFFFFF"},{"background":"#E0F4C5"},{"background":"#F0FAD0"}]},{"accessor":"salary","name":"Salary","type":"numeric","minWidth":100,"align":"center","cell":"function(cellInfo) {\n                          return cellInfo.value + 'M'}","style":[{"background":"#35B0AB"},{"background":"#38B1AB"},{"background":"#3CB2AB"},{"background":"#3CB2AB"},{"background":"#3EB3AB"},{"background":"#48B7AB"},{"background":"#4AB7AB"},{"background":"#5DBFAB"},{"background":"#60C0AB"},{"background":"#67C2AB"},{"background":"#6AC3AB"},{"background":"#72C6AB"},{"background":"#76C8AB"},{"background":"#89CFAB"},{"background":"#91D2AB"},{"background":"#A3DAAD"},{"background":"#A7DCAE"},{"background":"#B3E1B0"},{"background":"#B8E4B1"},{"background":"#BBE5B1"},{"background":"#C5EAB3"},{"background":"#C9ECB4"},{"background":"#CBECB5"},{"background":"#CFEEB8"},{"background":"#D2EFBB"},{"background":"#D8F1BF"},{"background":"#DBF2C1"},{"background":"#E4F5C7"},{"background":"#EBF8CD"},{"background":"#F0FAD0"},{"background":"#F0FAD1"},{"background":"#F2FBD5"},{"background":"#F5FCDF"},{"background":"#F7FCE3"},{"background":"#FEFEFE"},{"background":"#FFFFFF"}]}],"defaultPageSize":36,"paginationType":"numbers","showPageInfo":true,"minRows":1,"compact":true,"inline":true,"theme":{"headerStyle":{"&:hover[aria-sort]":{"background":"hsl(0, 0%, 96%)"},"&[aria-sort='ascending'], &[aria-sort='descending']":{"background":"hsl(0, 0%, 96%)"},"borderColor":"#555"}},"dataKey":"423080411e8ec3afa5906e1bee6221de","key":"423080411e8ec3afa5906e1bee6221de"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.7.cell"],"jsHooks":[]}</script><span style="color:#C8C8C8">TABLE: @THOMAS_MOCK | DATA: PRO-FOOTBALL-REFERENCE.COM &amp; OVERTHECAP.COM</span>
+</div>
+</div>
+</div>
+<p>:::</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><link href="https://fonts.googleapis.com/css?family=Karla:400,700%7CFira+Mono&amp;display=fallback" rel="stylesheet"></p>
+</div>
+</div>
+<div class="cell">
+<style type="text/css">
+.salary {
+  font-family: Karla, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.number {
+  font-family: "Fira Mono", Consolas, Monaco, monospace;
+  font-size: 16px;
+  line-height: 30px;
+  white-space: pre;
+}
+
+.title {
+  margin: 18px 0;
+  font-size: 16px;
+}
+
+.title h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+.header:hover,
+.header[aria-sort="ascending"],
+.header[aria-sort="descending"] {
+  background-color: #eee;
+}
+
+.salary-table {
+  margin-bottom: 20px;
+}
+
+/* Align header text to the bottom */
+.header,
+.group-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.header {
+  border-bottom-color: #555;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* Highlight headers when sorting */
+.header:hover,
+.header[aria-sort="ascending"],
+.header[aria-sort="descending"] {
+  background-color: #eee;
+}
+
+.border-left {
+  border-left: 2px solid #555;
+}
+
+/* Use box-shadow to create row borders that appear behind vertical borders */
+.cell {
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+</style>
+</div>
+</section><section id="raw-code-to-generate-the-table" class="level1"><h1>Raw Code to generate the table</h1>
+<p>Below is the raw code to generate the table - I’ll do a deeper dive later, but as of now here is the raw code I used, including some HTML and CSS helpers. This is all adapted from the <a href="https://glin.github.io/reactable/articles/womens-world-cup/womens-world-cup.html"><code>reactable</code> cookbook</a>.</p>
+<p>The CSS and HTML helpers do some light-lifting for custom text and borders.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">make_color_pal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">colors</span>, <span class="va">bias</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">get_color</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRamp</a></span><span class="op">(</span><span class="va">colors</span>, bias <span class="op">=</span> <span class="va">bias</span><span class="op">)</span>
+  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span><span class="op">(</span><span class="fu">get_color</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">good_color</span> <span class="op">&lt;-</span> <span class="fu">make_color_pal</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#ffffff"</span>, <span class="st">"#f2fbd2"</span>, <span class="st">"#c9ecb4"</span>, <span class="st">"#93d3ab"</span>, <span class="st">"#35b0ab"</span><span class="op">)</span>, bias <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+
+<span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">playoff_salary</span> <span class="op">%&gt;%</span>
+  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">salary</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">mutate</span><span class="op">(</span>
+    `Salary Rank` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">salary</span><span class="op">)</span><span class="op">)</span>,
+    salary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">salary</span>, <span class="fl">1</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">select</span><span class="op">(</span><span class="va">`Salary Rank`</span>, <span class="va">player</span><span class="op">:</span><span class="va">Superbowl</span>, <span class="fu">everything</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">reactable</span><span class="op">(</span>
+    pagination <span class="op">=</span> <span class="cn">FALSE</span>,
+    compact <span class="op">=</span> <span class="cn">TRUE</span>,
+    borderless <span class="op">=</span> <span class="cn">FALSE</span>,
+    striped <span class="op">=</span> <span class="cn">FALSE</span>,
+    fullWidth <span class="op">=</span> <span class="cn">FALSE</span>,
+    theme <span class="op">=</span> <span class="fu">reactableTheme</span><span class="op">(</span>
+      headerStyle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+        <span class="st">"&amp;:hover[aria-sort]"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>background <span class="op">=</span> <span class="st">"hsl(0, 0%, 96%)"</span><span class="op">)</span>,
+        <span class="st">"&amp;[aria-sort='ascending'], &amp;[aria-sort='descending']"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>background <span class="op">=</span> <span class="st">"hsl(0, 0%, 96%)"</span><span class="op">)</span>,
+        borderColor <span class="op">=</span> <span class="st">"#555"</span>
+      <span class="op">)</span>
+    <span class="op">)</span>,
+    defaultColDef <span class="op">=</span> <span class="fu">colDef</span><span class="op">(</span>
+      align <span class="op">=</span> <span class="st">"center"</span>,
+      minWidth <span class="op">=</span> <span class="fl">100</span>
+    <span class="op">)</span>,
+    columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+      salary <span class="op">=</span> <span class="fu">colDef</span><span class="op">(</span>
+        name <span class="op">=</span> <span class="st">"Salary"</span>,
+        style <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">{</span>
+          <span class="va">value</span>
+          <span class="va">normalized</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">value</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">playoff_salary</span><span class="op">$</span><span class="va">salary</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">playoff_salary</span><span class="op">$</span><span class="va">salary</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">playoff_salary</span><span class="op">$</span><span class="va">salary</span><span class="op">)</span><span class="op">)</span>
+          <span class="va">color</span> <span class="op">&lt;-</span> <span class="fu">good_color</span><span class="op">(</span><span class="va">normalized</span><span class="op">)</span>
+          <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>background <span class="op">=</span> <span class="va">color</span><span class="op">)</span>
+        <span class="op">}</span>,
+        cell <span class="op">=</span> <span class="fu">JS</span><span class="op">(</span><span class="st">"function(cellInfo) {
+                          return cellInfo.value + 'M'}"</span><span class="op">)</span>
+      <span class="op">)</span>,
+      Total <span class="op">=</span> <span class="fu">colDef</span><span class="op">(</span>
+        style <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">{</span>
+          <span class="va">value</span>
+          <span class="va">normalized</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">value</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">playoff_salary</span><span class="op">$</span><span class="va">Total</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">playoff_salary</span><span class="op">$</span><span class="va">Total</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">playoff_salary</span><span class="op">$</span><span class="va">Total</span><span class="op">)</span><span class="op">)</span>
+          <span class="va">color</span> <span class="op">&lt;-</span> <span class="fu">good_color</span><span class="op">(</span><span class="va">normalized</span><span class="op">)</span>
+          <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>background <span class="op">=</span> <span class="va">color</span><span class="op">)</span>
+        <span class="op">}</span>,
+        class <span class="op">=</span> <span class="st">"border-left"</span>
+      <span class="op">)</span>,
+      player <span class="op">=</span> <span class="fu">colDef</span><span class="op">(</span>
+        name <span class="op">=</span> <span class="st">"Name"</span>,
+        minWidth <span class="op">=</span> <span class="fl">140</span>,
+        align <span class="op">=</span> <span class="st">"left"</span>
+      <span class="op">)</span>
+    <span class="op">)</span>
+  <span class="op">)</span>
+
+
+
+
+
+<span class="fu">div</span><span class="op">(</span>
+  class <span class="op">=</span> <span class="st">"salary"</span>,
+  <span class="fu">div</span><span class="op">(</span>
+    class <span class="op">=</span> <span class="st">"title"</span>,
+    <span class="fu">h2</span><span class="op">(</span><span class="st">"2014-2019 Salary and Playoff Appearances"</span><span class="op">)</span>,
+    <span class="st">"QBs limited to playoff games where they threw a pass"</span>
+  <span class="op">)</span>,
+  <span class="va">tbl</span>,
+  <span class="va">tags</span><span class="op">$</span><span class="fu">span</span><span class="op">(</span>style <span class="op">=</span> <span class="st">"color:#C8C8C8"</span>, <span class="st">"TABLE: @THOMAS_MOCK | DATA: PRO-FOOTBALL-REFERENCE.COM &amp; OVERTHECAP.COM"</span><span class="op">)</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">tags</span><span class="op">$</span><span class="fu">link</span><span class="op">(</span>href <span class="op">=</span> <span class="st">"https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&amp;display=fallback"</span>, rel <span class="op">=</span> <span class="st">"stylesheet"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.salary</span> {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-family</span>: Karla<span class="op">,</span> <span class="st">"Helvetica Neue"</span><span class="op">,</span> Helvetica<span class="op">,</span> Arial<span class="op">,</span> <span class="dv">sans-serif</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">14</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">.number</span> {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-family</span>: <span class="st">"Fira Mono"</span><span class="op">,</span> Consolas<span class="op">,</span> Monaco<span class="op">,</span> <span class="dv">monospace</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">16</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">line-height</span>: <span class="dv">30</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">white-space</span>: <span class="dv">pre</span><span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">.title</span> {</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin</span>: <span class="dv">18</span><span class="dt">px</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">16</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">.title</span> h2 {</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-weight</span>: <span class="dv">600</span><span class="op">;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="fu">.header</span><span class="in">:hover</span><span class="op">,</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="fu">.header</span><span class="ex">[aria-sort</span><span class="op">=</span><span class="st">"ascending"</span><span class="ex">]</span><span class="op">,</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="fu">.header</span><span class="ex">[aria-sort</span><span class="op">=</span><span class="st">"descending"</span><span class="ex">]</span> {</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background-color</span>: <span class="cn">#eee</span><span class="op">;</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="fu">.salary-table</span> {</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin-bottom</span>: <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co">/* Align header text to the bottom */</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="fu">.header</span><span class="op">,</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="fu">.group-header</span> {</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">display</span>: <span class="dv">flex</span><span class="op">;</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">flex-direction</span>: <span class="dv">column</span><span class="op">;</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">justify-content</span>: flex-end<span class="op">;</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="fu">.header</span> {</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-bottom-color</span>: <span class="cn">#555</span><span class="op">;</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">13</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-weight</span>: <span class="dv">400</span><span class="op">;</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-transform</span>: <span class="dv">uppercase</span><span class="op">;</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co">/* Highlight headers when sorting */</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="fu">.header</span><span class="in">:hover</span><span class="op">,</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="fu">.header</span><span class="ex">[aria-sort</span><span class="op">=</span><span class="st">"ascending"</span><span class="ex">]</span><span class="op">,</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="fu">.header</span><span class="ex">[aria-sort</span><span class="op">=</span><span class="st">"descending"</span><span class="ex">]</span> {</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background-color</span>: <span class="cn">#eee</span><span class="op">;</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="fu">.border-left</span> {</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-left</span>: <span class="dv">2</span><span class="dt">px</span> <span class="dv">solid</span> <span class="cn">#555</span><span class="op">;</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="co">/* Use box-shadow to create row borders that appear behind vertical borders */</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="fu">.cell</span> {</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>  <span class="kw">box-shadow</span>: <span class="dv">inset</span> <span class="dv">0</span> <span class="dv">-1</span><span class="dt">px</span> <span class="dv">0</span> <span class="fu">rgba(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0.15</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target="#callout-1" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-04-28
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.294 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ dplyr       * 1.0.8   2022-02-08 [1] CRAN (R 4.2.0)
+ forcats     * 0.5.1   2021-01-27 [1] CRAN (R 4.2.0)
+ ggplot2     * 3.3.5   2021-06-25 [1] CRAN (R 4.2.0)
+ htmltools   * 0.5.2   2021-08-25 [1] CRAN (R 4.2.0)
+ purrr       * 0.3.4   2020-04-17 [1] CRAN (R 4.2.0)
+ reactable   * 0.2.3   2020-10-04 [1] CRAN (R 4.2.0)
+ readr       * 2.1.2   2022-01-30 [1] CRAN (R 4.2.0)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.2.0)
+ stringr     * 1.4.0   2019-02-10 [1] CRAN (R 4.2.0)
+ tibble      * 3.1.6   2021-11-07 [1] CRAN (R 4.2.0)
+ tidyr       * 1.2.0   2022-02-01 [1] CRAN (R 4.2.0)
+ tidyverse   * 1.3.1   2021-04-15 [1] CRAN (R 4.2.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
