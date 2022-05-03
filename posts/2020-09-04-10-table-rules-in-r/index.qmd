@@ -4,6 +4,7 @@ description: |
   Make tables people ACTUALLY want to read.
 author: Thomas Mock
 date: 09-04-2020
+date-format: iso
 categories:
   - data visualization
   - tables
@@ -16,6 +17,7 @@ image: preview.png
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(stringr)
 library(gt)
 tuesdata <- tidytuesdayR::tt_load(2020, "36")
 ```
@@ -1355,20 +1357,26 @@ rule6_tb %>%
   tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
 ```
 
-Alternatively, in some cultures, the `%` sign is placed on the left. We can use this to keep alignment properly although I'll acknowledge this looks awkward to me.
+A custom function could be used (and I've done that with [`gtExtras::fmt_symbol_first`](https://jthomasmock.github.io/gtExtras/reference/fmt_symbol_first.html)). [Note that that while the function below works just fine, the `gtExtras` function is much more robust to user input.]{.aside}
 
 ```{r}
-rule6_tb %>% 
-  fmt_percent(
-    columns = 2:4,
-    rows = 1,
-    scale_values = FALSE,
-    placement = "left"
-  )  %>% 
-  tab_source_note(md("**Table**: @thomas_mock | **Data**: OurWorldInData.org<br>**Inspiration**: @jschwabish"))
+fmt_pct_first <- function(x, rows = 1){
+  sym_add <- ifelse(rows == 1, "%", "&nbsp;")
+  x <- format(round(x, digits = 2), nsmall = 2)
+  paste0(x, sym_add)
+}
+
+head(mtcars) %>%
+  gt() %>%
+  fmt(mpg, rows = 1, function(x) fmt_pct_first(x, 1)) %>%
+  fmt(mpg, rows = 2:6, function(x) fmt_pct_first(x, 2:6)) %>% 
+  # have to use monospace font to control alignment properly
+  tab_style(style = cell_text(font = "monospace"), 
+    locations = cells_body(mpg))
 ```
 
-You could always add the `%` sign to each of the column labels, so that it's clear that the columns are actually percentages rather than just raw numbers.
+
+Alternatively, you could always add the `%` sign to each of the column labels, so that it's clear that the columns are actually percentages rather than just raw numbers.
 
 ```{r add-percent-sign}
 rule6_tb %>% 

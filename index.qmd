@@ -11,6 +11,8 @@ listing:
   categories: true
   date-format: "YYYY-MM-DD"
   page-size: 9
+toc: false
+toc-location: body
 page-layout: full
 title-block-banner: false
 ---

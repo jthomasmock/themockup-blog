@@ -1,0 +1,29 @@
+---
+title: "Renaming a directory with {fs}"
+description: |
+  Efficient 
+author: Thomas Mock
+date: 2022-04-29
+categories:
+  - tidyverse
+image: distill-preview.png
+draft: true
+---
+
+```{r setup, include = FALSE}
+all_files <- dir_ls("posts", recurse = TRUE) |> 
+  str_subset(".qmd") |> 
+  str_subset("[0-9]+-[0-9]+-[0-9]+")
+
+all_files|> 
+  path_file()
+
+orig_files <- all_files |> 
+  fs::path_dir() |> 
+  str_remove("posts/")
+
+all_files |> 
+  path_dir() |> 
+  paste0("/", orig_files, ".qmd")
+```
+

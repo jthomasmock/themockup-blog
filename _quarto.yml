@@ -41,6 +41,7 @@ format:
       utterances:
         repo: jthomasmock/themockup-blog
     toc: true
+    toc-location: "left"
     code-link: true
     anchor-sections: true
     fig-cap-location: margin
