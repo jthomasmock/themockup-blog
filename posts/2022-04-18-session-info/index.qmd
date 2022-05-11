@@ -9,6 +9,9 @@ categories:
   - quarto
 image: preview.png
 image-alt: "A polaroid camera sitting lens up in a pile of fallen brown leaves"
+twitter-card:
+  image: "preview.png"
+  image-alt: "A polaroid camera sitting lens up in a pile of fallen brown leaves"
 ---
 
 ## Adding session info

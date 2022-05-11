@@ -82,7 +82,7 @@
   </url>
   <url>
     <loc>https://themockup.blog/posts/2022-04-18-session-info/index.html</loc>
-    <lastmod>2022-05-03T21:12:27.425Z</lastmod>
+    <lastmod>2022-05-11T14:30:21.942Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite/index.html</loc>
@@ -142,7 +142,7 @@
   </url>
   <url>
     <loc>https://themockup.blog/index.html</loc>
-    <lastmod>2022-05-03T21:12:31.321Z</lastmod>
+    <lastmod>2022-05-11T14:30:27.118Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/readme.html</loc>
@@ -175,5 +175,9 @@
   <url>
     <loc>https://themockup.blog/static/slides/index.html</loc>
     <lastmod>2022-05-03T20:01:17.319Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2022-05-09-better-code-screenshots/index.html</loc>
+    <lastmod>2022-05-11T14:29:08.591Z</lastmod>
   </url>
 </urlset>
