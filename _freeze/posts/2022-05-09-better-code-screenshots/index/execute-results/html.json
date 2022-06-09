@@ -1,0 +1,14 @@
+{
+  "hash": "5f3b06203f36a3bdaac5ed98566eda3b",
+  "result": {
+    "markdown": "---\ntitle: \"Better code screenshots\"\ndescription: |\n  Alternative text and linking out\nauthor: Thomas Mock\ndate: 04-18-2022\ncategories:\n  - meta\n  - quarto\nimage: preview.png\nimage-alt: \"A polaroid camera sitting lens up in a pile of fallen brown leaves\"\n---\n\n\n\n## `gistfo` is great\n\n## `gistr` is powerful\n\n## `carbonate` is cool\n\n\n\n\n:::{.callout-tip collapse=\"true\"}\n## Expand for Session Info\n::: {.cell}\n::: {.cell-output .cell-output-stdout}\n```\n─ Session info ───────────────────────────────────────────────────────────────\n setting  value\n version  R version 4.2.0 (2022-04-22)\n os       macOS Monterey 12.2.1\n system   aarch64, darwin20\n ui       X11\n language (EN)\n collate  en_US.UTF-8\n ctype    en_US.UTF-8\n tz       America/Chicago\n date     2022-05-11\n pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)\n quarto   0.9.294 @ /usr/local/bin/quarto\n\n─ Packages ───────────────────────────────────────────────────────────────────\n package     * version    date (UTC) lib source\n gistfo      * 0.0.2.9000 2022-04-26 [1] Github (MilesMcBain/gistfo@6fc8111)\n gistr       * 0.9.0      2020-07-29 [1] CRAN (R 4.2.0)\n sessioninfo * 1.2.2      2021-12-06 [1] CRAN (R 4.2.0)\n webshot2    * 0.0.0.9000 2022-04-26 [1] Github (rstudio/webshot2@6cc8950)\n\n [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library\n\n──────────────────────────────────────────────────────────────────────────────\n```\n:::\n:::\n\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

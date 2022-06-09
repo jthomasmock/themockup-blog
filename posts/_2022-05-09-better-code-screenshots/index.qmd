@@ -1,0 +1,29 @@
+---
+title: "Better code screenshots"
+description: |
+  Alternative text and linking out
+author: Thomas Mock
+date: 04-18-2022
+categories:
+  - meta
+  - quarto
+image: preview.png
+image-alt: "A polaroid camera sitting lens up in a pile of fallen brown leaves"
+draft: true
+---
+
+```{r setup, include=FALSE}
+library(gistr)
+library(gistfo)
+library(webshot2)
+```
+
+## `gistfo` is great
+
+## `gistr` is powerful
+
+## `carbonate` is cool
+
+
+```{r, echo=FALSE, child="/Users/thomasmock/themockup-blog/_R/footer.qmd"}
+```

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.294">
+<meta name="generator" content="quarto-0.9.560">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A cookbook of advanced examples with extending {gt}">
 <title>The MockUp - gt cookbook - advanced</title>
@@ -77,13 +77,24 @@ code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script><script src="../../site_libs/quarto-nav/headroom.min.js"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script><script src="../../site_libs/quarto-search/fuse.min.js"></script><script src="../../site_libs/quarto-search/quarto-search.js"></script><link href="../../themockup.png" rel="icon" type="image/png">
-<script src="../../site_libs/quarto-html/quarto.js"></script><script src="../../site_libs/quarto-html/popper.min.js"></script><script src="../../site_libs/quarto-html/tippy.umd.min.js"></script><script src="../../site_libs/quarto-html/anchor.min.js"></script><link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script><link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -103,15 +114,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="The MockUp - gt cookbook - advanced">
-<meta property="og:description" content="A cookbook of advanced examples with extending {gt}">
+<meta property="og:description" content="A cookbook of advanced examples with extending…">
 <meta property="og:site-name" content="The MockUp">
 <meta name="twitter:title" content="The MockUp - gt cookbook - advanced">
-<meta name="twitter:description" content="A cookbook of advanced examples with extending {gt}">
+<meta name="twitter:description" content="A cookbook of advanced examples with extending…">
 <meta name="twitter:image" content="https://themockup.blog/static/resources/themockup.png">
 <meta name="twitter:creator" content="@thomas_mock">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 <body class="floating nav-fixed">
+
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
@@ -164,18 +176,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">gt cookbook - advanced</h1>
+                  <div>
+        <div class="description">
+          A cookbook of advanced examples with extending {gt}
+        </div>
+      </div>
                 </div>
   </div>
     
-  <div>
-    <div class="description">
-      A cookbook of advanced examples with extending {gt}
-    </div>
-  </div>
-
-
-
-
+  
   <div class="quarto-title-meta">
 
       
@@ -259,6 +268,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </div>
 <div class="cell">
+
 <style type="text/css">
 #TOC {
   color: #484848;
@@ -367,6 +377,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="one" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -850,6 +861,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">mutate</span><span class="op">(</span>color <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">color</span>, <span class="fu">gt</span><span class="fu">::</span><span class="va"><a href="https://gt.rstudio.com/reference/html.html">html</a></span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="pdhuoifsdj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -1321,6 +1333,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="nkzdnjoiny" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -1769,6 +1782,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu">tab_source_note</span><span class="op">(</span><span class="fu">html</span><span class="op">(</span><span class="va">html_csv</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="xkqytuqpuy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -2290,6 +2304,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
       <span class="op">)</span>
   <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="ympepqtkpq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -2819,6 +2834,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span>
   <span class="fu">tab_source_note</span><span class="op">(</span><span class="va">attach_excel</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="sxxhawowlm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -3370,6 +3386,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> 
   <span class="fu">tab_source_note</span><span class="op">(</span><span class="va">attach_excel</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="mitcbbjtwh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -3945,6 +3962,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="vtadmjxcsq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -4494,6 +4512,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="ivhqofyqsm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 html {
@@ -5065,6 +5084,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="dfxxssjyzg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 html {
@@ -5558,6 +5578,7 @@ html {
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="acesazptjc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -6058,6 +6079,7 @@ html {
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="dstsacbnxw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -6561,6 +6583,7 @@ html {
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="jvzupuoncs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -7025,6 +7048,7 @@ html {
     hp <span class="op">=</span> <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/html.html">html</a></span><span class="op">(</span><span class="fu">with_tooltip</span><span class="op">(</span><span class="st">"HP"</span>, <span class="st">"Horsepower"</span><span class="op">)</span><span class="op">)</span>,
   <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="idkhfllsmj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -7517,6 +7541,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="uzrbiqzbqz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -8040,6 +8065,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">mutate</span><span class="op">(</span>rating <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, size <span class="op">=</span> <span class="fl">5</span>, <span class="cn">TRUE</span><span class="op">)</span>, <span class="va">rating_stars</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> 
   <span class="fu">gt</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="wuenupildx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -8572,6 +8598,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">mutate</span><span class="op">(</span>cylinder <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">add_cyl_color</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> 
   <span class="fu">gt</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="clopqksvmr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -9118,6 +9145,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 <span class="va">orders</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> 
   <span class="fu">gt</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="icymnhrtiu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -9579,6 +9607,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> 
   <span class="fu">tab_source_note</span><span class="op">(</span>source_note <span class="op">=</span> <span class="fu">html</span><span class="op">(</span><span class="va">source_details</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="qyfhtveiby" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -10118,6 +10147,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="vebshmsipe" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -10608,6 +10638,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="nmejprvvps" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -11059,6 +11090,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="uyqaofbfjf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -11550,6 +11582,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 
 <span class="fu">car_table</span><span class="op">(</span><span class="st">"am"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="tzbwazvagg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -12075,6 +12108,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">slice_sample</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> 
   <span class="fu">car_table</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="hztpnsuecr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -12671,6 +12705,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> 
   <span class="fu">my_gt_theme</span><span class="op">(</span>table.font.color.light <span class="op">=</span> <span class="st">"lightgreen"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="krfhdamgwt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -13235,6 +13270,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
   <span class="fu">gt_theme_espn</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell-output-display">
+
 <table style="font-family: Lato, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; display: table; border-collapse: collapse; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: 700px; border-top-style: solid; border-top-width: 3px; border-top-color: rgba(255, 255, 255, 0); border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;">
 <thead style="border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;"><tr>
 <th style="color: #333333; background-color: #FFFFFF; font-size: 80%; font-weight: bolder; text-transform: uppercase; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" rowspan="1" colspan="1">mfr</th>
@@ -13374,6 +13410,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 <pre><code>Warning: `columns = TRUE` has been deprecated in gt 0.3.0:
 * please use `columns = everything()` instead</code></pre>
 <div class="cell-output-display">
+
 <table style="font-family: Chivo, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; display: table; border-collapse: collapse; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: rgba(255, 255, 255, 0); border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 3px; border-bottom-color: rgba(255, 255, 255, 0); border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;">
 <thead style="border-top-style: solid; border-top-width: 3px; border-top-color: rgba(255, 255, 255, 0); border-bottom-style: solid; border-bottom-width: 3px; border-bottom-color: #000000; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;"><tr>
 <th style="color: #333333; background-color: #FFFFFF; font-size: 80%; font-weight: bolder; text-transform: uppercase; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" rowspan="1" colspan="1">mfr</th>
@@ -13505,7 +13542,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 <div class="cell">
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">hulk_pal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
   <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/col_numeric.html">col_numeric</a></span><span class="op">(</span>
-      <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org//reference/hcl_palettes.html">diverge_hcl</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">9</span>, palette <span class="op">=</span> <span class="st">"Purple-Green"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="op">)</span>, 
+      <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/hcl_palettes.html">diverge_hcl</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">9</span>, palette <span class="op">=</span> <span class="st">"Purple-Green"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/downloadthis/man/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="op">)</span>, 
       domain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">nottem</span><span class="op">)</span>
       <span class="op">)</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -13566,6 +13603,7 @@ Warning: `columns = vars(...)` has been deprecated in gt 0.3.0:
 This message is displayed once per session.</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="aqfqhckgrg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -14157,6 +14195,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="urjetzkafc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -14742,6 +14781,7 @@ This message is displayed once per session.</code></pre>
     colors <span class="op">=</span> <span class="va">hulk_pal</span>
   <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+
 <div id="phchdeafhw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -15339,6 +15379,7 @@ This message is displayed once per session.</code></pre>
 This message is displayed once per session.</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="ypevuuaehp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -15929,6 +15970,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="ubpjvbdxuj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -16518,6 +16560,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="xsizkohcyb" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -17108,6 +17151,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="nrsjkzndli" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -17703,6 +17747,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="abzjinalef" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -18297,6 +18342,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="kiusbrvazr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -18892,6 +18938,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="dxgjdmuxyd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -19486,6 +19533,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="lhmmvutsxy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -20081,6 +20129,7 @@ This message is displayed once per session.</code></pre>
 * please use `columns = c(...)` instead</code></pre>
 </div>
 <div class="cell-output-display">
+
 <div id="qwhfqjrgur" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -20661,7 +20710,7 @@ This message is displayed once per session.</code></pre>
 </div>
 
 
-</section></section></section></main><!-- /main --><script type="application/javascript">
+</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
   const anchorJS = new window.AnchorJS();
