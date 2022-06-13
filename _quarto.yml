@@ -36,6 +36,7 @@ format:
   html:
     twitter-card:
       creator: "@thomas_mock"
+      image: "https://themockup.blog/themockup.png"
       card-style: summary_large_image
     comments:
       utterances:

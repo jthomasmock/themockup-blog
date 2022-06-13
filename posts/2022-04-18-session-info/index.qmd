@@ -7,10 +7,10 @@ date: 04-18-2022
 categories:
   - meta
   - quarto
-image: preview.png
+image: "/posts/2022-04-18-session-info/preview.png"
 image-alt: "A polaroid camera sitting lens up in a pile of fallen brown leaves"
 twitter-card:
-  image: "preview.png"
+  image: "/posts/2022-04-18-session-info/preview.png"
   image-alt: "A polaroid camera sitting lens up in a pile of fallen brown leaves"
 ---
 
