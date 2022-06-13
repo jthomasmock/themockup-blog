@@ -7,10 +7,10 @@ date: 2022-06-13
 categories:
   - gt
   - tables
-image: preview.png
+image: "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-13-gtextras-cran/preview.png"
 image-alt: "The hex logo for gtExtras, it is primarily a pixel-art inspired table with a computer, a gin and tonic cocktail, and a small cactus on top, below the desk is a small boston terrier."
 twitter-card:
-  image: preview.png
+  image: "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-13-gtextras-cran/preview.png"
   image-alt: "The hex logo for gtExtras, it is primarily a pixel-art inspired table with a computer, a gin and tonic cocktail, and a small cactus on top, below the desk is a small boston terrier."
 ---
 
