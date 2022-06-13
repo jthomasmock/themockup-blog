@@ -40,7 +40,7 @@ meta() %>%
   meta_social(
     title = "The GT cookbook",
     description = "Over 2,000 lines of the Grammar of Tables",
-    url = "https://themockup.blog/static/gt-cookbook.html",
+    url = "https://themockup.blog/static/resources/gt-cookbook.html",
     image = "https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png",
     image_alt = "Example table",
     og_type = "website",
@@ -104,7 +104,7 @@ meta() %>%
 
 This cookbook attempts to walk through many of the example usecases for `gt`, and provide useful commentary around the use of the various `gt` functions. The full [`gt` documentation](https://gt.rstudio.com/index.html) has other more succinct examples and full function arguments.
 
-For advanced use cases, make sure to check out the [Advanced Cookbook](https://themockup.blog/static/gt-cookbook-advanced.html)
+For advanced use cases, make sure to check out the [Advanced Cookbook](https://themockup.blog/static/resources/gt-cookbook-advanced.html)
 
 ## Basic Usage
 
