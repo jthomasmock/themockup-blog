@@ -4,7 +4,7 @@ description: |
   Minimizing repetition with further replication
 author: Thomas Mock
 date: 03-18-2018
-image: preview.jpg
+image: "https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg"
 categories:
   - purrr
   - tidyverse
@@ -250,7 +250,7 @@ mtcars %>%
 
 In closing, I’d like to thank several `#r4ds` Online Learning Community members for their help in my personal understanding of `purrr`: Frank Farach, Michael Kuehn, and Kent Johnson.
 
-If you are interested in joining this community led by Jesse Maegan check out her post [here](https://www.jessemaegan.com/post/r4ds-the-next-iteration/)!
+If you are interested in joining this community led by Jesse Maegan check out her post [here](https://www.jessemaegan.com/blog/r4ds-the-next-iteration/)!
 
 :::{.callout-tip collapse="true"}
 ## Expand for Session Info

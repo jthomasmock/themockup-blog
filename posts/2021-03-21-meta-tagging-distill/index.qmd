@@ -4,7 +4,7 @@ description: |
   Collect and organize all your content, and then customize how it appears on social media.
 author: Thomas Mock
 date: 03-21-2021
-image: preview.png
+image: "/posts/2021-03-21-meta-tagging-distill/preview.png"
 categories:
   - meta
   - distill
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(EVAL = FALSE)
 
 ![](preview.png)
 
-Including "extra" content in your blog is very useful for collecting all of your content beyond just blogposts. For example, I have a [Resources page](https://themockup.blog/resources.html) that sublinks to other things I've created or wanted to share at a specific URL.
+Including "extra" content in your blog is very useful for collecting all of your content beyond just blogposts. For example, I have a [Resources page](https://themockup.blog/static/resources/resources.html) that sublinks to other things I've created or wanted to share at a specific URL.
 
 :::{.aside}
 
@@ -50,7 +50,7 @@ and will show up on my blog at:
 
 For example my `{gt}` cookbook is linked at:  
 
-`https://themockup.blog/static/gt-cookbook.html`
+`https://themockup.blog/static/resources/gt-cookbook.html`
 
 That's easy enough, and now you can include basically any piece of arbitrary content you create via RMarkdown, all collected underneath the main URL of your blog/site!
 
@@ -136,7 +136,7 @@ Others have written about social card/meta tags for [`{blogdown}`](https://bookd
 
 ### Extra content
 
-Those built-in options work great for blogposts, but again I also have quite a few extra pieces of content, like my [`{gt}` cookbooks](https://themockup.blog/static/gt-cookbook.html), [`{xaringan}` slide decks](https://themockup.blog/static/slides/intro-tables-urban.html), or example [interactive tables](https://themockup.blog/static/100-women.html).
+Those built-in options work great for blogposts, but again I also have quite a few extra pieces of content, like my [`{gt}` cookbooks](https://themockup.blog/static/resources/gt-cookbook.html), [`{xaringan}` slide decks](https://themockup.blog/static/slides/intro-tables-urban.html), or example [interactive tables](https://themockup.blog/static/resources/100-women.html).
 
 For these non-blog pages, they are essentially just bare RMarkdown sites. As such, often I need to manually add the `<meta>` tags that tell the various social pages "what to do" with the page as far as previews.
 

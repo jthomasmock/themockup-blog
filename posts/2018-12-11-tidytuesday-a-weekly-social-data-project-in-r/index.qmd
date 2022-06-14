@@ -18,9 +18,9 @@ knitr::opts_chunk$set(eval = TRUE)
 
 ![](https://i.imgur.com/AXfD3Fk.png)
   
-Over the past month or so, the [r4ds online learning community](https://www.jessemaegan.com/post/r4ds-the-next-iteration/) founded by [Jesse Maegan](https://www.jessemaegan.com/) has been developing projects intended to help connect mentors and learners. One of the first projects born out of this collaboration is [#TidyTuesday](https://github.com/rfordatascience/tidytuesday), a weekly social data project focused on using `tidyverse` packages to clean, wrangle, tidy, and plot a new dataset every Tuesday.
+Over the past month or so, the [r4ds online learning community](https://www.jessemaegan.com/blog/r4ds-the-next-iteration/) founded by [Jesse Maegan](https://www.jessemaegan.com/) has been developing projects intended to help connect mentors and learners. One of the first projects born out of this collaboration is [#TidyTuesday](https://github.com/rfordatascience/tidytuesday), a weekly social data project focused on using `tidyverse` packages to clean, wrangle, tidy, and plot a new dataset every Tuesday.
 
-If you are interested in joining the r4ds online learning community check out Jesse Maegan's post [here](https://www.jessemaegan.com/post/r4ds-the-next-iteration/)!
+If you are interested in joining the r4ds online learning community check out Jesse Maegan's post [here](https://www.jessemaegan.com/blog/r4ds-the-next-iteration/)!
 
 Every Monday we will release a new dataset on our [GitHub](https://github.com/rfordatascience/tidytuesday) that has been tamed, but does not always adhere to "tidy" data principles. This dataset will come from an article with an interesting plot. Our goal is to have you take a look at the raw data, and generate either a copy of the original plot or a novel take on the data! You can obviously use whatever techniques you feel are appropriate, but the data will be organized in a way that `tidyverse` tools will work well! 
 
@@ -181,7 +181,7 @@ I'd also like to thank the `#r4ds` Mentorship Pilot team for their help in conce
 
 ## Other Useful Links
 
-[The R4DS Online Learning Community](https://www.jessemaegan.com/post/r4ds-the-next-iteration/)
+[The R4DS Online Learning Community](https://www.jessemaegan.com/blog/r4ds-the-next-iteration/)
 
 [The R for Data Science textbook](http://r4ds.had.co.nz/)
 

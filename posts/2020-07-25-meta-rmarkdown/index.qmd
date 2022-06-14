@@ -18,11 +18,11 @@ image: tools-flat.jpg
 
 My slides on this topic for the NYC R Conference are at [bit.ly/marvelRMD](https://docs.google.com/presentation/d/e/2PACX-1vRo1eXJtiwo6aTA8KZ2E-bUbv2GOonC2RIVk_5eWQ5y-ADXbRamBhHaa3w1vMW6BkEPOMJ13ZahSo8Q/embed?start=false&loop=true&delayms=30000&slide=id.p).
 
-[PDF Version](https://github.com/jthomasmock/radix_themockup/tree/master/_posts/2020-07-25-meta-rmarkdown/rmd-slides.pdf) for folks who want to try out the code-chunks.
+[PDF Version](https://github.com/jthomasmock/themockup-blog/blob/master/posts/2020-07-25-meta-rmarkdown/rmd-slides.pdf) for folks who want to try out the code-chunks.
 
 ## How Alison Hill teaches R Markdown
 
-If you haven't read it already make sure to read [Dr. Alison Hill's fantastic blogpost](https://alison.rbind.io/post/2020-05-28-how-i-teach-r-markdown/):  
+If you haven't read it already make sure to read [Dr. Alison Hill's fantastic blogpost](https://www.apreshill.com/blog/2020-05-how-i-teach-r-markdown/):  
 **`How I teach R Markdown`**
 
 Alison is a RMarkdown superstar on the RStudio Education team. Her blogpost covers her guide on her well-informed approach for **teaching** R Markdown. 
@@ -40,7 +40,7 @@ To summarize her post:
 4. **Make it real** - "Teach folks what they need to know to actually use the tool productively in real life."  
 5. **Make it easy** - "People will only keep using R Markdown if they see it making their life easier. So show them how. For example, the RStudio IDE has some very nice built-in features that make it much easier to be an R Markdown user."
 
-Again - GO READ her [blogpost](https://alison.rbind.io/post/2020-05-28-how-i-teach-r-markdown/) for additional links and guides she links to.
+Again - GO READ her [blogpost](https://www.apreshill.com/blog/2020-05-how-i-teach-r-markdown/) for additional links and guides she links to.
 
 My blogpost below is meant to be a sister article to hers, framed with a similar approach we use in Customer Success but different in that we're not doing as much long-form education. Alison's approach is well-informed and very useful in the context of direct teaching activity, which is why I wanted to share it as well!
 
@@ -164,9 +164,9 @@ A brief summary of her blogpost:
 ### R Markdown + RStudio Connect as an execution engine  
 - R Markdown is a first-class citizen on RStudio Connect, and you can interactively generate new reports based on parameters, or schedule R Markdown documents to re-execute documents on a schedule.  
 
-- Code for [ETL](https://solutions.rstudio.com/examples/apps/output-file-etl/) - an example of an ETL process through an automated R Markdown report, this could query against a SQL database or a `spark` cluster to process ETL jobs, all on a schedule down to the minute or up to a year.  
-- [Scheduled reporting](https://solutions.rstudio.com/examples/scheduling/scheduling/) - maybe your boss needs a report built every Monday? You can do that too - pulling in new data and re-generating a report on a specific time-schedule all with no need for human intervention. 
-- [Emailing w/ `blastula`](https://solutions.rstudio.com/examples/blastula/conditional-example/) - maybe your boss is too busy to consume a full report every day - send a conditional email directly to them if a specific number is hit or missed all with code in R! This email could is built with R Markdown, and could contain plots, tables, raw data, or attach ANY R Markdown-based document (so... basically anything).  
+- Code for [ETL](https://solutions.rstudio.com/example/bike_predict/) - an example of an ETL process through an automated R Markdown report, this could query against a SQL database or a `spark` cluster to process ETL jobs, all on a schedule down to the minute or up to a year.  
+- [Scheduled reporting](https://solutions.rstudio.com/data-science-admin/scheduling/) - maybe your boss needs a report built every Monday? You can do that too - pulling in new data and re-generating a report on a specific time-schedule all with no need for human intervention. 
+- [Emailing w/ `blastula`](https://solutions.rstudio.com/r/blastula/) - maybe your boss is too busy to consume a full report every day - send a conditional email directly to them if a specific number is hit or missed all with code in R! This email could is built with R Markdown, and could contain plots, tables, raw data, or attach ANY R Markdown-based document (so... basically anything).  
 
 ---
 

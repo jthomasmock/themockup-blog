@@ -39,7 +39,7 @@ remotes::install_github("jthomasmock/gtExtras")
 
 ## Using `gtExtras`
 
-Overall, there are a lot of available functions in `gtExtras`:
+There are a lot of available functions in `gtExtras`:
 
 ```{r}
 length(ls.str('package:gtExtras', mode='function'))
@@ -70,7 +70,9 @@ for more examples of combining tables and graphics together.
 A subset of functions are included below, or see the full [function
 reference](https://jthomasmock.github.io/gtExtras/reference/index.html).
 
-Importantly, `gtExtras` is not at all a replacement for `gt`, but rather is almost a "cookbook" where common or repeated function calls are grouped into their own respective functions. At a technical level, `gtExtras` is literally just `gt` functions under the hood and I'll highlight a few examples of how to do the same thing in each package. 
+Importantly, `gtExtras` is not at all a _replacement_ for `gt`, but rather is almost a "cookbook" where common or repeated function calls are grouped into their own respective functions. At a technical level, `gtExtras` is literally just `gt` functions under the hood and I'll highlight a few examples of how to do the same thing in each package. 
+
+I ultimately hope that seeing some of the easy things you can create with `gt` and `gtExtras` inspires you to create your _own_ R package or opinionated functions to use in your work.
 
 ### Load libraries
 
@@ -84,7 +86,7 @@ library(gtExtras)
 
 The package includes seven different themes, and 3 examples are the
 `gt_theme_538()` styled after FiveThirtyEight style tables, the
-`gt_theme_espn()` styled after ESPN style tables, and the
+`gt_theme_guardian()` styled after ESPN style tables, and the
 `gt_theme_nytimes()` styled after The New York Times tables.
 
 ```{r}
@@ -151,6 +153,8 @@ head(mtcars) %>%
   tab_header("My own custom theme!")
 ```
 
+The goal here is creating a theme that works for most of your needs, so you don't have to recreate the wheel each time.
+
 
 ### Hulk data_color
 
@@ -208,7 +212,7 @@ head(mtcars) %>%
   )
 ```
 
-Some complexity arises when wanting to use a color palette with tighter control. The code below is good but requires you to write out a lot of your own control.
+Some complexity arises when you decide to use a color palette with `scales` for tighter control. The code below is easy enough but requires you to write out a lot of essentially boilerplate code that doesn't vary much for different use cases.
 
 ```{r}
 
@@ -226,10 +230,10 @@ head(mtcars) %>%
 ```
 
 
-`gtExtras::gt_color_rows()` simple to use but provides rich color
+`gtExtras::gt_color_rows()` is also simple to use but out of the box provides rich color
 choices thanks to the native inclusion of `paletteer::paletteer_d()`. This can provide 100s of discrete (ie categorical) or continuous color palettes. 
 
-Note that it is very close to the `color_fn` from above but throws a warning if domain is NULL since that will use range within EACH column rather than a shared range ACROSS columns.
+Note that it is very close to the `color_fn` from above but throws a useful warning if domain is `NULL` since that will use range within EACH column rather than a shared range ACROSS columns. This is more important when your columns are related like a heatmap than this simple demo.
 
 
 ```{r}
@@ -250,6 +254,17 @@ mtcars %>%
   gt() %>%
   gt_color_rows(mpg:disp, palette = "ggsci::blue_material")
 ```
+
+[
+
+There's a LOT of palettes!
+
+```{r}
+paletteer::palettes_d_names |> 
+  dplyr::count(package, type, sort = TRUE)
+```
+
+]{.aside}
 
 
 You can also use custom-defined palettes with named colors in R or hex
@@ -288,7 +303,27 @@ mtcars %>%
    )
 ```
 
-Again, this function is an example of something that is easily possible with `gt` but would require a good chunk of repeated boilerplate code.
+Or even more succintly:
+
+```{r}
+gt(head(mtcars)) |> 
+  gt_color_rows(cyl, palette.colors(n = 3), domain = c(4,6,8))
+
+```
+
+Again, this function is an example of something that is easily possible with `gt` but would require a good chunk of repeated boilerplate code. The biggest value is thinking only about palettes/colors instead of `scales::col_factor()/col_numeric()`
+
+If you wanted to use categorical palettes with `gt`, you could so like below:
+
+```{r}
+cat_color <- scales::col_factor(
+  palette = palette.colors(n = 3), 
+  domain = c(4,6,8))
+
+gt(head(mtcars)) |> 
+  data_color(cyl, cat_color)
+```
+
 
 ### `gt_highlight_rows()`
 

@@ -4,7 +4,7 @@ description: |
   Doing more with dplyr and SQL
 author: Thomas Mock
 date: 04-28-2020
-image: https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1526&q=80
+image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1526&q=80"
 categories:
   - NFL
   - nflscrapR
@@ -28,9 +28,9 @@ library(pryr)
 
 # `nflfastR`
 
-Ben Baldwin and Sebastian Carl released [`nflfastR`](https://mrcaseb.github.io/nflfastR/) yesterday to provide faster scraping of NFL play-by-play data as well as data all the way back to 2000! This builds upon the work of the `nflscrapR` team who paved the way for this data for NFL games between 2009 and 2019.
+Ben Baldwin and Sebastian Carl released [`nflfastR`](https://www.nflfastr.com/) yesterday to provide faster scraping of NFL play-by-play data as well as data all the way back to 2000! This builds upon the work of the `nflscrapR` team who paved the way for this data for NFL games between 2009 and 2019.
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">INTRODUCING: <a href="https://twitter.com/nflfastR?ref_src=twsrc%5Etfw">@nflfastR</a>, an R package for scraping NFL data faster ⚡<br><br>🏈 Play-by-play of all NFL games going back to 2000<br>🏈 Includes Completion Probability and CPOE going back to 2006<br>🏈 Fast functions for scraping team rosters and highlight videos<a href="https://t.co/sgrq8GdoWJ">https://t.co/sgrq8GdoWJ</a> <a href="https://t.co/fqbyE1pPHE">pic.twitter.com/fqbyE1pPHE</a></p>&mdash; Ben Baldwin (@benbbaldwin) <a href="https://twitter.com/benbbaldwin/status/1254846456390975494?ref_src=twsrc%5Etfw">April 27, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">INTRODUCING: <a href="https://twitter.com/nflfastR?ref_src=twsrc%5Etfw">@nflfastR</a>, an R package for scraping NFL data faster ⚡<br><br>🏈 Play-by-play of all NFL games going back to 2000<br>🏈 Includes Completion Probability and CPOE going back to 2006<br>🏈 Fast functions for scraping team rosters and highlight videos<a href="https://www.nflfastr.com/">https://www.nflfastr.com/</a> <a href="https://t.co/fqbyE1pPHE">pic.twitter.com/fqbyE1pPHE</a></p>&mdash; Ben Baldwin (@benbbaldwin) <a href="https://twitter.com/benbbaldwin/status/1254846456390975494?ref_src=twsrc%5Etfw">April 27, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ## More data
 

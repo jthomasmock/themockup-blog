@@ -33,7 +33,7 @@ We'll continue on our example use-cases of interactive tables w/ `reactable`, bu
 
 My previous posts on:  
 - `reactable` - [How to guide for interactive tables](https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/)  
-- `gt` - [How to guide for static tables](https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables/)  
+- `gt` - [How to guide for static tables](https://themockup.blog/posts/2020-05-16-gt-a-grammar-of-tables/)  
 
 # 1st Round WRs
 
@@ -45,7 +45,7 @@ Like most examples, we'll need additional data for this example. ESPN was kind e
 
 Pretty striking huh? Of these tops QBs, Rodgers has almost no 1st round receivers on his team (or TE/RB). But what about the rest of the story? WHO does he throw TDs to?
 
-Let's take a look at the data, courtesy of pro-football-reference.com. The following 3 data sources got me these results (and the raw RDS file output can be found [here](https://github.com/jthomasmock/radix_themockup/blob/master/_posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/joined_tds.rds) & [here](https://github.com/jthomasmock/radix_themockup/blob/master/_posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/summary_qbs.rds)).
+Let's take a look at the data, courtesy of pro-football-reference.com. The following 3 data sources got me these results (and the raw RDS file output can be found [here](https://github.com/jthomasmock/themockup-blog/blob/master/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/joined_tds.rds?raw=true) & [here](https://github.com/jthomasmock/themockup-blog/blob/master/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/summary_qbs.rds?raw=true)).
 
 - [PFR Draft Query](https://www.pro-football-reference.com/play-index/draft-finder.cgi?request=1&year_min=2006&year_max=2020&type=&round_min=1&round_max=30&slot_min=1&slot_max=500&league_id=&team_id=&pos[]=WR&college_id=all&conference=any&show=all)  
   - This allows you to specify positions, years, etc  

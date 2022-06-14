@@ -8,7 +8,7 @@ categories:
   - NFL
   - tidyverse
   - tables
-image: distill-preview.png
+image: "/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png"
 ---
 
 ```{r setup, include=FALSE}
@@ -32,7 +32,7 @@ Raw data comes from: [Pro Football Reference](https://www.pro-football-reference
 
 ## Read in the Data
 
-I've gone through collecting the data and have put into a non-tidy wide format for Salary Rank, playoff week and appearances, Total appearances, and finally salary from 2014-2019. The raw CSV is available on [GitHub](https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/_posts/2020-05-13-qb-salaries-vs-playoff-appearances/playoff_salary.csv)
+I've gone through collecting the data and have put into a non-tidy wide format for Salary Rank, playoff week and appearances, Total appearances, and finally salary from 2014-2019. The raw CSV is available on [GitHub](https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/playoff_salary.csv)
 
 ```{r load libraries and read data}
 library(reactable) # for interactive tables

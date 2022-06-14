@@ -28,7 +28,7 @@ library(systemfonts)
 
 ### QBR Data
 
-We'll gather the QBR data through week 4 via `espnscrapeR`. We're also adapting a function from [Emil Hvitfeldt](https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/) to create `<img>` tags for use by `ggtext` down the line. His [post](https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/) has some good examples of `rtweet` + emoji analysis with `ggtext` embedded images.
+We'll gather the QBR data through week 4 via `espnscrapeR`. We're also adapting a function from [Emil Hvitfeldt](https://www.emilhvitfeldt.com/post/2020-01-02-real-emojis-in-ggplot2/) to create `<img>` tags for use by `ggtext` down the line. His [post](https://www.emilhvitfeldt.com/post/2020-01-02-real-emojis-in-ggplot2/) has some good examples of `rtweet` + emoji analysis with `ggtext` embedded images.
 
 ```{r libs, eval = FALSE}
 library(tidyverse)
@@ -258,7 +258,7 @@ However, there's an even easier way thanks to `ggtext`!
 
 Next we have `ggtext` + column labels. Here `ggtext::geom_richtext()` handles the proper scaling of the image without really any intervention from us! While `geom_richtext()` is very useful we're sort of using it out of its normal context. The overall purpose of `ggtext` is to provide *"improved text rendering support for `ggplot2`"*. The [`ggtext` site](https://wilkelab.org/ggtext/) has all the capabilities and function details. In short, `ggtext` provides a limited subset of `markdown`/`HTML`/`CSS` syntax as an interface to changing text in `ggplot2`.
 
-Thus, to achieve our goal of embedding images, we can create an [`img` HTML tag](https://www.w3schools.com/tags/tag_img.asp) to embed an image rather than just format text. Note that again, while this looks like a HTML call it works anywhere you want to use `ggplot2`. Credit to [Emil Hvitfeldt](https://www.hvitfeldt.me/blog/real-emojis-in-ggplot2/) for the idea of using an `img` tag and the function we're adapting to embed images.
+Thus, to achieve our goal of embedding images, we can create an [`img` HTML tag](https://www.w3schools.com/tags/tag_img.asp) to embed an image rather than just format text. Note that again, while this looks like a HTML call it works anywhere you want to use `ggplot2`. Credit to [Emil Hvitfeldt](https://www.emilhvitfeldt.com/post/2020-01-02-real-emojis-in-ggplot2/) for the idea of using an `img` tag and the function we're adapting to embed images.
 
 ```{r, echo = TRUE}
 # Don't forget, we already created an img label column with HTML

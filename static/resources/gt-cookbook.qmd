@@ -12,16 +12,16 @@ format:
 
 <meta name="twitter:title" content="The GT cookbook"/>
 <meta name="twitter:description" content="Over 2,000 lines of the Grammar of Tables"/>
-<meta name="twitter:url" content="https://themockup.blog/static/gt-cookbook.html"/>
-<meta name="twitter:image" content="https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png"/>
+<meta name="twitter:url" content="https://themockup.blog/static/resources/gt-cookbook.html"/>
+<meta name="twitter:image" content="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/static/images/gt-cookbook.png"/>
 <meta name="twitter:image:alt" content="Example table"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:creator" content="@thomas_mock"/>
 <meta name="twitter:site" content="@thomas_mock"/>
 <meta property="og:title" content="The GT cookbook"/>
 <meta property="og:description" content="Over 2,000 lines of the Grammar of Tables"/>
-<meta property="og:url" content="https://themockup.blog/static/gt-cookbook.html"/>
-<meta property="og:image" content="https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png"/>
+<meta property="og:url" content="https://themockup.blog/static/resources/gt-cookbook.html"/>
+<meta property="og:image" content="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/static/images/gt-cookbook.png"/>
 <meta property="og:image:alt" content="Example table"/>
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="en_US"/>
@@ -41,7 +41,7 @@ meta() %>%
     title = "The GT cookbook",
     description = "Over 2,000 lines of the Grammar of Tables",
     url = "https://themockup.blog/static/resources/gt-cookbook.html",
-    image = "https://raw.githubusercontent.com/jthomasmock/radix_themockup/master/static/images/gt-cookbook.png",
+    image = "https://raw.githubusercontent.com/jthomasmock/themockup/master/static/images/gt-cookbook.png",
     image_alt = "Example table",
     og_type = "website",
     og_author = "Tom Mock",

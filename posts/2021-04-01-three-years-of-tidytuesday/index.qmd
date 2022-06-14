@@ -4,7 +4,7 @@ description: |
   The future holds a deeper focus on inclusivity.
 author: Thomas Mock
 date: 04-01-2021
-image: preview.png
+image: "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2021-04-01-three-years-of-tidytuesday/preview.png"
 categories:
   - meta
   - data visualization

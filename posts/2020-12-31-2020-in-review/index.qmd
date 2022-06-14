@@ -134,7 +134,7 @@ In May, I started a "How to make tables with R" series, mostly focused on `gt` a
 - [QB salaries vs Playoff Appearances](https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances/): A quick example of how to use reactable  
 - [reactable - an interactives tables guide](https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/): A proper guide to how to create robust interactive tables with R  
 - [Client-side interactivity - do more with crosstalk](https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/): How to combine reactive plots and tables that interact with eachother via `crosstalk`, all in R!  
-- [gt - a grammar of tables](https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables/): How to make beautiful tables with `gt`  
+- [gt - a grammar of tables](https://themockup.blog/posts/2020-05-16-gt-a-grammar-of-tables/): How to make beautiful tables with `gt`  
 
 ---
 

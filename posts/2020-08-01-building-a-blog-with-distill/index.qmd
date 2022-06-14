@@ -163,7 +163,7 @@ We’re following instructions at: [Chapter 17 Existing project, GitHub last | H
 You could also do the create GitHub and then connect it to RStudio route [Chapter 17 Existing project, GitHub last | Happy Git and GitHub for the useR](https://happygitwithr.com/existing-github-last.html#make-and-connect-a-github-repo-option-2).
 :::
 
-NOTE: if you don’t have a GitHub PAT, get one now by following these instructions [B GitHub Personal Access Tokens | Happy Git and GitHub for the useR](https://happygitwithr.com/github-pat.html).
+NOTE: if you don’t have a GitHub PAT, get one now by following these instructions [B GitHub Personal Access Tokens | Happy Git and GitHub for the useR](https://happygitwithr.com/https-pat.html).
 
 This will first use Git locally, and then create a new GitHub repo based off your existing local files.  
 

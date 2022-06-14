@@ -5,7 +5,7 @@ description: |
 author: "Thomas Mock"
 date: "3-16-2018"
 categories: [tidyverse, statistics]
-image: "distill-preview.png"
+image: "https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png"
 ---
 
 ```{r setup, include=FALSE}
@@ -72,7 +72,7 @@ We can collect some information about the dataset now. Namely, we have our 3 cat
 
 Checking the data distribution
 
-We will use our first ggplot2call to create a graph showing the distribution of age. To break down what we are doing, we need to call ggplot, tell it what data to use, and use the aes or `aesthetic` call to assign the x coordinate. We then add a `+` which tells ggplot to include the next line of code. The `geom_density` tells R that we want to make create a density distribution layer and we want to fillit with a blue color! For more info about ggplot2 please go [HERE](http://r4ds.had.co.nz/data-visualisation.html) or [here](http://moderndive.com/3-viz.html). 
+We will use our first ggplot2call to create a graph showing the distribution of age. To break down what we are doing, we need to call ggplot, tell it what data to use, and use the aes or `aesthetic` call to assign the x coordinate. We then add a `+` which tells ggplot to include the next line of code. The `geom_density` tells R that we want to make create a density distribution layer and we want to fillit with a blue color! For more info about ggplot2 please go [HERE](http://r4ds.had.co.nz/data-visualisation.html) or [here](https://moderndive.com/2-viz.html). 
 
 ```{r}
 ggplot(data = raw_df, aes(x = age)) + 
@@ -457,7 +457,7 @@ I think it would be a disservice to say you can learn ggplot by simply recreatin
 
 If you have made it this far, good for you! I hope this was helpful and if you have any questions, I would recommend reaching out on Twitter via the `#rstats` or `#r4ds` hashtag, or you can find me @thomas_mock on twitter.
 
-Additionally, Jesse Maegan has a R for Data Science Slack channel where you can learn and ask questions as you work through the R for Data Science text, read all about it [here](https://www.jessemaegan.com/post/r4ds-the-next-iteration/)!. R Studio (caretakers of the Tidyverse) hosts their own [forums](https://community.rstudio.com/). 
+Additionally, Jesse Maegan has a R for Data Science Slack channel where you can learn and ask questions as you work through the R for Data Science text, read all about it [here](https://www.jessemaegan.com/blog/r4ds-the-next-iteration/)!. R Studio (caretakers of the Tidyverse) hosts their own [forums](https://community.rstudio.com/). 
 
 :::{.callout-tip collapse="true"}
 ## Expand for Session Info

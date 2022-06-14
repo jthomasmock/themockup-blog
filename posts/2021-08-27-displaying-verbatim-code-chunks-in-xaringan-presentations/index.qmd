@@ -4,7 +4,7 @@ description: |
   Because the best way to teach RMarkdown is with RMarkdown.
 author: Thomas Mock
 date: 08-27-2021
-image: preview.png
+image: "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/preview.png"
 categories:
   - meta
   - xaringan

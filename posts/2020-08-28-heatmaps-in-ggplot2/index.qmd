@@ -9,7 +9,7 @@ categories:
   - ggplot2
   - tidyverse
   - NFL
-image: preview.png
+image: "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2020-08-28-heatmaps-in-ggplot2/preview.png"
 ---
 
 ```{r setup, include=FALSE}
@@ -189,7 +189,7 @@ ggMarginal(red_beard, type = "histogram", fill = "red")
 
 ## 2D Density Alternatives
 
-Since we're actually interested in the density/counts of observations at each x-y coordinate instead of plotting *each* individual point, we also have a few other tools in our toolbox! We can use [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html) or [`geom_bin2d()`](https://ggplot2.tidyverse.org/reference/geom_bin2d.html). Note that there are a few other methods such as `geom_raster()` which require you to provide your own "z" metric, and there are `stat_?` versions of each of these geoms for more custom calculations.
+Since we're actually interested in the density/counts of observations at each x-y coordinate instead of plotting *each* individual point, we also have a few other tools in our toolbox! We can use [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html) or [`geom_bin2d()`](https://ggplot2.tidyverse.org/reference/geom_bin_2d.html). Note that there are a few other methods such as `geom_raster()` which require you to provide your own "z" metric, and there are `stat_?` versions of each of these geoms for more custom calculations.
 
 :::{.aside}
 If you read the `ggplot2` + overplotting [`ggplot2` book  chapter](https://ggplot2-book.org/statistical-summaries.html#overplotting), you can find more reproducible longer form examples and strategies with `geom_hex()` and `geom_bin2d()`.
