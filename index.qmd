@@ -6,8 +6,8 @@ listing:
   sort: 
     - "date desc"
     - "title desc"
-  type: "grid"
-  fields: [image, date, title, description, reading-time]
+  type: "table"
+  fields: [date, title, description, reading-time]
   categories: true
   date-format: "YYYY-MM-DD"
   page-size: 9
