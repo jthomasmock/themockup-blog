@@ -5,7 +5,7 @@ description: |
 author: "Thomas Mock"
 date: "3-16-2018"
 categories: [tidyverse, statistics]
-image: "https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png"
+image: "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png"
 ---
 
 ```{r setup, include=FALSE}

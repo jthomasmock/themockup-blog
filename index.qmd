@@ -6,8 +6,10 @@ listing:
   sort: 
     - "date desc"
     - "title desc"
-  type: "table"
-  fields: [date, title, description, reading-time]
+  type: default
+  image-height: 150px
+  image-placeholder: "themockup.png"
+  fields: [image, title, description, date, reading-time]
   categories: true
   date-format: "YYYY-MM-DD"
   page-size: 9

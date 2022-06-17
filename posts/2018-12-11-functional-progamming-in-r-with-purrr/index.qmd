@@ -4,7 +4,7 @@ description: |
   Minimizing repetition with further replication
 author: Thomas Mock
 date: 03-18-2018
-image: "https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg"
+image: "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg"
 categories:
   - purrr
   - tidyverse
@@ -14,8 +14,6 @@ categories:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-![](https://i.imgur.com/LIvMxbN.jpg)
   
 When you first started in R you likely were writing simple code to generate one outcome.
 
