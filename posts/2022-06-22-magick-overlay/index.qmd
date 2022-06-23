@@ -8,7 +8,7 @@ categories:
   - magick
 image: "/posts/2022-06-22-magick-overlay/preview.jpeg"
 twitter-card:
-  image:  "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-22-magick-overlay/preview.png"
+  image:  "/posts/2022-06-22-magick-overlay/preview.jpeg"
   card-style: summary
 ---
 
@@ -123,7 +123,7 @@ add_text  <- function(img, text = "Hello there!", font_size = 50, color = "white
 }
 
 faded_compare |> 
-  add_text() 
+  add_text()
 ```
 
 In my opinion, it's quite a bit easier to read the text with the faded overlay!
