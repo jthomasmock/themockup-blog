@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.577">
+<meta name="generator" content="quarto-0.9.600">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>The MockUp</title>
 <style>
@@ -73,10 +73,16 @@ ul.task-list{list-style: none;}
       window['quarto-listing-loaded']();
     }
   });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
   </script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="styles.css">
 <link rel="alternate" type="application/rss+xml" title="The MockUp" href="index.xml"><meta property="og:title" content="The MockUp">
 <meta property="og:description" content="Want to support my blog?">
-<meta property="og:image" content="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-13-gtextras-cran/preview.png">
+<meta property="og:image" content="https://themockup.blog/posts/2022-06-22-magick-overlay/preview.jpeg">
 <meta property="og:site-name" content="The MockUp">
 <meta name="twitter:title" content="The MockUp">
 <meta name="twitter:description" content="Want to support my blog?">
@@ -139,7 +145,7 @@ ul.task-list{list-style: none;}
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(36)</span></div><div class="category" data-category="API">API <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Automation">Automation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Community">Community <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JSON">JSON <span class="quarto-category-count">(2)</span></div><div class="category" data-category="NFL">NFL <span class="quarto-category-count">(12)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TidyTuesday">TidyTuesday <span class="quarto-category-count">(4)</span></div><div class="category" data-category="blog">blog <span class="quarto-category-count">(1)</span></div><div class="category" data-category="crosstalk">crosstalk <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data cleaning">data cleaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data visualization">data visualization <span class="quarto-category-count">(9)</span></div><div class="category" data-category="distill">distill <span class="quarto-category-count">(1)</span></div><div class="category" data-category="espnscrapeR">espnscrapeR <span class="quarto-category-count">(3)</span></div><div class="category" data-category="functions">functions <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(7)</span></div><div class="category" data-category="gt">gt <span class="quarto-category-count">(6)</span></div><div class="category" data-category="joins">joins <span class="quarto-category-count">(1)</span></div><div class="category" data-category="magick">magick <span class="quarto-category-count">(3)</span></div><div class="category" data-category="meta">meta <span class="quarto-category-count">(6)</span></div><div class="category" data-category="nfl">nfl <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nflfastR">nflfastR <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nflscrapR">nflscrapR <span class="quarto-category-count">(1)</span></div><div class="category" data-category="pdftools">pdftools <span class="quarto-category-count">(1)</span></div><div class="category" data-category="plotly">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="probability">probability <span class="quarto-category-count">(1)</span></div><div class="category" data-category="purrr">purrr <span class="quarto-category-count">(4)</span></div><div class="category" data-category="quarto">quarto <span class="quarto-category-count">(1)</span></div><div class="category" data-category="reactable">reactable <span class="quarto-category-count">(1)</span></div><div class="category" data-category="reprex">reprex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="rmarkdown">rmarkdown <span class="quarto-category-count">(4)</span></div><div class="category" data-category="simulation">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="statistics">statistics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(10)</span></div><div class="category" data-category="testing">testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="theme">theme <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidymodels">tidymodels <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidyverse">tidyverse <span class="quarto-category-count">(25)</span></div><div class="category" data-category="web scraping">web scraping <span class="quarto-category-count">(4)</span></div><div class="category" data-category="xaringan">xaringan <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(37)</span></div><div class="category" data-category="API">API <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Automation">Automation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Community">Community <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JSON">JSON <span class="quarto-category-count">(2)</span></div><div class="category" data-category="NFL">NFL <span class="quarto-category-count">(12)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TidyTuesday">TidyTuesday <span class="quarto-category-count">(4)</span></div><div class="category" data-category="blog">blog <span class="quarto-category-count">(1)</span></div><div class="category" data-category="crosstalk">crosstalk <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data cleaning">data cleaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data visualization">data visualization <span class="quarto-category-count">(9)</span></div><div class="category" data-category="distill">distill <span class="quarto-category-count">(1)</span></div><div class="category" data-category="espnscrapeR">espnscrapeR <span class="quarto-category-count">(3)</span></div><div class="category" data-category="functions">functions <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(7)</span></div><div class="category" data-category="gt">gt <span class="quarto-category-count">(6)</span></div><div class="category" data-category="joins">joins <span class="quarto-category-count">(1)</span></div><div class="category" data-category="magick">magick <span class="quarto-category-count">(4)</span></div><div class="category" data-category="meta">meta <span class="quarto-category-count">(6)</span></div><div class="category" data-category="nfl">nfl <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nflfastR">nflfastR <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nflscrapR">nflscrapR <span class="quarto-category-count">(1)</span></div><div class="category" data-category="pdftools">pdftools <span class="quarto-category-count">(1)</span></div><div class="category" data-category="plotly">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="probability">probability <span class="quarto-category-count">(1)</span></div><div class="category" data-category="purrr">purrr <span class="quarto-category-count">(4)</span></div><div class="category" data-category="quarto">quarto <span class="quarto-category-count">(1)</span></div><div class="category" data-category="reactable">reactable <span class="quarto-category-count">(1)</span></div><div class="category" data-category="reprex">reprex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="rmarkdown">rmarkdown <span class="quarto-category-count">(4)</span></div><div class="category" data-category="simulation">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="statistics">statistics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(10)</span></div><div class="category" data-category="testing">testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="theme">theme <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidymodels">tidymodels <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidyverse">tidyverse <span class="quarto-category-count">(25)</span></div><div class="category" data-category="web scraping">web scraping <span class="quarto-category-count">(4)</span></div><div class="category" data-category="xaringan">xaringan <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content"><p>Want to support my blog? <a href="https://www.buymeacoffee.com/thomasmock" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" height="30"></a></p>
 <div class="cell">
@@ -167,7 +173,35 @@ ul.task-list{list-style: none;}
 </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="gt,tables" data-listing-date-sort="1655096400000" data-listing-file-modified-sort="1655171477908" data-listing-reading-time-sort="13.21">
+<div class="quarto-post image-right" data-index="0" data-categories="magick" data-listing-date-sort="1655874000000" data-listing-file-modified-sort="1655963501091" data-listing-reading-time-sort="2.84">
+<div class="thumbnail">
+<p><a href="./posts/2022-06-22-magick-overlay/index.html"> <img src="./posts/2022-06-22-magick-overlay/preview.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
+</div>
+<div class="body">
+<a href="./posts/2022-06-22-magick-overlay/index.html">
+<h3 class="no-anchor listing-title">
+Add a semi-transparent overlay to an image with {magick}
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>Because who has time for CSS and gradients?</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/2022-06-22-magick-overlay/index.html">
+<div class="listing-date">
+2022-06-22
+</div>
+<div class="listing-reading-time">
+2 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="gt,tables" data-listing-date-sort="1655096400000" data-listing-file-modified-sort="1655171477908" data-listing-reading-time-sort="13.21">
 <div class="thumbnail">
 <p><a href="./posts/2022-06-13-gtextras-cran/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-13-gtextras-cran/preview.png" class="thumnail-image" style="height: 150px;" alt="The hex logo for gtExtras, it is primarily a pixel-art inspired table with a computer, a gin and tonic cocktail, and a small cactus on top, below the desk is a small boston terrier."></a></p>
 </div>
@@ -195,7 +229,7 @@ Beautiful tables in R with gtExtras
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="meta,quarto" data-listing-date-sort="1650258000000" data-listing-file-modified-sort="1655158532428" data-listing-reading-time-sort="4.5">
+<div class="quarto-post image-right" data-index="2" data-categories="meta,quarto" data-listing-date-sort="1650258000000" data-listing-file-modified-sort="1655158532428" data-listing-reading-time-sort="4.5">
 <div class="thumbnail">
 <p><a href="./posts/2022-04-18-session-info/index.html"> <img src="./posts/2022-04-18-session-info/preview.png" class="thumnail-image" style="height: 150px;" alt="A polaroid camera sitting lens up in a pile of fallen brown leaves"></a></p>
 </div>
@@ -223,7 +257,7 @@ Adding session info to blog posts
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="meta,xaringan,rmarkdown" data-listing-date-sort="1630040400000" data-listing-file-modified-sort="1655247743721" data-listing-reading-time-sort="6.625">
+<div class="quarto-post image-right" data-index="3" data-categories="meta,xaringan,rmarkdown" data-listing-date-sort="1630040400000" data-listing-file-modified-sort="1655247743721" data-listing-reading-time-sort="6.625">
 <div class="thumbnail">
 <p><a href="./posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -251,7 +285,7 @@ Displaying verbatim code chunks in RMarkdown and Xaringan presentations
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="meta,reprex,tidyverse" data-listing-date-sort="1627448400000" data-listing-file-modified-sort="1650914728236" data-listing-reading-time-sort="10.55">
+<div class="quarto-post image-right" data-index="4" data-categories="meta,reprex,tidyverse" data-listing-date-sort="1627448400000" data-listing-file-modified-sort="1650914728236" data-listing-reading-time-sort="10.55">
 <div class="thumbnail">
 <p><a href="./posts/2021-07-28-reminder-to-test-with-a-reprex/index.html"> <img src="./posts/2021-07-28-reminder-to-test-with-a-reprex/plot9-qb.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -279,7 +313,7 @@ Reminder to test with a reprex
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="meta,data visualization,TidyTuesday,ggplot2" data-listing-date-sort="1617253200000" data-listing-file-modified-sort="1655247674151" data-listing-reading-time-sort="17.865">
+<div class="quarto-post image-right" data-index="5" data-categories="meta,data visualization,TidyTuesday,ggplot2" data-listing-date-sort="1617253200000" data-listing-file-modified-sort="1655247674151" data-listing-reading-time-sort="17.865">
 <div class="thumbnail">
 <p><a href="./posts/2021-04-01-three-years-of-tidytuesday/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2021-04-01-three-years-of-tidytuesday/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -307,7 +341,7 @@ Three years of TidyTuesday
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="meta,distill,blog,rmarkdown" data-listing-date-sort="1616302800000" data-listing-file-modified-sort="1655247825047" data-listing-reading-time-sort="9.42">
+<div class="quarto-post image-right" data-index="6" data-categories="meta,distill,blog,rmarkdown" data-listing-date-sort="1616302800000" data-listing-file-modified-sort="1655247825047" data-listing-reading-time-sort="9.42">
 <div class="thumbnail">
 <p><a href="./posts/2021-03-21-meta-tagging-distill/index.html"> <img src="./posts/2021-03-21-meta-tagging-distill/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -335,7 +369,7 @@ Including and meta tagging extra content in a distill blog
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="gt,functions,testing" data-listing-date-sort="1615096800000" data-listing-file-modified-sort="1650914659756" data-listing-reading-time-sort="15.76">
+<div class="quarto-post image-right" data-index="7" data-categories="gt,functions,testing" data-listing-date-sort="1615096800000" data-listing-file-modified-sort="1650914659756" data-listing-reading-time-sort="15.76">
 <div class="thumbnail">
 <p><a href="./posts/2021-03-07-custom-gt-functions-and-testing/index.html"> <img src="./posts/2021-03-07-custom-gt-functions-and-testing/preview.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -363,7 +397,7 @@ Creating a custom gt function for aligning first-row text and testing it with te
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="tidyverse,data cleaning,joins" data-listing-date-sort="1613196000000" data-listing-file-modified-sort="1650914649676" data-listing-reading-time-sort="27.86">
+<div class="quarto-post image-right" data-index="8" data-categories="tidyverse,data cleaning,joins" data-listing-date-sort="1613196000000" data-listing-file-modified-sort="1650914649676" data-listing-reading-time-sort="27.86">
 <div class="thumbnail">
 <p><a href="./posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/index.html"> <img src="./posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/preview.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -391,9 +425,9 @@ Joins vs case whens - speed and memory tradeoffs
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="magick,tables" data-listing-date-sort="1611813600000" data-listing-file-modified-sort="1650914637842" data-listing-reading-time-sort="13.255">
+<div class="quarto-post image-right" data-index="9" data-categories="magick,tables" data-listing-date-sort="1611813600000" data-listing-file-modified-sort="1650914637842" data-listing-reading-time-sort="13.255">
 <div class="thumbnail">
-<p><a href="./posts/2021-01-28-removing-image-backgrounds-with-magick/index.html"> <img src="./posts/2021-01-28-removing-image-backgrounds-with-magick/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-01-28-removing-image-backgrounds-with-magick/index.html"> <img data-src="./posts/2021-01-28-removing-image-backgrounds-with-magick/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-01-28-removing-image-backgrounds-with-magick/index.html">
@@ -419,7 +453,7 @@ Removing image backgrounds with magick
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="magick,web scraping" data-listing-date-sort="1610949600000" data-listing-file-modified-sort="1651178404558" data-listing-reading-time-sort="18.76">
+<div class="quarto-post image-right" data-index="10" data-categories="magick,web scraping" data-listing-date-sort="1610949600000" data-listing-file-modified-sort="1651178404558" data-listing-reading-time-sort="18.76">
 <div class="thumbnail">
 <p><a href="./posts/2021-01-18-reading-tables-from-images-with-magick/index.html"> <img data-src="./posts/2021-01-18-reading-tables-from-images-with-magick/norm_normal_file_format.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -447,7 +481,7 @@ Reading tables from images with magick
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="meta" data-listing-date-sort="1609394400000" data-listing-file-modified-sort="1655247151965" data-listing-reading-time-sort="9.92">
+<div class="quarto-post image-right" data-index="11" data-categories="meta" data-listing-date-sort="1609394400000" data-listing-file-modified-sort="1655247151965" data-listing-reading-time-sort="9.92">
 <div class="thumbnail">
 <p><a href="./posts/2020-12-31-2020-in-review/index.html"> <img data-src="./posts/2020-12-31-2020-in-review/tt-plot.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -475,7 +509,7 @@ Reading tables from images with magick
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="ggplot2,data visualization,theme,tidyverse,NFL,espnscrapeR" data-listing-date-sort="1608962400000" data-listing-file-modified-sort="1650914585013" data-listing-reading-time-sort="39.405">
+<div class="quarto-post image-right" data-index="12" data-categories="ggplot2,data visualization,theme,tidyverse,NFL,espnscrapeR" data-listing-date-sort="1608962400000" data-listing-file-modified-sort="1650914585013" data-listing-reading-time-sort="39.405">
 <div class="thumbnail">
 <p><a href="./posts/2020-12-26-creating-and-using-custom-ggplot2-themes/index.html"> <img data-src="./posts/2020-12-26-creating-and-using-custom-ggplot2-themes/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -503,7 +537,7 @@ Creating and using custom ggplot2 themes
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="JSON,web scraping,NFL,espnscrapeR" data-listing-date-sort="1607839200000" data-listing-file-modified-sort="1650914574907" data-listing-reading-time-sort="26.925">
+<div class="quarto-post image-right" data-index="13" data-categories="JSON,web scraping,NFL,espnscrapeR" data-listing-date-sort="1607839200000" data-listing-file-modified-sort="1650914574907" data-listing-reading-time-sort="26.925">
 <div class="thumbnail">
 <p><a href="./posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/index.html"> <img data-src="./posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -531,7 +565,7 @@ Extracting JSON data from websites and public APIs with R
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="data visualization,tidyverse,ggplot2,nfl" data-listing-date-sort="1606629600000" data-listing-file-modified-sort="1650914563663" data-listing-reading-time-sort="19.66">
+<div class="quarto-post image-right" data-index="14" data-categories="data visualization,tidyverse,ggplot2,nfl" data-listing-date-sort="1606629600000" data-listing-file-modified-sort="1650914563663" data-listing-reading-time-sort="19.66">
 <div class="thumbnail">
 <p><a href="./posts/2020-11-29-bullet-chart-variants-in-r/index.html"> <img data-src="./posts/2020-11-29-bullet-chart-variants-in-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -559,7 +593,7 @@ Bullet Chart Variants in R
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-categories="data visualization,tables,gt,tidyverse" data-listing-date-sort="1604120400000" data-listing-file-modified-sort="1650914484809" data-listing-reading-time-sort="29.935">
+<div class="quarto-post image-right" data-index="15" data-categories="data visualization,tables,gt,tidyverse" data-listing-date-sort="1604120400000" data-listing-file-modified-sort="1650914484809" data-listing-reading-time-sort="29.935">
 <div class="thumbnail">
 <p><a href="./posts/2020-10-31-embedding-custom-features-in-gt-tables/index.html"> <img data-src="./posts/2020-10-31-embedding-custom-features-in-gt-tables/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -587,7 +621,7 @@ Embedding custom HTML in gt tables
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-categories="data visualization,ggplot2,tidyverse,tables,gt,NFL" data-listing-date-sort="1602392400000" data-listing-file-modified-sort="1655247116861" data-listing-reading-time-sort="18.02">
+<div class="quarto-post image-right" data-index="16" data-categories="data visualization,ggplot2,tidyverse,tables,gt,NFL" data-listing-date-sort="1602392400000" data-listing-file-modified-sort="1655247116861" data-listing-reading-time-sort="18.02">
 <div class="thumbnail">
 <p><a href="./posts/2020-10-11-embedding-images-in-ggplot/index.html"> <img data-src="./posts/2020-10-11-embedding-images-in-ggplot/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -615,7 +649,7 @@ Plotting Points as Images in ggplot
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-categories="tables,tidyverse,gt,NFL" data-listing-date-sort="1601269200000" data-listing-file-modified-sort="1650914457881" data-listing-reading-time-sort="21.165">
+<div class="quarto-post image-right" data-index="17" data-categories="tables,tidyverse,gt,NFL" data-listing-date-sort="1601269200000" data-listing-file-modified-sort="1650914457881" data-listing-reading-time-sort="21.165">
 <div class="thumbnail">
 <p><a href="./posts/2020-09-26-functions-and-themes-for-gt-tables/index.html"> <img data-src="./posts/2020-09-26-functions-and-themes-for-gt-tables/pff-themed-gt.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -643,7 +677,7 @@ Functions and Themes for gt tables
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="17" data-categories="data visualization,tables,tidyverse,TidyTuesday,gt" data-listing-date-sort="1599195600000" data-listing-file-modified-sort="1651607224862" data-listing-reading-time-sort="60.72">
+<div class="quarto-post image-right" data-index="18" data-categories="data visualization,tables,tidyverse,TidyTuesday,gt" data-listing-date-sort="1599195600000" data-listing-file-modified-sort="1651607224862" data-listing-reading-time-sort="60.72">
 <div class="thumbnail">
 <p><a href="./posts/2020-09-04-10-table-rules-in-r/index.html"> <img data-src="./posts/2020-09-04-10-table-rules-in-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -671,7 +705,7 @@ Functions and Themes for gt tables
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="18" data-categories="data visualization,ggplot2,tidyverse,NFL" data-listing-date-sort="1598590800000" data-listing-file-modified-sort="1655247891908" data-listing-reading-time-sort="22.39">
+<div class="quarto-post image-right" data-index="19" data-categories="data visualization,ggplot2,tidyverse,NFL" data-listing-date-sort="1598590800000" data-listing-file-modified-sort="1655247891908" data-listing-reading-time-sort="22.39">
 <div class="thumbnail">
 <p><a href="./posts/2020-08-28-heatmaps-in-ggplot2/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2020-08-28-heatmaps-in-ggplot2/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -699,7 +733,7 @@ Heatmaps in ggplot2
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="19" data-categories="rmarkdown,tidyverse" data-listing-date-sort="1596258000000" data-listing-file-modified-sort="1655247018442" data-listing-reading-time-sort="12.94">
+<div class="quarto-post image-right" data-index="20" data-categories="rmarkdown,tidyverse" data-listing-date-sort="1596258000000" data-listing-file-modified-sort="1655247018442" data-listing-reading-time-sort="12.94">
 <div class="thumbnail">
 <p><a href="./posts/2020-08-01-building-a-blog-with-distill/index.html"> <img data-src="./posts/2020-08-01-building-a-blog-with-distill/modern.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -727,7 +761,7 @@ Building a blog with distill
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="20" data-categories="data visualization,ggplot2,tidyverse,web scraping" data-listing-date-sort="1596258000000" data-listing-file-modified-sort="1650914409849" data-listing-reading-time-sort="8.565">
+<div class="quarto-post image-right" data-index="21" data-categories="data visualization,ggplot2,tidyverse,web scraping" data-listing-date-sort="1596258000000" data-listing-file-modified-sort="1650914409849" data-listing-reading-time-sort="8.565">
 <div class="thumbnail">
 <p><a href="./posts/2020-08-05-a-bar-chart-5-ways/index.html"> <img data-src="./posts/2020-08-05-a-bar-chart-5-ways/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -755,7 +789,7 @@ A bar chart 5 ways in ggplot2
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="21" data-categories="rmarkdown,tidyverse" data-listing-date-sort="1595653200000" data-listing-file-modified-sort="1655246943729" data-listing-reading-time-sort="12.12">
+<div class="quarto-post image-right" data-index="22" data-categories="rmarkdown,tidyverse" data-listing-date-sort="1595653200000" data-listing-file-modified-sort="1655246943729" data-listing-reading-time-sort="12.12">
 <div class="thumbnail">
 <p><a href="./posts/2020-07-25-meta-rmarkdown/index.html"> <img data-src="./posts/2020-07-25-meta-rmarkdown/tools-flat.jpg" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -783,7 +817,7 @@ Meta RMarkdown - Taxonomy and Use cases
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="22" data-categories="NFL,tidyverse,crosstalk,plotly,tables,reactable" data-listing-date-sort="1590728400000" data-listing-file-modified-sort="1655246788131" data-listing-reading-time-sort="16.33">
+<div class="quarto-post image-right" data-index="23" data-categories="NFL,tidyverse,crosstalk,plotly,tables,reactable" data-listing-date-sort="1590728400000" data-listing-file-modified-sort="1655246788131" data-listing-reading-time-sort="16.33">
 <div class="thumbnail">
 <p><a href="./posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/index.html"> <img data-src="./posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/preview.jpg" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -811,7 +845,7 @@ Client-side interactivity - do more with Crosstalk
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="23" data-categories="NFL,tidyverse,JSON,web scraping,API,purrr" data-listing-date-sort="1590123600000" data-listing-file-modified-sort="1650914340378" data-listing-reading-time-sort="15.275">
+<div class="quarto-post image-right" data-index="24" data-categories="NFL,tidyverse,JSON,web scraping,API,purrr" data-listing-date-sort="1590123600000" data-listing-file-modified-sort="1650914340378" data-listing-reading-time-sort="15.275">
 <div class="thumbnail">
 <p><a href="./posts/2020-05-22-parsing-json-in-r-with-jsonlite/index.html"> <img data-src="./posts/2020-05-22-parsing-json-in-r-with-jsonlite/preview.jpg" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -839,7 +873,7 @@ Easily parsing JSON in R with jsonlite and purrr
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="24" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589778000000" data-listing-file-modified-sort="1655247958640" data-listing-reading-time-sort="18.62">
+<div class="quarto-post image-right" data-index="25" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589778000000" data-listing-file-modified-sort="1655247958640" data-listing-reading-time-sort="18.62">
 <div class="thumbnail">
 <p><a href="./posts/2020-05-16-gt-a-grammar-of-tables/index.html"> <img data-src="./posts/2020-05-16-gt-a-grammar-of-tables/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -867,7 +901,7 @@ gt - a (G)rammar of (T)ables
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="25" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589518800000" data-listing-file-modified-sort="1655248005782" data-listing-reading-time-sort="18.905">
+<div class="quarto-post image-right" data-index="26" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589518800000" data-listing-file-modified-sort="1655248005782" data-listing-reading-time-sort="18.905">
 <div class="thumbnail">
 <p><a href="./posts/2020-05-13-reactable-tables-the-rest-of-the-owl/index.html"> <img data-src="./posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -895,7 +929,7 @@ reactable - An Interactive Tables Guide
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="26" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589346000000" data-listing-file-modified-sort="1650914290410" data-listing-reading-time-sort="8.775">
+<div class="quarto-post image-right" data-index="27" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589346000000" data-listing-file-modified-sort="1650914290410" data-listing-reading-time-sort="8.775">
 <div class="thumbnail">
 <p><a href="./posts/2020-05-13-qb-salaries-vs-playoff-appearances/index.html"> <img data-src="./posts/2020-05-13-qb-salaries-vs-playoff-appearances/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -923,7 +957,7 @@ QB Salaries vs Playoff Appearances
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="27" data-categories="espnscrapeR,NFL,tidyverse,tidymodels" data-listing-date-sort="1588309200000" data-listing-file-modified-sort="1650914279695" data-listing-reading-time-sort="7.595">
+<div class="quarto-post image-right" data-index="28" data-categories="espnscrapeR,NFL,tidyverse,tidymodels" data-listing-date-sort="1588309200000" data-listing-file-modified-sort="1650914279695" data-listing-reading-time-sort="7.595">
 <div class="thumbnail">
 <p><a href="./posts/2020-05-01-tidy-long-models/index.html"> <img data-src="./posts/2020-05-01-tidy-long-models/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -951,7 +985,7 @@ Flipping tibbles for many models
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="28" data-categories="NFL,nflscrapR,nflfastR,SQL,tidyverse" data-listing-date-sort="1588050000000" data-listing-file-modified-sort="1655248203488" data-listing-reading-time-sort="14.9">
+<div class="quarto-post image-right" data-index="29" data-categories="NFL,nflscrapR,nflfastR,SQL,tidyverse" data-listing-date-sort="1588050000000" data-listing-file-modified-sort="1655248203488" data-listing-reading-time-sort="14.9">
 <div class="thumbnail">
 <p><a href="./posts/2019-04-28-nflfastr-dbplyr-rsqlite/index.html"> <img data-src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1526&amp;q=80" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -979,7 +1013,7 @@ Bigger, nflfastR, dbplyr
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="29" data-categories="purrr,pdftools,tidyverse" data-listing-date-sort="1585976400000" data-listing-file-modified-sort="1650914247349" data-listing-reading-time-sort="17.375">
+<div class="quarto-post image-right" data-index="30" data-categories="purrr,pdftools,tidyverse" data-listing-date-sort="1585976400000" data-listing-file-modified-sort="1650914247349" data-listing-reading-time-sort="17.375">
 <div class="thumbnail">
 <p><a href="./posts/2020-04-03-beer-and-pdftools-a-vignette/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/pdftools-guide/master/beer-kegs.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -1007,7 +1041,7 @@ Beer and pdftools - a vignette
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="30" data-categories="tidyverse,purrr,simulation,probability" data-listing-date-sort="1585890000000" data-listing-file-modified-sort="1650914261851" data-listing-reading-time-sort="10.62">
+<div class="quarto-post image-right" data-index="31" data-categories="tidyverse,purrr,simulation,probability" data-listing-date-sort="1585890000000" data-listing-file-modified-sort="1650914261851" data-listing-reading-time-sort="10.62">
 <div class="thumbnail">
 <p><a href="./posts/2020-04-03-crossing-10000-tidy-simulation/index.html"> <img data-src="./posts/2020-04-03-crossing-10000-tidy-simulation/preview-small.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -1035,7 +1069,7 @@ Crossing 10,000 - Tidy simulation
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="31" data-categories="magick,data visualization,ggplot2" data-listing-date-sort="1547013600000" data-listing-file-modified-sort="1650914223815" data-listing-reading-time-sort="7.345">
+<div class="quarto-post image-right" data-index="32" data-categories="magick,data visualization,ggplot2" data-listing-date-sort="1547013600000" data-listing-file-modified-sort="1650914223815" data-listing-reading-time-sort="7.345">
 <div class="thumbnail">
 <p><a href="./posts/2019-01-09-add-a-logo-to-your-plot/index.html"> <img data-src="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -1063,7 +1097,7 @@ Add a logo to your plot
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="32" data-categories="TidyTuesday,tidyverse,Automation" data-listing-date-sort="1546408800000" data-listing-file-modified-sort="1650914214906" data-listing-reading-time-sort="9.6">
+<div class="quarto-post image-right" data-index="33" data-categories="TidyTuesday,tidyverse,Automation" data-listing-date-sort="1546408800000" data-listing-file-modified-sort="1650914214906" data-listing-reading-time-sort="9.6">
 <div class="thumbnail">
 <p><a href="./posts/2019-01-02-tidytuesday-enhancements/index.html"> <img data-src="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -1091,7 +1125,7 @@ TidyTuesday enhancements
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="33" data-categories="TidyTuesday,tidyverse,Community" data-listing-date-sort="1522904400000" data-listing-file-modified-sort="1655246331585" data-listing-reading-time-sort="9.72">
+<div class="quarto-post image-right" data-index="34" data-categories="TidyTuesday,tidyverse,Community" data-listing-date-sort="1522904400000" data-listing-file-modified-sort="1655246331585" data-listing-reading-time-sort="9.72">
 <div class="thumbnail">
 <p><a href="./posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/index.html"> <img data-src="./posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -1119,7 +1153,7 @@ TidyTuesday
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="34" data-categories="purrr,tidyverse,statistics" data-listing-date-sort="1521349200000" data-listing-file-modified-sort="1655490802875" data-listing-reading-time-sort="7.115">
+<div class="quarto-post image-right" data-index="35" data-categories="purrr,tidyverse,statistics" data-listing-date-sort="1521349200000" data-listing-file-modified-sort="1655490802875" data-listing-reading-time-sort="7.115">
 <div class="thumbnail">
 <p><a href="./posts/2018-12-11-functional-progamming-in-r-with-purrr/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg" class="thumnail-image" style="height: 150px;"></a></p>
 </div>
@@ -1147,7 +1181,7 @@ Functional Progamming in R with purrr
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="35" data-categories="tidyverse,statistics" data-listing-date-sort="1521176400000" data-listing-file-modified-sort="1655490741402" data-listing-reading-time-sort="23.27">
+<div class="quarto-post image-right" data-index="36" data-categories="tidyverse,statistics" data-listing-date-sort="1521176400000" data-listing-file-modified-sort="1655490741402" data-listing-reading-time-sort="23.27">
 <div class="thumbnail">
 <p><a href="./posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png" class="thumnail-image" style="height: 150px;"></a></p>
 </div>

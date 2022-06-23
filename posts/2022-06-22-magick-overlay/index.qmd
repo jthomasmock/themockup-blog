@@ -1,0 +1,140 @@
+---
+title: "Add a semi-transparent overlay to an image with {magick}"
+description: |
+  Because who has time for CSS and gradients?
+author: Thomas Mock
+date: 2022-06-22
+categories:
+  - magick
+image: "/posts/2022-06-22-magick-overlay/preview.jpeg"
+twitter-card:
+  image:  "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-22-magick-overlay/preview.png"
+  card-style: summary
+---
+
+I often find myself needing to apply a semi-transparent overlay in slides or reports to provide a better backdrop for text on top of a hero/splash image.
+
+You can apply an overlay with CSS + background-image + gradients, but let's do it natively in R with `{magick}` as that gives us more flexibility outside of a HTML environment.
+
+## Get an image
+
+I'll load `{magick}` and read in an example image of my ~~coworker~~ dog Howard.
+
+```{r}
+library(magick)
+library(scales)
+
+raw_img <- image_read("https://pbs.twimg.com/media/EabpU96WsAIJjG0?format=jpg&name=large")
+raw_img
+```
+
+## Define overlay function
+
+The basic idea is to draw a rectangle the exact size of the image OVER the image with some transparency.
+
+The `create_overlay()` function takes a raw image url/path or `magick-image` and then applies your chosen color to it.
+
+```{r}
+create_overlay <- function(img, overlay_color = "#00000060", out_file = NULL){
+  if(!("magick-image" %in% class(img))){
+    raw_img <- image_read(img)
+  } else if ("magick-image" %in% class(img)){
+    raw_img <- img
+  }
+  
+  # get image dimensions
+  img_info <- image_info(raw_img)
+  
+  # draw the raw image
+  img_overlay <- image_draw(raw_img)
+  # draw a rectangle of equal proportion to the raw image
+  rect(0, 0, img_info$width, img_info$height, col = overlay_color)
+  # save the results
+  dev.off()
+  
+  # return it or return + save out
+  if(!is.null(out_file)){
+    image_write(img_overlay)
+    message(paste("Image saved as", out_file))
+    return(img_overlay)
+  } else {
+    return(img_overlay)
+  }
+}
+```
+
+We can then use the function to apply some colors. Hex codes are typically 6 digits, but you can add transparency by varying the values at the end of string. So `#000000` is black but `#00000050` is black with 50% transparency.
+
+```{r}
+scales::show_col(c("#000000", paste0("#000000", seq(90, 10, length.out = 5))))
+```
+
+Alternatively, you could use `scales::alpha()` to convert named colors like `"red"` to their alpha ranges.
+
+```{r}
+scales::alpha("red", seq(1, 0.1, length.out = 6)) |> 
+  scales::show_col()
+```
+
+## Compare the image
+
+Now we can use our function to generate the overlay image but it's rather large... and I'd like to see it side-by-side with the original for easier comparison. We can use `magick::image_append()` + `magick::image_resize()`.
+
+```{r}
+faded_img <- create_overlay(raw_img, overlay_color = scales::alpha("black", 0.4))
+image_info(faded_img)
+
+image_append(
+  image_resize(c(raw_img, faded_img), 350)
+)
+```
+
+Now, let's roll that into another function.
+
+```{r}
+compare_img <- function(faded_img, img, px = 350){
+  image_append(
+    image_resize(c(img, faded_img), px)
+  )
+}
+
+faded_compare <- compare_img(faded_img, raw_img)
+faded_compare
+```
+
+We can also play around with other colors!
+
+```{r}
+compare_img(create_overlay(raw_img, scales::alpha("red", 0.15)), raw_img)
+compare_img(create_overlay(raw_img, scales::alpha("yellow", 0.15)), raw_img)
+compare_img(create_overlay(raw_img, scales::alpha("blue", 0.15)), raw_img)
+```
+
+Looks great, but we should see how our text looks as well.
+
+```{r}
+add_text  <- function(img, text = "Hello there!", font_size = 50, color = "white",
+                      loc = c("+175+100", "+50+305")){
+  img |> 
+  image_annotate(text, size = font_size, color = color,
+                 location = loc[1], gravity = "center") |> 
+  image_annotate(text, size = font_size, color = color,
+                 location = loc[2])
+}
+
+faded_compare |> 
+  add_text() 
+```
+
+In my opinion, it's quite a bit easier to read the text with the faded overlay!
+
+```{r}
+# save it out for use in another article
+create_overlay(raw_img, scales::alpha("black", 0.4)) |> 
+  image_resize(500) |> 
+  image_annotate("Goodbye Howard!", "center", size = 60, color = "white", 
+                 location = "+0+130")
+```
+
+```{r, echo=FALSE, child="/Users/thomasmock/themockup-blog/_R/footer.qmd"}
+```

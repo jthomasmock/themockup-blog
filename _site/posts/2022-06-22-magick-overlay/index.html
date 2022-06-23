@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.600">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Mock">
+<meta name="dcterms.date" content="2022-06-22">
+<meta name="description" content="Because who has time for CSS and gradients?">
+<title>The MockUp - Add a semi-transparent overlay to an image with {magick}</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Add a semi-transparent overlay to an image with {magick}">
+<meta property="og:description" content="Because who has time for CSS and gradients?">
+<meta property="og:image" content="https://themockup.blog/posts/2022-06-22-magick-overlay/preview.jpeg">
+<meta property="og:site-name" content="The MockUp">
+<meta name="twitter:title" content="The MockUp - Add a semi-transparent overlay to an image with {magick}">
+<meta name="twitter:description" content="Because who has time for CSS and gradients?">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-22-magick-overlay/preview.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary">
+</head>
+<body class="floating nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Add a semi-transparent overlay to an image with {magick}</h1>
+                  <div>
+        <div class="description">
+          <p>Because who has time for CSS and gradients?</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">magick</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 22, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#get-an-image" id="toc-get-an-image" class="nav-link active" data-scroll-target="#get-an-image">Get an image</a></li>
+  <li><a href="#define-overlay-function" id="toc-define-overlay-function" class="nav-link" data-scroll-target="#define-overlay-function">Define overlay function</a></li>
+  <li><a href="#compare-the-image" id="toc-compare-the-image" class="nav-link" data-scroll-target="#compare-the-image">Compare the image</a></li>
+  </ul></nav>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><p>I often find myself needing to apply a semi-transparent overlay in slides or reports to provide a better backdrop for text on top of a hero/splash image.</p>
+<p>You can apply an overlay with CSS + background-image + gradients, but let’s do it natively in R with <a href="https://docs.ropensci.org/magick/">magick</a> as that gives us more flexibility outside of a HTML environment.</p>
+<section id="get-an-image" class="level2"><h2 class="anchored" data-anchor-id="get-an-image">Get an image</h2>
+<p>I’ll load <a href="https://docs.ropensci.org/magick/">magick</a> and read in an example image of my <del>coworker</del> dog Howard.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/">magick</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to ImageMagick 6.9.12.3
+Enabled features: cairo, fontconfig, freetype, heic, lcms, pango, raw, rsvg, webp
+Disabled features: fftw, ghostscript, x11</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span>
+
+<span class="va">raw_img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="st">"https://pbs.twimg.com/media/EabpU96WsAIJjG0?format=jpg&amp;name=large"</span><span class="op">)</span>
+<span class="va">raw_img</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section><section id="define-overlay-function" class="level2"><h2 class="anchored" data-anchor-id="define-overlay-function">Define overlay function</h2>
+<p>The basic idea is to draw a rectangle the exact size of the image OVER the image with some transparency.</p>
+<p>The <code>create_overlay()</code> function takes a raw image url/path or <code>magick-image</code> and then applies your chosen color to it.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">create_overlay</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">img</span>, <span class="va">overlay_color</span> <span class="op">=</span> <span class="st">"#00000060"</span>, <span class="va">out_file</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">{</span>
+  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"magick-image"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">raw_img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"magick-image"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">raw_img</span> <span class="op">&lt;-</span> <span class="va">img</span>
+  <span class="op">}</span>
+  
+  <span class="co"># get image dimensions</span>
+  <span class="va">img_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">raw_img</span><span class="op">)</span>
+  
+  <span class="co"># draw the raw image</span>
+  <span class="va">img_overlay</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">image_draw</a></span><span class="op">(</span><span class="va">raw_img</span><span class="op">)</span>
+  <span class="co"># draw a rectangle of equal proportion to the raw image</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/rect.html">rect</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="va">img_info</span><span class="op">$</span><span class="va">width</span>, <span class="va">img_info</span><span class="op">$</span><span class="va">height</span>, col <span class="op">=</span> <span class="va">overlay_color</span><span class="op">)</span>
+  <span class="co"># save the results</span>
+  <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
+  
+  <span class="co"># return it or return + save out</span>
+  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">out_file</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_write</a></span><span class="op">(</span><span class="va">img_overlay</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Image saved as"</span>, <span class="va">out_file</span><span class="op">)</span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">img_overlay</span><span class="op">)</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">img_overlay</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can then use the function to apply some colors. Hex codes are typically 6 digits, but you can add transparency by varying the values at the end of string. So <code>#000000</code> is black but <code>#00000050</code> is black with 50% transparency.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html">show_col</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">10</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Alternatively, you could use <code><a href="https://scales.r-lib.org/reference/alpha.html">scales::alpha()</a></code> to convert named colors like <code>"red"</code> to their alpha ranges.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span>, length.out <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> |&gt; 
+  <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html">show_col</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="compare-the-image" class="level2"><h2 class="anchored" data-anchor-id="compare-the-image">Compare the image</h2>
+<p>Now we can use our function to generate the overlay image but it’s rather large… and I’d like to see it side-by-side with the original for easier comparison. We can use <code><a href="https://docs.ropensci.org/magick/reference/animation.html">magick::image_append()</a></code> + <code><a href="https://docs.ropensci.org/magick/reference/transform.html">magick::image_resize()</a></code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">faded_img</span> <span class="op">&lt;-</span> <span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, overlay_color <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">faded_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  format width height colorspace matte filesize density
+1   JPEG  1536   2048       sRGB  TRUE        0   72x72</code></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/animation.html">image_append</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">raw_img</span>, <span class="va">faded_img</span><span class="op">)</span>, <span class="fl">350</span><span class="op">)</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="350"></p>
+</div>
+</div>
+<p>Now, let’s roll that into another function.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">compare_img</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">faded_img</span>, <span class="va">img</span>, <span class="va">px</span> <span class="op">=</span> <span class="fl">350</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/animation.html">image_append</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">img</span>, <span class="va">faded_img</span><span class="op">)</span>, <span class="va">px</span><span class="op">)</span>
+  <span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">faded_compare</span> <span class="op">&lt;-</span> <span class="fu">compare_img</span><span class="op">(</span><span class="va">faded_img</span>, <span class="va">raw_img</span><span class="op">)</span>
+<span class="va">faded_compare</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="350"></p>
+</div>
+</div>
+<p>We can also play around with other colors!</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="350"></p>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"yellow"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="350"></p>
+</div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="350"></p>
+</div>
+</div>
+<p>Looks great, but we should see how our text looks as well.</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">add_text</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">img</span>, <span class="va">text</span> <span class="op">=</span> <span class="st">"Hello there!"</span>, <span class="va">font_size</span> <span class="op">=</span> <span class="fl">50</span>, <span class="va">color</span> <span class="op">=</span> <span class="st">"white"</span>,
+                      <span class="va">loc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"+175+100"</span>, <span class="st">"+50+305"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">img</span> |&gt; 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/painting.html">image_annotate</a></span><span class="op">(</span><span class="va">text</span>, size <span class="op">=</span> <span class="va">font_size</span>, color <span class="op">=</span> <span class="va">color</span>,
+                 location <span class="op">=</span> <span class="va">loc</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, gravity <span class="op">=</span> <span class="st">"center"</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/painting.html">image_annotate</a></span><span class="op">(</span><span class="va">text</span>, size <span class="op">=</span> <span class="va">font_size</span>, color <span class="op">=</span> <span class="va">color</span>,
+                 location <span class="op">=</span> <span class="va">loc</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">faded_compare</span> |&gt; 
+  <span class="fu">add_text</span><span class="op">(</span><span class="op">)</span> </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="350"></p>
+</div>
+</div>
+<p>In my opinion, it’s quite a bit easier to read the text with the faded overlay!</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># save it out for use in another article</span>
+<span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="fl">500</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/painting.html">image_annotate</a></span><span class="op">(</span><span class="st">"Goodbye Howard!"</span>, <span class="st">"center"</span>, size <span class="op">=</span> <span class="fl">60</span>, color <span class="op">=</span> <span class="st">"white"</span>, 
+                 location <span class="op">=</span> <span class="st">"+0+130"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="250"></p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Monterey 12.2.1
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-06-23
+ pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
+ quarto   0.9.600 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ magick      * 2.7.3   2021-08-18 [1] CRAN (R 4.2.0)
+ scales      * 1.2.0   2022-04-13 [1] CRAN (R 4.2.0)
+ sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.2.0)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
