@@ -9,7 +9,7 @@ categories:
 image: "/posts/2022-06-22-magick-overlay/preview.jpeg"
 twitter-card:
   image:  "/posts/2022-06-22-magick-overlay/preview.jpeg"
-  card-style: summary
+  card-style: summary_large_image
 ---
 
 I often find myself needing to apply a semi-transparent overlay in slides or reports to provide a better backdrop for text on top of a hero/splash image.
