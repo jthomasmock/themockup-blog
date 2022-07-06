@@ -28,6 +28,15 @@ raw_img <- image_read("https://pbs.twimg.com/media/EabpU96WsAIJjG0?format=jpg&na
 raw_img
 ```
 
+## Quick overlay
+
+You can apply a quick overlay of a single color with a simple "one liner" - but we'll go a bit more custom in case as I'm sure I'll want to know how someday!
+
+```{r}
+image_colorize(raw_img, 37, "black") |> 
+  image_resize(350)
+```
+
 ## Define overlay function
 
 The basic idea is to draw a rectangle the exact size of the image OVER the image with some transparency.

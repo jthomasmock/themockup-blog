@@ -216,6 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
 <li><a href="#get-an-image" id="toc-get-an-image" class="nav-link active" data-scroll-target="#get-an-image">Get an image</a></li>
+  <li><a href="#quick-overlay" id="toc-quick-overlay" class="nav-link" data-scroll-target="#quick-overlay">Quick overlay</a></li>
   <li><a href="#define-overlay-function" id="toc-define-overlay-function" class="nav-link" data-scroll-target="#define-overlay-function">Define overlay function</a></li>
   <li><a href="#compare-the-image" id="toc-compare-the-image" class="nav-link" data-scroll-target="#compare-the-image">Compare the image</a></li>
   </ul></nav>
@@ -241,11 +242,20 @@ Disabled features: fftw, ghostscript, x11</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
+</section><section id="quick-overlay" class="level2"><h2 class="anchored" data-anchor-id="quick-overlay">Quick overlay</h2>
+<p>You can apply a quick overlay of a single color with a simple “one liner” - but we’ll go a bit more custom in case as I’m sure I’ll want to know how someday!</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/color.html">image_colorize</a></span><span class="op">(</span><span class="va">raw_img</span>, <span class="fl">37</span>, <span class="st">"black"</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="fl">350</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="175"></p>
+</div>
+</div>
 </section><section id="define-overlay-function" class="level2"><h2 class="anchored" data-anchor-id="define-overlay-function">Define overlay function</h2>
 <p>The basic idea is to draw a rectangle the exact size of the image OVER the image with some transparency.</p>
 <p>The <code>create_overlay()</code> function takes a raw image url/path or <code>magick-image</code> and then applies your chosen color to it.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">create_overlay</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">img</span>, <span class="va">overlay_color</span> <span class="op">=</span> <span class="st">"#00000060"</span>, <span class="va">out_file</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">{</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">create_overlay</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">img</span>, <span class="va">overlay_color</span> <span class="op">=</span> <span class="st">"#00000060"</span>, <span class="va">out_file</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">{</span>
   <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"magick-image"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
     <span class="va">raw_img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span>
   <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"magick-image"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
@@ -274,38 +284,38 @@ Disabled features: fftw, ghostscript, x11</code></pre>
 </div>
 <p>We can then use the function to apply some colors. Hex codes are typically 6 digits, but you can add transparency by varying the values at the end of string. So <code>#000000</code> is black but <code>#00000050</code> is black with 50% transparency.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html">show_col</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">10</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html">show_col</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">10</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Alternatively, you could use <code><a href="https://scales.r-lib.org/reference/alpha.html">scales::alpha()</a></code> to convert named colors like <code>"red"</code> to their alpha ranges.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span>, length.out <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> |&gt; 
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span>, length.out <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> |&gt; 
   <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html">show_col</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="compare-the-image" class="level2"><h2 class="anchored" data-anchor-id="compare-the-image">Compare the image</h2>
 <p>Now we can use our function to generate the overlay image but it’s rather large… and I’d like to see it side-by-side with the original for easier comparison. We can use <code><a href="https://docs.ropensci.org/magick/reference/animation.html">magick::image_append()</a></code> + <code><a href="https://docs.ropensci.org/magick/reference/transform.html">magick::image_resize()</a></code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">faded_img</span> <span class="op">&lt;-</span> <span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, overlay_color <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">faded_img</span> <span class="op">&lt;-</span> <span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, overlay_color <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://docs.ropensci.org/magick/reference/attributes.html">image_info</a></span><span class="op">(</span><span class="va">faded_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  format width height colorspace matte filesize density
 1   JPEG  1536   2048       sRGB  TRUE        0   72x72</code></pre>
 </div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/animation.html">image_append</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/animation.html">image_append</a></span><span class="op">(</span>
   <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">raw_img</span>, <span class="va">faded_img</span><span class="op">)</span>, <span class="fl">350</span><span class="op">)</span>
 <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="350"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="350"></p>
 </div>
 </div>
 <p>Now, let’s roll that into another function.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">compare_img</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">faded_img</span>, <span class="va">img</span>, <span class="va">px</span> <span class="op">=</span> <span class="fl">350</span><span class="op">)</span><span class="op">{</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">compare_img</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">faded_img</span>, <span class="va">img</span>, <span class="va">px</span> <span class="op">=</span> <span class="fl">350</span><span class="op">)</span><span class="op">{</span>
   <span class="fu"><a href="https://docs.ropensci.org/magick/reference/animation.html">image_append</a></span><span class="op">(</span>
     <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">img</span>, <span class="va">faded_img</span><span class="op">)</span>, <span class="va">px</span><span class="op">)</span>
   <span class="op">)</span>
@@ -314,27 +324,27 @@ Disabled features: fftw, ghostscript, x11</code></pre>
 <span class="va">faded_compare</span> <span class="op">&lt;-</span> <span class="fu">compare_img</span><span class="op">(</span><span class="va">faded_img</span>, <span class="va">raw_img</span><span class="op">)</span>
 <span class="va">faded_compare</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="350"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="350"></p>
 </div>
 </div>
 <p>We can also play around with other colors!</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="350"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="350"></p>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"yellow"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"yellow"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="350"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="350"></p>
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">compare_img</span><span class="op">(</span><span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span>, <span class="va">raw_img</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="350"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="350"></p>
 </div>
 </div>
 <p>Looks great, but we should see how our text looks as well.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">add_text</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">img</span>, <span class="va">text</span> <span class="op">=</span> <span class="st">"Hello there!"</span>, <span class="va">font_size</span> <span class="op">=</span> <span class="fl">50</span>, <span class="va">color</span> <span class="op">=</span> <span class="st">"white"</span>,
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">add_text</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">img</span>, <span class="va">text</span> <span class="op">=</span> <span class="st">"Hello there!"</span>, <span class="va">font_size</span> <span class="op">=</span> <span class="fl">50</span>, <span class="va">color</span> <span class="op">=</span> <span class="st">"white"</span>,
                       <span class="va">loc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"+175+100"</span>, <span class="st">"+50+305"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
   <span class="va">img</span> |&gt; 
   <span class="fu"><a href="https://docs.ropensci.org/magick/reference/painting.html">image_annotate</a></span><span class="op">(</span><span class="va">text</span>, size <span class="op">=</span> <span class="va">font_size</span>, color <span class="op">=</span> <span class="va">color</span>,
@@ -346,18 +356,18 @@ Disabled features: fftw, ghostscript, x11</code></pre>
 <span class="va">faded_compare</span> |&gt; 
   <span class="fu">add_text</span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="350"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="350"></p>
 </div>
 </div>
 <p>In my opinion, it’s quite a bit easier to read the text with the faded overlay!</p>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># save it out for use in another article</span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co"># save it out for use in another article</span>
 <span class="fu">create_overlay</span><span class="op">(</span><span class="va">raw_img</span>, <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/alpha.html">alpha</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_resize</a></span><span class="op">(</span><span class="fl">500</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="https://docs.ropensci.org/magick/reference/painting.html">image_annotate</a></span><span class="op">(</span><span class="st">"Goodbye Howard!"</span>, <span class="st">"center"</span>, size <span class="op">=</span> <span class="fl">60</span>, color <span class="op">=</span> <span class="st">"white"</span>, 
                  location <span class="op">=</span> <span class="st">"+0+130"</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="250"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="250"></p>
 </div>
 </div>
 <div class="callout-tip callout callout-style-default callout-captioned">
