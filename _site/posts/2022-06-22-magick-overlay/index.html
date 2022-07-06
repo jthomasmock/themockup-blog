@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.600">
+<meta name="generator" content="quarto-0.9.637">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Mock">
 <meta name="dcterms.date" content="2022-06-22">
@@ -258,13 +258,13 @@ Disabled features: fftw, ghostscript, x11</code></pre>
   <span class="co"># draw the raw image</span>
   <span class="va">img_overlay</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">image_draw</a></span><span class="op">(</span><span class="va">raw_img</span><span class="op">)</span>
   <span class="co"># draw a rectangle of equal proportion to the raw image</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/rect.html">rect</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="va">img_info</span><span class="op">$</span><span class="va">width</span>, <span class="va">img_info</span><span class="op">$</span><span class="va">height</span>, col <span class="op">=</span> <span class="va">overlay_color</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/rect.html">rect</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="va">img_info</span><span class="op">$</span><span class="va">width</span>, <span class="va">img_info</span><span class="op">$</span><span class="va">height</span>, col <span class="op">=</span> <span class="va">overlay_color</span>, border <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
   <span class="co"># save the results</span>
   <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
   
   <span class="co"># return it or return + save out</span>
   <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">out_file</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
-    <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_write</a></span><span class="op">(</span><span class="va">img_overlay</span><span class="op">)</span>
+    <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_write</a></span><span class="op">(</span><span class="va">img_overlay</span>, path <span class="op">=</span> <span class="va">out_file</span><span class="op">)</span>
     <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Image saved as"</span>, <span class="va">out_file</span><span class="op">)</span><span class="op">)</span>
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">img_overlay</span><span class="op">)</span>
   <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
@@ -377,16 +377,16 @@ Expand for Session Info
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
  version  R version 4.2.0 (2022-04-22)
- os       macOS Monterey 12.2.1
+ os       macOS Monterey 12.4
  system   aarch64, darwin20
  ui       X11
  language (EN)
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/Chicago
- date     2022-06-23
+ date     2022-07-06
  pandoc   2.18 @ /Applications/RStudio.app/Contents/MacOS/quarto/bin/tools/ (via rmarkdown)
- quarto   0.9.600 @ /usr/local/bin/quarto
+ quarto   0.9.637 @ /usr/local/bin/quarto
 
 ─ Packages ───────────────────────────────────────────────────────────────────
  package     * version date (UTC) lib source

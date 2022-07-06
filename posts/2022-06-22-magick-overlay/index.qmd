@@ -48,13 +48,13 @@ create_overlay <- function(img, overlay_color = "#00000060", out_file = NULL){
   # draw the raw image
   img_overlay <- image_draw(raw_img)
   # draw a rectangle of equal proportion to the raw image
-  rect(0, 0, img_info$width, img_info$height, col = overlay_color)
+  rect(0, 0, img_info$width, img_info$height, col = overlay_color, border = NA)
   # save the results
   dev.off()
   
   # return it or return + save out
   if(!is.null(out_file)){
-    image_write(img_overlay)
+    image_write(img_overlay, path = out_file)
     message(paste("Image saved as", out_file))
     return(img_overlay)
   } else {
