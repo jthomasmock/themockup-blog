@@ -39,7 +39,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 I fell in love with R and data science through my graduate research, using R and RStudio to wrangle, analyze, model, and visualize my data. I became passionate about growing the R community, and founded [`#TidyTuesday`](https://github.com/rfordatascience/tidytuesday/blob/master/README.md) to help newcomers and seasoned vets improve their `Tidyverse` skills.
 
-I am the Customer Enablement Lead at RStudio, helping our customers be as successful as possible with RStudio software in their environment.
+I am the Customer Enablement Lead at Posit, helping our customers be as successful as possible with RStudio software in their environment.
 
 In my home town of San Antonio, my wife and I run on the local trails, play with our Boston Terrier “Howard”,<img align="right" width="95" alt="A pixel art image of my dog howard - he's a black and white Boston Terrier" src="howard.png">  spend lots of time with our local families, grill/smoke plenty of meat, and are always on the lookout for great new food, especially churros. 
 
