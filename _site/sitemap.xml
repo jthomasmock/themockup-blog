@@ -146,7 +146,7 @@
   </url>
   <url>
     <loc>https://themockup.blog/index.html</loc>
-    <lastmod>2022-11-02T15:29:17.405Z</lastmod>
+    <lastmod>2022-11-08T19:34:35.314Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/readme.html</loc>
@@ -154,7 +154,7 @@
   </url>
   <url>
     <loc>https://themockup.blog/about.html</loc>
-    <lastmod>2022-11-02T15:27:53.451Z</lastmod>
+    <lastmod>2022-11-08T19:35:12.496Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/static/resources/gt-cookbook.html</loc>
@@ -166,7 +166,7 @@
   </url>
   <url>
     <loc>https://themockup.blog/static/resources/resources.html</loc>
-    <lastmod>2022-07-06T18:52:30.480Z</lastmod>
+    <lastmod>2022-11-08T19:35:07.586Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/static/resources/100-women.html</loc>
@@ -187,5 +187,9 @@
   <url>
     <loc>https://themockup.blog/posts/2022-07-29-posit/index.html</loc>
     <lastmod>2022-11-02T15:27:50.116Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.html</loc>
+    <lastmod>2022-11-08T19:34:33.686Z</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,377 @@
+---
+title: "Use R to generate a Quarto blogpost"
+description: |
+  The {cli} and {fs} packages make life easy!
+author: Tom Mock
+date: 2022-11-08
+categories:
+  - meta
+  - quarto
+image: "/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/preview.png"
+twitter-card:
+  image:  "/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/preview.png"
+  card-style: summary_large_image
+---
+
+I am a Quarto super fan for many reasons, and use Quarto for my personal blog. As such, I wanted to simplify the process of creating new blog posts for myself, so I wrote a quick function to do just that!
+
+```r
+new_post <- function(
+    title, 
+    file = "index.qmd",
+    description = "",
+    author = "Tom Mock", 
+    date = Sys.Date(), 
+    draft = FALSE, 
+    title_limit = 45,
+    open_file = TRUE
+    ){
+```
+
+I used it to write this meta blogpost:
+
+```r
+new_post(
+  "Use R to generate a Quarto blogpost", 
+  description = "The {cli} and {fs} package make life easy!",
+  draft = FALSE
+  )
+
+✔ Folder created at posts/2022-11-08-use-r-to-generate-a-quarto-blogpost
+✔ File created at posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.qmd
+---
+title: "Use R to generate a Quarto blogpost"
+description: |
+  The {cli} and {fs} package make life easy!
+author: Tom Mock
+date: 2022-11-08
+---
+```
+
+This function generates the core skeleton of a Quarto post, including the directory, the `index.qmd` and writes out some boilerplate information.
+
+We'll use a few packages to get this done.
+
+```{r}
+library(stringr) # easy string manipulation
+library(glue)    # easy adding of string together
+library(fs)      # easy file manipulation
+library(cli)     # easy and beautiful messages/warnings
+```
+
+
+## Title of post
+
+For the title, we want to convert a proper title to a kebab case title (`kebab-case-like-this`), with the date attached as well for easy sorting of folders.
+
+```{r}
+title <- "Use R to generate a Quarto blogpost"
+# convert to kebab case and remove non space or alphanumeric characters
+title_kebab <- stringr::str_to_lower(title) |> 
+  stringr::str_remove_all("[^[:alnum:][:space:]]") |> 
+  stringr::str_replace_all(" ", "-")
+title_kebab
+```
+
+We can add a warning with `{cli}` if the title is too long. Too long is subjective, but we can arbitrary say 80 characters. My blog is at `https://themockup.blog/posts/` and we want to add the date, so we have about 40 characters to work with.
+
+```{r}
+80 - nchar("https://themockup.blog/posts/2022-11-08-")
+```
+
+```{r}
+title_limit <- 40
+# we can put that into an if to add the warning if criterion met
+if(nchar(title_kebab) >= title_limit){
+    cli::cli_alert_warning("Warning: Title slug is longer than {.val {title_limit}} characters!")
+}
+
+# we can force it to print like below
+cli::cli_alert_warning("Warning: Title slug is longer than {.val {title_limit}} characters!")
+```
+
+After that, we can add the date and optionally the draft prefix, files with `_` at the head are ignored by Quarto.
+
+```{r}
+draft <- FALSE
+date <- "2022-11-08" #< Sys.Date() for ISO date
+if(draft){
+  slug <- glue::glue("posts/_{date}-{title_kebab}")
+  cli::cli_alert_info("Appending a '_' to folder name to avoid render while a draft, remove '_' when finished.")
+} else {
+  slug <- glue::glue("posts/{date}-{title_kebab}")
+}
+
+slug
+```
+
+## Create folder
+
+The folder name is what will end up as the URL "slug", so we will end up with a url like:
+
+`https://themockup.blog/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost`
+
+```{r}
+#| eval: false
+# create and alert about directory
+fs::dir_create(
+  path = slug
+)
+```
+
+```{r}
+# print alert
+cli::cli_alert_success("Folder created at {.file {slug}}")
+```
+
+## Create blogpost file as `index.qmd`
+
+We want to name our file `index.qmd` so that our slug is clean as:
+
+`https://themockup.blog/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost`
+
+instead of:
+
+`https://themockup.blog/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/some-file.html`
+
+
+### Add description and wrap
+
+We can take the description and limit the width to <= 80 characters (includes the spacing that YAML needs). We will replace the line breaks `\n` with leading spaces AND line breaks `"  \n"` so that the alignment in the YAML is ok.
+
+```{r}
+description <- "The {cli} and {fs} package make life easy!"
+# wrap description at 77 characters
+description <- stringr::str_wrap(description, width = 77) |> 
+  stringr::str_replace_all("[\n]", "\n  ")
+description
+```
+
+If the description were long...
+
+```{r}
+long_desc <- "  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum" |> 
+  stringr::str_wrap(width = 77) |> 
+  stringr::str_replace_all("[\n]", "\n  ") 
+
+paste0("description: |\n  ", long_desc)|> 
+  cat()
+```
+
+
+## Start file
+
+We are using our default `index.qmd` to again avoid increasing the length of the slug.
+
+```{r}
+file <- "index.qmd"
+# start generating file
+new_post_file <- glue::glue("{slug}/{file}")
+new_post_file
+```
+
+### Build YAML core
+
+Now we can start building up the YAML, using the `{glue}` package to insert the inputs:
+
+```{r}
+author <- "Tom Mock"
+new_post_core <- c(
+  "---",
+  glue::glue('title: "{title}"'),
+  "description: |",
+  glue::glue('  {description}'),
+  glue::glue("author: {author}"),
+  glue::glue("date: {date}")
+)
+
+new_post_core
+```
+
+Optionally adding the `draft: true` YAML option if needed...
+
+```{r}
+# add draft if draft
+if(draft){
+  new_post_text <- c(
+    new_post_core,
+    "draft: true",
+    "---\n"
+    )
+} else {
+  new_post_text <- c(
+    new_post_core,
+    "---\n"
+  )
+}
+```
+
+Then we throw it all together and collapse with new lines (`\n`):
+
+```{r}
+# finalize new post text
+new_post_text <- paste0(
+  new_post_text,
+  collapse = "\n"
+  )
+
+new_post_text |> cat()
+```
+
+## Write out to the file
+
+We can create a new file and then write out the YAML, I have this chunk as `eval: false` right now so that it doesn't clobber our existing blog post...
+
+```{r}
+#| eval: false
+fs::file_create(new_post_file) # <- don't want to recreate it :)
+writeLines(
+  text = new_post_text,
+  con = new_post_file
+  )
+```
+
+```{r}
+#| eval: false
+# create file and alert
+# fs::file_create(new_post_file) <- don't want to recreate it :)
+cli::cli_alert_success("File created at {.file {new_post_file}}")
+```
+
+```
+✔ Folder created at posts/2022-11-08-use-r-to-generate-a-quarto-blogpost
+```
+
+Just for funsies we can also print out the raw text using `cat()` to accurately reflect what we're adding with the new lines and spacing.
+
+```{r}
+# print new post information
+cat(new_post_text)
+```
+
+Then we can have RStudio open the file we just wrote out!
+
+```{r}
+#| eval: false
+rstudioapi::documentOpen(new_post_file, line = length(new_post_text))
+```
+
+
+## All together
+
+Putting it all together, we can create a new blogpost rapidly!
+
+```{r}
+#| eval: false
+new_post(
+  "Use R to generate a Quarto blogpost", 
+  description = "The {cli} and {fs} package make life easy!",
+  draft = FALSE
+  )
+```
+
+```
+✔ Folder created at posts/2022-11-08-use-r-to-generate-a-quarto-blogpost
+✔ File created at posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.qmd
+---
+title: "Use R to generate a Quarto blogpost"
+description: |
+  The {cli} and {fs} package make life easy!
+author: Tom Mock
+date: 2022-11-08
+---
+```
+
+The full function!
+
+```{r}
+#| eval: false
+new_post <- function(
+    title, 
+    file = "index.qmd",
+    description = "",
+    author = "Tom Mock", 
+    date = Sys.Date(), 
+    draft = FALSE, 
+    title_limit = 40,
+    open_file = TRUE
+    ){
+
+  # convert to kebab case and remove non space or alphanumeric characters
+  title_kebab <- stringr::str_to_lower(title) |> 
+    stringr::str_remove_all("[^[:alnum:][:space:]]") |> 
+    stringr::str_replace_all(" ", "-")
+  
+  # warn if a very long slug
+  if(nchar(title_kebab) >= title_limit){
+    cli::cli_alert_warning("Warning: Title slug is longer than {.val {title_limit}} characters!")
+  }
+  
+  # generate the slug as draft, prefix with _ which prevents
+  # quarto from rendering/recognizing the folder
+  if(draft){
+    slug <- glue::glue("posts/_{date}-{title_kebab}")
+    cli::cli_alert_info("Appending a '_' to folder name to avoid render while a draft, remove '_' when finished.")
+  } else {
+    slug <- glue::glue("posts/{date}-{title_kebab}")
+  }
+  
+  # create and alert about directory
+  fs::dir_create(
+    path = slug
+  )
+  cli::cli_alert_success("Folder created at {.file {slug}}")
+  
+  # wrap description at 77 characters
+  description <- stringr::str_wrap(description, width = 77) |> 
+    stringr::str_replace_all("[\n]", "\n  ")
+  
+  # start generating file
+  new_post_file <- glue::glue("{slug}/{file}")
+  
+  # build yaml core
+  new_post_core <- c(
+    "---",
+    glue::glue('title: "{title}"'),
+    "description: |",
+    glue::glue('  {description}'),
+    glue::glue("author: {author}"),
+    glue::glue("date: {date}")
+  )
+  
+  # add draft if draft
+  if(draft){
+    new_post_text <- c(
+      new_post_core,
+      "draft: true",
+      "---\n"
+      )
+  } else {
+    new_post_text <- c(
+      new_post_core,
+      "---\n"
+    )
+  }
+  
+  # finalize new post text
+  new_post_text <- paste0(
+    new_post_text,
+    collapse = "\n"
+    )
+  
+  # create file and alert
+  fs::file_create(new_post_file)
+  cli::cli_alert_success("File created at {.file {new_post_file}}")
+  
+  # print new post information
+  cat(new_post_text)
+  
+  writeLines(
+    text = new_post_text,
+    con = new_post_file
+    )
+  
+  rstudioapi::documentOpen(new_post_file, line = length(new_post_text))
+  
+}
+```
