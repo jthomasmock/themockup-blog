@@ -57,6 +57,7 @@ library(stringr) # easy string manipulation
 library(glue)    # easy adding of string together
 library(fs)      # easy file manipulation
 library(cli)     # easy and beautiful messages/warnings
+library(yesno)   # easy binary decision prompts
 ```
 
 
@@ -81,7 +82,7 @@ We can add a warning with `{cli}` if the title is too long. Too long is subjecti
 
 ```{r}
 title_limit <- 40
-# we can put that into an if to add the warning if criterion met
+# we can put that into an if() to add the warning if criterion met
 if(nchar(title_kebab) >= title_limit){
     cli::cli_alert_warning("Warning: Title slug is longer than {.val {title_limit}} characters!")
 }
@@ -256,6 +257,30 @@ Then we can have RStudio open the file we just wrote out!
 rstudioapi::documentOpen(new_post_file, line = length(new_post_text))
 ```
 
+For safety, we could use the {`yesno`} package to prompt the user that the `cat()` output looks correct:
+
+```{r}
+#| eval: false
+if(yesno::yesno2("\nDoes that look correct and are you ready to write to disk?")){
+    writeLines(
+    text = new_post_text,
+    con = new_post_file
+    )
+  
+  rstudioapi::documentOpen(new_post_file, line = length(new_post_text))
+  }
+```
+
+```
+yesno::yesno2("\nDoes that look correct and are you ready to write to disk?")
+Are you ready to write that to disk?
+1: Yes
+2: No
+
+Selection: 1
+[1] TRUE
+```
+
 
 ## All together
 
@@ -366,12 +391,17 @@ new_post <- function(
   # print new post information
   cat(new_post_text)
   
-  writeLines(
+  if(yesno::yesno2("Are you ready to write that to disk?")){
+    writeLines(
     text = new_post_text,
     con = new_post_file
     )
   
   rstudioapi::documentOpen(new_post_file, line = length(new_post_text))
+  }
   
 }
+```
+
+```{r, echo=FALSE, child="/Users/thomasmock/themockup-blog/_R/footer.qmd"}
 ```
