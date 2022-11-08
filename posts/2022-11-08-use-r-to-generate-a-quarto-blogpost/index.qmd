@@ -9,7 +9,7 @@ categories:
   - quarto
 image: "preview.png"
 twitter-card:
-  image:  "preview.png"
+  image:  "https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/preview.png"
   card-style: summary_large_image
 ---
 
