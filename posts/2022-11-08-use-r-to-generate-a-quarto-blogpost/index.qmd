@@ -7,9 +7,9 @@ date: 2022-11-08
 categories:
   - meta
   - quarto
-image: "/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/preview.png"
+image: "preview.png"
 twitter-card:
-  image:  "/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/preview.png"
+  image:  "preview.png"
   card-style: summary_large_image
 ---
 
