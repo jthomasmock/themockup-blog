@@ -26,6 +26,8 @@ website:
         href: https://github.com/jthomasmock
       - icon: twitter
         href: https://twitter.com/thomas_mock
+      - icon: mastodon
+        href: https://fosstodon.org/@thomas_mock
       - icon: rss
         href: index.xml
       - icon: table

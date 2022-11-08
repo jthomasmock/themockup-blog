@@ -21,6 +21,8 @@ title-block-banner: false
 
 Want to support my blog? <a href="https://www.buymeacoffee.com/thomasmock" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" height="30"></a>
 
+<a rel="me" href="https://fosstodon.org/@thomas_mock"></a>
+
 
 ```{r write-redirects}
 #| echo: false

@@ -13,10 +13,13 @@ about:
   links:
     - icon: twitter
       text: Twitter
-      href: https://twitter.com/thomasmock
+      href: https://twitter.com/thomas_mock
     - icon: github
       text: Github
       href: https://github.com/jthomasmock
+    - icon: mastodon
+      text: Fosstodon
+      href: https://fosstodon.org/@thomas_mock
 
 ---
 
