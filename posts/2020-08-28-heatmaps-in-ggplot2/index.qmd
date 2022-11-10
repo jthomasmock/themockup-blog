@@ -142,7 +142,7 @@ bin_data %>%
   scale_y_continuous(breaks = seq(-5, 20, 5))
 ```
 
-Claus then goes on to cover details with `geom_bin2d()`, `geom_hex()`, and `geom_contour()`, still worth reading but stuff we've covered in the bulk of this post. Again, Claus' book is amazing, and a great resource regardless of what software you are plotting in. He used R, but intentionally left out code and focused on concepts.
+Claus then goes on to cover details with `geom_bin_2d()`, `geom_hex()`, and `geom_contour()`, still worth reading but stuff we've covered in the bulk of this post. Again, Claus' book is amazing, and a great resource regardless of what software you are plotting in. He used R, but intentionally left out code and focused on concepts.
 
 </details>
 
@@ -189,27 +189,30 @@ ggMarginal(red_beard, type = "histogram", fill = "red")
 
 ## 2D Density Alternatives
 
-Since we're actually interested in the density/counts of observations at each x-y coordinate instead of plotting *each* individual point, we also have a few other tools in our toolbox! We can use [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html) or [`geom_bin2d()`](https://ggplot2.tidyverse.org/reference/geom_bin_2d.html). Note that there are a few other methods such as `geom_raster()` which require you to provide your own "z" metric, and there are `stat_?` versions of each of these geoms for more custom calculations.
+Since we're actually interested in the density/counts of observations at each x-y coordinate instead of plotting *each* individual point, we also have a few other tools in our toolbox! We can use [`geom_hex()`](https://ggplot2.tidyverse.org/reference/geom_hex.html) or [`geom_bin_2d()`](https://ggplot2.tidyverse.org/reference/geom_bin_2d.html). Note that there are a few other methods such as `geom_raster()` which require you to provide your own "z" metric, and there are `stat_?` versions of each of these geoms for more custom calculations.
 
 :::{.aside}
-If you read the `ggplot2` + overplotting [`ggplot2` book  chapter](https://ggplot2-book.org/statistical-summaries.html#overplotting), you can find more reproducible longer form examples and strategies with `geom_hex()` and `geom_bin2d()`.
+If you read the `ggplot2` + overplotting [`ggplot2` book  chapter](https://ggplot2-book.org/statistical-summaries.html#overplotting), you can find more reproducible longer form examples and strategies with `geom_raster()` and `geom_bin_2d()`.
 :::
 
 ```{r hex-plot, fig.height=8,fig.width=6}
-hex_plot <- pass_map_df %>%
-  ggplot(aes(x = x, y = y)) +
-  geom_hex(
-    binwidth = c(1, 1)
-  ) +
+raster_plot <- pass_map_df |> 
+  mutate(x = round(x),
+         y = round(y)) |> 
+  group_by(x,y) |> 
+  count() |> 
+  ggplot(aes(x =x, y = y, fill = n)) +
+  geom_raster() +
   scale_fill_gradient(low = "red", high = "yellow") +
   geom_hline(yintercept = c(2, 7), color = "grey") +
   scale_y_continuous(breaks = seq(-10, 60, 5))
 
-hex_plot
+
+raster_plot
 
 bin2d <- pass_map_df %>%
   ggplot(aes(x = x, y = y)) +
-  geom_bin2d(
+  geom_bin_2d(
     binwidth = c(1, 1)
   ) +
   scale_fill_gradient(low = "red", high = "yellow") +
@@ -252,7 +255,7 @@ pass_by_y %>%
 
 ### Don't bury the lede? 
 
-Another major advantage of `geom_hex` or `geom_bin2d()` is they're remarkably faster for big data than plotting `geom_point()` along with reducing the likelihood of overplotting! For a toy example of about 1.7 million points, `geom_hex()` executes in about 2 sec vs 20 sec with `geom_point()`, and then subsequent 30-60 sec to "draw" the output in the viewer of R/RStudio.
+Another major advantage of `geom_hex` or `geom_bin_2d()` is they're remarkably faster for big data than plotting `geom_point()` along with reducing the likelihood of overplotting! For a toy example of about 1.7 million points, `geom_hex()` executes in about 2 sec vs 20 sec with `geom_point()`, and then subsequent 30-60 sec to "draw" the output in the viewer of R/RStudio.
 
 :::{.aside}
 Using these techniques are useful, as they are both computationally helpful (aka faster), and can help you better understand plots of "bigger" data.
@@ -266,7 +269,7 @@ So we've covered hex and rectangular 2d bins. To me, these are not as attractive
 pass_map_df %>%
   filter(str_detect(name, c("Mahomes"))) %>%
   ggplot(aes(x = x, y = y)) +
-  geom_hex(binwidth = c(1, 1)) +
+  geom_bin_2d(binwidth = c(1, 1)) +
   scale_y_continuous(breaks = seq(-10, 60, 5))
 ```
 
@@ -287,7 +290,8 @@ pass_map_df %>%
 
 Now if we want to get even more clever, we can use this compare passing heatmaps of specific QBs. We can normalize across the facets, and drop the least frequent passes with specific breaks. I've binned into 10 specific breakpoints, and by setting breaks between 0.1 and 1.0, we also drop the very least frequent passes which otherwise show up as a light fill of the entire remaining plot. Additionally, by adding a horizontal reference line we can pretty clearly see that Carr's most common passes are behind the 5 yard line, while Mahomes has passed beyond the 5 yard line much more frequently.
 
-```{r mahomes-compare, column="screen", fig.height=8,fig.width=10}
+```{r mahomes-compare, fig.height=8,fig.width=10}
+#| column: page-inset-right
 pass_map_df %>%
   filter(str_detect(name, c("Mahomes|Derek Carr"))) %>%
   ggplot(aes(x = x, y = y)) +
@@ -458,7 +462,8 @@ pass_map
 
 We can quickly add the field background to this with our function `add_field()`!
 
-```{r add-field-plot, fig.height=10,fig.width=10, column="screen"}
+```{r add-field-plot, fig.height=10,fig.width=10}
+#| column: page-inset-right
 back_col <- "white"
 front_col <- "black"
 
@@ -486,7 +491,8 @@ heat_palette %>% scales::show_col()
 heat_colors_interpolated %>% scales::show_col()
 ```
 
-```{r use-colors, fig.height=12,fig.width=12, column="screen"}
+```{r use-colors, fig.height=12,fig.width=12}
+#| column: page-inset-right
 pass_map +
   add_field() +
   scale_fill_manual(values = c(heat_colors_interpolated), aesthetics = c("fill", "color"))
@@ -494,7 +500,8 @@ pass_map +
 
 #### And also in black!
 
-```{r use-colors2, fig.height=12,fig.width=12, column="screen"}
+```{r use-colors2, fig.height=12,fig.width=12}
+#| column: page-inset-right
 back_col <- "black"
 front_col <- "white"
 
@@ -626,10 +633,10 @@ density_map %>%
   
 :::{.aside}
 
-Here's the hexplot for comparison:
+Here's the `bin2d` plot for comparison:
 
 ```{r, echo = FALSE, fig.width=5, fig.height=6}
-hex_plot
+bin2d
 ```
 
 :::
