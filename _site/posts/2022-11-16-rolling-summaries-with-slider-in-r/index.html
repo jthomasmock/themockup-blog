@@ -390,11 +390,26 @@ $ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.108402
 <pre><code>[1] NA NA  2  3</code></pre>
 </div>
 </div>
+<p>Lastly, there are also specialized functions for typical summaries - great for the most common usecases!</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-10_d6747802c45d4f43d1d4ffd613c2674a">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">slider</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/summary-slide.html">slide_mean</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, before <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.0 1.5 2.0 3.0</code></pre>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">slider</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/summary-slide.html">slide_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, before <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 3 6 9</code></pre>
+</div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu">slider</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/summary-slide.html">slide_max</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, before <span class="op">=</span> <span class="fl">2</span>, step <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1 NA  3 NA</code></pre>
+</div>
+</div>
 </section><section id="slide-across-rows" class="level2"><h2 class="anchored" data-anchor-id="slide-across-rows">Slide across rows</h2>
 <p>Now vectors are fine, but we want to use it in a dataframe, across “windows” in a specific column.</p>
 <p>We can read the below code as: - For each quarterback - Calculate the rolling average of EPA - Of the current row, and the 99 previous rows - and only for <code>.complete</code> windows - so it will return NA for windows &lt; 100</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-10_63b15ea996457017597c7e1afb281132">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_slide</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_dd25cb00451db5393936e40250d5b1a1">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_slide</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>
     slide_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>
@@ -406,7 +421,7 @@ $ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.108402
 <pre><code>`summarise()` has grouped output by 'name'. You can override using the
 `.groups` argument.</code></pre>
 </div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_slide</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_slide</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 39,188 × 2
 # Groups:   name [12]
@@ -427,8 +442,8 @@ $ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.108402
 </div>
 <p>Notice that the first few rows are all NA since we have specified <code>.complete = TRUE</code>. For our analysis, we’ll want to exclude NA values after.</p>
 <p>We can calculate the rolling mean and a lot more!</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_b6e377b1b0b5a525cbeb358162aa45fb">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_sum</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-12_0194184751b83af8c717c33d900affcc">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_sum</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>
     slide_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>.x <span class="op">=</span> <span class="va">epa</span>, .f <span class="op">=</span> <span class="va">mean</span>, .before <span class="op">=</span> <span class="fl">99L</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
@@ -447,7 +462,7 @@ $ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.108402
 <pre><code>`summarise()` has grouped output by 'name'. You can override using the
 `.groups` argument.</code></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_sum</span> |&gt; <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_sum</span> |&gt; <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 38,000
 Columns: 8
@@ -463,8 +478,8 @@ $ posteam         &lt;chr&gt; "KC", "KC", "KC", "KC", "KC", "KC", "KC", "KC", "K
 </div>
 </section><section id="plot-the-rolling-mean" class="level2"><h2 class="anchored" data-anchor-id="plot-the-rolling-mean">Plot the rolling mean</h2>
 <p>We can then plot the distribution of the rolling mean. First we’ll generate a vector of colors to use for names and then join the team colors to the QB dataframe for plotting.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-12_6e864c1abfb1a1dc27d56707b5d1b70d">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">name_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_435b52b853a962005d843d640f0b879d">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">name_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">qb_sum</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">==</span> <span class="st">"P.Mahomes"</span>, 
   <span class="st">"#e31837"</span>, 
   <span class="st">"black"</span>
@@ -484,8 +499,8 @@ $ posteam         &lt;chr&gt; "KC", "KC", "KC", "KC", "KC", "KC", "KC", "KC", "K
   <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we can arrange the data by the overall median, create density ridgelines, and add some context.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_b9e12fdf82529aed0f25340453d4cbdd">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">mahomes_plot</span> <span class="op">&lt;-</span> <span class="va">dens_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-14_6e05fbe1477527d806294061a6bfb586">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">mahomes_plot</span> <span class="op">&lt;-</span> <span class="va">dens_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>
       x <span class="op">=</span> <span class="va">slide_mean</span>,
@@ -527,7 +542,7 @@ $ posteam         &lt;chr&gt; "KC", "KC", "KC", "KC", "KC", "KC", "KC", "KC", "K
 
 <span class="va">mahomes_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <div class="callout-tip callout callout-style-default callout-captioned">
@@ -542,7 +557,7 @@ Expand for Session Info
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-15_c1ea33440f128a7ef9866ca75ef9a6a7">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-16_1aa37d49b4ca15614f182449904155a7">
 <div class="cell-output cell-output-stdout">
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
