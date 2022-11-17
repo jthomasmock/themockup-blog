@@ -330,7 +330,8 @@ $ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.108402
 <p>slider is a package for rolling analysis using window functions. “Window functions” is a term that I’ve borrowed from SQL that means that some function is repeatedly applied to different “windows” of your data as you step through it. Typical examples of applications of window functions include rolling averages, cumulative sums, and more complex things such as rolling regressions.</p>
 </blockquote>
 <p>Most typically, this will be used within an existing dataframe, but let’s show a quick example on a vector.</p>
-<p>We can return a list of equal length to the input, that accumulates the 2 values before it. Note that it <em>slides</em> across the values and won’t return more than the 3 requested (row + 2 rows before).</p>
+<p>We can return a list of equal length to the input, that accumulates the current row plus 2 values before it. Note that it <em>slides</em> across the values and won’t return more than the 3 requested (current row + 2 rows before).</p>
+<p><code><a href="https://rdrr.io/pkg/slider/man/slide.html">slide()</a></code> will return a list object.</p>
 <div class="cell" data-hash="index_cache/html/unnamed-chunk-5_90a990e96af693b2a4d8ffe07273d1d0">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="op">~</span><span class="va">.x</span>, .before <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

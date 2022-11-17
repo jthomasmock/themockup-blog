@@ -96,7 +96,9 @@ I find this most useful for rolling summarizing functions such as rolling means.
 
 Most typically, this will be used within an existing dataframe, but let's show a quick example on a vector.
 
-We can return a list of equal length to the input, that accumulates the 2 values before it. Note that it _slides_ across the values and won't return more than the 3 requested (row + 2 rows before).
+We can return a list of equal length to the input, that accumulates the current row plus 2 values before it. Note that it _slides_ across the values and won't return more than the 3 requested (current row + 2 rows before).
+
+`slide()` will return a list object.
 
 ```{r}
 slide(1:4, ~.x, .before = 2)
