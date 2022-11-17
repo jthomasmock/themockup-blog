@@ -63,22 +63,22 @@ cur_date <- pbp_db |>
 And then get the values of interest for these specific QBs.
 
 ```{r}
-qb_tops <- pbp_db %>%
+qb_tops <- pbp_db |>
   filter(
     !is.na(epa),
     play_type %in% c("pass", "run")
-  ) %>%
+  ) |>
   filter(
     passer_player_name %in% qb_names |
       rusher_player_name %in% qb_names,
-  ) %>%
+  ) |>
   mutate(
     name = if_else(
       is.na(passer_player_name), 
       rusher_player_name, 
       passer_player_name
       )
-    ) %>%
+    ) |>
   select(name, posteam, defteam, season, game_id, epa)
 
 glimpse(qb_tops)
@@ -161,8 +161,8 @@ We can read the below code as:
 - and only for `.complete` windows - so it will return NA for windows < 100
 
 ```{r}
-test_slide <- qb_tops %>%
-  group_by(name) %>%
+test_slide <- qb_tops |>
+  group_by(name) |>
   summarize(
     slide_mean = slide_dbl(
       .x = epa, .f = mean, 
@@ -178,8 +178,8 @@ Notice that the first few rows are all NA since we have specified `.complete = T
 We can calculate the rolling mean and a lot more!
 
 ```{r}
-qb_sum <- qb_tops %>%
-  group_by(name) %>%
+qb_sum <- qb_tops |>
+  group_by(name) |>
   summarize(
     slide_mean = slide_dbl(.x = epa, .f = mean, .before = 99L, .complete = TRUE),
     slide_median = slide_dbl(.x = epa, .f = median, .before = 99L, .complete = TRUE),
@@ -188,9 +188,9 @@ qb_sum <- qb_tops %>%
     absolute_mean = mean(epa),
     absolute_sum = sum(epa),
     posteam = tail(posteam, n = 1)
-  ) %>%
-  ungroup() %>%
-  filter(!is.na(slide_mean)) %>%
+  ) |>
+  ungroup() |>
+  filter(!is.na(slide_mean)) |>
   # sort by the overall best median
   arrange(desc(absolute_median))
 
@@ -206,18 +206,18 @@ name_colors <- if_else(
   unique(qb_sum$name) == "P.Mahomes", 
   "#e31837", 
   "black"
-  ) %>% rev()
+  ) |> rev()
 
-dens_df <- qb_sum %>%
-  group_by(name) %>%
+dens_df <- qb_sum |>
+  group_by(name) |>
   mutate(
     median_of_slides = median(slide_mean),
     fill_color = if_else(name == "P.Mahomes", "#e31837", "grey"),
     out_color = if_else(name == "P.Mahomes", "#e31837", "white")
-  ) %>%
-  ungroup() %>%
+  ) |>
+  ungroup() |>
   left_join(
-    nflfastR::teams_colors_logos %>% select(posteam = team_abbr, team_color),
+    nflfastR::teams_colors_logos |> select(posteam = team_abbr, team_color),
     by = "posteam"
   )
 ```
@@ -229,7 +229,7 @@ Then we can arrange the data by the overall median, create density ridgelines, a
 #| warning: false
 #| fig-height: 12
 #| fig-width: 8
-mahomes_plot <- dens_df %>%
+mahomes_plot <- dens_df |>
   ggplot(
     aes(
       x = slide_mean,

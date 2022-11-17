@@ -291,23 +291,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">game_date</span>, <span class="va">week</span>, <span class="va">season</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And then get the values of interest for these specific QBs.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-4_025777abc299a898148231ce05593120">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_tops</span> <span class="op">&lt;-</span> <span class="va">pbp_db</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-4_53eb715edcfbd8b55a23d85aa7af61f2">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_tops</span> <span class="op">&lt;-</span> <span class="va">pbp_db</span> |&gt;
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
     <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">epa</span><span class="op">)</span>,
     <span class="va">play_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pass"</span>, <span class="st">"run"</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="op">)</span> |&gt;
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
     <span class="va">passer_player_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">qb_names</span> <span class="op">|</span>
       <span class="va">rusher_player_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">qb_names</span>,
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="op">)</span> |&gt;
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     name <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span>
       <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">passer_player_name</span><span class="op">)</span>, 
       <span class="va">rusher_player_name</span>, 
       <span class="va">passer_player_name</span>
       <span class="op">)</span>
-    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="op">)</span> |&gt;
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">posteam</span>, <span class="va">defteam</span>, <span class="va">season</span>, <span class="va">game_id</span>, <span class="va">epa</span><span class="op">)</span>
 
 <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">qb_tops</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -408,9 +408,9 @@ $ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.108402
 </section><section id="slide-across-rows" class="level2"><h2 class="anchored" data-anchor-id="slide-across-rows">Slide across rows</h2>
 <p>Now vectors are fine, but we want to use it in a dataframe, across “windows” in a specific column.</p>
 <p>We can read the below code as: - For each quarterback - Calculate the rolling average of EPA - Of the current row, and the 99 previous rows - and only for <code>.complete</code> windows - so it will return NA for windows &lt; 100</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_dd25cb00451db5393936e40250d5b1a1">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_slide</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_ac145c21c480d70d4d1af11d6a29c688">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_slide</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> |&gt;
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>
     slide_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>
       .x <span class="op">=</span> <span class="va">epa</span>, .f <span class="op">=</span> <span class="va">mean</span>, 
@@ -442,9 +442,9 @@ $ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.108402
 </div>
 <p>Notice that the first few rows are all NA since we have specified <code>.complete = TRUE</code>. For our analysis, we’ll want to exclude NA values after.</p>
 <p>We can calculate the rolling mean and a lot more!</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-12_0194184751b83af8c717c33d900affcc">
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_sum</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-12_d751b65defbca0bab3d044129ab4f00e">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_sum</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> |&gt;
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>
     slide_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>.x <span class="op">=</span> <span class="va">epa</span>, .f <span class="op">=</span> <span class="va">mean</span>, .before <span class="op">=</span> <span class="fl">99L</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
     slide_median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>.x <span class="op">=</span> <span class="va">epa</span>, .f <span class="op">=</span> <span class="va">median</span>, .before <span class="op">=</span> <span class="fl">99L</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
@@ -453,9 +453,9 @@ $ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.108402
     absolute_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">epa</span><span class="op">)</span>,
     absolute_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">epa</span><span class="op">)</span>,
     posteam <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">posteam</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">slide_mean</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="op">)</span> |&gt;
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> |&gt;
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">slide_mean</span><span class="op">)</span><span class="op">)</span> |&gt;
   <span class="co"># sort by the overall best median</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">absolute_median</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -478,29 +478,29 @@ $ posteam         &lt;chr&gt; "KC", "KC", "KC", "KC", "KC", "KC", "KC", "KC", "K
 </div>
 </section><section id="plot-the-rolling-mean" class="level2"><h2 class="anchored" data-anchor-id="plot-the-rolling-mean">Plot the rolling mean</h2>
 <p>We can then plot the distribution of the rolling mean. First we’ll generate a vector of colors to use for names and then join the team colors to the QB dataframe for plotting.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_435b52b853a962005d843d640f0b879d">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_218ffffd72af5dd00a677fe83a0806fd">
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">name_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">qb_sum</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">==</span> <span class="st">"P.Mahomes"</span>, 
   <span class="st">"#e31837"</span>, 
   <span class="st">"black"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="op">)</span> |&gt; <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">dens_df</span> <span class="op">&lt;-</span> <span class="va">qb_sum</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<span class="va">dens_df</span> <span class="op">&lt;-</span> <span class="va">qb_sum</span> |&gt;
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     median_of_slides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">slide_mean</span><span class="op">)</span>,
     fill_color <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"P.Mahomes"</span>, <span class="st">"#e31837"</span>, <span class="st">"grey"</span><span class="op">)</span>,
     out_color <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"P.Mahomes"</span>, <span class="st">"#e31837"</span>, <span class="st">"white"</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="op">)</span> |&gt;
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span>
-    <span class="fu">nflfastR</span><span class="fu">::</span><span class="va"><a href="https://www.nflfastr.com/reference/teams_colors_logos.html">teams_colors_logos</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>posteam <span class="op">=</span> <span class="va">team_abbr</span>, <span class="va">team_color</span><span class="op">)</span>,
+    <span class="fu">nflfastR</span><span class="fu">::</span><span class="va"><a href="https://www.nflfastr.com/reference/teams_colors_logos.html">teams_colors_logos</a></span> |&gt; <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>posteam <span class="op">=</span> <span class="va">team_abbr</span>, <span class="va">team_color</span><span class="op">)</span>,
     by <span class="op">=</span> <span class="st">"posteam"</span>
   <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we can arrange the data by the overall median, create density ridgelines, and add some context.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-14_6e05fbe1477527d806294061a6bfb586">
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">mahomes_plot</span> <span class="op">&lt;-</span> <span class="va">dens_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-14_1adeed9d5ba6e0da9e834985324f68d5">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">mahomes_plot</span> <span class="op">&lt;-</span> <span class="va">dens_df</span> |&gt;
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>
       x <span class="op">=</span> <span class="va">slide_mean</span>,
