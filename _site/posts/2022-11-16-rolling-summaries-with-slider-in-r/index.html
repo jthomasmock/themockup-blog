@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.242">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Tom Mock">
+<meta name="dcterms.date" content="2022-11-16">
+<meta name="description" content="Slip and slide with the tidyverse">
+<title>The MockUp - Rolling summaries with {slider} in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../themockup.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="The MockUp - Rolling summaries with {slider} in R">
+<meta property="og:description" content="Slip and slide with the tidyverse">
+<meta property="og:image" content="https://themockup.blog/posts/2022-11-16-rolling-summaries-with-slider-in-r/preview.png">
+<meta property="og:site-name" content="The MockUp">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:width" content="1024">
+<meta name="twitter:title" content="The MockUp - Rolling summaries with {slider} in R">
+<meta name="twitter:description" content="Slip and slide with the tidyverse">
+<meta name="twitter:image" content="https://themockup.blog/themockup.png">
+<meta name="twitter:creator" content="@thomas_mock">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="floating nav-fixed">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">The MockUp</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../static/resources/resources.html">
+ <span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@thomas_mock"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Rolling summaries with {slider} in R</h1>
+                  <div>
+        <div class="description">
+          <p>Slip and slide with the tidyverse</p>
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Tom Mock </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 16, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#libraries-and-data" id="toc-libraries-and-data" class="nav-link active" data-scroll-target="#libraries-and-data">Libraries and data</a></li>
+  <li><a href="#filter-the-data" id="toc-filter-the-data" class="nav-link" data-scroll-target="#filter-the-data">Filter the data</a></li>
+  <li><a href="#slide-across-values" id="toc-slide-across-values" class="nav-link" data-scroll-target="#slide-across-values">Slide across values</a></li>
+  <li><a href="#slide-across-rows" id="toc-slide-across-rows" class="nav-link" data-scroll-target="#slide-across-rows">Slide across rows</a></li>
+  <li><a href="#plot-the-rolling-mean" id="toc-plot-the-rolling-mean" class="nav-link" data-scroll-target="#plot-the-rolling-mean">Plot the rolling mean</a></li>
+  </ul></nav>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><p>I have been a big fan of the <a href="https://github.com/DavisVaughan/slider">slider</a> package for a long time! It recently had a CRAN release for v0.3 - check out the package documentation at <a href="https://slider.r-lib.org/news/index.html" class="uri">https://slider.r-lib.org/news/index.html</a>.</p>
+<p>While it is a useful tool for any time series or rolling summary analysis, I’ll demo an example with some sports data.</p>
+<section id="libraries-and-data" class="level2"><h2 class="anchored" data-anchor-id="libraries-and-data">Libraries and data</h2>
+<p>We’ll use <a href="https://nflreadr.nflverse.com">nflreadr</a> to load the nflfastR database, along with the <a href="https://tidyverse.tidyverse.org">tidyverse</a> and <a href="https://github.com/DavisVaughan/slider">slider</a> itself.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-1_b3affee635b127de715ef18e66e6ae44">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ────────────────────────────────── tidyverse 1.3.2.9000 ──
+✔ ggplot2   3.4.0      ✔ dplyr     1.0.10
+✔ tibble    3.1.8      ✔ stringr   1.4.1 
+✔ tidyr     1.2.1      ✔ forcats   0.5.1 
+✔ readr     2.1.3      ✔ lubridate 1.8.0 
+✔ purrr     0.3.5      
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nflreadr.nflverse.com">nflreadr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/slider">slider</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggridges/">ggridges</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggtext/">ggtext</a></span><span class="op">)</span>
+
+<span class="co"># load the years when Mahomes has been active</span>
+<span class="va">pbp_db</span> <span class="op">&lt;-</span> <span class="fu">nflreadr</span><span class="fu">::</span><span class="fu"><a href="https://nflreadr.nflverse.com/reference/load_pbp.html">load_pbp</a></span><span class="op">(</span><span class="fl">2017</span><span class="op">:</span><span class="fl">2022</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="filter-the-data" class="level2"><h2 class="anchored" data-anchor-id="filter-the-data">Filter the data</h2>
+<p>We’ll limit ourselves to some of the top QBs in the NFL.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-2_57b054bb5aca70ab56e0a5aa82eb478d">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+  <span class="st">"P.Mahomes"</span>,
+  <span class="st">"A.Rodgers"</span>,
+  <span class="st">"J.Allen"</span>,
+  <span class="st">"D.Prescott"</span>,
+  <span class="st">"R.Tannehill"</span>,
+  <span class="st">"D.Carr"</span>,
+  <span class="st">"R.Wilson"</span>,
+  <span class="st">"T.Brady"</span>,
+  <span class="st">"M.Stafford"</span>,
+  <span class="st">"L.Jackson"</span>,
+  <span class="st">"M.Ryan"</span>,
+  <span class="st">"K.Cousins"</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And then figure out the last date/week:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-3_e6d720d072542de9d0ab4a41cd4cb7e4">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">cur_date</span> <span class="op">&lt;-</span> <span class="va">pbp_db</span> |&gt; 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">passer_player_name</span> <span class="op">==</span><span class="st">"P.Mahomes"</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">game_date</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max</a></span><span class="op">(</span><span class="va">game_date</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">game_date</span>, <span class="va">week</span>, <span class="va">season</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And then get the values of interest for these specific QBs.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-4_025777abc299a898148231ce05593120">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_tops</span> <span class="op">&lt;-</span> <span class="va">pbp_db</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
+    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">epa</span><span class="op">)</span>,
+    <span class="va">play_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pass"</span>, <span class="st">"run"</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
+    <span class="va">passer_player_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">qb_names</span> <span class="op">|</span>
+      <span class="va">rusher_player_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">qb_names</span>,
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    name <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">passer_player_name</span><span class="op">)</span>, 
+      <span class="va">rusher_player_name</span>, 
+      <span class="va">passer_player_name</span>
+      <span class="op">)</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">posteam</span>, <span class="va">defteam</span>, <span class="va">season</span>, <span class="va">game_id</span>, <span class="va">epa</span><span class="op">)</span>
+
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">qb_tops</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 39,188
+Columns: 6
+$ name    &lt;chr&gt; "M.Stafford", "M.Stafford", "M.Stafford", "M.Stafford", "M.Sta…
+$ posteam &lt;chr&gt; "DET", "DET", "DET", "DET", "DET", "DET", "DET", "DET", "DET",…
+$ defteam &lt;chr&gt; "ARI", "ARI", "ARI", "ARI", "ARI", "ARI", "ARI", "ARI", "ARI",…
+$ season  &lt;int&gt; 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 20…
+$ game_id &lt;chr&gt; "2017_01_ARI_DET", "2017_01_ARI_DET", "2017_01_ARI_DET", "2017…
+$ epa     &lt;dbl&gt; -11.6032015, -0.5463381, -1.5034251, -1.7764411, -0.1084029, -…</code></pre>
+</div>
+</div>
+<p>The data is now ready for some analysis! We hae the player’s name, season, game_id and their EPA (expected points added).</p>
+</section><section id="slide-across-values" class="level2"><h2 class="anchored" data-anchor-id="slide-across-values">Slide across values</h2>
+<p>At a basic level, the <code>slide_</code> functions allow you to reference a specific row along with previous rows (lagging) and the next rows (leading).</p>
+<p>I find this most useful for rolling summarizing functions such as rolling means. From the <a href="https://github.com/DavisVaughan/slider">slider</a> docs:</p>
+<blockquote class="blockquote">
+<p>slider is a package for rolling analysis using window functions. “Window functions” is a term that I’ve borrowed from SQL that means that some function is repeatedly applied to different “windows” of your data as you step through it. Typical examples of applications of window functions include rolling averages, cumulative sums, and more complex things such as rolling regressions.</p>
+</blockquote>
+<p>Most typically, this will be used within an existing dataframe, but let’s show a quick example on a vector.</p>
+<p>We can return a list of equal length to the input, that accumulates the 2 values before it. Note that it <em>slides</em> across the values and won’t return more than the 3 requested (row + 2 rows before).</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-5_90a990e96af693b2a4d8ffe07273d1d0">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="op">~</span><span class="va">.x</span>, .before <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 1
+
+[[2]]
+[1] 1 2
+
+[[3]]
+[1] 1 2 3
+
+[[4]]
+[1] 2 3 4</code></pre>
+</div>
+</div>
+<p>Or more realistically, we can generate the rolling mean of the current row and up to two rows before. Note that I’ve now used <code><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl()</a></code> - similar to <a href="https://purrr.tidyverse.org/">purrr</a> there is specific type safety, and you specify what you want to return (character, dbl, list as default, etc).</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-6_2296db65ab5b24b4174cd1f0ff1ae9c7">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">mean</span>, .before <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.0 1.5 2.0 3.0</code></pre>
+</div>
+</div>
+<p>This is basically equivalent to the below:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-7_46b3f96de7ef2b294cda16344cbe953d">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.0 1.5 2.0 3.0</code></pre>
+</div>
+</div>
+<p>I also want to callout the <code>.complete</code> argument:</p>
+<blockquote class="blockquote">
+<p>Should the function be evaluated on complete windows only? If FALSE, the default, then partial computations will be allowed.</p>
+</blockquote>
+<p><code>.complete = TRUE</code> will only generate complete computations of the current row and the specific <code>.before</code> or <code>.after</code> amount. See below where we need at least 3 observations to generate the mean, and the first two calculations return NA (since they are length 1 and length 2, respectively.)</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-8_5224cee7c48211089634dfe6c2907153">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">mean</span>, .before <span class="op">=</span> <span class="fl">2</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA NA  2  3</code></pre>
+</div>
+</div>
+<p>Kind of like the below (but again much more safety/power in <a href="https://github.com/DavisVaughan/slider">slider</a>):</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-9_4f67398841a248570740625fedace523">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>   <span class="op">==</span> <span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,   <span class="cn">NA</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span>
+<span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA NA  2  3</code></pre>
+</div>
+</div>
+</section><section id="slide-across-rows" class="level2"><h2 class="anchored" data-anchor-id="slide-across-rows">Slide across rows</h2>
+<p>Now vectors are fine, but we want to use it in a dataframe, across “windows” in a specific column.</p>
+<p>We can read the below code as: - For each quarterback - Calculate the rolling average of EPA - Of the current row, and the 99 previous rows - and only for <code>.complete</code> windows - so it will return NA for windows &lt; 100</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-10_63b15ea996457017597c7e1afb281132">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_slide</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>
+    slide_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>
+      .x <span class="op">=</span> <span class="va">epa</span>, .f <span class="op">=</span> <span class="va">mean</span>, 
+      .before <span class="op">=</span> <span class="fl">99L</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span>
+      <span class="op">)</span>,
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'name'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">test_slide</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 39,188 × 2
+# Groups:   name [12]
+   name      slide_mean
+   &lt;chr&gt;          &lt;dbl&gt;
+ 1 A.Rodgers         NA
+ 2 A.Rodgers         NA
+ 3 A.Rodgers         NA
+ 4 A.Rodgers         NA
+ 5 A.Rodgers         NA
+ 6 A.Rodgers         NA
+ 7 A.Rodgers         NA
+ 8 A.Rodgers         NA
+ 9 A.Rodgers         NA
+10 A.Rodgers         NA
+# … with 39,178 more rows</code></pre>
+</div>
+</div>
+<p>Notice that the first few rows are all NA since we have specified <code>.complete = TRUE</code>. For our analysis, we’ll want to exclude NA values after.</p>
+<p>We can calculate the rolling mean and a lot more!</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_b6e377b1b0b5a525cbeb358162aa45fb">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_sum</span> <span class="op">&lt;-</span> <span class="va">qb_tops</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>
+    slide_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>.x <span class="op">=</span> <span class="va">epa</span>, .f <span class="op">=</span> <span class="va">mean</span>, .before <span class="op">=</span> <span class="fl">99L</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+    slide_median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>.x <span class="op">=</span> <span class="va">epa</span>, .f <span class="op">=</span> <span class="va">median</span>, .before <span class="op">=</span> <span class="fl">99L</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+    slide_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_dbl</a></span><span class="op">(</span>.x <span class="op">=</span> <span class="va">epa</span>, .f <span class="op">=</span> <span class="va">sum</span>, .before <span class="op">=</span> <span class="fl">99L</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+    absolute_median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">epa</span><span class="op">)</span>,
+    absolute_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">epa</span><span class="op">)</span>,
+    absolute_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">epa</span><span class="op">)</span>,
+    posteam <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">posteam</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">slide_mean</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="co"># sort by the overall best median</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">absolute_median</span><span class="op">)</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'name'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">qb_sum</span> |&gt; <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 38,000
+Columns: 8
+$ name            &lt;chr&gt; "P.Mahomes", "P.Mahomes", "P.Mahomes", "P.Mahomes", "P…
+$ slide_mean      &lt;dbl&gt; 0.4677885, 0.4682522, 0.5148074, 0.4598741, 0.4597226,…
+$ slide_median    &lt;dbl&gt; 0.2908019, 0.2908019, 0.3427478, 0.2908019, 0.2908019,…
+$ slide_sum       &lt;dbl&gt; 46.77885, 46.82522, 51.48074, 45.98741, 45.97226, 45.7…
+$ absolute_median &lt;dbl&gt; 0.1340611, 0.1340611, 0.1340611, 0.1340611, 0.1340611,…
+$ absolute_mean   &lt;dbl&gt; 0.2810101, 0.2810101, 0.2810101, 0.2810101, 0.2810101,…
+$ absolute_sum    &lt;dbl&gt; 993.6518, 993.6518, 993.6518, 993.6518, 993.6518, 993.…
+$ posteam         &lt;chr&gt; "KC", "KC", "KC", "KC", "KC", "KC", "KC", "KC", "KC", …</code></pre>
+</div>
+</div>
+</section><section id="plot-the-rolling-mean" class="level2"><h2 class="anchored" data-anchor-id="plot-the-rolling-mean">Plot the rolling mean</h2>
+<p>We can then plot the distribution of the rolling mean. First we’ll generate a vector of colors to use for names and then join the team colors to the QB dataframe for plotting.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-12_6e864c1abfb1a1dc27d56707b5d1b70d">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">name_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">qb_sum</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">==</span> <span class="st">"P.Mahomes"</span>, 
+  <span class="st">"#e31837"</span>, 
+  <span class="st">"black"</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">dens_df</span> <span class="op">&lt;-</span> <span class="va">qb_sum</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    median_of_slides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">slide_mean</span><span class="op">)</span>,
+    fill_color <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"P.Mahomes"</span>, <span class="st">"#e31837"</span>, <span class="st">"grey"</span><span class="op">)</span>,
+    out_color <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"P.Mahomes"</span>, <span class="st">"#e31837"</span>, <span class="st">"white"</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span>
+    <span class="fu">nflfastR</span><span class="fu">::</span><span class="va"><a href="https://www.nflfastr.com/reference/teams_colors_logos.html">teams_colors_logos</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>posteam <span class="op">=</span> <span class="va">team_abbr</span>, <span class="va">team_color</span><span class="op">)</span>,
+    by <span class="op">=</span> <span class="st">"posteam"</span>
+  <span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then we can arrange the data by the overall median, create density ridgelines, and add some context.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_b9e12fdf82529aed0f25340453d4cbdd">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">mahomes_plot</span> <span class="op">&lt;-</span> <span class="va">dens_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>
+      x <span class="op">=</span> <span class="va">slide_mean</span>,
+      y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html">fct_reorder</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">median_of_slides</span>, .desc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,
+      fill <span class="op">=</span> <span class="va">team_color</span>
+    <span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://wilkelab.org/ggridges/reference/geom_density_ridges.html">geom_density_ridges</a></span><span class="op">(</span>
+    quantile_lines <span class="op">=</span> <span class="cn">TRUE</span>,
+    quantiles <span class="op">=</span> <span class="fl">2</span>,
+    color <span class="op">=</span> <span class="st">"#f0f0f0"</span>,
+    size <span class="op">=</span> <span class="fl">0.5</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span>, linewidth <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.3</span>, <span class="fl">0.65</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_identity.html">scale_fill_identity</a></span><span class="op">(</span>aesthetics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fill"</span>, <span class="st">"color"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/pretty_breaks.html">pretty_breaks</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>
+    x <span class="op">=</span> <span class="st">"Rolling 100 play mean EPA"</span>,
+    y <span class="op">=</span> <span class="st">""</span>,
+    caption <span class="op">=</span> <span class="st">"\n**Plot**: @thomas_mock | **Data**: nflfastR"</span>,
+    title <span class="op">=</span> <span class="st">"Mahomes doesn't have bad streaks"</span>,
+    subtitle <span class="op">=</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"Distribution of rolling 100 play average passing/running EPA,\nthrough Week {cur_date$week} of {cur_date$season}"</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tomtom</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tomtom/man/theme_538.html">theme_538</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>
+      color <span class="op">=</span> <span class="va">name_colors</span>,
+      face <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"plain"</span>, <span class="fl">16</span><span class="op">)</span>, <span class="st">"bold"</span><span class="op">)</span>,
+      size <span class="op">=</span> <span class="fl">14</span>,
+      vjust <span class="op">=</span> <span class="fl">0</span>
+    <span class="op">)</span>,
+    panel.grid.major.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
+    panel.grid.minor <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
+    plot.caption <span class="op">=</span> <span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html">element_markdown</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,
+    plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
+  <span class="op">)</span>
+
+<span class="va">mahomes_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand for Session Info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-15_c1ea33440f128a7ef9866ca75ef9a6a7">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.0 (2022-04-22)
+ os       macOS Monterey 12.6
+ system   aarch64, darwin20
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       America/Chicago
+ date     2022-11-17
+ pandoc   2.19.2 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)
+ quarto   1.2.242 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version    date (UTC) lib source
+ dplyr       * 1.0.10     2022-09-01 [1] CRAN (R 4.2.0)
+ forcats     * 0.5.1      2021-01-27 [1] CRAN (R 4.2.0)
+ ggplot2     * 3.4.0      2022-11-04 [1] CRAN (R 4.2.0)
+ ggridges    * 0.5.3      2021-01-08 [1] CRAN (R 4.2.0)
+ ggtext      * 0.1.1      2022-09-14 [1] Github (wilkelab/ggtext@50fdaba)
+ lubridate   * 1.8.0      2021-10-07 [1] CRAN (R 4.2.0)
+ nflreadr    * 1.3.0      2022-08-06 [1] CRAN (R 4.2.0)
+ purrr       * 0.3.5      2022-10-06 [1] CRAN (R 4.2.0)
+ readr       * 2.1.3      2022-10-01 [1] CRAN (R 4.2.0)
+ sessioninfo * 1.2.2      2021-12-06 [1] CRAN (R 4.2.0)
+ slider      * 0.2.2      2021-07-01 [1] CRAN (R 4.2.0)
+ stringr     * 1.4.1      2022-08-20 [1] CRAN (R 4.2.0)
+ tibble      * 3.1.8      2022-07-22 [1] CRAN (R 4.2.0)
+ tidyr       * 1.2.1      2022-09-08 [1] CRAN (R 4.2.0)
+ tidyverse   * 1.3.2.9000 2022-08-16 [1] Github (tidyverse/tidyverse@3be8283)
+
+ [1] /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

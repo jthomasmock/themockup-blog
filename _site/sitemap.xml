@@ -146,7 +146,7 @@
   </url>
   <url>
     <loc>https://themockup.blog/index.html</loc>
-    <lastmod>2022-11-10T20:07:45.602Z</lastmod>
+    <lastmod>2022-11-17T14:48:01.476Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/readme.html</loc>
@@ -191,5 +191,9 @@
   <url>
     <loc>https://themockup.blog/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.html</loc>
     <lastmod>2022-11-08T21:55:42.806Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2022-11-16-rolling-summaries-with-slider-in-r/index.html</loc>
+    <lastmod>2022-11-17T14:47:59.450Z</lastmod>
   </url>
 </urlset>

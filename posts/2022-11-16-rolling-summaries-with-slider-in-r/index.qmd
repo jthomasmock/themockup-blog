@@ -1,0 +1,269 @@
+---
+title: "Rolling summaries with {slider} in R"
+description: |
+  Slip and slide with the tidyverse
+author: Tom Mock
+date: 2022-11-16
+image: preview.png
+execute: 
+  cache: true
+---
+
+I have been a big fan of the `{slider}` package for a long time! It recently had a CRAN release for v0.3 - check out the package documentation at <https://slider.r-lib.org/news/index.html>.
+
+While it is a useful tool for any time series or rolling summary analysis, I'll demo an example with some sports data. 
+
+## Libraries and data
+
+We'll use `{nflreadr}` to load the nflfastR database, along with the `{tidyverse}` and `{slider}` itself.
+
+```{r}
+#| cache: true
+library(tidyverse)
+library(nflreadr)
+library(slider)
+library(ggridges)
+library(ggtext)
+
+# load the years when Mahomes has been active
+pbp_db <- nflreadr::load_pbp(2017:2022)
+```
+
+## Filter the data
+
+We'll limit ourselves to some of the top QBs in the NFL.
+
+```{r}
+qb_names <- c(
+  "P.Mahomes",
+  "A.Rodgers",
+  "J.Allen",
+  "D.Prescott",
+  "R.Tannehill",
+  "D.Carr",
+  "R.Wilson",
+  "T.Brady",
+  "M.Stafford",
+  "L.Jackson",
+  "M.Ryan",
+  "K.Cousins"
+)
+```
+
+And then figure out the last date/week:
+
+```{r}
+cur_date <- pbp_db |> 
+  filter(passer_player_name =="P.Mahomes") |> 
+  distinct(game_date, .keep_all = TRUE) |> 
+  slice_max(game_date, n = 1) |> 
+  select(game_date, week, season)
+```
+
+And then get the values of interest for these specific QBs.
+
+```{r}
+qb_tops <- pbp_db %>%
+  filter(
+    !is.na(epa),
+    play_type %in% c("pass", "run")
+  ) %>%
+  filter(
+    passer_player_name %in% qb_names |
+      rusher_player_name %in% qb_names,
+  ) %>%
+  mutate(
+    name = if_else(
+      is.na(passer_player_name), 
+      rusher_player_name, 
+      passer_player_name
+      )
+    ) %>%
+  select(name, posteam, defteam, season, game_id, epa)
+
+glimpse(qb_tops)
+```
+
+The data is now ready for some analysis! We hae the player's name, season, game_id and their EPA (expected points added).
+
+## Slide across values
+
+At a basic level, the `slide_` functions allow you to reference a specific row along with previous rows (lagging) and the next rows (leading).
+
+I find this most useful for rolling summarizing functions such as rolling means. From the `{slider}` docs:
+
+> slider is a package for rolling analysis using window functions. “Window functions” is a term that I’ve borrowed from SQL that means that some function is repeatedly applied to different “windows” of your data as you step through it. Typical examples of applications of window functions include rolling averages, cumulative sums, and more complex things such as rolling regressions.
+
+Most typically, this will be used within an existing dataframe, but let's show a quick example on a vector.
+
+We can return a list of equal length to the input, that accumulates the 2 values before it. Note that it _slides_ across the values and won't return more than the 3 requested (row + 2 rows before).
+
+```{r}
+slide(1:4, ~.x, .before = 2)
+```
+
+Or more realistically, we can generate the rolling mean of the current row and up to two rows before. Note that I've now used `slide_dbl()` - similar to `{purrr}` there is specific type safety, and you specify what you want to return (character, dbl, list as default, etc).
+
+```{r}
+slide_dbl(1:4, mean, .before = 2)
+```
+
+This is basically equivalent to the below:
+
+```{r}
+c(
+  mean(1),
+  mean(1:2),
+  mean(1:3),
+  mean(2:4)
+)
+```
+
+I also want to callout the `.complete` argument:
+
+> Should the function be evaluated on complete windows only? If FALSE, the default, then partial computations will be allowed.
+
+`.complete = TRUE` will only generate complete computations of the current row and the specific `.before` or `.after` amount. See below where we need at least 3 observations to generate the mean, and the first two calculations return NA (since they are length 1 and length 2, respectively.)
+
+```{r}
+slide_dbl(1:4, mean, .before = 2, .complete = TRUE)
+```
+
+Kind of like the below (but again much more safety/power in `{slider}`):
+
+```{r}
+c(
+  ifelse(length(1)   == 3, mean(1),   NA),
+  ifelse(length(1:2) == 3, mean(1:2), NA),
+  ifelse(length(1:3) == 3, mean(1:3), NA),
+  ifelse(length(2:4) == 3, mean(2:4), NA)
+)
+```
+
+## Slide across rows
+
+Now vectors are fine, but we want to use it in a dataframe, across "windows" in a specific column. 
+
+We can read the below code as:
+- For each quarterback
+- Calculate the rolling average of EPA
+- Of the current row, and the 99 previous rows
+- and only for `.complete` windows - so it will return NA for windows < 100
+
+```{r}
+test_slide <- qb_tops %>%
+  group_by(name) %>%
+  summarize(
+    slide_mean = slide_dbl(
+      .x = epa, .f = mean, 
+      .before = 99L, .complete = TRUE
+      ),
+  )
+
+test_slide
+```
+
+Notice that the first few rows are all NA since we have specified `.complete = TRUE`. For our analysis, we'll want to exclude NA values after.
+
+We can calculate the rolling mean and a lot more!
+
+```{r}
+qb_sum <- qb_tops %>%
+  group_by(name) %>%
+  summarize(
+    slide_mean = slide_dbl(.x = epa, .f = mean, .before = 99L, .complete = TRUE),
+    slide_median = slide_dbl(.x = epa, .f = median, .before = 99L, .complete = TRUE),
+    slide_sum = slide_dbl(.x = epa, .f = sum, .before = 99L, .complete = TRUE),
+    absolute_median = median(epa),
+    absolute_mean = mean(epa),
+    absolute_sum = sum(epa),
+    posteam = tail(posteam, n = 1)
+  ) %>%
+  ungroup() %>%
+  filter(!is.na(slide_mean)) %>%
+  # sort by the overall best median
+  arrange(desc(absolute_median))
+
+qb_sum |> glimpse()
+```
+
+## Plot the rolling mean
+
+We can then plot the distribution of the rolling mean. First we'll generate a vector of colors to use for names and then join the team colors to the QB dataframe for plotting.
+
+```{r}
+name_colors <- if_else(
+  unique(qb_sum$name) == "P.Mahomes", 
+  "#e31837", 
+  "black"
+  ) %>% rev()
+
+dens_df <- qb_sum %>%
+  group_by(name) %>%
+  mutate(
+    median_of_slides = median(slide_mean),
+    fill_color = if_else(name == "P.Mahomes", "#e31837", "grey"),
+    out_color = if_else(name == "P.Mahomes", "#e31837", "white")
+  ) %>%
+  ungroup() %>%
+  left_join(
+    nflfastR::teams_colors_logos %>% select(posteam = team_abbr, team_color),
+    by = "posteam"
+  )
+```
+
+Then we can arrange the data by the overall median, create density ridgelines, and add some context.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-height: 12
+#| fig-width: 8
+mahomes_plot <- dens_df %>%
+  ggplot(
+    aes(
+      x = slide_mean,
+      y = fct_reorder(name, median_of_slides, .desc = FALSE),
+      fill = team_color
+    )
+  ) +
+  geom_density_ridges(
+    quantile_lines = TRUE,
+    quantiles = 2,
+    color = "#f0f0f0",
+    size = 0.5
+  ) +
+  geom_vline(xintercept = 0, linewidth = 1, alpha = 0.5) +
+  coord_cartesian(xlim = c(-0.3, 0.65)) +
+  theme_minimal() +
+  scale_fill_identity(aesthetics = c("fill", "color")) +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  labs(
+    x = "Rolling 100 play mean EPA",
+    y = "",
+    caption = "\n**Plot**: @thomas_mock | **Data**: nflfastR",
+    title = "Mahomes doesn't have bad streaks",
+    subtitle = glue::glue("Distribution of rolling 100 play average passing/running EPA,\nthrough Week {cur_date$week} of {cur_date$season}")
+  ) +
+  tomtom::theme_538() +
+  theme(
+    axis.text.y = element_text(
+      color = name_colors,
+      face = c(rep("plain", 16), "bold"),
+      size = 14,
+      vjust = 0
+    ),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.caption = element_markdown(size = 12),
+    plot.background = element_rect(fill = "white", color = "white")
+  )
+
+mahomes_plot
+```
+
+
+```{r, echo=FALSE, child="/Users/thomasmock/themockup-blog/_R/footer.qmd"}
+```
+
+

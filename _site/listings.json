@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2022-11-16-rolling-summaries-with-slider-in-r/index.html",
       "/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.html",
       "/posts/2022-06-22-magick-overlay/index.html",
       "/posts/2022-06-13-gtextras-cran/index.html",
