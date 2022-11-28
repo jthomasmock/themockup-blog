@@ -38,7 +38,10 @@ data_in <- tibble::tribble(
   "Intro to {tidymodels} in 15 min", "https://jthomasmock.github.io/nfl_hanic", "Presentation", "A short presentation on using `tidymodels` to predict whether the opposing team will run or pass",
   "Intro to {tidymodels} workshop", "https://themockup.blog//static/slides/nfl-tidymodels.html", "Presentation", "A full workshop on using `tidymodels` to predict whether the opposing team will run or pass",
   "Intro to Tables", "https://themockup.blog//static/slides/intro-tables.html", "Presentation", "A presentation on 10 best practices for creating tables with {gt}",
-  "Intro to {ggplot2} themes", "https://themockup.blog//static/slides/intro-plot.html", "Presentation", "A deep dive into {ggplot2} themes and making beautiful graphics in R"
+  "Intro to {ggplot2} themes", "https://themockup.blog//static/slides/intro-plot.html", "Presentation", "A deep dive into {ggplot2} themes and making beautiful graphics in R",
+  "Beautiful tables with gt and gtExtras", "https://thomasmock.quarto.pub/gtextras-overview/#/", "Presentation", "A broad overview of {gtExtras}",
+  "Quarto for the Curious", "https://thomasmock.quarto.pub/quarto-curious/", "Presentation", "A 20 min intro to Quarto",
+  "Reproducible Publications with Python and Quarto", "https://thomasmock.quarto.pub/python/", "Presentation", "A 30 min intro to Quarto in Python"
 ) %>% 
   filter(Type == "Presentation") %>% 
   select(-Type)
