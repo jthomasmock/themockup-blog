@@ -1,0 +1,93 @@
+---
+title: "data.table::rleid() is pretty cool!"
+date: 2022-11-27
+---
+
+Longer example on [QB Starts](https://gist.github.com/jthomasmock/f4264a372904a9a8b528a61adce51509)
+
+## Create a dataframe
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(data.table)
+
+# create a df of"streaks" or repeats
+ex_df <- tibble(
+  x = c("a", "a", rep("b", 3), rep("a", 5)),
+  num = 1:10
+) 
+
+# print the data
+ex_df
+```
+
+## Example of rle or run-length encoding
+
+```{r}
+# rle or run-length encoding
+# summarizes a vector into the length of each repeat
+# and the value that is repeated
+# technically this is a form of recoverable data compression
+# IE you end up with fewer bytes but it tells you what a long vector
+# could be, and can be recreated
+
+# this can be read as the betters a, b, a
+# where the first a is repeated 2x
+# the b is repeated 3x
+# the next a is repeated 5x
+rle(ex_df$x)
+```
+
+## Example of rleid
+
+```{r}
+# rleid() generates the ids or repeated group of equal length
+# to the original vector
+
+ex_df$x
+data.table::rleid(ex_df$x)
+```
+
+```{r}
+# it can be used on a vector, in a dataframe, in a datatable or a tibble
+# note that it can be used within mutate() since it returns
+# a vector of equal length, ie the number of rows is not changed
+ex_df %>% 
+  mutate(rleid = data.table::rleid(x))
+```
+
+## rle is a summary function
+
+```{r}
+# note that rle() is a _summary_ function, and generates fewer rows
+ex_df %>% 
+  summarize(lengths = rle(x)$lengths,
+            values =rle(x)$values)
+```
+
+## Recover the original data
+
+```{r}
+# we can create a summary
+# and then recover the original data
+final_df <- ex_df %>% 
+  summarize(
+    lengths = rle(x)$lengths,
+    values =rle(x)$values
+    ) %T>% print() %>% 
+  summarize(
+    x = rep(values, times=lengths),
+    num = 1:sum(lengths)
+    )
+```
+
+```{r}
+final_df
+
+# original and recreation are identical
+all.equal(final_df, ex_df)
+```
+
+```{r, echo=FALSE, child="/Users/thomasmock/themockup-blog/_R/footer.qmd"}
+```

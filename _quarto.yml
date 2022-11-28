@@ -18,6 +18,8 @@ website:
     right:
       - text: "Blog"
         file: index.qmd
+      - text: "TIL"
+        file: til.qmd
       - text: "Resources"
         file: static/resources/resources.qmd
       - text: "About"
@@ -36,6 +38,7 @@ website:
         href: https://drinksbytom.com
 format:
   html:
+    author: "Tom Mock"
     twitter-card:
       creator: "@thomas_mock"
       image: "https://themockup.blog/themockup.png"

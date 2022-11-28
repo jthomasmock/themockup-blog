@@ -1,0 +1,93 @@
+---
+title: "Pitch sequence aggregation"
+date: 2022-11-27
+---
+
+## Generate pitches
+
+```{r}
+library(tidyverse)
+
+pitches <- c(
+  "Two Seam FB",
+  "Cutter",
+  "Slider",
+  "Knuckleball",
+  "Change Up"
+)
+
+```
+
+```{r}
+set.seed(37)
+fake_pitch <- tibble(
+  at_bat = rep(1:5, each = 3)
+) %>%
+  mutate(pitch_type = sample(pitches, size = 15, replace = TRUE))
+
+# include 1st pitch output
+fake_pitch %>%
+  group_by(at_bat) %>% 
+  mutate(pitch_n = row_number()) %>% 
+  mutate(
+    pitch_seq = slider::slide2_chr(
+      pitch_type,
+      pitch_n,
+      ~paste(.x,collapse = "-"),
+      .before = 1L
+    )
+  ) %>%
+  ungroup()
+```
+
+```{r}
+# output NA for 1st pitch
+fake_pitch %>%
+  group_by(at_bat) %>% 
+  mutate(pitch_n = row_number()) %>% 
+  mutate(
+    pitch_seq = slider::slide2_chr(
+      pitch_type,
+      pitch_n,
+      ~paste(.x,collapse = "-"),
+      .before = 1L,
+      .complete = TRUE # force complete measures (at least 2x pitches)
+    )
+  ) %>% 
+  ungroup()
+```
+
+## Plot it
+
+```{r}
+set.seed(37)
+
+fake_pitch <- tibble(
+  at_bat = rep(c(1:5), each = 9),
+  batter = rep(rep(c("A.Name", "B.Name", "C.Name"), each = 3), 5)
+) %>%
+  mutate(pitch_type = sample(pitches, size = 45, replace = TRUE))
+
+fake_pitch %>%
+  group_by(at_bat) %>% 
+  mutate(pitch_n = row_number()) %>% 
+  mutate(
+    pitch_seq = slider::slide2_chr(
+      pitch_type,
+      pitch_n,
+      ~paste(.x,collapse = "-"),
+      .before = 1L,
+      .complete = TRUE
+    )
+  ) %>% 
+  ungroup() %>% 
+  count(at_bat, pitch_seq) %>% 
+  filter(!is.na(pitch_seq)) %>% 
+  group_by(pitch_seq) %>% 
+  mutate(roll_n = cumsum(n)) %>% 
+  ggplot(aes(x = at_bat, y = roll_n, group = 1)) +
+  geom_step(aes(group = 1), direction = "hv") +
+  geom_point() +
+  facet_wrap(~pitch_seq) +
+  scale_y_continuous(limits = c(0, 5))
+```

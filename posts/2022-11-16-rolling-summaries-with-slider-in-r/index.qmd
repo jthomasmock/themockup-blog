@@ -167,7 +167,7 @@ test_slide <- qb_tops |>
     slide_mean = slide_dbl(
       .x = epa, .f = mean, 
       .before = 99L, .complete = TRUE
-      ),
+      )
   )
 
 test_slide
