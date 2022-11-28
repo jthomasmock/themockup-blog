@@ -2,210 +2,206 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://themockup.blog/posts/2021-03-07-custom-gt-functions-and-testing/index.html</loc>
-    <lastmod>2022-07-06T18:46:19.300Z</lastmod>
+    <lastmod>2022-11-28T01:55:55.358Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2020-12-31-2020-in-review/index.html</loc>
-    <lastmod>2022-07-06T18:46:22.782Z</lastmod>
+    <lastmod>2022-11-28T01:55:58.051Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2020-07-25-meta-rmarkdown/index.html</loc>
-    <lastmod>2022-07-06T18:46:24.013Z</lastmod>
+    <lastmod>2022-11-28T01:55:59.856Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2021-01-18-reading-tables-from-images-with-magick/index.html</loc>
-    <lastmod>2022-07-06T18:46:28.589Z</lastmod>
+    <lastmod>2022-11-28T01:56:04.724Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2020-05-16-gt-a-grammar-of-tables/index.html</loc>
-    <lastmod>2022-07-06T18:46:34.190Z</lastmod>
+    <lastmod>2022-11-28T01:56:09.698Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite/index.html</loc>
-    <lastmod>2022-07-06T18:46:39.718Z</lastmod>
+    <lastmod>2022-11-28T01:56:15.337Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2020-08-05-a-bar-chart-5-ways/index.html</loc>
-    <lastmod>2022-07-06T18:46:43.704Z</lastmod>
+    <lastmod>2022-11-28T01:56:19.567Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2019-01-09-add-a-logo-to-your-plot/index.html</loc>
-    <lastmod>2022-07-06T18:46:45.857Z</lastmod>
+    <lastmod>2022-11-28T01:56:21.708Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2020-05-13-qb-salaries-vs-playoff-appearances/index.html</loc>
-    <lastmod>2022-07-06T18:46:47.099Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/index.html</loc>
-    <lastmod>2022-07-06T18:46:55.035Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/index.html</loc>
-    <lastmod>2022-07-06T18:47:00.340Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/index.html</loc>
-    <lastmod>2022-07-06T18:47:55.910Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/index.html</loc>
-    <lastmod>2022-11-10T20:07:43.866Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2019-01-02-tidytuesday-enhancements/index.html</loc>
-    <lastmod>2022-07-06T18:48:08.511Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/index.html</loc>
-    <lastmod>2022-07-06T18:48:13.217Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot/index.html</loc>
-    <lastmod>2022-07-06T18:48:17.280Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation/index.html</loc>
-    <lastmod>2022-07-06T18:48:19.109Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/index.html</loc>
-    <lastmod>2022-07-06T18:48:22.289Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/index.html</loc>
-    <lastmod>2022-07-06T18:48:23.494Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2021-04-01-three-years-of-tidytuesday/index.html</loc>
-    <lastmod>2022-07-06T18:48:28.843Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2022-04-18-session-info/index.html</loc>
-    <lastmod>2022-07-06T18:48:32.345Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite/index.html</loc>
-    <lastmod>2022-07-06T18:48:37.343Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r/index.html</loc>
-    <lastmod>2022-07-06T18:48:44.118Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/index.html</loc>
-    <lastmod>2022-07-06T18:48:46.591Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-12-26-creating-and-using-custom-ggplot2-themes/index.html</loc>
-    <lastmod>2022-07-06T18:48:54.267Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2021-07-28-reminder-to-test-with-a-reprex/index.html</loc>
-    <lastmod>2022-07-06T18:48:58.446Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-01-tidy-long-models/index.html</loc>
-    <lastmod>2022-07-06T18:49:03.983Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables/index.html</loc>
-    <lastmod>2022-07-06T18:49:19.005Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/index.html</loc>
-    <lastmod>2022-07-06T18:49:22.436Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2022-06-13-gtextras-cran/index.html</loc>
-    <lastmod>2022-07-06T18:49:38.130Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/index.html</loc>
-    <lastmod>2022-07-06T18:49:42.666Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/index.html</loc>
-    <lastmod>2022-07-06T18:49:49.525Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2021-03-21-meta-tagging-distill/index.html</loc>
-    <lastmod>2022-07-06T18:49:51.742Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette/index.html</loc>
-    <lastmod>2022-07-06T18:49:57.795Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/index.html</loc>
-    <lastmod>2022-07-06T18:49:58.764Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2021-01-28-removing-image-backgrounds-with-magick/index.html</loc>
-    <lastmod>2022-07-06T18:50:02.528Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/index.html</loc>
-    <lastmod>2022-11-28T01:53:29.351Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/readme.html</loc>
-    <lastmod>2022-07-06T18:50:04.965Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/about.html</loc>
-    <lastmod>2022-11-08T21:55:49.886Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/static/resources/gt-cookbook.html</loc>
-    <lastmod>2022-07-06T18:51:58.383Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/static/resources/gt-cookbook-advanced.html</loc>
-    <lastmod>2022-07-06T18:52:27.973Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/static/resources/resources.html</loc>
-    <lastmod>2022-11-08T19:35:07.586Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/static/resources/100-women.html</loc>
-    <lastmod>2022-07-06T18:52:31.507Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/static/resources/nflseedr.html</loc>
-    <lastmod>2022-07-06T18:52:32.415Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/static/slides/index.html</loc>
-    <lastmod>2022-07-06T18:52:32.707Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2022-06-22-magick-overlay/index.html</loc>
-    <lastmod>2022-11-08T21:56:07.676Z</lastmod>
-  </url>
-  <url>
-    <loc>https://themockup.blog/posts/2022-07-29-posit/index.html</loc>
-    <lastmod>2022-11-02T15:27:50.116Z</lastmod>
+    <lastmod>2022-11-28T01:56:22.946Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.html</loc>
-    <lastmod>2022-11-08T21:55:42.806Z</lastmod>
+    <lastmod>2022-11-28T01:56:26.126Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-09-26-functions-and-themes-for-gt-tables/index.html</loc>
+    <lastmod>2022-11-28T01:56:32.781Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/index.html</loc>
+    <lastmod>2022-11-28T01:56:39.163Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/index.html</loc>
+    <lastmod>2022-11-28T01:56:48.507Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/index.html</loc>
+    <lastmod>2022-11-28T01:56:56.372Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2019-01-02-tidytuesday-enhancements/index.html</loc>
+    <lastmod>2022-11-28T01:57:00.492Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/index.html</loc>
+    <lastmod>2022-11-28T01:57:04.983Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-10-11-embedding-images-in-ggplot/index.html</loc>
+    <lastmod>2022-11-28T01:57:09.523Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-04-03-crossing-10000-tidy-simulation/index.html</loc>
+    <lastmod>2022-11-28T01:57:11.602Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/index.html</loc>
+    <lastmod>2022-11-28T01:57:13.618Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/index.html</loc>
+    <lastmod>2022-11-28T01:57:14.854Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2021-04-01-three-years-of-tidytuesday/index.html</loc>
+    <lastmod>2022-11-28T01:57:20.454Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2022-04-18-session-info/index.html</loc>
+    <lastmod>2022-11-28T01:57:24.454Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2019-04-28-nflfastr-dbplyr-rsqlite/index.html</loc>
+    <lastmod>2022-11-28T01:57:30.036Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/posts/2022-11-16-rolling-summaries-with-slider-in-r/index.html</loc>
-    <lastmod>2022-11-28T01:42:46.136Z</lastmod>
+    <lastmod>2022-11-28T01:57:34.055Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-11-29-bullet-chart-variants-in-r/index.html</loc>
+    <lastmod>2022-11-28T01:57:39.822Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2018-12-11-functional-progamming-in-r-with-purrr/index.html</loc>
+    <lastmod>2022-11-28T01:57:42.313Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-12-26-creating-and-using-custom-ggplot2-themes/index.html</loc>
+    <lastmod>2022-11-28T01:57:53.582Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2021-07-28-reminder-to-test-with-a-reprex/index.html</loc>
+    <lastmod>2022-11-28T01:57:57.766Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-05-01-tidy-long-models/index.html</loc>
+    <lastmod>2022-11-28T01:58:02.041Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-10-31-embedding-custom-features-in-gt-tables/index.html</loc>
+    <lastmod>2022-11-28T01:58:10.960Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/index.html</loc>
+    <lastmod>2022-11-28T01:58:14.205Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2022-06-13-gtextras-cran/index.html</loc>
+    <lastmod>2022-11-28T01:58:21.026Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/index.html</loc>
+    <lastmod>2022-11-28T01:58:26.358Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/index.html</loc>
+    <lastmod>2022-11-28T01:58:32.863Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2021-03-21-meta-tagging-distill/index.html</loc>
+    <lastmod>2022-11-28T01:58:35.251Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2022-06-22-magick-overlay/index.html</loc>
+    <lastmod>2022-11-28T01:58:36.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2020-04-03-beer-and-pdftools-a-vignette/index.html</loc>
+    <lastmod>2022-11-28T01:58:41.931Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/index.html</loc>
+    <lastmod>2022-11-28T01:58:42.960Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2021-01-28-removing-image-backgrounds-with-magick/index.html</loc>
+    <lastmod>2022-11-28T01:58:46.817Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/til.html</loc>
-    <lastmod>2022-11-28T01:53:11.487Z</lastmod>
+    <lastmod>2022-11-28T01:58:47.488Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/index.html</loc>
+    <lastmod>2022-11-28T01:58:49.440Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/readme.html</loc>
+    <lastmod>2022-11-28T01:58:49.737Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/about.html</loc>
+    <lastmod>2022-11-28T01:58:51.246Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/til/rleid.html</loc>
-    <lastmod>2022-11-28T01:53:03.286Z</lastmod>
+    <lastmod>2022-11-28T01:58:54.627Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/til/pitches.html</loc>
-    <lastmod>2022-11-28T01:53:11.132Z</lastmod>
+    <lastmod>2022-11-28T01:58:56.952Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/static/resources/gt-cookbook.html</loc>
+    <lastmod>2022-11-28T01:59:06.115Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/static/resources/gt-cookbook-advanced.html</loc>
+    <lastmod>2022-11-28T01:59:15.706Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/static/resources/resources.html</loc>
+    <lastmod>2022-11-28T01:59:17.964Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/static/resources/100-women.html</loc>
+    <lastmod>2022-11-28T01:59:18.845Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/static/resources/nflseedr.html</loc>
+    <lastmod>2022-11-28T01:59:19.690Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/static/slides/index.html</loc>
+    <lastmod>2022-11-28T01:59:20.007Z</lastmod>
   </url>
 </urlset>

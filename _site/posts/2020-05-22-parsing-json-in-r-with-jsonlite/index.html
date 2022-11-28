@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.637">
+<meta name="generator" content="quarto-1.2.269">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Thomas Mock">
 <meta name="dcterms.date" content="2020-05-22">
@@ -11,10 +11,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -53,7 +58,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -66,7 +71,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -96,7 +101,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -117,11 +122,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 }</script><script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="../../site_libs/jsoneditor-5.25.6/jsoneditor.min.css" rel="stylesheet">
 <script src="../../site_libs/jsoneditor-5.25.6/jsoneditor.min.js"></script><script src="../../site_libs/jsonedit-binding-3.0.0/jsonedit.js"></script><link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="The MockUp - Easily parsing JSON in R with jsonlite and purrr">
-<meta property="og:description" content="It’s turtles all the way down…">
+<meta property="og:description" content="It's turtles all the way down...">
 <meta property="og:image" content="https://themockup.blog/posts/2020-05-22-parsing-json-in-r-with-jsonlite/preview.jpg">
 <meta property="og:site-name" content="The MockUp">
 <meta name="twitter:title" content="The MockUp - Easily parsing JSON in R with jsonlite and purrr">
-<meta name="twitter:description" content="It’s turtles all the way down…">
+<meta name="twitter:description" content="It's turtles all the way down...">
 <meta name="twitter:image" content="https://themockup.blog/themockup.png">
 <meta name="twitter:creator" content="@thomas_mock">
 <meta name="twitter:card" content="summary_large_image">
@@ -131,47 +136,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
-      <a class="navbar-brand" href="../../index.html">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">The MockUp</span>
-  </a>
+    </a>
+  </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
 <li class="nav-item">
-    <a class="nav-link" href="../../index.html">Blog</a>
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../static/resources/resources.html">Resources</a>
+    <a class="nav-link" href="../../til.html">
+ <span class="menu-text">TIL</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html">About</a>
+    <a class="nav-link" href="../../static/resources/resources.html">
+ <span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@thomas_mock"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
 <div id="quarto-search" class="" title="Search"></div>
@@ -212,13 +231,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <p class="date">May 22, 2020</p>
       </div>
     </div>
+    
       
     </div>
     
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc"><h2 id="toc-title">On this page</h2>
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
 <li>
@@ -229,7 +249,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#the-code" id="toc-the-code" class="nav-link" data-scroll-target="#the-code">The code</a></li>
   </ul>
 </li>
-  <li><a href="#its-turtles-all-the-way-down" id="toc-its-turtles-all-the-way-down" class="nav-link" data-scroll-target="#its-turtles-all-the-way-down"><span>It’s Turtles all the way down</span></a></li>
+  <li><a href="#its-turtles-all-the-way-down" id="toc-its-turtles-all-the-way-down" class="nav-link" data-scroll-target="#its-turtles-all-the-way-down">It’s Turtles all the way down</a></li>
   <li><a href="#raw-data-and-libraries" id="toc-raw-data-and-libraries" class="nav-link" data-scroll-target="#raw-data-and-libraries">Raw Data and Libraries</a></li>
   <li>
 <a href="#viewing-json" id="toc-viewing-json" class="nav-link" data-scroll-target="#viewing-json">Viewing JSON</a>
@@ -266,7 +286,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full"><p><img src="preview.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">It’s turtles all the way down, source: https://en.wikipedia.org/wiki/Turtles_all_the_way_down</figcaption><p></p>
+<p></p><figcaption class="figure-caption margin-caption">It’s turtles all the way down, source: https://en.wikipedia.org/wiki/Turtles_all_the_way_down</figcaption><p></p>
 </figure>
 </div>
 <section id="dont-bury-the-lede" class="level1 page-columns page-full"><h1>Don’t bury the lede</h1>
@@ -287,13 +307,13 @@ The RStudio viewer is also super useful for navigating, once you have the data i
 </div>
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full"><p><img src="rstudio-json.png" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">You get a list-viewer type experience with RStudio itself, and it still has search!</figcaption><p></p>
+<p></p><figcaption class="figure-caption margin-caption">You get a list-viewer type experience with RStudio itself, and it still has search!</figcaption><p></p>
 </figure>
 </div>
 <p>Once it is open you can search for specific object names or navigate similarly to <code>listviewer</code>.</p>
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full"><p><img src="rstudio-json-opened.png" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">We can see our same <code>athlete</code> object as a list!</figcaption><p></p>
+<p></p><figcaption class="figure-caption margin-caption">We can see our same <code>athlete</code> object as a list!</figcaption><p></p>
 </figure>
 </div>
 <p>Once you search and find something of interest (for example <code>athletes</code> object), you can click on the scroll to open it as a temp object in the viewer, or just click the table-arrow button to copy the code to access this level of the object to the console.</p>
@@ -302,7 +322,7 @@ The RStudio viewer is also super useful for navigating, once you have the data i
 <p>Because we’re looking at the 2019 season, I know that Lamar Jackson is the top QB in the dataset, and we can guess at some of the other columns by going to the actual <a href="https://www.espn.com/nfl/qbr/_/season/2019/seasontype/2">webpage this API is building</a>. From that we can assume there are columns for player name, team name, QBR, PAA, PLAYS, etc.</p>
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full"><p><img src="website_ss.png" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption margin-caption">Example of the website</figcaption><p></p>
+<p></p><figcaption class="figure-caption margin-caption">Example of the website</figcaption><p></p>
 </figure>
 </div>
 <p>I’ll let you do this interactively because that’s how’d you use in RStudio, and try searching for:<br>
@@ -510,7 +530,7 @@ Feel free to try it, as an example exercise, but you’ve been warned. 👀
 <p>Let’s try these out by trying to access:<br>
 - <code>raw_json</code> to <code>athletes</code> (<code>raw_json[["athletes"]]</code>) - Looking at it’s structure, again using the <code>max.level</code> argument to prevent extra printing.</p>
 <p>I’d like to note that I’ll be switching back and forth a bit between <code>$</code> and <code>[[</code> subsetting, as both accomplish the same thing, where <code>$</code> is faster to type, but <code>[[</code> is a bit more strict. Also to access by numerical position, you HAVE to use <code>[[</code>.</p>
-<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="aside">Again, full details around subsetting lists and vectors are available in <a href="https://adv-r.hadley.nz/subsetting.html">Advanced R</a>. This is definitely worth reading for edge cases, pitfalls, and lots of nice examples that go beyond the scope of this blog post.</span></div></div>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">Again, full details around subsetting lists and vectors are available in <a href="https://adv-r.hadley.nz/subsetting.html">Advanced R</a>. This is definitely worth reading for edge cases, pitfalls, and lots of nice examples that go beyond the scope of this blog post.</span></div></div>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="va">raw_json</span><span class="op">$</span><span class="va">athletes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1016,7 +1036,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#xdxqrtowmg .gt_table {
+:where(#xdxqrtowmg) .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1041,7 +1061,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-left-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_heading {
+:where(#xdxqrtowmg) .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1053,7 +1073,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-right-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_title {
+:where(#xdxqrtowmg) .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1065,7 +1085,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-bottom-width: 0;
 }
 
-#xdxqrtowmg .gt_subtitle {
+:where(#xdxqrtowmg) .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1077,13 +1097,13 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-top-width: 0;
 }
 
-#xdxqrtowmg .gt_bottom_border {
+:where(#xdxqrtowmg) .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_col_headings {
+:where(#xdxqrtowmg) .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1098,7 +1118,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-right-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_col_heading {
+:where(#xdxqrtowmg) .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1118,7 +1138,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   overflow-x: hidden;
 }
 
-#xdxqrtowmg .gt_column_spanner_outer {
+:where(#xdxqrtowmg) .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1130,15 +1150,15 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   padding-right: 4px;
 }
 
-#xdxqrtowmg .gt_column_spanner_outer:first-child {
+:where(#xdxqrtowmg) .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xdxqrtowmg .gt_column_spanner_outer:last-child {
+:where(#xdxqrtowmg) .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xdxqrtowmg .gt_column_spanner {
+:where(#xdxqrtowmg) .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1150,7 +1170,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   width: 100%;
 }
 
-#xdxqrtowmg .gt_group_heading {
+:where(#xdxqrtowmg) .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1175,7 +1195,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   vertical-align: middle;
 }
 
-#xdxqrtowmg .gt_empty_group_heading {
+:where(#xdxqrtowmg) .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1190,15 +1210,15 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   vertical-align: middle;
 }
 
-#xdxqrtowmg .gt_from_md > :first-child {
+:where(#xdxqrtowmg) .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xdxqrtowmg .gt_from_md > :last-child {
+:where(#xdxqrtowmg) .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xdxqrtowmg .gt_row {
+:where(#xdxqrtowmg) .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1217,7 +1237,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   overflow-x: hidden;
 }
 
-#xdxqrtowmg .gt_stub {
+:where(#xdxqrtowmg) .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1230,7 +1250,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   padding-right: 5px;
 }
 
-#xdxqrtowmg .gt_stub_row_group {
+:where(#xdxqrtowmg) .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1244,11 +1264,11 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   vertical-align: top;
 }
 
-#xdxqrtowmg .gt_row_group_first td {
+:where(#xdxqrtowmg) .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xdxqrtowmg .gt_summary_row {
+:where(#xdxqrtowmg) .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1258,16 +1278,16 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   padding-right: 5px;
 }
 
-#xdxqrtowmg .gt_first_summary_row {
+:where(#xdxqrtowmg) .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_first_summary_row.thick {
+:where(#xdxqrtowmg) .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xdxqrtowmg .gt_last_summary_row {
+:where(#xdxqrtowmg) .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1277,7 +1297,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-bottom-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_grand_summary_row {
+:where(#xdxqrtowmg) .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1287,7 +1307,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   padding-right: 5px;
 }
 
-#xdxqrtowmg .gt_first_grand_summary_row {
+:where(#xdxqrtowmg) .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1297,11 +1317,11 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-top-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_striped {
+:where(#xdxqrtowmg) .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xdxqrtowmg .gt_table_body {
+:where(#xdxqrtowmg) .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1310,7 +1330,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-bottom-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_footnotes {
+:where(#xdxqrtowmg) .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1324,7 +1344,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-right-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_footnote {
+:where(#xdxqrtowmg) .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -1333,7 +1353,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   padding-right: 5px;
 }
 
-#xdxqrtowmg .gt_sourcenotes {
+:where(#xdxqrtowmg) .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1347,7 +1367,7 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   border-right-color: #D3D3D3;
 }
 
-#xdxqrtowmg .gt_sourcenote {
+:where(#xdxqrtowmg) .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1355,36 +1375,36 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   padding-right: 5px;
 }
 
-#xdxqrtowmg .gt_left {
+:where(#xdxqrtowmg) .gt_left {
   text-align: left;
 }
 
-#xdxqrtowmg .gt_center {
+:where(#xdxqrtowmg) .gt_center {
   text-align: center;
 }
 
-#xdxqrtowmg .gt_right {
+:where(#xdxqrtowmg) .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xdxqrtowmg .gt_font_normal {
+:where(#xdxqrtowmg) .gt_font_normal {
   font-weight: normal;
 }
 
-#xdxqrtowmg .gt_font_bold {
+:where(#xdxqrtowmg) .gt_font_bold {
   font-weight: bold;
 }
 
-#xdxqrtowmg .gt_font_italic {
+:where(#xdxqrtowmg) .gt_font_italic {
   font-style: italic;
 }
 
-#xdxqrtowmg .gt_super {
+:where(#xdxqrtowmg) .gt_super {
   font-size: 65%;
 }
 
-#xdxqrtowmg .gt_two_val_uncert {
+:where(#xdxqrtowmg) .gt_two_val_uncert {
   display: inline-block;
   line-height: 1em;
   text-align: right;
@@ -1393,31 +1413,31 @@ $ SAC           &lt;dbl&gt; -7.4, -6.5, -6.0, -9.7, -20.6, -8.0, -18.5, -13.1, -
   margin-left: 0.1em;
 }
 
-#xdxqrtowmg .gt_footnote_marks {
+:where(#xdxqrtowmg) .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#xdxqrtowmg .gt_asterisk {
+:where(#xdxqrtowmg) .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xdxqrtowmg .gt_slash_mark {
+:where(#xdxqrtowmg) .gt_slash_mark {
   font-size: 0.7em;
   line-height: 0.7em;
   vertical-align: 0.15em;
 }
 
-#xdxqrtowmg .gt_fraction_numerator {
+:where(#xdxqrtowmg) .gt_fraction_numerator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: 0.45em;
 }
 
-#xdxqrtowmg .gt_fraction_denominator {
+:where(#xdxqrtowmg) .gt_fraction_denominator {
   font-size: 0.6em;
   line-height: 0.6em;
   vertical-align: -0.05em;
@@ -1621,6 +1641,24 @@ Expand for Session Info
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1642,7 +1680,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -1670,31 +1725,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script><script src="https://utteranc.es/client.js" repo="jthomasmock/themockup-blog" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">

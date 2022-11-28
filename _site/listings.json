@@ -1,5 +1,12 @@
 [
   {
+    "listing": "/til.html",
+    "items": [
+      "/til/rleid.html",
+      "/til/pitches.html"
+    ]
+  },
+  {
     "listing": "/index.html",
     "items": [
       "/posts/2022-11-16-rolling-summaries-with-slider-in-r/index.html",
@@ -50,13 +57,6 @@
       "/static/resources/gt-cookbook.html",
       "/static/resources/gt-cookbook-advanced.html",
       "/static/resources/nflseedr.html"
-    ]
-  },
-  {
-    "listing": "/til.html",
-    "items": [
-      "/til/rleid.html",
-      "/til/pitches.html"
     ]
   }
 ]
