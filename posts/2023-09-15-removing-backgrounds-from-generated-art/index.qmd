@@ -1,0 +1,57 @@
+---
+title: "Removing background from GenAI art"
+description: |
+  We all deserve transparency
+author: Tom Mock
+date: 2023-09-15
+image: howard-robot-goggles_transparent.png
+execute: 
+  cache: true
+categories:
+  - magick
+---
+
+Generative AI created art from tools like Midjourney is quite fun for creating unique images. However, the background is typically at best a solid color.
+
+This post is a quick but useful tip for removing the background from GenAI art. I'll use the always helpful `magick` package.
+
+```{r}
+library(magick)
+
+raw_img <- image_read("howard-robot-goggles.png")
+
+raw_img |> image_resize("400x")
+```
+
+
+```{r}
+library(magick)
+
+make_transparent <- function(path, fuzz = 10){
+
+  name <- fs::path_ext_remove(path)
+
+  logo <- image_read(path)
+
+  out_logo <- logo |>
+    image_fill(
+      color = "transparent",
+      fuzz = fuzz,
+      point = "+1+1"
+    ) 
+  
+  image_write(out_logo, paste0(name, "_transparent.png"))
+  
+  return(image_resize(out_logo, "400x"))
+
+}
+```
+
+Then we can actually apply the `make_transparent()` function on the image.
+
+```{r}
+make_transparent("howard-robot-goggles.png")
+```
+
+![](howard-robot-goggles_transparent.png){width=400px}
+
