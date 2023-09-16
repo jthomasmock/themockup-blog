@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.4.193">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Tom Mock">
 <title>The MockUp</title>
@@ -15,7 +15,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -45,6 +45,11 @@ ul.task-list li input[type="checkbox"] {
   "panel-placement": "end",
   "type": "overlay",
   "limit": 20,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -54,7 +59,8 @@ ul.task-list li input[type="checkbox"] {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script><script>
 
@@ -85,92 +91,113 @@ ul.task-list li input[type="checkbox"] {
       window['quarto-listing-loaded']();
     }
   })
-  </script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="The MockUp" href="index.xml"><meta property="og:title" content="">
-<meta property="og:description" content="Want to support my blog?">
-<meta property="og:image" content="https://themockup.blog/posts/2022-11-16-rolling-summaries-with-slider-in-r/preview.png">
-<meta property="og:site-name" content="The MockUp">
-<meta property="og:image:height" content="1024">
-<meta property="og:image:width" content="1024">
+  </script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="styles.css">
+<link rel="alternate" type="application/rss+xml" title="The MockUp" href="index.xml" data-external="1"><meta property="og:title" content="">
+<meta property="og:description" content="Data science tips brought to you by Tom Mock">
+<meta property="og:image" content="https://themockup.blog/posts/2023-09-15-removing-backgrounds-from-generated-art/preview.png">
+<meta property="og:site_name" content="The MockUp">
 <meta name="twitter:title" content="">
-<meta name="twitter:description" content="Want to support my blog?">
+<meta name="twitter:description" content="Data science tips brought to you by Tom Mock">
 <meta name="twitter:image" content="https://themockup.blog/themockup.png">
 <meta name="twitter:creator" content="@thomas_mock">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 <body class="nav-fixed">
 
-
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">The MockUp</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
 <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">
+    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./til.html">
+    <a class="nav-link" href="./til.html" rel="" target="">
  <span class="menu-text">TIL</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./static/resources/resources.html">
+    <a class="nav-link" href="./static/resources/resources.html" rel="" target="">
  <span class="menu-text">Resources</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">
+    <a class="nav-link" href="./about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/jthomasmock"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/jthomasmock" rel="" target=""><i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/thomas_mock"><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/thomas_mock" rel="" target=""><i class="bi bi-twitter" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://fosstodon.org/@thomas_mock"><i class="bi bi-mastodon" role="img">
+    <a class="nav-link" href="https://fosstodon.org/@thomas_mock" rel="" target=""><i class="bi bi-mastodon" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="./index.xml"><i class="bi bi-rss" role="img">
+    <a class="nav-link" href="./index.xml" rel="" target=""><i class="bi bi-rss" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/"><i class="bi bi-table" role="img">
+    <a class="nav-link" href="https://jthomasmock.github.io/gtExtras/" rel="" target=""><i class="bi bi-table" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://drinksbytom.com"><i class="bi bi-cup-straw" role="img">
+    <a class="nav-link" href="https://drinksbytom.com" rel="" target=""><i class="bi bi-cup-straw" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-<div id="quarto-search" class="" title="Search"></div>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(39)</span></div><div class="category" data-category="API">API <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Automation">Automation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Community">Community <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JSON">JSON <span class="quarto-category-count">(2)</span></div><div class="category" data-category="NFL">NFL <span class="quarto-category-count">(12)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TidyTuesday">TidyTuesday <span class="quarto-category-count">(4)</span></div><div class="category" data-category="blog">blog <span class="quarto-category-count">(1)</span></div><div class="category" data-category="crosstalk">crosstalk <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data cleaning">data cleaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data visualization">data visualization <span class="quarto-category-count">(9)</span></div><div class="category" data-category="distill">distill <span class="quarto-category-count">(1)</span></div><div class="category" data-category="espnscrapeR">espnscrapeR <span class="quarto-category-count">(3)</span></div><div class="category" data-category="functions">functions <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(7)</span></div><div class="category" data-category="gt">gt <span class="quarto-category-count">(6)</span></div><div class="category" data-category="joins">joins <span class="quarto-category-count">(1)</span></div><div class="category" data-category="magick">magick <span class="quarto-category-count">(4)</span></div><div class="category" data-category="meta">meta <span class="quarto-category-count">(7)</span></div><div class="category" data-category="nfl">nfl <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nflfastR">nflfastR <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nflscrapR">nflscrapR <span class="quarto-category-count">(1)</span></div><div class="category" data-category="pdftools">pdftools <span class="quarto-category-count">(1)</span></div><div class="category" data-category="plotly">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="probability">probability <span class="quarto-category-count">(1)</span></div><div class="category" data-category="purrr">purrr <span class="quarto-category-count">(4)</span></div><div class="category" data-category="quarto">quarto <span class="quarto-category-count">(2)</span></div><div class="category" data-category="reactable">reactable <span class="quarto-category-count">(1)</span></div><div class="category" data-category="reprex">reprex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="rmarkdown">rmarkdown <span class="quarto-category-count">(4)</span></div><div class="category" data-category="simulation">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="statistics">statistics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(10)</span></div><div class="category" data-category="testing">testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="theme">theme <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidymodels">tidymodels <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidyverse">tidyverse <span class="quarto-category-count">(25)</span></div><div class="category" data-category="web scraping">web scraping <span class="quarto-category-count">(4)</span></div><div class="category" data-category="xaringan">xaringan <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(40)</span></div><div class="category" data-category="API">API <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Automation">Automation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Community">Community <span class="quarto-category-count">(1)</span></div><div class="category" data-category="JSON">JSON <span class="quarto-category-count">(2)</span></div><div class="category" data-category="NFL">NFL <span class="quarto-category-count">(12)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TidyTuesday">TidyTuesday <span class="quarto-category-count">(4)</span></div><div class="category" data-category="blog">blog <span class="quarto-category-count">(1)</span></div><div class="category" data-category="crosstalk">crosstalk <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data cleaning">data cleaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data visualization">data visualization <span class="quarto-category-count">(9)</span></div><div class="category" data-category="distill">distill <span class="quarto-category-count">(1)</span></div><div class="category" data-category="espnscrapeR">espnscrapeR <span class="quarto-category-count">(3)</span></div><div class="category" data-category="functions">functions <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(7)</span></div><div class="category" data-category="gt">gt <span class="quarto-category-count">(6)</span></div><div class="category" data-category="joins">joins <span class="quarto-category-count">(1)</span></div><div class="category" data-category="magick">magick <span class="quarto-category-count">(4)</span></div><div class="category" data-category="meta">meta <span class="quarto-category-count">(7)</span></div><div class="category" data-category="nfl">nfl <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nflfastR">nflfastR <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nflscrapR">nflscrapR <span class="quarto-category-count">(1)</span></div><div class="category" data-category="pdftools">pdftools <span class="quarto-category-count">(1)</span></div><div class="category" data-category="plotly">plotly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="probability">probability <span class="quarto-category-count">(1)</span></div><div class="category" data-category="purrr">purrr <span class="quarto-category-count">(4)</span></div><div class="category" data-category="quarto">quarto <span class="quarto-category-count">(2)</span></div><div class="category" data-category="reactable">reactable <span class="quarto-category-count">(1)</span></div><div class="category" data-category="reprex">reprex <span class="quarto-category-count">(1)</span></div><div class="category" data-category="rmarkdown">rmarkdown <span class="quarto-category-count">(4)</span></div><div class="category" data-category="simulation">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="statistics">statistics <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(10)</span></div><div class="category" data-category="testing">testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="theme">theme <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidymodels">tidymodels <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidyverse">tidyverse <span class="quarto-category-count">(25)</span></div><div class="category" data-category="web scraping">web scraping <span class="quarto-category-count">(4)</span></div><div class="category" data-category="xaringan">xaringan <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content"><p>Want to support my blog? <a href="https://www.buymeacoffee.com/thomasmock" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" height="30"></a></p>
+<main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Tom Mock </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header><p>Want to support my blog? <a href="https://www.buymeacoffee.com/thomasmock" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" height="30"></a></p>
 <p><a rel="me" href="https://fosstodon.org/@thomas_mock"></a></p>
+<div class="cell">
+
+</div>
 <div class="cell">
 
 </div>
@@ -196,9 +223,37 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1668578400000" data-listing-file-modified-sort="1668721505387" data-listing-reading-time-sort="6.38">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1694754000000" data-listing-file-modified-sort="1694822572564" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
 <div class="thumbnail">
-<p><a href="./posts/2022-11-16-rolling-summaries-with-slider-in-r/index.html"> <img src="./posts/2022-11-16-rolling-summaries-with-slider-in-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2023-09-15-removing-backgrounds-from-generated-art/index.html"> <img src="./posts/2023-09-15-removing-backgrounds-from-generated-art/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
+</div>
+<div class="body">
+<a href="./posts/2023-09-15-removing-backgrounds-from-generated-art/index.html">
+<h3 class="no-anchor listing-title">
+Removing background from GenAI art
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>We all deserve transparency</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/2023-09-15-removing-backgrounds-from-generated-art/index.html">
+<div class="listing-date">
+2023-09-15
+</div>
+<div class="listing-reading-time">
+1 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1668578400000" data-listing-file-modified-sort="1668721505387" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7">
+<div class="thumbnail">
+<p><a href="./posts/2022-11-16-rolling-summaries-with-slider-in-r/index.html"> <img src="./posts/2022-11-16-rolling-summaries-with-slider-in-r/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2022-11-16-rolling-summaries-with-slider-in-r/index.html">
@@ -219,14 +274,14 @@ Rolling summaries with {slider} in R
 2022-11-16
 </div>
 <div class="listing-reading-time">
-6 min
+7 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="meta,quarto" data-listing-date-sort="1667887200000" data-listing-file-modified-sort="1667941090728" data-listing-reading-time-sort="10.005">
+<div class="quarto-post image-right" data-index="2" data-categories="meta,quarto" data-listing-date-sort="1667887200000" data-listing-file-modified-sort="1667941090728" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11">
 <div class="thumbnail">
-<p><a href="./posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.html"> <img src="./posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.html"> <img src="./posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.html">
@@ -247,14 +302,14 @@ Use R to generate a Quarto blogpost
 2022-11-08
 </div>
 <div class="listing-reading-time">
-10 min
+11 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="magick" data-listing-date-sort="1655874000000" data-listing-file-modified-sort="1659376377112" data-listing-reading-time-sort="3.07">
+<div class="quarto-post image-right" data-index="3" data-categories="magick" data-listing-date-sort="1655874000000" data-listing-file-modified-sort="1659376377112" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
 <div class="thumbnail">
-<p><a href="./posts/2022-06-22-magick-overlay/index.html"> <img src="./posts/2022-06-22-magick-overlay/preview.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2022-06-22-magick-overlay/index.html"> <img src="./posts/2022-06-22-magick-overlay/preview.jpeg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2022-06-22-magick-overlay/index.html">
@@ -275,14 +330,14 @@ Add a semi-transparent overlay to an image with {magick}
 2022-06-22
 </div>
 <div class="listing-reading-time">
-3 min
+4 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="gt,tables" data-listing-date-sort="1655096400000" data-listing-file-modified-sort="1657133010090" data-listing-reading-time-sort="13.21">
+<div class="quarto-post image-right" data-index="4" data-categories="gt,tables" data-listing-date-sort="1655096400000" data-listing-file-modified-sort="1657133010090" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14">
 <div class="thumbnail">
-<p><a href="./posts/2022-06-13-gtextras-cran/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-13-gtextras-cran/preview.png" class="thumnail-image" style="height: 150px;" alt="The hex logo for gtExtras, it is primarily a pixel-art inspired table with a computer, a gin and tonic cocktail, and a small cactus on top, below the desk is a small boston terrier."></a></p>
+<p><a href="./posts/2022-06-13-gtextras-cran/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2022-06-13-gtextras-cran/preview.png" class="thumbnail-image" style="height: 150px;" alt="The hex logo for gtExtras, it is primarily a pixel-art inspired table with a computer, a gin and tonic cocktail, and a small cactus on top, below the desk is a small boston terrier."></a></p>
 </div>
 <div class="body">
 <a href="./posts/2022-06-13-gtextras-cran/index.html">
@@ -303,14 +358,14 @@ Beautiful tables in R with gtExtras
 2022-06-13
 </div>
 <div class="listing-reading-time">
-13 min
+14 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="meta,quarto" data-listing-date-sort="1650258000000" data-listing-file-modified-sort="1657133010090" data-listing-reading-time-sort="4.5">
+<div class="quarto-post image-right" data-index="5" data-categories="meta,quarto" data-listing-date-sort="1650258000000" data-listing-file-modified-sort="1657133010090" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
 <div class="thumbnail">
-<p><a href="./posts/2022-04-18-session-info/index.html"> <img src="./posts/2022-04-18-session-info/preview.png" class="thumnail-image" style="height: 150px;" alt="A polaroid camera sitting lens up in a pile of fallen brown leaves"></a></p>
+<p><a href="./posts/2022-04-18-session-info/index.html"> <img src="./posts/2022-04-18-session-info/preview.png" class="thumbnail-image" style="height: 150px;" alt="A polaroid camera sitting lens up in a pile of fallen brown leaves"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2022-04-18-session-info/index.html">
@@ -331,14 +386,14 @@ Adding session info to blog posts
 2022-04-18
 </div>
 <div class="listing-reading-time">
-4 min
+5 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="meta,xaringan,rmarkdown" data-listing-date-sort="1630040400000" data-listing-file-modified-sort="1657133010089" data-listing-reading-time-sort="6.625">
+<div class="quarto-post image-right" data-index="6" data-categories="meta,xaringan,rmarkdown" data-listing-date-sort="1630040400000" data-listing-file-modified-sort="1657133010089" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7">
 <div class="thumbnail">
-<p><a href="./posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/index.html">
@@ -359,14 +414,14 @@ Displaying verbatim code chunks in RMarkdown and Xaringan presentations
 2021-08-27
 </div>
 <div class="listing-reading-time">
-6 min
+7 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="meta,reprex,tidyverse" data-listing-date-sort="1627448400000" data-listing-file-modified-sort="1657133010079" data-listing-reading-time-sort="10.55">
+<div class="quarto-post image-right" data-index="7" data-categories="meta,reprex,tidyverse" data-listing-date-sort="1627448400000" data-listing-file-modified-sort="1657133010079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11">
 <div class="thumbnail">
-<p><a href="./posts/2021-07-28-reminder-to-test-with-a-reprex/index.html"> <img src="./posts/2021-07-28-reminder-to-test-with-a-reprex/plot9-qb.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-07-28-reminder-to-test-with-a-reprex/index.html"> <p class="card-img-top"><img src="posts/2021-07-28-reminder-to-test-with-a-reprex/plot9-qb.png" alt="A 3x3 grid facetted by quarter of the observation number on the X axis and the rolling max, min, and average on the Y-axis." style="height: 150px;"  class="thumbnail-image card-img"/></p> </a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-07-28-reminder-to-test-with-a-reprex/index.html">
@@ -387,14 +442,14 @@ Reminder to test with a reprex
 2021-07-28
 </div>
 <div class="listing-reading-time">
-10 min
+11 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="meta,data visualization,TidyTuesday,ggplot2" data-listing-date-sort="1617253200000" data-listing-file-modified-sort="1657133010072" data-listing-reading-time-sort="17.865">
+<div class="quarto-post image-right" data-index="8" data-categories="meta,data visualization,TidyTuesday,ggplot2" data-listing-date-sort="1617253200000" data-listing-file-modified-sort="1657133010072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18">
 <div class="thumbnail">
-<p><a href="./posts/2021-04-01-three-years-of-tidytuesday/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2021-04-01-three-years-of-tidytuesday/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-04-01-three-years-of-tidytuesday/index.html"> <img src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2021-04-01-three-years-of-tidytuesday/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-04-01-three-years-of-tidytuesday/index.html">
@@ -415,14 +470,14 @@ Three years of TidyTuesday
 2021-04-01
 </div>
 <div class="listing-reading-time">
-17 min
+18 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="meta,distill,blog,rmarkdown" data-listing-date-sort="1616302800000" data-listing-file-modified-sort="1657133010069" data-listing-reading-time-sort="9.42">
+<div class="quarto-post image-right" data-index="9" data-categories="meta,distill,blog,rmarkdown" data-listing-date-sort="1616302800000" data-listing-file-modified-sort="1657133010069" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10">
 <div class="thumbnail">
-<p><a href="./posts/2021-03-21-meta-tagging-distill/index.html"> <img src="./posts/2021-03-21-meta-tagging-distill/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-03-21-meta-tagging-distill/index.html"> <img data-src="./posts/2021-03-21-meta-tagging-distill/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-03-21-meta-tagging-distill/index.html">
@@ -443,14 +498,14 @@ Including and meta tagging extra content in a distill blog
 2021-03-21
 </div>
 <div class="listing-reading-time">
-9 min
+10 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="gt,functions,testing" data-listing-date-sort="1615096800000" data-listing-file-modified-sort="1657133010066" data-listing-reading-time-sort="15.76">
+<div class="quarto-post image-right" data-index="10" data-categories="gt,functions,testing" data-listing-date-sort="1615096800000" data-listing-file-modified-sort="1657133010066" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16">
 <div class="thumbnail">
-<p><a href="./posts/2021-03-07-custom-gt-functions-and-testing/index.html"> <img data-src="./posts/2021-03-07-custom-gt-functions-and-testing/preview.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-03-07-custom-gt-functions-and-testing/index.html"> <img data-src="./posts/2021-03-07-custom-gt-functions-and-testing/preview.jpeg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-03-07-custom-gt-functions-and-testing/index.html">
@@ -471,14 +526,14 @@ Creating a custom gt function for aligning first-row text and testing it with te
 2021-03-07
 </div>
 <div class="listing-reading-time">
-15 min
+16 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="tidyverse,data cleaning,joins" data-listing-date-sort="1613196000000" data-listing-file-modified-sort="1657133010059" data-listing-reading-time-sort="27.86">
+<div class="quarto-post image-right" data-index="11" data-categories="tidyverse,data cleaning,joins" data-listing-date-sort="1613196000000" data-listing-file-modified-sort="1657133010059" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="28">
 <div class="thumbnail">
-<p><a href="./posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/index.html"> <img data-src="./posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/preview.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/index.html"> <img data-src="./posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/preview.jpeg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-02-13-joins-vs-casewhen-speed-and-memory-tradeoffs/index.html">
@@ -499,14 +554,14 @@ Joins vs case whens - speed and memory tradeoffs
 2021-02-13
 </div>
 <div class="listing-reading-time">
-27 min
+28 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="magick,tables" data-listing-date-sort="1611813600000" data-listing-file-modified-sort="1657133010055" data-listing-reading-time-sort="13.255">
+<div class="quarto-post image-right" data-index="12" data-categories="magick,tables" data-listing-date-sort="1611813600000" data-listing-file-modified-sort="1657133010055" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14">
 <div class="thumbnail">
-<p><a href="./posts/2021-01-28-removing-image-backgrounds-with-magick/index.html"> <img data-src="./posts/2021-01-28-removing-image-backgrounds-with-magick/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-01-28-removing-image-backgrounds-with-magick/index.html"> <img data-src="./posts/2021-01-28-removing-image-backgrounds-with-magick/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-01-28-removing-image-backgrounds-with-magick/index.html">
@@ -527,14 +582,14 @@ Removing image backgrounds with magick
 2021-01-28
 </div>
 <div class="listing-reading-time">
-13 min
+14 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="magick,web scraping" data-listing-date-sort="1610949600000" data-listing-file-modified-sort="1657133010036" data-listing-reading-time-sort="18.76">
+<div class="quarto-post image-right" data-index="13" data-categories="magick,web scraping" data-listing-date-sort="1610949600000" data-listing-file-modified-sort="1657133010036" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19">
 <div class="thumbnail">
-<p><a href="./posts/2021-01-18-reading-tables-from-images-with-magick/index.html"> <img data-src="./posts/2021-01-18-reading-tables-from-images-with-magick/norm_normal_file_format.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2021-01-18-reading-tables-from-images-with-magick/index.html"> <img data-src="./posts/2021-01-18-reading-tables-from-images-with-magick/norm_normal_file_format.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2021-01-18-reading-tables-from-images-with-magick/index.html">
@@ -555,14 +610,14 @@ Reading tables from images with magick
 2021-01-18
 </div>
 <div class="listing-reading-time">
-18 min
+19 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="meta" data-listing-date-sort="1609394400000" data-listing-file-modified-sort="1657133010034" data-listing-reading-time-sort="9.92">
+<div class="quarto-post image-right" data-index="14" data-categories="meta" data-listing-date-sort="1609394400000" data-listing-file-modified-sort="1657133010034" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10">
 <div class="thumbnail">
-<p><a href="./posts/2020-12-31-2020-in-review/index.html"> <img data-src="./posts/2020-12-31-2020-in-review/tt-plot.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-12-31-2020-in-review/index.html"> <img data-src="./posts/2020-12-31-2020-in-review/tt-plot.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-12-31-2020-in-review/index.html">
@@ -583,14 +638,14 @@ Reading tables from images with magick
 2020-12-31
 </div>
 <div class="listing-reading-time">
-9 min
+10 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-categories="ggplot2,data visualization,theme,tidyverse,NFL,espnscrapeR" data-listing-date-sort="1608962400000" data-listing-file-modified-sort="1657133010014" data-listing-reading-time-sort="39.405">
+<div class="quarto-post image-right" data-index="15" data-categories="ggplot2,data visualization,theme,tidyverse,NFL,espnscrapeR" data-listing-date-sort="1608962400000" data-listing-file-modified-sort="1657133010014" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="40">
 <div class="thumbnail">
-<p><a href="./posts/2020-12-26-creating-and-using-custom-ggplot2-themes/index.html"> <img data-src="./posts/2020-12-26-creating-and-using-custom-ggplot2-themes/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-12-26-creating-and-using-custom-ggplot2-themes/index.html"> <img data-src="./posts/2020-12-26-creating-and-using-custom-ggplot2-themes/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-12-26-creating-and-using-custom-ggplot2-themes/index.html">
@@ -611,14 +666,14 @@ Creating and using custom ggplot2 themes
 2020-12-26
 </div>
 <div class="listing-reading-time">
-39 min
+40 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-categories="JSON,web scraping,NFL,espnscrapeR" data-listing-date-sort="1607839200000" data-listing-file-modified-sort="1657133009967" data-listing-reading-time-sort="26.925">
+<div class="quarto-post image-right" data-index="16" data-categories="JSON,web scraping,NFL,espnscrapeR" data-listing-date-sort="1607839200000" data-listing-file-modified-sort="1657133009967" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="27">
 <div class="thumbnail">
-<p><a href="./posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/index.html"> <img data-src="./posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/index.html"> <img data-src="./posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-12-13-extracting-json-from-websites-and-public-apis-with-r/index.html">
@@ -639,14 +694,14 @@ Extracting JSON data from websites and public APIs with R
 2020-12-13
 </div>
 <div class="listing-reading-time">
-26 min
+27 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-categories="data visualization,tidyverse,ggplot2,nfl" data-listing-date-sort="1606629600000" data-listing-file-modified-sort="1657133009912" data-listing-reading-time-sort="19.66">
+<div class="quarto-post image-right" data-index="17" data-categories="data visualization,tidyverse,ggplot2,nfl" data-listing-date-sort="1606629600000" data-listing-file-modified-sort="1657133009912" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20">
 <div class="thumbnail">
-<p><a href="./posts/2020-11-29-bullet-chart-variants-in-r/index.html"> <img data-src="./posts/2020-11-29-bullet-chart-variants-in-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-11-29-bullet-chart-variants-in-r/index.html"> <img data-src="./posts/2020-11-29-bullet-chart-variants-in-r/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-11-29-bullet-chart-variants-in-r/index.html">
@@ -667,14 +722,14 @@ Bullet Chart Variants in R
 2020-11-29
 </div>
 <div class="listing-reading-time">
-19 min
+20 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="17" data-categories="data visualization,tables,gt,tidyverse" data-listing-date-sort="1604120400000" data-listing-file-modified-sort="1657133009747" data-listing-reading-time-sort="29.935">
+<div class="quarto-post image-right" data-index="18" data-categories="data visualization,tables,gt,tidyverse" data-listing-date-sort="1604120400000" data-listing-file-modified-sort="1657133009747" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="30">
 <div class="thumbnail">
-<p><a href="./posts/2020-10-31-embedding-custom-features-in-gt-tables/index.html"> <img data-src="./posts/2020-10-31-embedding-custom-features-in-gt-tables/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-10-31-embedding-custom-features-in-gt-tables/index.html"> <img data-src="./posts/2020-10-31-embedding-custom-features-in-gt-tables/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-10-31-embedding-custom-features-in-gt-tables/index.html">
@@ -695,14 +750,14 @@ Embedding custom HTML in gt tables
 2020-10-31
 </div>
 <div class="listing-reading-time">
-29 min
+30 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="18" data-categories="data visualization,ggplot2,tidyverse,tables,gt,NFL" data-listing-date-sort="1602392400000" data-listing-file-modified-sort="1657133009740" data-listing-reading-time-sort="18.02">
+<div class="quarto-post image-right" data-index="19" data-categories="data visualization,ggplot2,tidyverse,tables,gt,NFL" data-listing-date-sort="1602392400000" data-listing-file-modified-sort="1657133009740" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19">
 <div class="thumbnail">
-<p><a href="./posts/2020-10-11-embedding-images-in-ggplot/index.html"> <img data-src="./posts/2020-10-11-embedding-images-in-ggplot/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-10-11-embedding-images-in-ggplot/index.html"> <img data-src="./posts/2020-10-11-embedding-images-in-ggplot/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-10-11-embedding-images-in-ggplot/index.html">
@@ -723,14 +778,14 @@ Plotting Points as Images in ggplot
 2020-10-11
 </div>
 <div class="listing-reading-time">
-18 min
+19 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="19" data-categories="tables,tidyverse,gt,NFL" data-listing-date-sort="1601269200000" data-listing-file-modified-sort="1657133009729" data-listing-reading-time-sort="21.165">
+<div class="quarto-post image-right" data-index="20" data-categories="tables,tidyverse,gt,NFL" data-listing-date-sort="1601269200000" data-listing-file-modified-sort="1657133009729" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22">
 <div class="thumbnail">
-<p><a href="./posts/2020-09-26-functions-and-themes-for-gt-tables/index.html"> <img data-src="./posts/2020-09-26-functions-and-themes-for-gt-tables/pff-themed-gt.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-09-26-functions-and-themes-for-gt-tables/index.html"> <img data-src="./posts/2020-09-26-functions-and-themes-for-gt-tables/pff-themed-gt.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-09-26-functions-and-themes-for-gt-tables/index.html">
@@ -751,14 +806,14 @@ Functions and Themes for gt tables
 2020-09-28
 </div>
 <div class="listing-reading-time">
-21 min
+22 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="20" data-categories="data visualization,tables,tidyverse,TidyTuesday,gt" data-listing-date-sort="1599195600000" data-listing-file-modified-sort="1657133009719" data-listing-reading-time-sort="60.72">
+<div class="quarto-post image-right" data-index="21" data-categories="data visualization,tables,tidyverse,TidyTuesday,gt" data-listing-date-sort="1599195600000" data-listing-file-modified-sort="1657133009719" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="61">
 <div class="thumbnail">
-<p><a href="./posts/2020-09-04-10-table-rules-in-r/index.html"> <img data-src="./posts/2020-09-04-10-table-rules-in-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-09-04-10-table-rules-in-r/index.html"> <img data-src="./posts/2020-09-04-10-table-rules-in-r/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-09-04-10-table-rules-in-r/index.html">
@@ -779,14 +834,14 @@ Functions and Themes for gt tables
 2020-09-04
 </div>
 <div class="listing-reading-time">
-60 min
+61 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="21" data-categories="data visualization,ggplot2,tidyverse,NFL" data-listing-date-sort="1598590800000" data-listing-file-modified-sort="1668110835663" data-listing-reading-time-sort="22.51">
+<div class="quarto-post image-right" data-index="22" data-categories="data visualization,ggplot2,tidyverse,NFL" data-listing-date-sort="1598590800000" data-listing-file-modified-sort="1668110835663" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23">
 <div class="thumbnail">
-<p><a href="./posts/2020-08-28-heatmaps-in-ggplot2/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2020-08-28-heatmaps-in-ggplot2/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-08-28-heatmaps-in-ggplot2/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2020-08-28-heatmaps-in-ggplot2/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-08-28-heatmaps-in-ggplot2/index.html">
@@ -807,14 +862,14 @@ Heatmaps in ggplot2
 2020-08-28
 </div>
 <div class="listing-reading-time">
-22 min
+23 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="22" data-categories="rmarkdown,tidyverse" data-listing-date-sort="1596258000000" data-listing-file-modified-sort="1657133009597" data-listing-reading-time-sort="12.94">
+<div class="quarto-post image-right" data-index="23" data-categories="rmarkdown,tidyverse" data-listing-date-sort="1596258000000" data-listing-file-modified-sort="1657133009597" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13">
 <div class="thumbnail">
-<p><a href="./posts/2020-08-01-building-a-blog-with-distill/index.html"> <img data-src="./posts/2020-08-01-building-a-blog-with-distill/modern.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-08-01-building-a-blog-with-distill/index.html"> <img data-src="./posts/2020-08-01-building-a-blog-with-distill/modern.jpeg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-08-01-building-a-blog-with-distill/index.html">
@@ -835,14 +890,14 @@ Building a blog with distill
 2020-08-01
 </div>
 <div class="listing-reading-time">
-12 min
+13 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="23" data-categories="data visualization,ggplot2,tidyverse,web scraping" data-listing-date-sort="1596258000000" data-listing-file-modified-sort="1657133009621" data-listing-reading-time-sort="8.565">
+<div class="quarto-post image-right" data-index="24" data-categories="data visualization,ggplot2,tidyverse,web scraping" data-listing-date-sort="1596258000000" data-listing-file-modified-sort="1657133009621" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9">
 <div class="thumbnail">
-<p><a href="./posts/2020-08-05-a-bar-chart-5-ways/index.html"> <img data-src="./posts/2020-08-05-a-bar-chart-5-ways/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-08-05-a-bar-chart-5-ways/index.html"> <img data-src="./posts/2020-08-05-a-bar-chart-5-ways/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-08-05-a-bar-chart-5-ways/index.html">
@@ -863,14 +918,14 @@ A bar chart 5 ways in ggplot2
 2020-08-01
 </div>
 <div class="listing-reading-time">
-8 min
+9 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="24" data-categories="rmarkdown,tidyverse" data-listing-date-sort="1595653200000" data-listing-file-modified-sort="1657133009532" data-listing-reading-time-sort="12.12">
+<div class="quarto-post image-right" data-index="25" data-categories="rmarkdown,tidyverse" data-listing-date-sort="1595653200000" data-listing-file-modified-sort="1657133009532" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13">
 <div class="thumbnail">
-<p><a href="./posts/2020-07-25-meta-rmarkdown/index.html"> <img data-src="./posts/2020-07-25-meta-rmarkdown/tools-flat.jpg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-07-25-meta-rmarkdown/index.html"> <img data-src="./posts/2020-07-25-meta-rmarkdown/tools-flat.jpg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-07-25-meta-rmarkdown/index.html">
@@ -891,14 +946,14 @@ Meta RMarkdown - Taxonomy and Use cases
 2020-07-25
 </div>
 <div class="listing-reading-time">
-12 min
+13 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="25" data-categories="NFL,tidyverse,crosstalk,plotly,tables,reactable" data-listing-date-sort="1590728400000" data-listing-file-modified-sort="1657133009530" data-listing-reading-time-sort="16.33">
+<div class="quarto-post image-right" data-index="26" data-categories="NFL,tidyverse,crosstalk,plotly,tables,reactable" data-listing-date-sort="1590728400000" data-listing-file-modified-sort="1657133009530" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17">
 <div class="thumbnail">
-<p><a href="./posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/index.html"> <img data-src="./posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/preview.jpg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/index.html"> <img data-src="./posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/preview.jpg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-05-29-client-side-interactivity-do-more-with-crosstalk/index.html">
@@ -919,14 +974,14 @@ Client-side interactivity - do more with Crosstalk
 2020-05-29
 </div>
 <div class="listing-reading-time">
-16 min
+17 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="26" data-categories="NFL,tidyverse,JSON,web scraping,API,purrr" data-listing-date-sort="1590123600000" data-listing-file-modified-sort="1657133009526" data-listing-reading-time-sort="15.275">
+<div class="quarto-post image-right" data-index="27" data-categories="NFL,tidyverse,JSON,web scraping,API,purrr" data-listing-date-sort="1590123600000" data-listing-file-modified-sort="1657133009526" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16">
 <div class="thumbnail">
-<p><a href="./posts/2020-05-22-parsing-json-in-r-with-jsonlite/index.html"> <img data-src="./posts/2020-05-22-parsing-json-in-r-with-jsonlite/preview.jpg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-05-22-parsing-json-in-r-with-jsonlite/index.html"> <img data-src="./posts/2020-05-22-parsing-json-in-r-with-jsonlite/preview.jpg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-05-22-parsing-json-in-r-with-jsonlite/index.html">
@@ -947,14 +1002,14 @@ Easily parsing JSON in R with jsonlite and purrr
 2020-05-22
 </div>
 <div class="listing-reading-time">
-15 min
+16 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="27" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589778000000" data-listing-file-modified-sort="1657133009524" data-listing-reading-time-sort="18.62">
+<div class="quarto-post image-right" data-index="28" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589778000000" data-listing-file-modified-sort="1657133009524" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19">
 <div class="thumbnail">
-<p><a href="./posts/2020-05-16-gt-a-grammar-of-tables/index.html"> <img data-src="./posts/2020-05-16-gt-a-grammar-of-tables/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-05-16-gt-a-grammar-of-tables/index.html"> <p class="card-img-top"><img data-src="posts/2020-05-16-gt-a-grammar-of-tables/preview.png" style="height: 150px;"  class="thumbnail-image card-img"/></p> </a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-05-16-gt-a-grammar-of-tables/index.html">
@@ -975,14 +1030,14 @@ gt - a (G)rammar of (T)ables
 2020-05-18
 </div>
 <div class="listing-reading-time">
-18 min
+19 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="28" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589518800000" data-listing-file-modified-sort="1657133009505" data-listing-reading-time-sort="18.905">
+<div class="quarto-post image-right" data-index="29" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589518800000" data-listing-file-modified-sort="1657133009505" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19">
 <div class="thumbnail">
-<p><a href="./posts/2020-05-13-reactable-tables-the-rest-of-the-owl/index.html"> <img data-src="./posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-05-13-reactable-tables-the-rest-of-the-owl/index.html"> <img data-src="./posts/2020-05-13-reactable-tables-the-rest-of-the-owl/distill-preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-05-13-reactable-tables-the-rest-of-the-owl/index.html">
@@ -1003,14 +1058,14 @@ reactable - An Interactive Tables Guide
 2020-05-15
 </div>
 <div class="listing-reading-time">
-18 min
+19 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="29" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589346000000" data-listing-file-modified-sort="1657133009504" data-listing-reading-time-sort="8.775">
+<div class="quarto-post image-right" data-index="30" data-categories="NFL,tidyverse,tables" data-listing-date-sort="1589346000000" data-listing-file-modified-sort="1657133009504" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9">
 <div class="thumbnail">
-<p><a href="./posts/2020-05-13-qb-salaries-vs-playoff-appearances/index.html"> <img data-src="./posts/2020-05-13-qb-salaries-vs-playoff-appearances/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-05-13-qb-salaries-vs-playoff-appearances/index.html"> <img data-src="./posts/2020-05-13-qb-salaries-vs-playoff-appearances/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-05-13-qb-salaries-vs-playoff-appearances/index.html">
@@ -1031,14 +1086,14 @@ QB Salaries vs Playoff Appearances
 2020-05-13
 </div>
 <div class="listing-reading-time">
-8 min
+9 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="30" data-categories="espnscrapeR,NFL,tidyverse,tidymodels" data-listing-date-sort="1588309200000" data-listing-file-modified-sort="1657133009414" data-listing-reading-time-sort="7.595">
+<div class="quarto-post image-right" data-index="31" data-categories="espnscrapeR,NFL,tidyverse,tidymodels" data-listing-date-sort="1588309200000" data-listing-file-modified-sort="1657133009414" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
 <div class="thumbnail">
-<p><a href="./posts/2020-05-01-tidy-long-models/index.html"> <img data-src="./posts/2020-05-01-tidy-long-models/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-05-01-tidy-long-models/index.html"> <img data-src="./posts/2020-05-01-tidy-long-models/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-05-01-tidy-long-models/index.html">
@@ -1059,14 +1114,14 @@ Flipping tibbles for many models
 2020-05-01
 </div>
 <div class="listing-reading-time">
-7 min
+8 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="31" data-categories="NFL,nflscrapR,nflfastR,SQL,tidyverse" data-listing-date-sort="1588050000000" data-listing-file-modified-sort="1657133009386" data-listing-reading-time-sort="14.9">
+<div class="quarto-post image-right" data-index="32" data-categories="NFL,nflscrapR,nflfastR,SQL,tidyverse" data-listing-date-sort="1588050000000" data-listing-file-modified-sort="1657133009386" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15">
 <div class="thumbnail">
-<p><a href="./posts/2019-04-28-nflfastr-dbplyr-rsqlite/index.html"> <img data-src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1526&amp;q=80" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2019-04-28-nflfastr-dbplyr-rsqlite/index.html"> <img data-src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1526&amp;q=80" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2019-04-28-nflfastr-dbplyr-rsqlite/index.html">
@@ -1087,14 +1142,14 @@ Bigger, nflfastR, dbplyr
 2020-04-28
 </div>
 <div class="listing-reading-time">
-14 min
+15 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="32" data-categories="purrr,pdftools,tidyverse" data-listing-date-sort="1585976400000" data-listing-file-modified-sort="1657133009389" data-listing-reading-time-sort="17.375">
+<div class="quarto-post image-right" data-index="33" data-categories="purrr,pdftools,tidyverse" data-listing-date-sort="1585976400000" data-listing-file-modified-sort="1657133009389" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18">
 <div class="thumbnail">
-<p><a href="./posts/2020-04-03-beer-and-pdftools-a-vignette/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/pdftools-guide/master/beer-kegs.jpeg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-04-03-beer-and-pdftools-a-vignette/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/pdftools-guide/master/beer-kegs.jpeg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-04-03-beer-and-pdftools-a-vignette/index.html">
@@ -1115,14 +1170,14 @@ Beer and pdftools - a vignette
 2020-04-04
 </div>
 <div class="listing-reading-time">
-17 min
+18 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="33" data-categories="tidyverse,purrr,simulation,probability" data-listing-date-sort="1585890000000" data-listing-file-modified-sort="1657133009409" data-listing-reading-time-sort="10.62">
+<div class="quarto-post image-right" data-index="34" data-categories="tidyverse,purrr,simulation,probability" data-listing-date-sort="1585890000000" data-listing-file-modified-sort="1657133009409" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11">
 <div class="thumbnail">
-<p><a href="./posts/2020-04-03-crossing-10000-tidy-simulation/index.html"> <img data-src="./posts/2020-04-03-crossing-10000-tidy-simulation/preview-small.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2020-04-03-crossing-10000-tidy-simulation/index.html"> <img data-src="./posts/2020-04-03-crossing-10000-tidy-simulation/preview-small.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2020-04-03-crossing-10000-tidy-simulation/index.html">
@@ -1143,14 +1198,14 @@ Crossing 10,000 - Tidy simulation
 2020-04-03
 </div>
 <div class="listing-reading-time">
-10 min
+11 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="34" data-categories="magick,data visualization,ggplot2" data-listing-date-sort="1547013600000" data-listing-file-modified-sort="1657133009382" data-listing-reading-time-sort="7.345">
+<div class="quarto-post image-right" data-index="35" data-categories="magick,data visualization,ggplot2" data-listing-date-sort="1547013600000" data-listing-file-modified-sort="1657133009382" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
 <div class="thumbnail">
-<p><a href="./posts/2019-01-09-add-a-logo-to-your-plot/index.html"> <img data-src="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2019-01-09-add-a-logo-to-your-plot/index.html"> <img data-src="https://images.pexels.com/photos/1564506/pexels-photo-1564506.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2019-01-09-add-a-logo-to-your-plot/index.html">
@@ -1171,14 +1226,14 @@ Add a logo to your plot
 2019-01-09
 </div>
 <div class="listing-reading-time">
-7 min
+8 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="35" data-categories="TidyTuesday,tidyverse,Automation" data-listing-date-sort="1546408800000" data-listing-file-modified-sort="1657133009374" data-listing-reading-time-sort="9.6">
+<div class="quarto-post image-right" data-index="36" data-categories="TidyTuesday,tidyverse,Automation" data-listing-date-sort="1546408800000" data-listing-file-modified-sort="1657133009374" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10">
 <div class="thumbnail">
-<p><a href="./posts/2019-01-02-tidytuesday-enhancements/index.html"> <img data-src="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2019-01-02-tidytuesday-enhancements/index.html"> <img data-src="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/static/tt_logo.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2019-01-02-tidytuesday-enhancements/index.html">
@@ -1199,14 +1254,14 @@ TidyTuesday enhancements
 2019-01-02
 </div>
 <div class="listing-reading-time">
-9 min
+10 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="36" data-categories="TidyTuesday,tidyverse,Community" data-listing-date-sort="1522904400000" data-listing-file-modified-sort="1657133009374" data-listing-reading-time-sort="9.72">
+<div class="quarto-post image-right" data-index="37" data-categories="TidyTuesday,tidyverse,Community" data-listing-date-sort="1522904400000" data-listing-file-modified-sort="1657133009374" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10">
 <div class="thumbnail">
-<p><a href="./posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/index.html"> <img data-src="./posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/index.html"> <img data-src="./posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2018-12-11-tidytuesday-a-weekly-social-data-project-in-r/index.html">
@@ -1227,14 +1282,14 @@ TidyTuesday
 2018-04-05
 </div>
 <div class="listing-reading-time">
-9 min
+10 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="37" data-categories="purrr,tidyverse,statistics" data-listing-date-sort="1521349200000" data-listing-file-modified-sort="1657133009370" data-listing-reading-time-sort="7.115">
+<div class="quarto-post image-right" data-index="38" data-categories="purrr,tidyverse,statistics" data-listing-date-sort="1521349200000" data-listing-file-modified-sort="1657133009370" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
 <div class="thumbnail">
-<p><a href="./posts/2018-12-11-functional-progamming-in-r-with-purrr/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2018-12-11-functional-progamming-in-r-with-purrr/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2018-12-11-functional-progamming-in-r-with-purrr/preview.jpg" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2018-12-11-functional-progamming-in-r-with-purrr/index.html">
@@ -1255,14 +1310,14 @@ Functional Progamming in R with purrr
 2018-03-18
 </div>
 <div class="listing-reading-time">
-7 min
+8 min
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="38" data-categories="tidyverse,statistics" data-listing-date-sort="1521176400000" data-listing-file-modified-sort="1657133009370" data-listing-reading-time-sort="23.27">
+<div class="quarto-post image-right" data-index="39" data-categories="tidyverse,statistics" data-listing-date-sort="1521176400000" data-listing-file-modified-sort="1657133009370" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24">
 <div class="thumbnail">
-<p><a href="./posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png" class="thumnail-image" style="height: 150px;"></a></p>
+<p><a href="./posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/index.html"> <img data-src="https://raw.githubusercontent.com/jthomasmock/themockup-blog/master/posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/distill-preview.png" class="thumbnail-image" style="height: 150px;"></a></p>
 </div>
 <div class="body">
 <a href="./posts/2018-12-10-a-gentle-guide-to-tidy-statistics-in-r/index.html">
@@ -1283,7 +1338,7 @@ A Gentle Guide to Tidy Statistics in R
 2018-03-16
 </div>
 <div class="listing-reading-time">
-23 min
+24 min
 </div>
 </a>
 </div>
@@ -1320,9 +1375,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1358,10 +1427,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1371,8 +1439,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1387,6 +1464,147 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    if (id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        for (let i = 0; i < 2; i++) {
+          container.appendChild(note.children[i].cloneNode(true));
+        }
+        return container.innerHTML
+      } else {
+        return note.innerHTML;
+      }
+    } else {
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      try { hash = new URL(url).hash; } catch {}
+      const id = hash.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note !== null) {
+        try {
+          const html = processXRef(id, note);
+          instance.setContent(html);
+        } finally {
+          instance.enable();
+          instance.show();
+        }
+      } else {
+        // See if we can fetch this
+        fetch(url.split('#')[0])
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.getElementById(id);
+          if (note !== null) {
+            const html = processXRef(id, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

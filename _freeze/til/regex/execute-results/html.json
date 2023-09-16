@@ -1,0 +1,14 @@
+{
+  "hash": "768afa7c5a8ae07e4271e7f4d504105e",
+  "result": {
+    "markdown": "::: {.cell}\n\n```{.r .cell-code}\n# split on 'squished characters' like CatDog - split between Cat and Dog\nstr <- c(\"Fruit LoopsJalapeno Sandwich\", \"Red Bagel\", \"Basil LeafBarbeque SauceFried Beef\")\n\n\nstringr::str_split(gsub(\"([a-z])([A-Z])\", \"\\\\1SPLITHERE\\\\2\", str), \"SPLITHERE\", 3)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[[1]]\n[1] \"Fruit Loops\"       \"Jalapeno Sandwich\"\n\n[[2]]\n[1] \"Red Bagel\"\n\n[[3]]\n[1] \"Basil Leaf\"     \"Barbeque Sauce\" \"Fried Beef\"    \n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

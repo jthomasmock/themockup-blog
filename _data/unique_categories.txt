@@ -1,0 +1,39 @@
+API
+Automation
+Community
+JSON
+NFL
+SQL
+TidyTuesday
+blog
+crosstalk
+data cleaning
+data visualization
+distill
+espnscrapeR
+functions
+ggplot2
+gt
+joins
+magick
+meta
+nfl
+nflfastR
+nflscrapR
+pdftools
+plotly
+probability
+purrr
+quarto
+reactable
+reprex
+rmarkdown
+simulation
+statistics
+tables
+testing
+theme
+tidymodels
+tidyverse
+web scraping
+xaringan

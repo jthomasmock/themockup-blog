@@ -2,6 +2,8 @@
   {
     "listing": "/til.html",
     "items": [
+      "/til/regex.html",
+      "/til/py-sessioninfo.html",
       "/til/rleid.html",
       "/til/pitches.html"
     ]
@@ -9,6 +11,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2023-09-15-removing-backgrounds-from-generated-art/index.html",
       "/posts/2022-11-16-rolling-summaries-with-slider-in-r/index.html",
       "/posts/2022-11-08-use-r-to-generate-a-quarto-blogpost/index.html",
       "/posts/2022-06-22-magick-overlay/index.html",

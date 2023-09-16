@@ -158,11 +158,11 @@
   </url>
   <url>
     <loc>https://themockup.blog/til.html</loc>
-    <lastmod>2022-11-28T01:58:47.488Z</lastmod>
+    <lastmod>2022-11-28T01:51:57.583Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/index.html</loc>
-    <lastmod>2022-11-28T02:13:35.255Z</lastmod>
+    <lastmod>2023-09-15T23:54:05.445Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/readme.html</loc>
@@ -170,7 +170,7 @@
   </url>
   <url>
     <loc>https://themockup.blog/about.html</loc>
-    <lastmod>2022-11-28T01:58:51.246Z</lastmod>
+    <lastmod>2023-09-16T00:02:07.795Z</lastmod>
   </url>
   <url>
     <loc>https://themockup.blog/til/rleid.html</loc>
@@ -203,5 +203,17 @@
   <url>
     <loc>https://themockup.blog/static/slides/index.html</loc>
     <lastmod>2022-11-28T01:59:20.007Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/posts/2023-09-15-removing-backgrounds-from-generated-art/index.html</loc>
+    <lastmod>2023-09-16T00:02:52.564Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/til/py-sessioninfo.html</loc>
+    <lastmod>2023-05-08T15:34:10.210Z</lastmod>
+  </url>
+  <url>
+    <loc>https://themockup.blog/til/regex.html</loc>
+    <lastmod>2023-03-20T14:50:27.953Z</lastmod>
   </url>
 </urlset>

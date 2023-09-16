@@ -47,3 +47,25 @@ redirects <- paste0("/", slugs, " ", "/posts/", posts)
 writeLines(redirects, here::here("_site", "_redirects"))
 ```
 
+
+```{r write-tags}
+#| echo: false
+
+library(rvest)
+library(xml2)
+
+raw_html <- read_html(here::here("_site/index.html"))
+
+length_tags <- raw_html |> 
+  html_nodes("#quarto-margin-sidebar > div > div") |> 
+  length()
+
+all_tags <- sapply(seq_len(length_tags), function(x){
+  html_nodes(raw_html, xpath = glue::glue('//*[@id="quarto-margin-sidebar"]/div/div[{x}]/text()')) |> 
+    html_text(trim = TRUE)
+  })
+
+all_tags[all_tags != "All"] |> 
+  readr::write_lines(here::here("_data/unique_categories.txt"))
+```
+
